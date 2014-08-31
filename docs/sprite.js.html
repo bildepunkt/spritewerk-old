@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: sprite.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: sprite.js</h1>
+
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var config = require('./config');
+var Shade = require('./shade');
+var radio = require('./radio.js');
+
+/**
+ * Movable objects with visual representation and depth sorting
+ * @package Core
+ * @class   Sprite
+ * @extends Shade
+ */
+module.exports = Shade.extend({
+    /** 
+     * @member {string} Sprite.prototype.name - the unique name necessary for proto's inheritance
+     */
+    name: 'sprite',
+
+    init: function() {
+        this.$shade.init.call(this);
+
+        this._srcX = 0;
+        this._srcY = 0;
+        this._size = 0;
+        this._scaling = 1;
+        this._rotation = 0;
+        this._opacity = 1;
+        this._img = null;
+        this._src = null;
+        this.z = null;
+        // determined in gameManager.update()
+        this._visible = false;
+    },
+
+    _onLoad: function() {
+        radio.tuneOut(this._img, 'load', this._onLoad);
+
+        // if w/h set - use them, else use img w/h
+        if (!this._width &amp;&amp; !this._height) {
+            this._width = this._img.width;
+            this._height = this._img.height;
+            // TODO can we assume that srcW &amp; srcH will be the same as w &amp; h in this case?
+            this._srcWidth = this._width;
+            this._srcHeight = this._height;
+        }
+
+        // set half w/h
+        this.scale(this._scaling);
+
+        radio.broadcast('entityready', {
+            entity: this
+        });
+    },
+
+    _triggerLevelChange: function(directive) {
+        radio.broadcast('entitydepthchange', {
+            entity: this,
+            directive: directive
+        });
+    },
+
+    /**
+     * Set scale, which updates w/h and halfW/halfH
+     * @method SaveLoad.prototype.load
+     * @return this
+     */
+    scale: function(n) {
+        this._scaling = n;
+        this._width = this._width * n;
+        this._height = this._height * n;
+        this._halfWidth = this._width / 2;
+        this._halfHeight = this._height / 2;
+
+        return this;
+    },
+
+    /**
+     * Set object's rotation, rending rotation handled by @module draw
+     * @method SaveLoad.prototype.rotate
+     * @return this
+     */
+    rotate: function(degrees) {
+        this._rotation += (degrees * Math.PI / 180);
+        return this;
+    },
+
+    /**
+     * Create object's img and set the source. On image load, @method _onLoad is called which fires an event, adding this entity to the entity pool in @module entityManager
+     * @method SaveLoad.prototype.setImage
+     * @param {string} src - the image source
+     * @return this
+     */
+    setImage: function(src) {
+        this._img = new Image();
+        radio.tuneIn(this._img, 'load', this._onLoad, this);
+        this._src = src;
+        this._img.src = this._src;
+        return this;
+    },
+
+    /**
+     * Sets entities visibility
+     * @method SaveLoad.prototype.setVisible
+     * @param {boolean} visible - the new value
+     * @return this
+     */
+    setVisible: function(visible) {
+        this._visible = visible;
+        return this;
+    },
+
+    /**
+     * Brings the entity sorting depth forward by one index
+     * @method SaveLoad.prototype.bringForward
+     * @return this
+     */
+    bringForward: function() {
+        this._triggerLevelChange('bringforward');
+        return this;
+    },
+
+    /**
+     * Brings the entity sorting depth to top
+     * @method SaveLoad.prototype.bringToFront
+     * @return this
+     */
+    bringToFront: function() {
+        this._triggerLevelChange('bringtofront');
+        return this;
+    },
+
+    /**
+     * Sends the entity sorting depth back by one index
+     * @method SaveLoad.prototype.sendBackward
+     * @return this
+     */
+    sendBackward: function() {
+        this._triggerLevelChange('sendbackward');
+        return this;
+    },
+
+    /**
+     * Sends the entity sorting depth to bottom
+     * @method SaveLoad.prototype.sendToBack
+     * @return this
+     */
+    sendToBack: function() {
+        this._triggerLevelChange('sendtoback');
+        return this;
+    },
+
+    /**
+     * @method SaveLoad.prototype.getVisible
+     * @return _visible
+     */
+    getVisible: function() {
+        return this._visible;
+    },
+
+    /**
+     * Destroys the entity
+     * @method SaveLoad.prototype.destroy
+     * @fires removeentity - entityManager listens for this event and will remove the entity from the pool
+     */
+    destroy: function() {
+        radio.broadcast('removeentity', {
+            entity: this
+        });
+    }
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-dataControl.html">dataControl</a></li><li><a href="module-domControl.html">domControl</a></li><li><a href="module-draw.html">draw</a></li><li><a href="module-engine.html">engine</a></li><li><a href="module-entityManager.html">entityManager</a></li><li><a href="module-game.html">game</a></li><li><a href="module-stateManager.html">stateManager</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Event.html">Event</a></li><li><a href="Overt.html">Overt</a></li><li><a href="SaveLoad.html">SaveLoad</a></li><li><a href="Shade.html">Shade</a></li><li><a href="Sprite.html">Sprite</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Aug 31 2014 13:23:24 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

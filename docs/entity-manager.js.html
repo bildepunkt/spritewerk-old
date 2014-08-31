@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: entity-manager.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: entity-manager.js</h1>
+
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var config = require('./config');
+var radio = require('./radio.js');
+
+/**
+ * Entity Manager is responsible for adding/removing entities from pool, updating entites positions and their sorting depth
+ * @package Core
+ * @module  entityManager
+ */
+module.exports = {
+    _camera: null,
+    _entities: [],
+
+    init: function() {
+        radio.tuneIn('newframe', this._onNewFrame, this);
+        radio.tuneIn('entityready', this._onAddEntity, this);
+        radio.tuneIn('removeentity', this._onRemoveEntity, this);
+        radio.tuneIn('entitydepthchange', this._onEntityDepthChange, this);
+    },
+
+    _onNewFrame: function(e) {
+        var len = this._entities.length,
+            entity,
+            i;
+
+        // updates before any velocity applied
+        radio.broadcast('update', {
+            frame: e.detail.frame
+        });
+
+        for (i = 0; i &lt; len; i += 1) {
+            entity = this._entities[i];
+            
+            entity._update();
+
+            // determine visibility
+            if (entity._screenX + entity._width &lt;= 0 || entity._screenX >= config.width ||
+                entity._screenY + entity._height &lt;= 0 || entity._screenY >= config.height) {
+                entity.setVisible(false);
+            } else {
+                entity.setVisible(true);
+            }
+        }
+
+        // update after velocities etc. applied
+        radio.broadcast('render', {
+            frame: e.detail.frame,
+            entities: this._entities
+        });
+    },
+
+    _onEntityDepthChange: function(e) {
+        var entity = e.detail.entity,
+            directive = e.detail.directive,
+            len = this._entities.length,
+            depth,
+            i;
+
+        for (i = 0; i &lt; len; i += 1) {
+            if (this._entities[i]._uid === entity._uid) {
+                depth = i;
+                break;
+            }
+        }
+
+        if ((directive === 'bringforward' || directive === 'bringtofront') &amp;&amp; depth === this._entities.length -1) {
+            return;
+        }
+        if ((directive === 'sendbackward' || directive === 'sendtoback') &amp;&amp; depth === 0) {
+            return;
+        }
+
+        // remove the entity, then add it via @setEntityLevel
+        this._entities.splice(depth, 1);
+
+        switch(directive) {
+            case 'bringforward':
+                depth += 1;
+            break;
+            case 'bringToFront':
+                depth = this._entities.length - 1;
+            break;
+            case 'sendbackward':
+                depth -= 1;
+            break;
+            case 'sendtoback':
+                depth = 0;
+            break;
+        }
+
+        this._setEntityDepth(entity, depth);
+    },
+
+    _setEntityDepth: function(entity, depth) {
+        if (depth === null || depth === undefined || depth >= this._entities.length) {
+            this._entities.push(entity);
+        } else {
+            this._entities.splice(depth, 0, entity);
+        }
+    },
+
+    _onAddEntity: function(e) {
+        var entity = e.detail.entity;
+        this._setEntityDepth(entity, entity.z);
+    },
+
+    _onRemoveEntity: function(e) {
+        var entity = e.detail.entity,
+            len = this.entities.length,
+            i;
+
+        for (i = 0; i &lt; len; i += 1) {
+            if (entity._uid === this._entities[i]._uid) {
+                this._entities.splice(i, 1);
+                break;
+            }
+        }
+    },
+
+    destroy: function() {
+        radio.tuneOut('newframe', this._onNewFrame);
+    }
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-dataControl.html">dataControl</a></li><li><a href="module-domControl.html">domControl</a></li><li><a href="module-draw.html">draw</a></li><li><a href="module-engine.html">engine</a></li><li><a href="module-entityManager.html">entityManager</a></li><li><a href="module-game.html">game</a></li><li><a href="module-stateManager.html">stateManager</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Event.html">Event</a></li><li><a href="Overt.html">Overt</a></li><li><a href="SaveLoad.html">SaveLoad</a></li><li><a href="Shade.html">Shade</a></li><li><a href="Sprite.html">Sprite</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Aug 31 2014 13:23:24 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
