@@ -4,20 +4,44 @@
     <meta charset="UTF-8">
     <style>
         body {
-            margin: 0 16%;
             font-family: sans-serif;
+        }
+        iframe {
+            border: 1px dashed #ccc;
+        }
+        #wrapper {
+            margin: 28px auto 0;
+            max-width: 740px;
+        }
+        #footer {
+            margin: 36px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .big {
+            font-size: 24px;
         }
     </style>
     <title>Spritewerk</title>
 </head>
 <body>
-    <h1>Spritewerk</h1>
-    <p>Spritewerk is a canvas based framework to ease and speed up the process of multi-platform html game development</p>
-    <p>This project is a culmination of my own curiosity and desire to improve my skills coupled (loosely amirite?) with my interest in producing traditional, console-style games playable on any device.</p>
+    <div id="wrapper">
+        <img alt="Spritewerk" src="img/spritewerk-logo.jpg">
+        <p class="big">Spritewerk is a canvas based framework to ease and speed up the process of multi-platform html game development</p>
+        <p class="big">This project is a culmination of my own curiosity and desire to improve my skills coupled (loosely amirite?) with my interest in producing traditional, console-style games playable on any device.</p>
+        <a href="//github.com/c-concat-p/spritewerk">view source</a>
+        <br>
+        <br>
+        <h2>Documentation</h2>
+        <iframe src="docs/" width="740" height="740"></iframe>
+        <p id="footer">Chris Peters &copy; <span id="date"></span></p>
+    </div>
 
-    <ul>
-        <li><a href="docs/">Documentation</a></li>
-        <li><a href="#">Examples (Coming Soon)</a></li>
-    </ul>
+    <script>
+        window.onload = function() {
+            var date = document.querySelector('#date');
+            date.innerHTML = new Date().getFullYear();
+        };
+    </script>
 </body>
 </html>
