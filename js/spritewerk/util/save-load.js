@@ -5,10 +5,11 @@
  * @extends Overt
  */
 define([
+    './config',
     './observable'
-], function(Observable) {
+], function(config, Observable) {
     return Observable.extend({
-        name: 'saveLoad',
+        protosName: 'saveLoad',
 
         init: function() {
             this.$overt.init.call(this);
@@ -20,7 +21,7 @@ define([
          * @method SaveLoad.prototype.save
          */
         save: function() {
-            localStorage.setItem(config.title, JSON.stringify(this.data));
+            localStorage.setItem(config.uglyTitle, JSON.stringify(this.data));
         },
 
         /**
@@ -29,7 +30,7 @@ define([
          * @method SaveLoad.prototype.load
          */
         load: function() {
-            this.data = JSON.parse(localStorage.getItem(config.title));
+            this.data = JSON.parse(localStorage.getItem(config.uglyTitle));
         },
 
         /**
@@ -38,7 +39,7 @@ define([
          * @method SaveLoad.prototype.clear
          */
         clear: function() {
-            localStorage.removeItem(config.title);
+            localStorage.removeItem(config.uglyTitle);
             this.data = {};
         }
     });

@@ -36,5 +36,14 @@ define([], {
     /**
      *
      */
-    backgroundColor: '#444'
+    backgroundColor: '#444',
+
+    /**
+     *
+     */
+    title: 'spritewerk game',
+
+    init: function() {
+        this.uglyName = this.title.replace(/[^a-zA-Z0-9]/g, '_');
+    }
 });

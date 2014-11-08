@@ -10,9 +10,15 @@ define([
     return State.extend({
         protosName: 'title',
 
+        init: function() {
+            this.$state.init.call(this);
+
+            this.start = this.layers[0].getEntity('start');
+        },
+
         press: function(e) {
-            if (e.target.name === 'start') {
-                alert('start!');
+            if (e.target == this.start) {
+                this.layers[0].setEntityDepth(this.start, '++');
             }
         }
     });

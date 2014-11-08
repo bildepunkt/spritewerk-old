@@ -157,6 +157,7 @@ define([
          * @param {Sprite} entity
          * @param {number} factor
          */
+        // TODO move into collision file
         _hitPoint: function(x, y, entity, factor) {
             if (x >= entity.x * factor &&
                 x <= entity.x * factor + entity.width * factor &&

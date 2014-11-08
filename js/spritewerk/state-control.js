@@ -6,13 +6,19 @@
  */
 define([
     '../lib/preloader',
-    '../lib/radio'
-], function(preloader, radio) {
+    '../lib/radio',
+    './layer'
+], function(preloader, radio, Layer) {
     return {
         /**
-         * 
+         * state instance
          */
         _state: null,
+
+        /**
+         * state constructor
+         */
+        _State: null,
 
         /**
          *
@@ -30,20 +36,16 @@ define([
         },
 
         _onAssetsLoaded: function() {
+            var stateLayers = [];
             var layer;
             var entity;
             var parsedEntity;
 
             radio.tuneOut(document, 'preloader/assetsloaded', this._onAssetsLoaded);
 
-            this._state.backgroundColor = this._data.backgroundColor;
-
             for (var layerInd = 0; layerInd < this._data.layers.length; layerInd += 1) {
+                stateLayers[layerInd] = new Layer();
                 layer = this._data.layers[layerInd];
-
-                this._state.layers[layerInd] = {
-                    entities: []
-                };
 
                 for (var entityInd = 0; entityInd < layer.entities.length; entityInd += 1) {
                     entity = layer.entities[entityInd];
@@ -55,9 +57,15 @@ define([
                         parsedEntity.attachImage();
                     }
 
-                    this._state.layers[layerInd].entities[entityInd] = parsedEntity;
+                    stateLayers[layerInd].entities[entityInd] = parsedEntity;
                 }
             }
+
+            // initialize state
+            this._state = new this._State({
+                layers: stateLayers,
+                backgroundColor: this._data.backgroundColor
+            });
 
             this._loadingState = false;
         },
@@ -66,7 +74,7 @@ define([
          * @param {object} state
          */
         setState: function(State, data) {
-            this._state = new State();
+            this._State = State;
             this._data = data;
             this._loadingState = true;
 

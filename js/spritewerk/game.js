@@ -7,12 +7,13 @@
 
 define([
     '../lib/radio',
+    './config',
     './dom-control',
     './draw',
     './engine',
     './input',
     './state-control'
-], function(radio, DomControl, Draw, Engine, Input, StateControl) {
+], function(radio, Config, DomControl, Draw, Engine, Input, StateControl) {
     return {
         /**
          * the state to load after window load
@@ -45,7 +46,9 @@ define([
         _onReady: function() {
             radio.tuneOut(window, 'load', this._onReady);
 
-            // dom ctrl first!
+            // config first!
+            Config.init();
+            // dom next
             DomControl.init();
             //
             Draw.init();

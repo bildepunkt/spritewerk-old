@@ -35,7 +35,7 @@ define([
                         }
                     },
                     {
-                        name: 'ghost',
+                        name: 'start',
                         type: Sprite,
                         config: {
                             x: 128,

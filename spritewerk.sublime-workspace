@@ -520,11 +520,23 @@
 	"buffers":
 	[
 		{
+			"contents": "",
 			"file": "title.js",
+			"file_size": -1,
+			"file_write_time": -1,
 			"settings":
 			{
-				"buffer_size": 560,
+				"buffer_size": 0,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/spritewerk/layer.js",
+			"settings":
+			{
+				"buffer_size": 3711,
+				"line_ending": "Unix",
+				"name": "/**"
 			}
 		}
 	],
@@ -1004,19 +1016,15 @@
 					"file": "title.js",
 					"settings":
 					{
-						"buffer_size": 560,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								122,
-								122
-							],
-							[
-								378,
-								378
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1109,6 +1117,35 @@
 								"Ruby on Rails": "ruby"
 							},
 							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "js/spritewerk/layer.js",
+					"settings":
+					{
+						"buffer_size": 3711,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3699,
+								3699
+							]
+						],
+						"settings":
+						{
+							"auto_name": "/**",
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
