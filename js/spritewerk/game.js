@@ -16,17 +16,21 @@ define([
 ], function(radio, Config, DomControl, Draw, Engine, Input, StateControl) {
     return {
         /**
-         * the state to load after window load
+         * @member {constructor} Game._State - the state to load after window load
+         * @private
          */
         _State: null,
 
         /**
-         * the data to load after window load
+         * @member {object} Game._data - the data to load after window load
+         * @private
          */
         _data: null,
 
         /**
          * accepts state and data preps for window load
+         *
+         * @method Game.start
          */
         start: function(State, data) {
             this._State = State;
@@ -42,6 +46,9 @@ define([
 
         /**
          * init modules, load state/data and start game engine
+         *
+         * @method Game._onReady
+         * @private
          */
         _onReady: function() {
             radio.tuneOut(window, 'load', this._onReady);

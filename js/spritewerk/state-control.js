@@ -11,17 +11,20 @@ define([
 ], function(preloader, radio, Layer) {
     return {
         /**
-         * state instance
+         * @member {object} StateControl._state - instance of current state
+         * @private
          */
         _state: null,
 
         /**
-         * state constructor
+         * @member {constructor} StateControl._State - current state constructor
+         * @private
          */
         _State: null,
 
         /**
-         *
+         * @member {boolean} StateControl._loadingState - true when loading a state
+         * @private
          */
         _loadingState: false,
 
@@ -29,12 +32,23 @@ define([
             radio.tuneIn('newframe', this.update, this);
         },
 
+        /**
+         * if not currently loading, call state's update function
+         *
+         * @method StateControl.update
+         */
         update: function() {
             if (! this._loadingState) {
                 this._state.update();
             }
         },
 
+        /**
+         * executes after assets are preloaded
+         *
+         * @method StateControl._onAssetsLoaded
+         * @private
+         */
         _onAssetsLoaded: function() {
             var stateLayers = [];
             var layer;
@@ -71,7 +85,9 @@ define([
         },
 
         /**
-         * @param {object} state
+         * @method StateControl.setState
+         * @param {constructor} State
+         * @param {object} data
          */
         setState: function(State, data) {
             this._State = State;
@@ -86,6 +102,9 @@ define([
             }
         },
 
+        /**
+         * @method StateControl.getState
+         */
         getState: function() {
             this._state;
         }

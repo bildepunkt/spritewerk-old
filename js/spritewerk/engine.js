@@ -21,43 +21,47 @@ define([
 ], function(radio, config) {
     return {
         /**
-         * @member
+         * @member {int} Engine._fps - the amount of times per second the game loop executes
+         * @private
          */
         _fps:      null,
 
         /**
-         * @member
+         * @member {int} Engine._now
+         * @private
          */
         _now:      null,
 
         /**
-         * @member
+         * @member {int} Engine._then
+         * @private
          */
         _then:     null,
 
         /**
-         * @member
+         * @member {int} Engine._interval
+         * @private
          */
         _interval: null,
 
         /**
-         * @member
+         * @member {int} Engine._delta
+         * @private
          */
         _delta:    null,
 
         /**
-         * @member
+         * @member {int} Engine._counter
+         * @private
          */
         _counter:  0,
 
         /**
-         * @member
+         * @member {boolean} Engine._paused
+         * @private
          */
         _paused:   false,
 
-        /**
-         * @member
-         */
         init: function() {
             this._fps = config.fps;
             this._interval = 1000 / this._fps;
@@ -66,7 +70,9 @@ define([
         },
 
         /**
+         * triggers the update function
          *
+         * @method Engine.start
          */
         start: function() {
             this._update();
@@ -76,6 +82,8 @@ define([
          * calculates the proper time - based on fps - to trigger the rAF and new frame
          *
          * @fires newframe - triggers on every frame
+         * @method Engine._update
+         * @private
          */
         _update: function() {
             if (!this._paused) {
@@ -98,6 +106,8 @@ define([
 
         /**
          * Pauses the game by stopping the engine
+         *
+         * @method Engine.pause
          */
         pause: function() {
             this._paused = true;
@@ -105,6 +115,8 @@ define([
 
         /**
          * Resumes the game engine
+         *
+         * @method Engine.resume
          */
         resume: function() {
             this._paused = false;

@@ -8,40 +8,37 @@ define([
     '../lib/radio'
 ], function(Protos, radio) {
     return Protos.extend({
-        /** 
-         * @member {string} Shade.prototype.name - the unique name necessary for proto's inheritance
-         */
         protosName: 'sprite',
 
         /** 
-         * @member {number} Shade.prototype.x - the entity's x position
+         * @member {number} Sprite.prototype.x - the entity's x position
          */
         x: 0,
                 
         /** 
-         * @member {number} Shade.prototype.y - the entity's y position
+         * @member {number} Sprite.prototype.y - the entity's y position
          */
         y: 0,
                 
         //z: null,
                 
         /** 
-         * @member {number} Shade.prototype.vx
+         * @member {number} Sprite.prototype.vx
          */
         vx: 0,
                 
         /** 
-         * @member {number} Shade.prototype.vy
+         * @member {number} Sprite.prototype.vy
          */
         vy: 0,
                 
         /** 
-         * @member {number} Shade.prototype.width
+         * @member {number} Sprite.prototype.width
          */
         width: 0,
                 
         /** 
-         * @member {number} Shade.prototype.height
+         * @member {number} Sprite.prototype.height
          */
         height: 0,
                 
@@ -50,49 +47,49 @@ define([
         //halfHeight: 0,
 
         /** 
-         * @member {number} Shade.prototype.srcX
+         * @member {number} Sprite.prototype.srcX
          */
         srcX: 0,
         
         /** 
-         * @member {number} Shade.prototype.srcY
+         * @member {number} Sprite.prototype.srcY
          */
         srcY: 0,
                 
         /** 
-         * @member {number} Shade.prototype.srcWidth
+         * @member {number} Sprite.prototype.srcWidth
          */
         srcWidth: 0,
                 
         /** 
-         * @member {number} Shade.prototype.srcHeight
+         * @member {number} Sprite.prototype.srcHeight
          */
         srcHeight: 0,
                 
         //scale: 1,
                 
         /** 
-         * @member {number} Shade.prototype.rotation - the rotation of the entity
+         * @member {number} Sprite.prototype.rotation - the rotation of the entity
          */
         rotation: 0,
                 
         /** 
-         * @member {number} Shade.prototype.opacity - the opacity the entity is rendered at
+         * @member {number} Sprite.prototype.opacity - the opacity the entity is rendered at
          */
         opacity: 1,
                 
         /** 
-         * @member {HTMLElement} Shade.prototype.img - the image element that the canvas renders
+         * @member {HTMLElement} Sprite.prototype.img - the image element that the canvas renders
          */
         img: null,
                 
         /** 
-         * @member {string} Shade.prototype.src - the src path for the entity's img element
+         * @member {string} Sprite.prototype.src - the src path for the entity's img element
          */
         src: null,
                 
         /** 
-         * @member {boolean} Shade.prototype.visible - if entity is outside camera bounds, visible is set to false and entity is not rendered
+         * @member {boolean} Sprite.prototype.visible - if entity is outside camera bounds, visible is set to false and entity is not rendered
          */
         visible: true,
 
@@ -119,7 +116,7 @@ define([
         /**
          * Create object's img element and set the source
          *
-         * @method Sprite.prototype.setImage
+         * @method Sprite.prototype.attachImage
          */
         attachImage: function() {
             if (!this.src) {

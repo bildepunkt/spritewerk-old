@@ -8,11 +8,12 @@ define([
     '../lib/radio'
 ], function(Protos, radio) {
     return Protos.extend({
-        /** 
-         * @member {string} Event.prototype.name - the unique name necessary for proto's inheritance
-         */
-        name: 'observable',
+        protosName: 'observable',
 
+        /** 
+         * @member {string} Observable.prototype.data - the key/val data
+         * @private
+         */
         data: {},
 
         init: function() {
@@ -24,7 +25,7 @@ define([
         /**
          * Adds a listener to this object
          *
-         * @method Event.prototype.listen
+         * @method Observable.prototype.listen
          * @param {string} type - the event type
          * @param {function} handler - the event handler
          * @param {object} [context] - the scope the handler will be executed in
@@ -36,7 +37,7 @@ define([
         /**
          * Removes a listener from this object
          *
-         * @method Event.prototype.ignore
+         * @method Observable.prototype.ignore
          * @param {string} type - the event type
          * @param {function} handler - the event handler
          */
@@ -47,7 +48,7 @@ define([
         /**
          * Triggers an event from this object
          *
-         * @method Event.prototype.announce
+         * @method Observable.prototype.announce
          * @param {string} type - the event type
          * @param {object} [data] - data to pass along with the event
          */
@@ -56,7 +57,7 @@ define([
         },
 
         /**
-         * @method Overt.prototype.set
+         * @method Observable.prototype.set
          * @param {object} pairs - key/val pairs to set
          * @param {object} options - 
          */
@@ -76,7 +77,7 @@ define([
         },
 
         /**
-         * @method Overt.prototype.get
+         * @method Observable.prototype.get
          * @param {string} prop - the property
          * @returns {any} property
          */

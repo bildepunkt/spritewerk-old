@@ -1,8 +1,8 @@
 /**
  * An observable object with CRUD capabilities -using localStorage- on persistant data
- * @package Core
- * @class   SaveLoad
- * @extends Overt
+ *
+ * @class Crud
+ * @extends Observable
  */
 define([
     './config',

@@ -1,4 +1,6 @@
-
+/**
+ * @class Draw
+ */
 define([
     '../lib/radio',
     './config',
@@ -6,12 +8,12 @@ define([
 ], function(radio, config, DomControl) {
     return {
         /**
-         *
+         * @member {HTMLEntity} Draw._canvas
          */
         _canvas: null,
 
         /**
-         *
+         * @member {object} Draw._context - the canavas drawing context
          */
         _context: null,
 
@@ -20,6 +22,10 @@ define([
             this._context = DomControl.getContext();
         },
 
+        /**
+         * renders an entity based on it's options
+         * @method Draw.renderEntity
+         */
         renderEntity: function(entity) {
             var x, y;
 
@@ -59,7 +65,8 @@ define([
         /**
          * clears the entire canvas
          *
-         * @returns {draw}
+         * @method Draw.clearCanvas
+         * @returns {Draw}
          */
         clearCanvas: function() {
             this._context.clearRect(0, 0, config.width, config.height);
@@ -69,8 +76,9 @@ define([
         /**
          * fills the entire canvas
          *
+         * @method Draw.fillCanvas
          * @param color - the color to fill the canvas
-         * @returns {draw}
+         * @returns {Draw}
          */
         fillCanvas: function(color) {
             this._context.fillStyle = color;

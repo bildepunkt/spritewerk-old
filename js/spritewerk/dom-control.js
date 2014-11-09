@@ -10,18 +10,17 @@ define([
 ], function(radio, config) {
     return {
         /**
-         *
+         * @member {HTMLEntity} DomControl._canvas
+         * @private
          */
         _canvas: null,
 
         /**
-         *
+         * @member {object} DomControl._context - the canavas drawing context
+         * @private
          */
         _context: null,
 
-        /**
-         *
-         */
         init: function() {
             radio.tuneIn(window, 'resize', this._onWindowResize, this);
             // do we need this?
@@ -39,7 +38,8 @@ define([
         },
 
         /**
-         *
+         * @method DomControl._styleElements
+         * @private
          */
         _styleElements: function() {
             var body = document.getElementsByTagName('body')[0];
@@ -52,7 +52,8 @@ define([
         },
 
         /**
-         *
+         * @method DomControl._onWindowResize
+         * @private
          */
         _onWindowResize: function() {
             var LANDSCAPE_RATIO = config.height / config.width;
@@ -104,6 +105,7 @@ define([
         /**
          * returns the Canvas object
          *
+         * @method DomControl.getCanvas
          * @returns {HTMLEntity} canvas
          */
         getCanvas: function() {
@@ -113,6 +115,7 @@ define([
         /**
          * returns the 2D Context object
          *
+         * @method DomControl.getContext
          * @returns {object} context
          */
         getContext: function() {

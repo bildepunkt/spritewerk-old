@@ -18,77 +18,79 @@ define([
         protosName: 'state',
 
         /**
-         *
+         * @member {HTMLEntity} State.prototype._canvas
+         * @private
          */
         _canvas: null,
 
         /**
-         * @member {boolean} scroll
+         * @member {boolean} State.prototype.scroll
          * @default false
          */
         scroll: false,
 
         /**
-         * contains objects with a collection of entities
+         * contains objects with a config options and a collection of entities
          *
-         * @member {array} layers
+         * @member {array} State.prototype.layers
          */
         layers: [],
 
         /**
-         *
+         * @member {string} State.prototype.backgroundColor
          */
         backgroundColor: null,
 
         /**
-         * @member {object} _config
+         * @member {object} State.prototype.config
          */
         config: {},
 
         /**
-         *
+         * @method State.prototype.press
          */
         press: function(e) {
             console.log(e);
         },
 
         /**
-         *
+         * @method State.prototype.dblpress
          */
         dblpress: function(e) {
             console.log(e);
         },
 
         /**
-         *
+         * @method State.prototype.pressdown
          */
         pressdown: function(e) {
             console.log(e);
         },
 
         /**
-         *
+         * @method State.prototype.pressup
          */
         pressup: function(e) {
             console.log(e);
         },
 
         /**
-         *
+         * @method State.prototype.mousemove
          */
         mousemove: function(e) {
             console.log(e);
         },
 
-        /**
-         *
-         */
         init: function() {
             this._canvas = DomControl.getCanvas();
 
             radio.tuneIn('inputreceived', this._onInputReceived, this);
         },
 
+        /**
+         * @method State.prototype._onInputReceived
+         * @private
+         */
         _onInputReceived: function(e) {
             var inputEvent = e.detail.inputEvent;
             var evt = {
@@ -122,6 +124,10 @@ define([
             }
         },
 
+        /**
+         * @method State.prototype._getTarget
+         * @private
+         */
         _getTarget: function(e) {
             var factor = 1;
             var canvasCssWidth;
@@ -152,10 +158,12 @@ define([
         },
 
         /**
+         * @method State.prototype._hitPoint
          * @param {number} x - mouse/touch position
          * @param {number} y - mouse/touch position
          * @param {Sprite} entity
          * @param {number} factor
+         * @private
          */
         // TODO move into collision file
         _hitPoint: function(x, y, entity, factor) {
@@ -170,6 +178,7 @@ define([
 
         /**
          * updates all layers' entity's velocities, camera input, and determines visibility
+         *
          * @method State.prototype.update
          */
         update: function() {

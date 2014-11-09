@@ -1,5 +1,6 @@
 /**
  * an object in a state containing entities and config data
+ *
  * @class Layer
  */
 define([
@@ -9,13 +10,13 @@ define([
         protosName: 'layer',
 
         /**
-         * @member {array} entities
+         * @member {array} Layer.prototype.entities
          */
         entities: [],
 
         /**
-         * @param {string} name
          * @method Layer.prototype.getEntity
+         * @param {string} name
          */
         getEntity: function(name) {
             var len = this.entities.length;
@@ -67,8 +68,6 @@ define([
          * @param {Sprite} entity
          * @param {int|string} newDepth - int use: 0 for back, -1 for front, or anything inbetween. string use: '++' or '--' for forward or back respectively
          * @method Layer.prototype.setEntityDepth
-         *
-         * TODO add '++' and '--' as newDepth parameter options
          */
         setEntityDepth: function(entity, newDepth) {
             var entitiesLen = this.entities.length;
@@ -114,8 +113,8 @@ define([
         },
 
         /**
-         * @param {Sprite} entity
          * @method Layer.prototype.getEntity
+         * @param {Sprite} entity
          * @return {int} depth
          */
         getEntityDepth: function(entity) {

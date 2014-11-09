@@ -31,7 +31,10 @@ define([
         },
 
         /**
+         * handle dom events
          *
+         * @method Input._receiveEvent
+         * @private
          */
         _receiveEvent: function(e) {
             radio.broadcast('inputreceived', {
