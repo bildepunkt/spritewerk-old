@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: config.js</title>
+    <title>JSDoc: Source: input.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: config.js</h1>
+    <h1 class="page-title">Source: input.js</h1>
 
     
 
@@ -27,58 +27,49 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @class Config
+ * @class Input
  * @static
  */
-define([], {
-    /**
-     * @member {int} Config.fps - the frame rate
-     */
-    fps: 60,
+define([
+    '../lib/radio',
+    './config',
+    './dom-control'
+], function(radio, config, DomControl) {
+    return {
+        init: function() {
+            var canvas = DomControl.getCanvas();
 
-    /**
-     * @member {int} Config.width - the width of the canvas
-     */
-    width: 960,
+            if (config.bindMouseInput) {
+                radio.tuneIn(canvas, 'click',     this._receiveEvent);
+                radio.tuneIn(canvas, 'dblclick',  this._receiveEvent);
+                radio.tuneIn(canvas, 'mousedown', this._receiveEvent);
+                radio.tuneIn(canvas, 'mouseup',   this._receiveEvent);
 
-    /**
-     * @member {int} Config.height - the height of the canvas
-     */
-    height: 600,
+                if (config.bindMousemove) {
+                    radio.tuneIn(canvas, 'mousemove', this._receiveEvent);
+                }
+            }
 
-    /**
-     * @member {boolean} Config.bindMouseInput - set to true if using mouse-enabled devices
-     */
-    bindMouseInput: true,
+            if (config.bindTouchInput) {
+                radio.tuneIn(canvas, 'tap',        this._receiveEvent);
+                radio.tuneIn(canvas, 'dbltap',     this._receiveEvent);
+                radio.tuneIn(canvas, 'touchstart', this._receiveEvent);
+                radio.tuneIn(canvas, 'touchend',   this._receiveEvent);
+            }
+        },
 
-    /**
-     * @member {boolean} Config.bindTouchInput - set to true if using touch-enabled devices
-     */
-    bindTouchInput: false,
-
-    /**
-     * @member {boolean} Config.bindMouseMove - determines if mousemove event is bound (set to false if not using the event to save cycles)
-     */
-    bindMousemove: false,
-
-    /**
-     * @member {int} Config.backgroundColor - the bg color applied the body
-     */
-    backgroundColor: '#444',
-
-    /**
-     * @member {string} Config.title - the game title (used for dom title tag)
-     */
-    title: 'spritewerk game',
-
-    /**
-     * @member {string} Config.uglyTitle - used for naming stuff
-     */
-    uglytitle: '',
-
-    init: function() {
-        this.uglyTitle = this.title.replace(/[^a-zA-Z0-9]/g, '_');
-    }
+        /**
+         * handle dom events
+         *
+         * @method Input._receiveEvent
+         * @private
+         */
+        _receiveEvent: function(e) {
+            radio.broadcast('inputreceived', {
+                inputEvent: e
+            });
+        }
+    };
 });</code></pre>
         </article>
     </section>

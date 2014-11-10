@@ -22,104 +22,100 @@
     
 
 
+
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>var config = require('./config');
-var domControl = require('./dom-control');
-var radio = require('./radio.js');
-
-/**
- * Draw renders entities on the canvas. Handles rotation scale etc.
- * @package Core
- * @module  draw
+            <pre class="prettyprint source linenums"><code>/**
+ * @class Draw
  */
-module.exports = {
-    /**
-     * @private
-     */
-    init: function() {
-        this._canvas = domControl.getCanvas();
-        this._context = domControl.getContext();
+define([
+    '../lib/radio',
+    './config',
+    './dom-control'
+], function(radio, config, DomControl) {
+    return {
+        /**
+         * @member {HTMLEntity} Draw._canvas
+         */
+        _canvas: null,
 
-        radio.tuneIn('render', this._render, this);
-    },
+        /**
+         * @member {object} Draw._context - the canavas drawing context
+         */
+        _context: null,
 
-    /**
-     * @private
-     */
-    _render: function(e) {
-        var entities = e.detail.entities,
-            len = entities.length,
-            entity,
-            x, y,
-            i;
+        init: function() {
+            this._canvas = DomControl.getCanvas();
+            this._context = DomControl.getContext();
+        },
 
-        if (!len) {
-            return false;
-        }
-
-        this.clear().fill('#fff');
-
-        for (i = 0; i &lt; len; i += 1) {
-            entity = entities[i];
+        /**
+         * renders an entity based on it's options
+         * @method Draw.renderEntity
+         */
+        renderEntity: function(entity) {
+            var x, y;
 
             this._context.save();
+            this._context.globalAlpha = entity.opacity;
 
-            if (entity.getVisible()) {
+            /*if (entity.scale !== 1) {
+                this._context.scale = entity.scale;
+            }*/
 
-                this._context.globalAlpha = entity._opacity || 1;
+            if (entity.rotation !== 0) {
+                 this._context.translate(entity._screenX + entity.width / 2, entity.screenY + entity.height / 2);
+                 this._context.rotate(entity.rotation);
 
-                if (entity._rotation !== 0) {
-                     this._context.translate(entity._screenX + entity._halfWidth, entity._screenY + entity._halfHeight);
-                     this._context.rotate(entity._rotation);
- 
-                     x = -entity._halfWidth;
-                     y = -entity._halfHeight;
-                 } else {
-                     x = entity._screenX;
-                     y = entity._screenY;
-                 }
+                 x = -entity.width / 2;
+                 y = -entity.height / 2;
+             } else {
+                 x = entity.x;
+                 y = entity.y;
+             }
 
-                this._context.drawImage(
-                    entity._img,
-                    entity._srcX,
-                    entity._srcY,
-                    entity._srcWidth,
-                    entity._srcHeight,
-                    x, y,
-                    entity._width,
-                    entity._height
-                );
-            }
+            this._context.drawImage(
+                entity.img,
+                entity.srcX,
+                entity.srcY,
+                entity.srcWidth,
+                entity.srcHeight,
+                Math.floor(x),
+                Math.floor(y),
+                entity.width,
+                entity.height
+            );
 
             this._context.restore();
+        },
+
+        /**
+         * clears the entire canvas
+         *
+         * @method Draw.clearCanvas
+         * @returns {Draw}
+         */
+        clearCanvas: function() {
+            this._context.clearRect(0, 0, config.width, config.height);
+            return this;
+        },
+
+        /**
+         * fills the entire canvas
+         *
+         * @method Draw.fillCanvas
+         * @param color - the color to fill the canvas
+         * @returns {Draw}
+         */
+        fillCanvas: function(color) {
+            this._context.fillStyle = color;
+            this._context.fillRect(0, 0, config.width, config.height);
+
+            return this;
         }
-    },
-
-    /**
-     * clears the entire canvas
-     *
-     * @returns this
-     */
-    clear: function() {
-        this._context.clearRect(0, 0, config.width, config.height);
-        return this;
-    },
-
-    /**
-     * fills the entire canvas
-     *
-     * @param color - the color to fill the canvas
-     * @returns this
-     */
-    fill: function(color) {
-        this._context.fillStyle = color;
-        this._context.fillRect(0, 0, config.width, config.height);
-
-        return this;
-    }
-};</code></pre>
+    };
+});</code></pre>
         </article>
     </section>
 
@@ -129,13 +125,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-dataControl.html">dataControl</a></li><li><a href="module-domControl.html">domControl</a></li><li><a href="module-draw.html">draw</a></li><li><a href="module-engine.html">engine</a></li><li><a href="module-entityManager.html">entityManager</a></li><li><a href="module-game.html">game</a></li><li><a href="module-stateManager.html">stateManager</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Event.html">Event</a></li><li><a href="Overt.html">Overt</a></li><li><a href="SaveLoad.html">SaveLoad</a></li><li><a href="Shade.html">Shade</a></li><li><a href="Sprite.html">Sprite</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Config.html">Config</a></li><li><a href="Crud.html">Crud</a></li><li><a href="DomControl.html">DomControl</a></li><li><a href="Draw.html">Draw</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Game.html">Game</a></li><li><a href="Input.html">Input</a></li><li><a href="Layer.html">Layer</a></li><li><a href="Observable.html">Observable</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="State.html">State</a></li><li><a href="StateControl.html">StateControl</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Aug 31 2014 13:23:24 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha10</a> on Sun Nov 09 2014 23:26:13 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

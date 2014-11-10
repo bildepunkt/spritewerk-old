@@ -22,79 +22,81 @@
     
 
 
+
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>var config       = require('./config');
-var domControl   = require('./dom-control');
-var draw         = require('./draw');
-var engine       = require('./engine');
-var shade        = require('./shade');
-var radio        = require('./radio.js');
-var stateManager = require('./state-manager');
-var entityManager = require('./entity-manager');
-var dataControl  = require('./data-control');
-
-/**
- * Game loads data and state functionality
- * @package Core
- * @module  game
+            <pre class="prettyprint source linenums"><code>/**
+ * initializes classes, loads initial state/data after dom ready
+ *
+ * @class Game
+ * @static
  */
-module.exports = {
-    /**
-     * calls loadDataAndState on window load
-     *
-     * @param  {object} data - a data object
-     * @param  {string} state - the state name
-     * @param  {object} options - key/val pair of options
-     */
-    init: function(data, state, options) {
-        this._state = state;
-        this._data = data;
-        this._options = options;
 
-        radio.tuneIn(window, 'load', this._onWindowLoad, this);
-    },
+define([
+    '../lib/radio',
+    './config',
+    './dom-control',
+    './draw',
+    './engine',
+    './input',
+    './state-control'
+], function(radio, Config, DomControl, Draw, Engine, Input, StateControl) {
+    return {
+        /**
+         * @member {constructor} Game._State - the state to load after window load
+         * @private
+         */
+        _State: null,
 
-    /**
-     * @private
-     */
-    _onWindowLoad: function() {
-        radio.tuneOut(window, 'load');
+        /**
+         * @member {object} Game._data - the data to load after window load
+         * @private
+         */
+        _data: null,
 
-        domControl.init();
-        entityManager.init();
-        draw.init();
-        engine.init();
+        /**
+         * accepts state and data preps for window load
+         *
+         * @method Game.start
+         */
+        start: function(State, data) {
+            this._State = State;
+            this._data = data;
 
-        this.loadDataAndState(this._data, this._state, this._options);
-    },
+            // for those quick dom loads
+            if (SPRITEWERK.windowLoaded) {
+                this._onReady();
+            } else {
+                radio.tuneIn(window, 'load', this._onReady, this);
+            }
+        },
 
-    /**
-     * @private
-     */
-    _onDataParsed: function(e) {
-        radio.tuneOut('dataparsed', this._onDataParsed);
-        stateManager.load(e.detail.data, this._state);
-    },
+        /**
+         * init modules, load state/data and start game engine
+         *
+         * @method Game._onReady
+         * @private
+         */
+        _onReady: function() {
+            radio.tuneOut(window, 'load', this._onReady);
 
-    /**
-     * loads data and state functionality to run the game
-     *
-     * @param  {object} data - a data object
-     * @param  {string} state - the state name
-     * @param  {object} options - key/val pair of options
-     */
-    loadDataAndState: function(data, state, options) {
-        this.data = data;
-        this._state = state;
-        this._options = options;
-
-        radio.tuneIn('dataparsed', this._onDataParsed, this);
-
-        dataControl.parse(data, options);
-    }
-};</code></pre>
+            // config first!
+            Config.init();
+            // dom next
+            DomControl.init();
+            //
+            Draw.init();
+            Engine.init();
+            Input.init();
+            StateControl.init();
+            //
+            StateControl.setState(this._State, this._data);
+            // go!
+            Engine.start();
+        }
+    };
+});</code></pre>
         </article>
     </section>
 
@@ -104,13 +106,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-dataControl.html">dataControl</a></li><li><a href="module-domControl.html">domControl</a></li><li><a href="module-draw.html">draw</a></li><li><a href="module-engine.html">engine</a></li><li><a href="module-entityManager.html">entityManager</a></li><li><a href="module-game.html">game</a></li><li><a href="module-stateManager.html">stateManager</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Event.html">Event</a></li><li><a href="Overt.html">Overt</a></li><li><a href="SaveLoad.html">SaveLoad</a></li><li><a href="Shade.html">Shade</a></li><li><a href="Sprite.html">Sprite</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Config.html">Config</a></li><li><a href="Crud.html">Crud</a></li><li><a href="DomControl.html">DomControl</a></li><li><a href="Draw.html">Draw</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Game.html">Game</a></li><li><a href="Input.html">Input</a></li><li><a href="Layer.html">Layer</a></li><li><a href="Observable.html">Observable</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="State.html">State</a></li><li><a href="StateControl.html">StateControl</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Aug 31 2014 13:23:24 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha10</a> on Sun Nov 09 2014 23:26:13 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

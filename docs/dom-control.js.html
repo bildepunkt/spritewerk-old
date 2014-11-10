@@ -22,99 +22,135 @@
     
 
 
+
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>var config = require('./config');
-var radio = require('./radio.js');
-
-/**
- * DOM Control sets up the canvas and handles window resizing
- * @package Core
- * @module  domControl
+            <pre class="prettyprint source linenums"><code>/**
+ * sets up the canvas and handles window resizing
+ *
+ * @class DomControl
+ * @static
  */
-module.exports = {
-    init: function() {
-        radio.tuneIn(window, 'resize', this._resize, this);
+define([
+    '../lib/radio',
+    './config'
+], function(radio, config) {
+    return {
+        /**
+         * @member {HTMLEntity} DomControl._canvas
+         * @private
+         */
+        _canvas: null,
 
-        this._width = config.width;
-        this._height = config.height;
-        this._canvas = document.getElementsByTagName('canvas')[0];
-        this._context = this._canvas.getContext('2d');
-        this._canvas.width = this._width;
-        this._canvas.height = this._height;
+        /**
+         * @member {object} DomControl._context - the canavas drawing context
+         * @private
+         */
+        _context: null,
 
-        this._IS_LANDSCAPE = this._width > this._height ? true : false;
-        this._RATIO = this._IS_LANDSCAPE ? this._height / this._width : this._width / this._height;
+        init: function() {
+            radio.tuneIn(window, 'resize', this._onWindowResize, this);
+            // do we need this?
+            radio.tuneIn(window, 'orientationchange', this._onWindowResize, this);
 
-        this._resize();
-    },
+            this._width   = config.width;
+            this._height  = config.height;
+            this._canvas  = document.getElementById('spritewerk');
+            this._context = this._canvas.getContext('2d');
+            this._canvas.width  = this._width;
+            this._canvas.height = this._height;
 
-    _resize: function() {
-        var LANDSCAPE_RATIO = config.height / config.width;
-        var PORTRAIT_RATIO = config.width / config.height;
-        var IS_LANDSCAPE = LANDSCAPE_RATIO &lt; PORTRAIT_RATIO ? true : false;
-        var winW = window.innerWidth;
-        var winH = window.innerHeight;
-        var winLandscapeRatio = winH / winW;
-        var winPortraitRatio  = winW / winH;
-        var left = 0;
-        var top = 0;
-        var canW;
-        var canH;
+            this._styleElements();
+            this._onWindowResize();
+        },
 
-        if (IS_LANDSCAPE) {
-            if (LANDSCAPE_RATIO &lt; winLandscapeRatio) {
-                canW = winW;
-                canH = canW * LANDSCAPE_RATIO;
-                top = (winH - canH) / 2;
+        /**
+         * @method DomControl._styleElements
+         * @private
+         */
+        _styleElements: function() {
+            var body = document.getElementsByTagName('body')[0];
+
+            body.style.backgroundColor = config.backgroundColor;
+            body.style.margin = 0;
+            body.style.padding = 0;
+
+            this._canvas.style.position = 'absolute';
+        },
+
+        /**
+         * @method DomControl._onWindowResize
+         * @private
+         */
+        _onWindowResize: function() {
+            var LANDSCAPE_RATIO = config.height / config.width;
+            var PORTRAIT_RATIO  = config.width / config.height;
+            var IS_LANDSCAPE    = LANDSCAPE_RATIO &lt; PORTRAIT_RATIO ? true : false;
+            var winW = window.innerWidth;
+            var winH = window.innerHeight;
+            var winLandscapeRatio = winH / winW;
+            var winPortraitRatio  = winW / winH;
+            var left = 0;
+            var top  = 0;
+            var canW;
+            var canH;
+
+            if (IS_LANDSCAPE) {
+                if (LANDSCAPE_RATIO &lt; winLandscapeRatio) {
+                    canW = winW;
+                    canH = canW * LANDSCAPE_RATIO;
+                    top  = (winH - canH) / 2;
+                } else {
+                    canH = winH;
+                    canW = winH * PORTRAIT_RATIO;
+                    left = (winW - canW) / 2;
+                }
             } else {
-                canH = winH;
-                canW = winH * PORTRAIT_RATIO;
-                left = (winW - canW) / 2;
+                if (PORTRAIT_RATIO &lt; winPortraitRatio) {
+                    canH = winH;
+                    canW = winH * PORTRAIT_RATIO;
+                    left = (winW - canW) / 2;
+                } else {
+                    canW = winW;
+                    canH = canW * LANDSCAPE_RATIO;
+                    top  = (winH - canH) / 2;
+                }
             }
-        } else {
-            if (PORTRAIT_RATIO &lt; winPortraitRatio) {
-                canH = winH;
-                canW = winH * PORTRAIT_RATIO;
-                left = (winW - canW) / 2;
-            } else {
-                canW = winW;
-                canH = canW * LANDSCAPE_RATIO;
-                top = (winH - canH) / 2;
-            }
+
+            this._canvas.style.width  = Math.round(canW) + 'px';
+            this._canvas.style.height = Math.round(canH) + 'px';
+            this._canvas.style.left   = Math.round(left) + 'px';
+            this._canvas.style.top    = Math.round(top)  + 'px';
+
+            // we use a timeout here because some mobile browsers
+            // don't fire if there is not a short delay
+            setTimeout(function() {
+                window.scrollTo(0,1);
+            }, 1);
+        },
+
+        /**
+         * returns the Canvas object
+         *
+         * @method DomControl.getCanvas
+         * @returns {HTMLEntity} canvas
+         */
+        getCanvas: function() {
+            return this._canvas;
+        },
+
+        /**
+         * returns the 2D Context object
+         *
+         * @method DomControl.getContext
+         * @returns {object} context
+         */
+        getContext: function() {
+            return this._context;
         }
-
-        this._canvas.style.width = Math.round(canW) + 'px';
-        this._canvas.style.height = Math.round(canH) + 'px';
-        this._canvas.style.left = left + 'px';
-        this._canvas.style.top = top + 'px';
-
-        // we use a timeout here because some mobile browsers
-        // don't fire if there is not a short delay
-        setTimeout(function() {
-            window.scrollTo(0,1);
-        }, 1);
-    },
-
-    /**
-     * returns the Canvas object
-     *
-     * @returns canvas
-     */
-    getCanvas: function() {
-        return this._canvas;
-    },
-
-    /**
-     * returns the 2D Context object
-     *
-     * @returns context
-     */
-    getContext: function() {
-        return this._context;
-    }
-};</code></pre>
+    };
+});</code></pre>
         </article>
     </section>
 
@@ -124,13 +160,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-dataControl.html">dataControl</a></li><li><a href="module-domControl.html">domControl</a></li><li><a href="module-draw.html">draw</a></li><li><a href="module-engine.html">engine</a></li><li><a href="module-entityManager.html">entityManager</a></li><li><a href="module-game.html">game</a></li><li><a href="module-stateManager.html">stateManager</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Event.html">Event</a></li><li><a href="Overt.html">Overt</a></li><li><a href="SaveLoad.html">SaveLoad</a></li><li><a href="Shade.html">Shade</a></li><li><a href="Sprite.html">Sprite</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Config.html">Config</a></li><li><a href="Crud.html">Crud</a></li><li><a href="DomControl.html">DomControl</a></li><li><a href="Draw.html">Draw</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Game.html">Game</a></li><li><a href="Input.html">Input</a></li><li><a href="Layer.html">Layer</a></li><li><a href="Observable.html">Observable</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="State.html">State</a></li><li><a href="StateControl.html">StateControl</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Aug 31 2014 13:23:24 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha10</a> on Sun Nov 09 2014 23:26:13 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

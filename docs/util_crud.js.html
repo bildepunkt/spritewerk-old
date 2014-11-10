@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: config.js</title>
+    <title>JSDoc: Source: util/crud.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: config.js</h1>
+    <h1 class="page-title">Source: util/crud.js</h1>
 
     
 
@@ -27,58 +27,50 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @class Config
- * @static
+ * An observable object with CRUD capabilities -using localStorage- on persistant data
+ *
+ * @class Crud
+ * @extends Observable
  */
-define([], {
-    /**
-     * @member {int} Config.fps - the frame rate
-     */
-    fps: 60,
+define([
+    './config',
+    './observable'
+], function(config, Observable) {
+    return Observable.extend({
+        protosName: 'saveLoad',
 
-    /**
-     * @member {int} Config.width - the width of the canvas
-     */
-    width: 960,
+        init: function() {
+            this.$overt.init.call(this);
+        },
 
-    /**
-     * @member {int} Config.height - the height of the canvas
-     */
-    height: 600,
+        /**
+         * Write data to localStorage
+         *
+         * @method SaveLoad.prototype.save
+         */
+        save: function() {
+            localStorage.setItem(config.uglyTitle, JSON.stringify(this.data));
+        },
 
-    /**
-     * @member {boolean} Config.bindMouseInput - set to true if using mouse-enabled devices
-     */
-    bindMouseInput: true,
+        /**
+         * Read data to localStorage
+         *
+         * @method SaveLoad.prototype.load
+         */
+        load: function() {
+            this.data = JSON.parse(localStorage.getItem(config.uglyTitle));
+        },
 
-    /**
-     * @member {boolean} Config.bindTouchInput - set to true if using touch-enabled devices
-     */
-    bindTouchInput: false,
-
-    /**
-     * @member {boolean} Config.bindMouseMove - determines if mousemove event is bound (set to false if not using the event to save cycles)
-     */
-    bindMousemove: false,
-
-    /**
-     * @member {int} Config.backgroundColor - the bg color applied the body
-     */
-    backgroundColor: '#444',
-
-    /**
-     * @member {string} Config.title - the game title (used for dom title tag)
-     */
-    title: 'spritewerk game',
-
-    /**
-     * @member {string} Config.uglyTitle - used for naming stuff
-     */
-    uglytitle: '',
-
-    init: function() {
-        this.uglyTitle = this.title.replace(/[^a-zA-Z0-9]/g, '_');
-    }
+        /**
+         * Clear all data from localStorage
+         *
+         * @method SaveLoad.prototype.clear
+         */
+        clear: function() {
+            localStorage.removeItem(config.uglyTitle);
+            this.data = {};
+        }
+    });
 });</code></pre>
         </article>
     </section>

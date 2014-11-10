@@ -22,176 +22,142 @@
     
 
 
+
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>var config = require('./config');
-var Shade = require('./shade');
-var radio = require('./radio.js');
-
-/**
- * Movable objects with visual representation and depth sorting
- * @package Core
- * @class   Sprite
- * @extends Shade
+            <pre class="prettyprint source linenums"><code>/**
+ * base class for movable objects
+ *
+ * @class Sprite
  */
-module.exports = Shade.extend({
-    /** 
-     * @member {string} Sprite.prototype.name - the unique name necessary for proto's inheritance
-     */
-    name: 'sprite',
+define([
+    '../lib/protos',
+    '../lib/radio'
+], function(Protos, radio) {
+    return Protos.extend({
+        protosName: 'sprite',
 
-    init: function() {
-        this.$shade.init.call(this);
+        /** 
+         * @member {number} Sprite.prototype.x - the entity's x position
+         */
+        x: 0,
+                
+        /** 
+         * @member {number} Sprite.prototype.y - the entity's y position
+         */
+        y: 0,
+                
+        //z: null,
+                
+        /** 
+         * @member {number} Sprite.prototype.vx
+         */
+        vx: 0,
+                
+        /** 
+         * @member {number} Sprite.prototype.vy
+         */
+        vy: 0,
+                
+        /** 
+         * @member {number} Sprite.prototype.width
+         */
+        width: 0,
+                
+        /** 
+         * @member {number} Sprite.prototype.height
+         */
+        height: 0,
+                
+        //halfWidth: 0,
+                
+        //halfHeight: 0,
 
-        this._srcX = 0;
-        this._srcY = 0;
-        this._size = 0;
-        this._scaling = 1;
-        this._rotation = 0;
-        this._opacity = 1;
-        this._img = null;
-        this._src = null;
-        this.z = null;
-        // determined in gameManager.update()
-        this._visible = false;
-    },
+        /** 
+         * @member {number} Sprite.prototype.srcX
+         */
+        srcX: 0,
+        
+        /** 
+         * @member {number} Sprite.prototype.srcY
+         */
+        srcY: 0,
+                
+        /** 
+         * @member {number} Sprite.prototype.srcWidth
+         */
+        srcWidth: 0,
+                
+        /** 
+         * @member {number} Sprite.prototype.srcHeight
+         */
+        srcHeight: 0,
+                
+        //scale: 1,
+                
+        /** 
+         * @member {number} Sprite.prototype.rotation - the rotation of the entity
+         */
+        rotation: 0,
+                
+        /** 
+         * @member {number} Sprite.prototype.opacity - the opacity the entity is rendered at
+         */
+        opacity: 1,
+                
+        /** 
+         * @member {HTMLElement} Sprite.prototype.img - the image element that the canvas renders
+         */
+        img: null,
+                
+        /** 
+         * @member {string} Sprite.prototype.src - the src path for the entity's img element
+         */
+        src: null,
+                
+        /** 
+         * @member {boolean} Sprite.prototype.visible - if entity is outside camera bounds, visible is set to false and entity is not rendered
+         */
+        visible: true,
 
-    _onLoad: function() {
-        radio.tuneOut(this._img, 'load', this._onLoad);
+        /**
+         * unbind listener and set w/h and src w/h
+         *
+         * @method Sprite.prototype._onLoad
+         * @private
+         */
+        _onLoad: function() {
+            radio.tuneOut(this.img, 'load', this._onLoad);
 
-        // if w/h set - use them, else use img w/h
-        if (!this._width &amp;&amp; !this._height) {
-            this._width = this._img.width;
-            this._height = this._img.height;
-            // TODO can we assume that srcW &amp; srcH will be the same as w &amp; h in this case?
-            this._srcWidth = this._width;
-            this._srcHeight = this._height;
-        }
+            if (!this.srcWidth &amp;&amp; !this.srcWidth) {
+                this.srcWidth = this.img.width;
+                this.srcHeight = this.img.height;
+            }
 
-        // set half w/h
-        this.scale(this._scaling);
+            if (!this.width &amp;&amp; !this.height) {
+                this.width = this.img.width;
+                this.height = this.img.height;
+            }
+        },
 
-        radio.broadcast('entityready', {
-            entity: this
-        });
-    },
+        /**
+         * Create object's img element and set the source
+         *
+         * @method Sprite.prototype.attachImage
+         */
+        attachImage: function() {
+            if (!this.src) {
+                throw new Error('Sprite src property must be assigned an image path');
+            }
 
-    _triggerLevelChange: function(directive) {
-        radio.broadcast('entitydepthchange', {
-            entity: this,
-            directive: directive
-        });
-    },
+            this.img = new Image();
+            radio.tuneIn(this.img, 'load', this._onLoad, this);
 
-    /**
-     * Set scale, which updates w/h and halfW/halfH
-     * @method SaveLoad.prototype.load
-     * @return this
-     */
-    scale: function(n) {
-        this._scaling = n;
-        this._width = this._width * n;
-        this._height = this._height * n;
-        this._halfWidth = this._width / 2;
-        this._halfHeight = this._height / 2;
-
-        return this;
-    },
-
-    /**
-     * Set object's rotation, rending rotation handled by @module draw
-     * @method SaveLoad.prototype.rotate
-     * @return this
-     */
-    rotate: function(degrees) {
-        this._rotation += (degrees * Math.PI / 180);
-        return this;
-    },
-
-    /**
-     * Create object's img and set the source. On image load, @method _onLoad is called which fires an event, adding this entity to the entity pool in @module entityManager
-     * @method SaveLoad.prototype.setImage
-     * @param {string} src - the image source
-     * @return this
-     */
-    setImage: function(src) {
-        this._img = new Image();
-        radio.tuneIn(this._img, 'load', this._onLoad, this);
-        this._src = src;
-        this._img.src = this._src;
-        return this;
-    },
-
-    /**
-     * Sets entities visibility
-     * @method SaveLoad.prototype.setVisible
-     * @param {boolean} visible - the new value
-     * @return this
-     */
-    setVisible: function(visible) {
-        this._visible = visible;
-        return this;
-    },
-
-    /**
-     * Brings the entity sorting depth forward by one index
-     * @method SaveLoad.prototype.bringForward
-     * @return this
-     */
-    bringForward: function() {
-        this._triggerLevelChange('bringforward');
-        return this;
-    },
-
-    /**
-     * Brings the entity sorting depth to top
-     * @method SaveLoad.prototype.bringToFront
-     * @return this
-     */
-    bringToFront: function() {
-        this._triggerLevelChange('bringtofront');
-        return this;
-    },
-
-    /**
-     * Sends the entity sorting depth back by one index
-     * @method SaveLoad.prototype.sendBackward
-     * @return this
-     */
-    sendBackward: function() {
-        this._triggerLevelChange('sendbackward');
-        return this;
-    },
-
-    /**
-     * Sends the entity sorting depth to bottom
-     * @method SaveLoad.prototype.sendToBack
-     * @return this
-     */
-    sendToBack: function() {
-        this._triggerLevelChange('sendtoback');
-        return this;
-    },
-
-    /**
-     * @method SaveLoad.prototype.getVisible
-     * @return _visible
-     */
-    getVisible: function() {
-        return this._visible;
-    },
-
-    /**
-     * Destroys the entity
-     * @method SaveLoad.prototype.destroy
-     * @fires removeentity - entityManager listens for this event and will remove the entity from the pool
-     */
-    destroy: function() {
-        radio.broadcast('removeentity', {
-            entity: this
-        });
-    }
+            this.img.src = this.src;
+        },
+                
+    });
 });</code></pre>
         </article>
     </section>
@@ -202,13 +168,13 @@ module.exports = Shade.extend({
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-dataControl.html">dataControl</a></li><li><a href="module-domControl.html">domControl</a></li><li><a href="module-draw.html">draw</a></li><li><a href="module-engine.html">engine</a></li><li><a href="module-entityManager.html">entityManager</a></li><li><a href="module-game.html">game</a></li><li><a href="module-stateManager.html">stateManager</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Event.html">Event</a></li><li><a href="Overt.html">Overt</a></li><li><a href="SaveLoad.html">SaveLoad</a></li><li><a href="Shade.html">Shade</a></li><li><a href="Sprite.html">Sprite</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Config.html">Config</a></li><li><a href="Crud.html">Crud</a></li><li><a href="DomControl.html">DomControl</a></li><li><a href="Draw.html">Draw</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Game.html">Game</a></li><li><a href="Input.html">Input</a></li><li><a href="Layer.html">Layer</a></li><li><a href="Observable.html">Observable</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="State.html">State</a></li><li><a href="StateControl.html">StateControl</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Aug 31 2014 13:23:24 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha10</a> on Sun Nov 09 2014 23:26:13 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

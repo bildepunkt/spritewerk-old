@@ -22,87 +22,136 @@
     
 
 
+
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>var config = require('./config');
-var radio = require('./radio.js');
-
-requestAnimationFrame = function() {
-    return requestAnimationFrame ||
-        webkitRequestAnimationFrame ||
-        mozRequestAnimationFrame ||
-        msRequestAnimationFrame ||
-        oRequestAnimationFrame ||
-        function(f) {
-            setTimeout(f, 1e3/60);
-        };
+            <pre class="prettyprint source linenums"><code>requestAnimationFrame = function() {
+return requestAnimationFrame ||
+    webkitRequestAnimationFrame ||
+    mozRequestAnimationFrame ||
+    msRequestAnimationFrame ||
+    oRequestAnimationFrame ||
+    function(f) {
+        setTimeout(f, 1e3/60);
+    };
 }();
 
 /**
- * Engine handles the game loop
- * @package Core
- * @module  engine
+ * handles the game loop, pause and resume
+ *
+ * @class Engine
+ * @static
  */
-module.exports = {
-    _fps:      null,
-    _now:      null,
-    _then:     null,
-    _interval: null,
-    _delta:    null,
-    _counter:  0,
-    _paused:   false,
+define([
+    '../lib/radio',
+    './config'
+], function(radio, config) {
+    return {
+        /**
+         * @member {int} Engine._fps - the amount of times per second the game loop executes
+         * @private
+         */
+        _fps:      null,
 
-    init: function() {
-        this._fps = config.fps;
-        this._interval = 1000 / this._fps;
-        this._then = Date.now();
-        this._boundUpdate = this._update.bind(this);
+        /**
+         * @member {int} Engine._now
+         * @private
+         */
+        _now:      null,
 
-        this._update();
-    },
+        /**
+         * @member {int} Engine._then
+         * @private
+         */
+        _then:     null,
 
-    /**
-     * calculates the proper time - based on fps - to trigger the rAF and new frame
-     * @private
-     *
-     * @fires   newframe - triggers on every frame
-     */
-    _update: function() {
-        if (!this._paused) {
-            requestAnimationFrame(this._boundUpdate);
+        /**
+         * @member {int} Engine._interval
+         * @private
+         */
+        _interval: null,
+
+        /**
+         * @member {int} Engine._delta
+         * @private
+         */
+        _delta:    null,
+
+        /**
+         * @member {int} Engine._counter
+         * @private
+         */
+        _counter:  0,
+
+        /**
+         * @member {boolean} Engine._paused
+         * @private
+         */
+        _paused:   false,
+
+        init: function() {
+            this._fps = config.fps;
+            this._interval = 1000 / this._fps;
+            this._then = Date.now();
+            this._boundUpdate = this._update.bind(this);
+        },
+
+        /**
+         * triggers the update function
+         *
+         * @method Engine.start
+         */
+        start: function() {
+            this._update();
+        },
+
+        /**
+         * calculates the proper time - based on fps - to trigger the rAF and new frame
+         *
+         * @fires newframe - triggers on every frame
+         * @method Engine._update
+         * @private
+         */
+        _update: function() {
+            if (!this._paused) {
+                requestAnimationFrame(this._boundUpdate);
+            }
+            
+            this._now = Date.now();
+            this._delta = this._now - this._then;
+            
+            if (this._delta > this._interval) {
+                // trim @then if it's more than @interval
+                this._then = this._now - (this._delta % this._interval);
+                this._counter += 1;
+
+                radio.broadcast('newframe', {
+                    frame: this._counter
+                });
+            }
+        },
+
+        /**
+         * Pauses the game by stopping the engine
+         *
+         * @method Engine.pause
+         */
+        pause: function() {
+            this._paused = true;
+        },
+
+        /**
+         * Resumes the game engine
+         *
+         * @method Engine.resume
+         */
+        resume: function() {
+            this._paused = false;
+            this._update();
         }
-        
-        this._now = Date.now();
-        this._delta = this._now - this._then;
-        
-        if (this._delta > this._interval) {
-            // trim @then if it's more than @interval
-            this._then = this._now - (this._delta % this._interval);
-            this._counter += 1;
-
-            radio.broadcast('newframe', {
-                frame: this._counter
-            });
-        }
-    },
-
-    /**
-     * Pauses the game by stopping the engine
-     */
-    pause: function() {
-        this._paused = true;
-    },
-
-    /**
-     * Resumes the game engine
-     */
-    resume: function() {
-        this._paused = false;
-        this._update();
-    }
-};
-</code></pre>
+    };
+});</code></pre>
         </article>
     </section>
 
@@ -112,13 +161,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-dataControl.html">dataControl</a></li><li><a href="module-domControl.html">domControl</a></li><li><a href="module-draw.html">draw</a></li><li><a href="module-engine.html">engine</a></li><li><a href="module-entityManager.html">entityManager</a></li><li><a href="module-game.html">game</a></li><li><a href="module-stateManager.html">stateManager</a></li></ul><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Event.html">Event</a></li><li><a href="Overt.html">Overt</a></li><li><a href="SaveLoad.html">SaveLoad</a></li><li><a href="Shade.html">Shade</a></li><li><a href="Sprite.html">Sprite</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Config.html">Config</a></li><li><a href="Crud.html">Crud</a></li><li><a href="DomControl.html">DomControl</a></li><li><a href="Draw.html">Draw</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Game.html">Game</a></li><li><a href="Input.html">Input</a></li><li><a href="Layer.html">Layer</a></li><li><a href="Observable.html">Observable</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="State.html">State</a></li><li><a href="StateControl.html">StateControl</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Sun Aug 31 2014 13:23:24 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha10</a> on Sun Nov 09 2014 23:26:13 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>
