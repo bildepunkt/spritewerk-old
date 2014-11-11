@@ -13,7 +13,7 @@ define([
         init: function() {
             this.$state.init.call(this);
 
-            this.start = this.layers[0].getEntity('start');
+            this.start = this.layers[0].getEntity('btn');
         },
 
         press: function(e) {

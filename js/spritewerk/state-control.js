@@ -7,8 +7,9 @@
 define([
     '../lib/preloader',
     '../lib/radio',
+    './camera',
     './layer'
-], function(preloader, radio, Layer) {
+], function(preloader, radio, Camera, Layer) {
     return {
         /**
          * @member {object} StateControl._state - instance of current state
@@ -78,7 +79,8 @@ define([
             // initialize state
             this._state = new this._State({
                 layers: stateLayers,
-                backgroundColor: this._data.backgroundColor
+                backgroundColor: this._data.backgroundColor,
+                camera: new Camera()
             });
 
             this._loadingState = false;
@@ -93,6 +95,10 @@ define([
             this._State = State;
             this._data = data;
             this._loadingState = true;
+
+            if (this._state) {
+                this._state.destroy();
+            }
 
             if (data.assets.length) {
                 radio.tuneIn(document, 'preloader/assetsloaded', this._onAssetsLoaded, this);

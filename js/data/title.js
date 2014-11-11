@@ -7,41 +7,19 @@ define([
 ], function(Sprite) {
     return {
         assets: [
-            'img/Scorpion.png',
-            'img/Baddie1.png',
-            'img/Ghost.png'
+            'img/Github-Mark-120px-plus.png'
         ],
         backgroundColor: '#ccc',
         layers: [
             {
                 entities: [
                     {
-                        name: 'scorp',
+                        name: 'btn',
                         type: Sprite,
                         config: {
-                            src: 'img/Scorpion.png',
-                            width: 128,
-                            height: 128
-                        }
-                    },
-                    {
-                        name: 'baddie',
-                        type: Sprite,
-                        config: {
-                            x: 64,
-                            src: 'img/Baddie1.png',
-                            width: 128,
-                            height: 128
-                        }
-                    },
-                    {
-                        name: 'start',
-                        type: Sprite,
-                        config: {
-                            x: 128,
-                            src: 'img/Ghost.png',
-                            width: 128,
-                            height: 128
+                            x: 400,
+                            y: 400,
+                            src: 'img/Github-Mark-120px-plus.png'
                         }
                     }
                 ]

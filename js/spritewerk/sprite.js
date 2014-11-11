@@ -87,11 +87,19 @@ define([
          * @member {string} Sprite.prototype.src - the src path for the entity's img element
          */
         src: null,
+
+        /** 
+         * @member {string} Sprite.prototype.hidden - if true entity will not be rendered
+         */
+        hidden: false,
                 
         /** 
          * @member {boolean} Sprite.prototype.visible - if entity is outside camera bounds, visible is set to false and entity is not rendered
+         * @private
          */
-        visible: true,
+        _visible: true,
+
+        init: function() {},
 
         /**
          * unbind listener and set w/h and src w/h

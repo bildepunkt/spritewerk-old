@@ -12,9 +12,6 @@ define([
     './input'
 ], function(Protos, radio, config, DomControl, Draw, Input) {
     return Protos.extend({
-        /** 
-         * @member {string} State.prototype.name - the unique name necessary for proto's inheritance
-         */
         protosName: 'state',
 
         /**
@@ -42,9 +39,9 @@ define([
         backgroundColor: null,
 
         /**
-         * @member {object} State.prototype.config
+         * @member {object} State.prototype.camera
          */
-        config: {},
+        camera: null,
 
         /**
          * @method State.prototype.press
@@ -196,9 +193,9 @@ define([
                     entity.x += entity.vx;
                     entity.y += entity.vy;
 
-                    if (!layer.hud && this.scroll) {
-                        entity.x -= this.camera.vx * layer.scrollDepth;
-                        entity.y -= this.camera.vy * layer.scrollDepth;
+                    if (!layer.hud) {
+                        entity.x -= this.camera.vx * (layer.scrollDepth || 1);
+                        entity.y -= this.camera.vy * (layer.scrollDepth || 1);
                     }
 
                     // determine visibility
@@ -211,7 +208,7 @@ define([
                         }
                     }
 
-                    if (entity.visible) {
+                    if (entity.visible && !entity.hidden) {
                         Draw.renderEntity(entity);
                     }
                 }
@@ -221,6 +218,8 @@ define([
         /**
          * @method State.prototype.destroy
          */
-        destroy: function() {}
+        destroy: function() {
+            radio.tuneOut('inputreceived', this._onInputReceived, this);
+        }
     });
 });
