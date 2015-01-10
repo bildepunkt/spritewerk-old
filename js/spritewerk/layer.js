@@ -15,6 +15,14 @@ define([
         entities: [],
 
         /**
+         * factor to determine parallax based on camera offsets
+         *
+         * @member {integer} Layer.prototype.scrollDepth
+         * @default {integer} 1
+         */
+        scrollDepth: 1,
+
+        /**
          * @method Layer.prototype.getEntity
          * @param {string} name
          */

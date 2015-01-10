@@ -5,11 +5,12 @@
  * @static
  */
 define([
-    '../lib/preloader',
-    '../lib/radio',
     './camera',
-    './layer'
-], function(preloader, radio, Camera, Layer) {
+    './layer',
+    './shade',
+    '../lib/preloader',
+    '../lib/radio'
+], function(Camera, Layer, Shade, preloader, radio) {
     return {
         /**
          * @member {object} StateControl._state - instance of current state
@@ -55,6 +56,7 @@ define([
             var layer;
             var entity;
             var parsedEntity;
+            var walls = this._data.walls ? this.parseMap(this._data.walls) : undefined;
 
             radio.tuneOut(document, 'preloader/assetsloaded', this._onAssetsLoaded);
 
@@ -80,10 +82,33 @@ define([
             this._state = new this._State({
                 layers: stateLayers,
                 backgroundColor: this._data.backgroundColor,
-                camera: new Camera()
+                camera: new Camera(),
+                walls: walls
             });
 
             this._loadingState = false;
+        },
+
+        parseMap: function(map) {
+            var parsed = [];
+            var item;
+
+            for (var y = 0, ylen = map.grid.length; y < ylen; y += 1) {
+                for (var x = 0, xlen = map.grid.length; x < xlen; x += 1) {
+                    item = map.grid[y][x];
+
+                    parsed.push(
+                        new Shade({
+                            x: x * item.width,
+                            y: y * item.height,
+                            width: item.width,
+                            height: item.height
+                        })
+                    );
+                }
+            }
+
+            return map;
         },
 
         /**

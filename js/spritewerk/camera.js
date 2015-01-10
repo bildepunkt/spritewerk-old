@@ -4,9 +4,9 @@
  */
 define([
     './config',
-    './sprite'
-], function(config, Sprite) {
-    return Sprite.extend({
+    './shade'
+], function(config, Shade) {
+    return Shade.extend({
         protosName: 'camera',
 
         /** 
@@ -26,7 +26,7 @@ define([
             this.height = config.height;
         },
 
-        scroll: function(trigger, base, regions) {
+        scroll: function(player, boundingBox, regions) {
             if (!this.scrolling) {
                 return false;
             }
@@ -34,30 +34,30 @@ define([
             this.vx = 0;
             this.vy = 0;
 
-            if (trigger.vx < 0 &&
-                trigger.x < regions.left && base.x < 0)
+            if (player.vx < 0 &&
+                player.x < regions.left && boundingBox.x < 0)
             {
-                this.vx = trigger.vx ;
+                this.vx = player.vx ;
             }
 
-            if (trigger.vx > 0 &&
-                trigger.x + trigger.width > regions.right &&
-                base.x > this.width - base.width)
+            if (player.vx > 0 &&
+                player.x + player.width > regions.right &&
+                boundingBox.x > this.width - boundingBox.width)
             {
-                this.vx = trigger.vx;
+                this.vx = player.vx;
             }
 
-            if (trigger.vy < 0 &&
-                trigger.y < regions.top && base.y < 0)
+            if (player.vy < 0 &&
+                player.y < regions.top && boundingBox.y < 0)
             {
-                this.vy = trigger.vy;
+                this.vy = player.vy;
             }
 
-            if (trigger.vy > 0 &&
-                trigger.y + trigger.height > regions.bottom &&
-                base.y > this.height - base.height)
+            if (player.vy > 0 &&
+                player.y + player.height > regions.bottom &&
+                boundingBox.y > this.height - boundingBox.height)
             {
-                this.vy = trigger.vy;
+                this.vy = player.vy;
             }
         },
 

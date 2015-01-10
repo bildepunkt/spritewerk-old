@@ -74,6 +74,10 @@ define([
                     'newValue': obj[prop]
                 });
             }
+
+            if (typeof this.save === 'function' && !options.noSave) {
+                this.save();
+            }
         },
 
         /**

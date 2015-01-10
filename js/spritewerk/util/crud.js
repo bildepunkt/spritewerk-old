@@ -1,5 +1,5 @@
 /**
- * An observable object with CRUD capabilities -using localStorage- on persistant data
+ * An observable object with CRUD capabilities -using localStorage by default- on persistant data
  *
  * @class Crud
  * @extends Observable
@@ -12,7 +12,7 @@ define([
         protosName: 'saveLoad',
 
         init: function() {
-            this.$overt.init.call(this);
+            this.$observable.init.call(this);
         },
 
         /**

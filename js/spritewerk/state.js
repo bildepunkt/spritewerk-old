@@ -6,11 +6,12 @@
 define([
     '../lib/protos',
     '../lib/radio',
+    './util/collision',
     './config',
     './dom-control',
     './draw',
     './input'
-], function(Protos, radio, config, DomControl, Draw, Input) {
+], function(Protos, radio, Collision, config, DomControl, Draw, Input) {
     return Protos.extend({
         protosName: 'state',
 
@@ -42,6 +43,18 @@ define([
          * @member {object} State.prototype.camera
          */
         camera: null,
+
+        /**
+         * @member {array} State.prototype.walls
+         */
+        walls: null,
+
+        /**
+         * the largest entity object which is used in determining scrolling
+         *
+         * @method State.prototype.boundingBox
+         */        
+        boundingBox: null,
 
         /**
          * @method State.prototype.press
@@ -144,7 +157,7 @@ define([
                 for(var entityInd = 0; entityInd < layer.entities.length; entityInd += 1) {
                     entity = layer.entities[entityInd];
 
-                    if (this._hitPoint(e.x, e.y, entity, factor)) {
+                    if (Collision.hitPoint(e.x, e.y, entity, factor)) {
                         // continually assign higher sorted entity
                         topmostEntity = entity;
                     }
@@ -155,25 +168,6 @@ define([
         },
 
         /**
-         * @method State.prototype._hitPoint
-         * @param {number} x - mouse/touch position
-         * @param {number} y - mouse/touch position
-         * @param {Sprite} entity
-         * @param {number} factor
-         * @private
-         */
-        // TODO move into collision file
-        _hitPoint: function(x, y, entity, factor) {
-            if (x >= entity.x * factor &&
-                x <= entity.x * factor + entity.width * factor &&
-                y >= entity.y * factor &&
-                y <= entity.y * factor + entity.height * factor) {
-                return true;
-            }
-            return false;
-        },
-
-        /**
          * updates all layers' entity's velocities, camera input, and determines visibility
          *
          * @method State.prototype.update
@@ -181,6 +175,11 @@ define([
         update: function() {
             var layer;
             var entity;
+            var overlap;
+            var boundingBoxCandidate = this.boundingBox ? null : {
+                width: 0,
+                height: 0
+            };
 
             Draw.clearCanvas().fillCanvas(this.backgroundColor);
 
@@ -194,13 +193,10 @@ define([
                     entity.y += entity.vy;
 
                     if (!layer.hud) {
-                        entity.x -= this.camera.vx * (layer.scrollDepth || 1);
-                        entity.y -= this.camera.vy * (layer.scrollDepth || 1);
-                    }
+                        entity.x -= this.camera.vx * (layer.scrollDepth);
+                        entity.y -= this.camera.vy * (layer.scrollDepth);
 
-                    // determine visibility
-                    if (!layer.hud) {
-                        if (entity.x + entity.width <= 0 || entity.x >= config.width ||
+                        if (entity.x + entity.width <= 0  || entity.x >= config.width ||
                             entity.y + entity.height <= 0 || entity.y >= config.height) {
                             entity.visible = false;
                         } else {
@@ -208,10 +204,37 @@ define([
                         }
                     }
 
-                    if (entity.visible && !entity.hidden) {
-                        Draw.renderEntity(entity);
+                    if (entity.visible) {
+                        if (entity.blockable && this.walls) {
+                            for (var i = 0; i < this.walls.length; i += 1) {
+                                overlap = Collision.block(entity, this.walls[i]);
+
+                                if (overlap) {
+                                    entity.x = overlap.x;
+                                    entity.y = overlap.y;
+                                }
+                            }
+                        }
+
+                        if (entity.containable) {
+                            this.camera.contain(entity);
+                        }
+
+                        if (!entity.hidden) {
+                            Draw.renderEntity(entity);
+                        }
+                    }
+
+                    if (!this.boundingBox) {
+                        if (entity.width > boundingBoxCandidate.width && entity.height > boundingBoxCandidate.height) {
+                            boundingBoxCandidate = entity;
+                        }
                     }
                 }
+            }
+
+            if (!this.boundingBox) {
+                this.boundingBox = boundingBoxCandidate;
             }
         },
 
