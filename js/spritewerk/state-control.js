@@ -62,12 +62,14 @@ define([
             radio.tuneOut(document, 'preloader/assetsloaded', this._onAssetsLoaded);
 
             for (var layerInd = 0; layerInd < this._data.layers.length; layerInd += 1) {
+                // TODO add friendly layer reference to state based on layer name
                 stateLayers[layerInd] = new Layer();
                 layer = this._data.layers[layerInd];
 
                 for (var entityInd = 0; entityInd < layer.entities.length; entityInd += 1) {
                     entity = layer.entities[entityInd];
 
+                    // set properties based on config object
                     parsedEntity = new entity.type(entity.config);
                     parsedEntity.name = entity.name;
 
