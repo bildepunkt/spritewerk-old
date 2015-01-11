@@ -33,6 +33,13 @@ define([
         camera: null,
 
         /**
+         * the largest entity object which is used in determining scrolling
+         *
+         * @method State.prototype.boundingBox
+         */        
+        boundingBox: null,
+
+        /**
          * (aquired via data object) contains objects with a config options and a collection of entities
          *
          * @member {array} State.prototype.layers
@@ -52,13 +59,6 @@ define([
          * @member {array} State.prototype.walls
          */
         walls: null,
-
-        /**
-         * (aquired via data object) the largest entity object which is used in determining scrolling
-         *
-         * @method State.prototype.boundingBox
-         */        
-        boundingBox: null,
 
         /**
          * (aquired via data object) the largest entity object which is used in determining scrolling
@@ -198,7 +198,7 @@ define([
                         }
                     }
 
-                    if (this.canScroll && entity.follow && this.boundingBox && this.scrollRegions) {
+                    if (entity.follow && this.canScroll && this.boundingBox && this.scrollRegions) {
                         this.camera._scroll(entity, this.boundingBox, this.scrollRegions);
                     }
 
