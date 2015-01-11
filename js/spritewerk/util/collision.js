@@ -12,7 +12,7 @@ define([], function(Input) {
                 dy = player.y - wall.y;
                 oy = (wall.height + player.height) / 2 - Math.abs(dy);
 
-                if (oy > 0) {
+                if (oy >= 0) {
                     if (ox > oy) {
                         if (dy < 0) {
                             oy *= -1;

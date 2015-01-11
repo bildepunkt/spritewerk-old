@@ -191,13 +191,6 @@ define([
                     entity.x += entity.vx;
                     entity.y += entity.vy;
 
-                    if (!this.camera.fixed && this.walls) {
-                        for (var wallInd = 0, wallLen = this.walls.length; wallInd < wallLen; wallInd += 1) {
-                            this.walls[wallInd].x -= this.camera.vx;
-                            this.walls[wallInd].y -= this.camera.vy;
-                        }
-                    }
-
                     if (entity.follow && this.canScroll && this.boundingBox && this.scrollRegions) {
                         this.camera._scroll(entity, this.boundingBox, this.scrollRegions);
                     }
@@ -218,12 +211,16 @@ define([
 
                     if (entity.visible) {
                         if (entity.blockable && this.walls) {
-                            for (var i = 0; i < this.walls.length; i += 1) {
-                                overlap = Collision.block(entity, this.walls[i]);
+                            for (var wallInd = 0, wallLen = this.walls.length; wallInd < wallLen; wallInd += 1) {
+                                // update pos before checking for overlap
+                                this.walls[wallInd].x -= this.camera.vx;
+                                this.walls[wallInd].y -= this.camera.vy;
+
+                                overlap = Collision.block(entity, this.walls[wallInd]);
 
                                 if (overlap) {
-                                    entity.x = overlap.x;
-                                    entity.y = overlap.y;
+                                    entity.x += overlap.x;
+                                    entity.y += overlap.y;
                                 }
                             }
                         }

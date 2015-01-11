@@ -42,7 +42,7 @@ define([
             if (regions.left && player.vx < 0 &&
                 player.x < regions.left && boundingBox.x < 0)
             {
-                this.vx = player.vx ;
+                this.vx = player.vx;
             }
 
             if (regions.right && player.vx > 0 &&

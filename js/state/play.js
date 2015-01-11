@@ -16,7 +16,8 @@ define([
             // TODO move getEntity to state method, add layer name as second, optional param
             this.player = this.layers[0].getEntity('player');
             this.player.containable = true;
-            this.player.follow = true;
+            //this.player.follow = true;
+            this.player.blockable = true;
 
             this.canScroll = true;
         },

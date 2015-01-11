@@ -98,21 +98,23 @@ define([
             var item;
 
             for (var y = 0, ylen = map.grid.length; y < ylen; y += 1) {
-                for (var x = 0, xlen = map.grid.length; x < xlen; x += 1) {
+                for (var x = 0, xlen = map.grid[y].length; x < xlen; x += 1) {
                     item = map.grid[y][x];
 
-                    parsed.push(
-                        new Shade({
-                            x: x * item.width,
-                            y: y * item.height,
-                            width: item.width,
-                            height: item.height
-                        })
-                    );
+                    if (item) {
+                        parsed.push(
+                            new Shade({
+                                x: x * map.width,
+                                y: y * map.height,
+                                width: map.width,
+                                height: map.height
+                            })
+                        );
+                    }
                 }
             }
 
-            return map;
+            return parsed;
         },
 
         /**

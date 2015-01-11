@@ -15,8 +15,7 @@ define([
             {
                 name: 'main',
                 entities: [
-                    
-                    {
+                    /*{
                         name: 'bg',
                         type: Sprite,
                         config: {
@@ -24,7 +23,7 @@ define([
                             height: 1000,
                             src: 'img/Github-Mark-120px-plus.png'
                         }
-                    },
+                    },*/
                     {
                         name: 'player',
                         type: Sprite,
@@ -40,6 +39,16 @@ define([
         scrollRegions: {
             right: 760,
             left: 200
+        },
+        walls: {
+            width: 120,
+            height: 120,
+            grid: [
+                [0, 0, 1, 0, 0, 1, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 0, 0, 1, 0]
+            ]
         }
     }
 });
