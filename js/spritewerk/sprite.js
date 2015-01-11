@@ -71,7 +71,7 @@ define([
         /** 
          * @member {boolean} Sprite.prototype.containable - if entity can be contained by camera dimensions
          */
-        containable: true,
+        containable: false,
 
         /**
          * unbind listener and set w/h and src w/h

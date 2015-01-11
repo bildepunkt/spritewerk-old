@@ -19,7 +19,7 @@ define([], {
     height: 600,
 
     /**
-     *
+     * @member {boolean} Config.stretch - if true, canvas will stretch (retaining aspect ratio) to fit the canvas
      */
     stretch: false,
 

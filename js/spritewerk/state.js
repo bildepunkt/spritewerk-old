@@ -25,19 +25,7 @@ define([
          * @member {boolean} State.prototype.scroll
          * @default false
          */
-        scroll: false,
-
-        /**
-         * contains objects with a config options and a collection of entities
-         *
-         * @member {array} State.prototype.layers
-         */
-        layers: [],
-
-        /**
-         * @member {string} State.prototype.backgroundColor
-         */
-        backgroundColor: null,
+        canScroll: false,
 
         /**
          * @member {object} State.prototype.camera
@@ -45,16 +33,39 @@ define([
         camera: null,
 
         /**
+         * (aquired via data object) contains objects with a config options and a collection of entities
+         *
+         * @member {array} State.prototype.layers
+         */
+        layers: [],
+
+        /**
+         * (aquired via data object)
+         *
+         * @member {string} State.prototype.backgroundColor
+         */
+        backgroundColor: null,
+
+        /**
+         * (aquired via data object)
+         *
          * @member {array} State.prototype.walls
          */
         walls: null,
 
         /**
-         * the largest entity object which is used in determining scrolling
+         * (aquired via data object) the largest entity object which is used in determining scrolling
          *
          * @method State.prototype.boundingBox
          */        
         boundingBox: null,
+
+        /**
+         * (aquired via data object) the largest entity object which is used in determining scrolling
+         *
+         * @method State.prototype.boundingBox
+         */ 
+        scrollRegions: null,
 
         /**
          * @method State.prototype.press
@@ -180,6 +191,10 @@ define([
                     entity.x += entity.vx;
                     entity.y += entity.vy;
 
+                    if (this.canScroll && entity.follow && this.boundingBox && this.scrollRegions) {
+                        this.camera._scroll(entity, this.boundingBox, this.scrollRegions);
+                    }
+
                     if (!layer.hud) {
                         entity.x -= this.camera.vx * (layer.scrollDepth);
                         entity.y -= this.camera.vy * (layer.scrollDepth);
@@ -205,7 +220,7 @@ define([
                         }
 
                         if (entity.containable) {
-                            this.camera.contain(entity);
+                            this.camera._contain(entity);
                         }
 
                         if (!entity.hidden) {

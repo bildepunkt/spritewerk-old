@@ -56,7 +56,8 @@ define([
             var layer;
             var entity;
             var parsedEntity;
-            var walls = this._data.walls ? this.parseMap(this._data.walls) : undefined;
+            var walls = this._data.walls ? this._parseMap(this._data.walls) : undefined;
+            var scrollRegions;
 
             radio.tuneOut(document, 'preloader/assetsloaded', this._onAssetsLoaded);
 
@@ -81,15 +82,16 @@ define([
             // initialize state
             this._state = new this._State({
                 layers: stateLayers,
-                backgroundColor: this._data.backgroundColor,
                 camera: new Camera(),
-                walls: walls
+                walls: walls,
+                backgroundColor: this._data.backgroundColor,
+                scrollRegions: this._data.scrollRegions
             });
 
             this._loadingState = false;
         },
 
-        parseMap: function(map) {
+        _parseMap: function(map) {
             var parsed = [];
             var item;
 

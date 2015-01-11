@@ -26,7 +26,7 @@ define([
             this.height = config.height;
         },
 
-        scroll: function(player, boundingBox, regions) {
+        _scroll: function(player, boundingBox, regions) {
             if (!this.scrolling) {
                 return false;
             }
@@ -34,26 +34,26 @@ define([
             this.vx = 0;
             this.vy = 0;
 
-            if (player.vx < 0 &&
+            if (regions.left && player.vx < 0 &&
                 player.x < regions.left && boundingBox.x < 0)
             {
                 this.vx = player.vx ;
             }
 
-            if (player.vx > 0 &&
+            if (regions.right && player.vx > 0 &&
                 player.x + player.width > regions.right &&
                 boundingBox.x > this.width - boundingBox.width)
             {
                 this.vx = player.vx;
             }
 
-            if (player.vy < 0 &&
+            if (regions.top && player.vy < 0 &&
                 player.y < regions.top && boundingBox.y < 0)
             {
                 this.vy = player.vy;
             }
 
-            if (player.vy > 0 &&
+            if (regions.bottom && player.vy > 0 &&
                 player.y + player.height > regions.bottom &&
                 boundingBox.y > this.height - boundingBox.height)
             {
@@ -61,7 +61,7 @@ define([
             }
         },
 
-        contain : function(player) {
+        _contain : function(player) {
             var position = {};
 
             if (player.x < 0) {
