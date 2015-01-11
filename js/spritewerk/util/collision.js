@@ -1,7 +1,7 @@
 /**
  *
  */
-define([], function() {
+define([], function(Input) {
     return {
         block : function(player, wall) {
             var dx = wall.x - player.x,
@@ -49,13 +49,12 @@ define([], function() {
          * @param {number} x - mouse/touch position
          * @param {number} y - mouse/touch position
          * @param {Sprite} entity
-         * @param {number} factor
          */
-        hitPoint: function(x, y, entity, factor) {
-            if (x >= entity.x * factor &&
-                x <= entity.x * factor + entity.width * factor &&
-                y >= entity.y * factor &&
-                y <= entity.y * factor + entity.height * factor) {
+        hitPoint: function(x, y, entity) {
+            if (x >= entity.x &&
+                x <= entity.x + entity.width &&
+                y >= entity.y &&
+                y <= entity.y + entity.height) {
                 return true;
             }
             return false;

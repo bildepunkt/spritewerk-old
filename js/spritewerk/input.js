@@ -8,14 +8,16 @@ define([
     './dom-control'
 ], function(radio, config, DomControl) {
     return {
+        _canvas: null,
+
         init: function() {
-            var canvas = DomControl.getCanvas();
+            this._canvas = DomControl.getCanvas();
 
             if (config.bindMouseInput) {
-                radio.tuneIn(canvas, 'click',     this._receiveEvent);
-                radio.tuneIn(canvas, 'dblclick',  this._receiveEvent);
-                radio.tuneIn(canvas, 'mousedown', this._receiveEvent);
-                radio.tuneIn(canvas, 'mouseup',   this._receiveEvent);
+                radio.tuneIn(this._canvas, 'click',     this._receiveEvent);
+                radio.tuneIn(this._canvas, 'dblclick',  this._receiveEvent);
+                radio.tuneIn(this._canvas, 'mousedown', this._receiveEvent);
+                radio.tuneIn(this._canvas, 'mouseup',   this._receiveEvent);
 
                 if (config.bindMousemove) {
                     radio.tuneIn(canvas, 'mousemove', this._receiveEvent);
@@ -23,11 +25,23 @@ define([
             }
 
             if (config.bindTouchInput) {
-                radio.tuneIn(canvas, 'tap',        this._receiveEvent);
-                radio.tuneIn(canvas, 'dbltap',     this._receiveEvent);
-                radio.tuneIn(canvas, 'touchstart', this._receiveEvent);
-                radio.tuneIn(canvas, 'touchend',   this._receiveEvent);
+                radio.tuneIn(this._canvas, 'tap',        this._receiveEvent);
+                radio.tuneIn(this._canvas, 'dbltap',     this._receiveEvent);
+                radio.tuneIn(this._canvas, 'touchstart', this._receiveEvent);
+                radio.tuneIn(this._canvas, 'touchend',   this._receiveEvent);
             }
+        },
+
+        scaleFactor: function() {
+            var factor = 1;
+            var canvasCssWidth;
+
+            if (this._canvas.style.width) {
+                canvasCssWidth = parseInt(this._canvas.style.width, 10);
+                factor = canvasCssWidth / this._canvas.width;
+            }
+
+            return factor;
         },
 
         /**

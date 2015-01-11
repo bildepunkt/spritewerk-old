@@ -20,7 +20,7 @@ define([
         scrolling: true,
 
         init: function() {
-            this.$sprite.init.apply(this, arguments);
+            this.$shade.init.apply(this, arguments);
 
             this.width = config.width;
             this.height = config.height;
@@ -75,6 +75,11 @@ define([
             } else if (player.y + player.height > this.height) {
                 player.y = this.height - player.height;
             }
+        },
+
+        center: function(entity) {
+            entity.x = this.width  / 2 - entity.halfWidth();
+            entity.y = this.height / 2 - entity.halfHeight();
         }
     });
 });

@@ -1,7 +1,7 @@
 require([
     'spritewerk/game',
-    'state/title',
-    'data/title'
-], function(Game, TitleState, titleData) {
-    Game.start(TitleState, titleData);
+    'state/play',
+    'data/play'
+], function(Game, PlayState, playData) {
+    Game.start(PlayState, playData);
 });

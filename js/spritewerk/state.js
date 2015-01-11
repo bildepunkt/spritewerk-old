@@ -59,37 +59,27 @@ define([
         /**
          * @method State.prototype.press
          */
-        press: function(e) {
-            console.log(e);
-        },
+        press: function() {},
 
         /**
          * @method State.prototype.dblpress
          */
-        dblpress: function(e) {
-            console.log(e);
-        },
+        dblpress: function() {},
 
         /**
          * @method State.prototype.pressdown
          */
-        pressdown: function(e) {
-            console.log(e);
-        },
+        pressdown: function() {},
 
         /**
          * @method State.prototype.pressup
          */
-        pressup: function(e) {
-            console.log(e);
-        },
+        pressup: function() {},
 
         /**
          * @method State.prototype.mousemove
          */
-        mousemove: function(e) {
-            console.log(e);
-        },
+        mousemove: function() {},
 
         init: function() {
             this._canvas = DomControl.getCanvas();
@@ -102,13 +92,17 @@ define([
          * @private
          */
         _onInputReceived: function(e) {
+            var factor = 100 / Input.scaleFactor() / 100;
             var inputEvent = e.detail.inputEvent;
             var evt = {
                 domEvent: inputEvent,
-                x: inputEvent.hasOwnProperty('offsetX') ? inputEvent.offsetX : inputEvent.layerX,
-                y: inputEvent.hasOwnProperty('offsetY') ? inputEvent.offsetY : inputEvent.layerY
+                x: (inputEvent.hasOwnProperty('offsetX') ? inputEvent.offsetX : inputEvent.layerX),
+                y: (inputEvent.hasOwnProperty('offsetY') ? inputEvent.offsetY : inputEvent.layerY)
             };
 
+            // x positions relative to canvas scaling
+            evt.relX = evt.x * factor;
+            evt.relY = evt.y * factor;
             evt.target = this._getTarget(evt);
 
             switch(inputEvent.type) {
@@ -139,16 +133,9 @@ define([
          * @private
          */
         _getTarget: function(e) {
-            var factor = 1;
-            var canvasCssWidth;
             var topmostEntity;
             var entity;
             var layer;
-
-            if (this._canvas.style.width) {
-                canvasCssWidth = parseInt(this._canvas.style.width, 10);
-                factor = canvasCssWidth / this._canvas.width;
-            }
 
             // TODO possibly setup event queue which is triggered in update loop (and subsequently emptied)
             for(var layerInd = 0; layerInd < this.layers.length; layerInd += 1) {
@@ -157,7 +144,7 @@ define([
                 for(var entityInd = 0; entityInd < layer.entities.length; entityInd += 1) {
                     entity = layer.entities[entityInd];
 
-                    if (Collision.hitPoint(e.x, e.y, entity, factor)) {
+                    if (Collision.hitPoint(e.relX, e.relY, entity)) {
                         // continually assign higher sorted entity
                         topmostEntity = entity;
                     }

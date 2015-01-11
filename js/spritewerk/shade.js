@@ -39,12 +39,22 @@ define([
          */
         height: 0,
 
+        init: function() {},
+
         halfWidth: function() {
             return this.width / 2;
         },
 
         halfHeight: function() {
             return this.height / 2;
+        },
+
+        right: function() {
+            return this.x + this.width;
+        },
+
+        bottom: function() {
+            return this.y + this.height;
         }
     });
 });
