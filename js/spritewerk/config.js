@@ -19,6 +19,11 @@ define([], {
     height: 600,
 
     /**
+     *
+     */
+    stretch: false,
+
+    /**
      * @member {boolean} Config.bindMouseInput - set to true if using mouse-enabled devices
      */
     bindMouseInput: true,

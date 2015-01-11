@@ -22,10 +22,6 @@ define([
         _context: null,
 
         init: function() {
-            radio.tuneIn(window, 'resize', this._onWindowResize, this);
-            // do we need this?
-            radio.tuneIn(window, 'orientationchange', this._onWindowResize, this);
-
             this._width   = config.width;
             this._height  = config.height;
             this._canvas  = document.getElementById('spritewerk');
@@ -34,7 +30,14 @@ define([
             this._canvas.height = this._height;
 
             this._styleElements();
-            this._onWindowResize();
+
+            if (config.stretch) {
+                radio.tuneIn(window, 'resize', this._onWindowResize, this);
+                // TODO is this needed?
+                radio.tuneIn(window, 'orientationchange', this._onWindowResize, this);
+                
+                this._onWindowResize();
+            }
         },
 
         /**
