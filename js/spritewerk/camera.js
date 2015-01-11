@@ -19,6 +19,11 @@ define([
          */
         scrolling: true,
 
+        /**
+         * @member {boolean} Camera.prototype.locked - if the camera will not be moving at all, set fixed to avoid wasting resources updating entities or walls
+         */
+        fixed: false,
+
         init: function() {
             this.$shade.init.apply(this, arguments);
 

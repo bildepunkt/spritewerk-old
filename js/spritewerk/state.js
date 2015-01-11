@@ -191,13 +191,22 @@ define([
                     entity.x += entity.vx;
                     entity.y += entity.vy;
 
+                    if (!this.camera.fixed && this.walls) {
+                        for (var wallInd = 0, wallLen = this.walls.length; wallInd < wallLen; wallInd += 1) {
+                            this.walls[wallInd].x -= this.camera.vx;
+                            this.walls[wallInd].y -= this.camera.vy;
+                        }
+                    }
+
                     if (this.canScroll && entity.follow && this.boundingBox && this.scrollRegions) {
                         this.camera._scroll(entity, this.boundingBox, this.scrollRegions);
                     }
 
                     if (!layer.hud) {
-                        entity.x -= this.camera.vx * (layer.scrollDepth);
-                        entity.y -= this.camera.vy * (layer.scrollDepth);
+                        if (!this.camera.fixed) {
+                            entity.x -= this.camera.vx * layer.scrollDepth;
+                            entity.y -= this.camera.vy * layer.scrollDepth;
+                        }
 
                         if (entity.x + entity.width <= 0  || entity.x >= config.width ||
                             entity.y + entity.height <= 0 || entity.y >= config.height) {
