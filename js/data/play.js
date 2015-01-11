@@ -15,21 +15,17 @@ define([
             {
                 name: 'main',
                 entities: [
-                    /*{
+                    {
                         name: 'bg',
                         type: Sprite,
                         config: {
-                            width: 2000,
-                            height: 1000,
-                            src: 'img/Github-Mark-120px-plus.png'
+                            src: 'img/bg.png'
                         }
-                    },*/
+                    },
                     {
                         name: 'player',
                         type: Sprite,
                         config: {
-                            x: 400,
-                            y: 400,
                             src: 'img/Github-Mark-120px-plus.png'
                         }
                     }
@@ -44,10 +40,11 @@ define([
             width: 120,
             height: 120,
             grid: [
-                [0, 0, 1, 0, 0, 1, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 1, 0, 0, 1, 0]
+                [0, 0, 0, 1, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 1, 0, 0, 0, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0, 0, 1]
             ]
         }
     }
