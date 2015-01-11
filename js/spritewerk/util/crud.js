@@ -9,7 +9,7 @@ define([
     './observable'
 ], function(config, Observable) {
     return Observable.extend({
-        protosName: 'saveLoad',
+        protosName: 'crud',
 
         init: function() {
             this.$observable.init.call(this);
