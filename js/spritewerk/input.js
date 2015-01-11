@@ -32,7 +32,7 @@ define([
             }
         },
 
-        scaleFactor: function() {
+        _scaleFactor: function() {
             var factor = 1;
             var canvasCssWidth;
 

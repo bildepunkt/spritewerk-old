@@ -92,17 +92,18 @@ define([
          * @private
          */
         _onInputReceived: function(e) {
-            var factor = 100 / Input.scaleFactor() / 100;
+            var factor = 100 / Input._scaleFactor() / 100;
             var inputEvent = e.detail.inputEvent;
             var evt = {
                 domEvent: inputEvent,
-                x: (inputEvent.hasOwnProperty('offsetX') ? inputEvent.offsetX : inputEvent.layerX),
-                y: (inputEvent.hasOwnProperty('offsetY') ? inputEvent.offsetY : inputEvent.layerY)
+                absX: (inputEvent.hasOwnProperty('offsetX') ? inputEvent.offsetX : inputEvent.layerX),
+                absY: (inputEvent.hasOwnProperty('offsetY') ? inputEvent.offsetY : inputEvent.layerY)
             };
 
-            // x positions relative to canvas scaling
-            evt.relX = evt.x * factor;
-            evt.relY = evt.y * factor;
+            // coordinate positions relative to canvas scaling
+            evt.x = evt.absX * factor;
+            evt.y = evt.absY * factor;
+
             evt.target = this._getTarget(evt);
 
             switch(inputEvent.type) {
@@ -144,7 +145,7 @@ define([
                 for(var entityInd = 0; entityInd < layer.entities.length; entityInd += 1) {
                     entity = layer.entities[entityInd];
 
-                    if (Collision.hitPoint(e.relX, e.relY, entity)) {
+                    if (Collision.hitPoint(e.x, e.y, entity)) {
                         // continually assign higher sorted entity
                         topmostEntity = entity;
                     }
