@@ -52,18 +52,21 @@ define([
          * @private
          */
         _onAssetsLoaded: function() {
-            var stateLayers = [];
+            var parsedLayers = {
+                // sorted layers for rendering in order
+                _sorted: []
+            };
+            var walls = this._data.walls ? this._parseMap(this._data.walls) : undefined;
             var layer;
             var entity;
             var parsedEntity;
-            var walls = this._data.walls ? this._parseMap(this._data.walls) : undefined;
             var scrollRegions;
 
             radio.tuneOut(document, 'preloader/assetsloaded', this._onAssetsLoaded);
 
             for (var layerInd = 0; layerInd < this._data.layers.length; layerInd += 1) {
                 // TODO add friendly layer reference to state based on layer name
-                stateLayers[layerInd] = new Layer();
+                parsedLayers._sorted[layerInd] = new Layer();
                 layer = this._data.layers[layerInd];
 
                 for (var entityInd = 0; entityInd < layer.entities.length; entityInd += 1) {
@@ -77,13 +80,15 @@ define([
                         parsedEntity.attachImage();
                     }
 
-                    stateLayers[layerInd].entities[entityInd] = parsedEntity;
+                    parsedLayers._sorted[layerInd].entities[entityInd] = parsedEntity;
+                    // add named ref as well
+                    parsedLayers[layer.name] = parsedLayers._sorted[layerInd];
                 }
             }
 
             // initialize state
             this._state = new this._State({
-                layers: stateLayers,
+                layers: parsedLayers,
                 camera: new Camera(),
                 walls: walls,
                 backgroundColor: this._data.backgroundColor,

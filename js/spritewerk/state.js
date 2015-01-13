@@ -40,11 +40,11 @@ define([
         boundingBox: null,
 
         /**
-         * (aquired via data object) contains objects with a config options and a collection of entities
+         * (aquired via data object) contains sorted array of and named references of objects with a config options and a collection of entities
          *
          * @member {array} State.prototype.layers
          */
-        layers: [],
+        layers: {},
 
         /**
          * (aquired via data object)
@@ -175,6 +175,7 @@ define([
             var layer;
             var entity;
             var overlap;
+            // TODO move this to state-control
             var boundingBoxCandidate = this.boundingBox ? null : {
                 width: 0,
                 height: 0
@@ -182,8 +183,8 @@ define([
 
             Draw.clearCanvas().fillCanvas(this.backgroundColor);
 
-            for(var layerInd = 0; layerInd < this.layers.length; layerInd += 1) {
-                layer = this.layers[layerInd];
+            for(var layerInd = 0; layerInd < this.layers._sorted.length; layerInd += 1) {
+                layer = this.layers._sorted[layerInd];
 
                 for(var entityInd = 0; entityInd < layer.entities.length; entityInd += 1) {
                     entity = layer.entities[entityInd];
