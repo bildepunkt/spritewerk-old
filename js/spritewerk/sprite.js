@@ -91,6 +91,10 @@ define([
                 this.width = this.img.width;
                 this.height = this.img.height;
             }
+
+            radio.broadcast('entityready', {
+                entity: this
+            });
         },
 
         /**

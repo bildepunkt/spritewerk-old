@@ -175,11 +175,6 @@ define([
             var layer;
             var entity;
             var overlap;
-            // TODO move this to state-control
-            var boundingBoxCandidate = this.boundingBox ? null : {
-                width: 0,
-                height: 0
-            };
 
             Draw.clearCanvas().fillCanvas(this.backgroundColor);
 
@@ -234,17 +229,7 @@ define([
                             Draw.renderEntity(entity);
                         }
                     }
-
-                    if (!this.boundingBox) {
-                        if (entity.width > boundingBoxCandidate.width && entity.height > boundingBoxCandidate.height) {
-                            boundingBoxCandidate = entity;
-                        }
-                    }
                 }
-            }
-
-            if (!this.boundingBox) {
-                this.boundingBox = boundingBoxCandidate;
             }
         },
 
