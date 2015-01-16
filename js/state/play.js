@@ -23,24 +23,11 @@ define([
         },
 
         pressdown: function(e) {
-            console.log(e);
-
-            if (e.y < this.player.y) {
-                this.player.vy = -8;
-            } else if (e.y > this.player.bottom()) {
-                this.player.vy = 8;
-            }
-
-            if (e.x < this.player.x) {
-                this.player.vx = -8;
-            } else if (e.x > this.player.right()) {
-                this.player.vx = 8;
-            }
+            this.player.pressdown(e);
         },
 
-        pressup: function(e) {
-            this.player.vy = 0;
-            this.player.vx = 0;
+        pressup: function() {
+            this.player.pressup();
         }
     });
 });

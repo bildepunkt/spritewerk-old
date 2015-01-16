@@ -30,6 +30,9 @@ define([
          */
         srcHeight: 0,
 
+        /**
+         *
+         */
         //scale: 1,
 
         /** 
@@ -72,6 +75,20 @@ define([
          * @member {boolean} Sprite.prototype.containable - if entity can be contained by camera dimensions
          */
         containable: false,
+
+        /**
+         *
+         */
+        init: function() {
+            this.$shade.init.apply(this);
+        },
+
+        /**
+         *
+         */
+        update: function() {
+            this.$shade.update.apply(this);
+        },
 
         /**
          * unbind listener and set w/h and src w/h

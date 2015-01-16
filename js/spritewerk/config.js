@@ -21,7 +21,7 @@ define([], {
     /**
      * @member {boolean} Config.stretch - if true, canvas will stretch (retaining aspect ratio) to fit the canvas
      */
-    stretch: false,
+    stretch: true,
 
     /**
      * @member {boolean} Config.bindMouseInput - set to true if using mouse-enabled devices

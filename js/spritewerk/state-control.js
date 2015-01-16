@@ -131,7 +131,6 @@ define([
             var layer;
             var entity;
             var parsedEntity;
-            var scrollRegions;
 
             this._entityWithImgTotal = this.getEntityWithImgTotal(this._data.layers);
 
@@ -146,7 +145,7 @@ define([
 
                     // set properties based on config object
                     parsedEntity = new entity.type(entity.config);
-                    parsedEntity.name = entity.name;
+                    parsedEntity.name = entity.name || parsedEntity.protosName + parsedEntity._uid;
 
                     if (parsedEntity.src) {
                         parsedEntity.attachImage();

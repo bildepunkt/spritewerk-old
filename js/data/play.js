@@ -3,12 +3,13 @@
  */
 
 define([
-    '../spritewerk/shade',
-    '../spritewerk/sprite'
-], function(Shade, Sprite) {
+    '../spritewerk/sprite',
+    '../custom/player'
+], function(Sprite, Player) {
     return {
         assets: [
-            'img/Github-Mark-120px-plus.png'
+            '../256.jpg',
+            '../257.jpg'
         ],
         backgroundColor: '#ccc',
         layers: [
@@ -19,14 +20,27 @@ define([
                         name: 'bg',
                         type: Sprite,
                         config: {
-                            src: 'img/bg.png'
+                            src: '../257.jpg',
+                            width: 1200,
+                            height: 840,
+                            opacity: 0.1
                         }
                     },
                     {
                         name: 'player',
+                        type: Player,
+                        config: {
+                            src: '../256.jpg',
+                            width: 120,
+                            height: 120
+                        }
+                    },
+                    {
                         type: Sprite,
                         config: {
-                            src: 'img/Github-Mark-120px-plus.png'
+                            src: '../257.jpg',
+                            width: 120,
+                            height: 120
                         }
                     }
                 ]
@@ -34,7 +48,9 @@ define([
         ],
         scrollRegions: {
             right: 760,
-            left: 200
+            left: 200,
+            top: 200,
+            bottom: 400
         },
         walls: {
             width: 120,

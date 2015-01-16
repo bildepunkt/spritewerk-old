@@ -175,6 +175,8 @@ define([
             var layer;
             var entity;
             var overlap;
+            var wallInd;
+            var wallLen;
 
             Draw.clearCanvas().fillCanvas(this.backgroundColor);
 
@@ -184,15 +186,14 @@ define([
                 for(var entityInd = 0; entityInd < layer.entities.length; entityInd += 1) {
                     entity = layer.entities[entityInd];
 
-                    entity.x += entity.vx;
-                    entity.y += entity.vy;
+                    entity.update();
 
                     if (entity.follow && this.canScroll && this.boundingBox && this.scrollRegions) {
                         this.camera._scroll(entity, this.boundingBox, this.scrollRegions);
                     }
 
                     if (!layer.hud) {
-                        if (!this.camera.fixed) {
+                        if (!this.camera.fixed && (this.camera.vx !== 0 || this.camera.vy !== 0)) {
                             entity.x -= this.camera.vx * layer.scrollDepth;
                             entity.y -= this.camera.vy * layer.scrollDepth;
                         }
@@ -205,13 +206,17 @@ define([
                         }
                     }
 
+                    if (this.walls && entityInd === 0 && !this.camera.fixed && (this.camera.vx !== 0 || this.camera.vy !== 0)) {
+                        for (wallInd = 0, wallLen = this.walls.length; wallInd < wallLen; wallInd += 1) {
+                            // update pos before checking for overlap
+                            this.walls[wallInd].x -= this.camera.vx;
+                            this.walls[wallInd].y -= this.camera.vy;
+                        }
+                    }
+
                     if (entity.visible) {
                         if (entity.blockable && this.walls) {
-                            for (var wallInd = 0, wallLen = this.walls.length; wallInd < wallLen; wallInd += 1) {
-                                // update pos before checking for overlap
-                                this.walls[wallInd].x -= this.camera.vx;
-                                this.walls[wallInd].y -= this.camera.vy;
-
+                            for (wallInd = 0, wallLen = this.walls.length; wallInd < wallLen; wallInd += 1) {
                                 overlap = Collision.block(entity, this.walls[wallInd]);
 
                                 if (overlap) {

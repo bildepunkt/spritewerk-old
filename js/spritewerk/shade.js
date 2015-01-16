@@ -46,20 +46,43 @@ define([
          */
         follow: false,
 
+        /** 
+         *
+         */
         init: function() {},
 
+        /** 
+         *
+         */
+        update: function() {
+            this.x += this.vx;
+            this.y += this.vy;
+        },
+
+        /** 
+         *
+         */
         halfWidth: function() {
             return this.width / 2;
         },
 
+        /** 
+         *
+         */
         halfHeight: function() {
             return this.height / 2;
         },
 
+        /** 
+         *
+         */
         right: function() {
             return this.x + this.width;
         },
 
+        /** 
+         *
+         */
         bottom: function() {
             return this.y + this.height;
         }
