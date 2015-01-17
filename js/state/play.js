@@ -43,7 +43,8 @@ define([
 
         update: function() {
             if (Collision.hit(this.weapon, this.enemy)) {
-                console.log('DAMN!');
+                this.layers.main.removeEntity(this.enemy);
+                this.enemy = null;
             }
 
             this.$state.update.apply(this);

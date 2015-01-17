@@ -38,6 +38,19 @@ define([
                         }
                     },
                     {
+                        name: 'enemy',
+                        type: Sprite,
+                        config: {
+                            x: 240,
+                            y: 240,
+                            src: 'img/enemy.png',
+                            width: 120,
+                            height: 120,
+                            srcWidth: 120,
+                            srcHeight: 120
+                        }
+                    },
+                    {
                         name: 'weapon',
                         type: Sprite,
                         config: {
@@ -49,20 +62,7 @@ define([
                             srcWidth: 120,
                             srcHeight: 120
                         }
-                    },
-                    {
-                        name: 'enemy',
-                        type: Sprite,
-                        config: {
-                            x: 240,
-                            y: 240,
-                            src: 'img/player.png',
-                            width: 120,
-                            height: 120,
-                            srcWidth: 120,
-                            srcHeight: 120
-                        }
-                    },
+                    }
                 ]
             }
         ],
@@ -82,7 +82,7 @@ define([
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 1, 0, 0, 0, 1, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+                [0, 1, 0, 0, 0, 1, 0, 0, 0, 1]
             ]
         }
     }
