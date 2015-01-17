@@ -22,6 +22,12 @@ define([
             this.canScroll = true;
         },
 
+        press: function(e) {
+            if (e.target === this.player) {
+                this.player.pressMe();
+            }
+        },
+
         pressdown: function(e) {
             this.player.pressdown(e);
         },

@@ -8,8 +8,8 @@ define([
 ], function(Sprite, Player) {
     return {
         assets: [
-            '../256.jpg',
-            '../257.jpg'
+            'img/bg.png',
+            'img/player.png'
         ],
         backgroundColor: '#ccc',
         layers: [
@@ -20,27 +20,33 @@ define([
                         name: 'bg',
                         type: Sprite,
                         config: {
-                            src: '../257.jpg',
+                            src: 'img/bg.png',
                             width: 1200,
                             height: 840,
-                            opacity: 0.1
+                            opacity: 0.5
                         }
                     },
                     {
                         name: 'player',
                         type: Player,
                         config: {
-                            src: '../256.jpg',
+                            src: 'img/player.png',
                             width: 120,
-                            height: 120
+                            height: 120,
+                            srcWidth: 120,
+                            srcHeight: 120
                         }
                     },
                     {
                         type: Sprite,
                         config: {
-                            src: '../257.jpg',
-                            width: 120,
-                            height: 120
+                            src: 'img/github.png'
+                        }
+                    },
+                    {
+                        type: Sprite,
+                        config: {
+                            src: 'img/github.png'
                         }
                     }
                 ]
@@ -62,7 +68,7 @@ define([
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 1, 0, 0, 0, 1, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 1, 0, 0, 0, 1]
+                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
             ]
         }
     }
