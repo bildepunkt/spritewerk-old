@@ -150,8 +150,8 @@ define([
             var layer;
 
             // TODO possibly setup event queue which is triggered in update loop (and subsequently emptied)
-            for(var layerInd = 0; layerInd < this.layers.length; layerInd += 1) {
-                layer = this.layers[layerInd];
+            for(var layerInd = 0; layerInd < this.layers._sorted.length; layerInd += 1) {
+                layer = this.layers._sorted[layerInd];
 
                 for(var entityInd = 0; entityInd < layer.entities.length; entityInd += 1) {
                     entity = layer.entities[entityInd];
