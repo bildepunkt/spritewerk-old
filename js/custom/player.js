@@ -12,7 +12,7 @@ define([
         facingDn: true,
         facingLt: false,
         facingRt: false,
-        isAttacking: false,
+        attackTime: 128,
         walkLoopTime: 256,
         animInterval: null,
         SPEED       : 0.8,
@@ -28,7 +28,7 @@ define([
         },
 
         pressMe: function() {
-            
+            this.attack();
         },
 
         pressdown: function(e) {
@@ -64,6 +64,38 @@ define([
             this.stopWalkLoop();
         },
 
+        attack: function() {
+            var self = this;
+
+            if (this.facingUp) {
+                this.weapon.srcX = 0;
+                this.weapon.x = this.x;
+                this.weapon.y = this.y - this.weapon.height;
+            } else if (this.facingDn) {
+                this.weapon.srcX = this.weapon.width;
+                this.weapon.x = this.x;
+                this.weapon.y = this.bottom();
+            }
+
+            if (this.facingLt) {
+                this.weapon.srcX = this.weapon.width * 2;
+                this.weapon.x = this.x - this.weapon.width;
+                this.weapon.y = this.y;
+            } else if (this.facingRt) {
+                this.weapon.srcX = this.weapon.width * 3;
+                this.weapon.x = this.right();
+                this.weapon.y = this.y;
+            }
+
+            this.srcY = this.height;
+
+            setTimeout(function() {
+                self.weapon.x = -4096;
+                self.weapon.y = -4096;
+                self.srcY = 0;
+            }, this.attackTime);
+        },
+
         setFacingDirection: function(facingProperty) {
             this.facingUp = false;
             this.facingDn = false;
@@ -74,8 +106,6 @@ define([
         },
 
         setSrcXY: function() {
-            var self = this;
-
             if (this.facingUp) {
                 this.srcX = 0;
             } else if (this.facingDn) {

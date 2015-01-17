@@ -22,8 +22,7 @@ define([
                         config: {
                             src: 'img/bg.png',
                             width: 1200,
-                            height: 840,
-                            opacity: 0.5
+                            height: 840
                         }
                     },
                     {
@@ -31,6 +30,7 @@ define([
                         type: Player,
                         config: {
                             src: 'img/player.png',
+                            srcX: 120,
                             width: 120,
                             height: 120,
                             srcWidth: 120,
@@ -38,17 +38,31 @@ define([
                         }
                     },
                     {
+                        name: 'weapon',
                         type: Sprite,
                         config: {
-                            src: 'img/github.png'
+                            x: -4096,
+                            y: -4096,
+                            src: 'img/weapon.png',
+                            width: 120,
+                            height: 120,
+                            srcWidth: 120,
+                            srcHeight: 120
                         }
                     },
                     {
+                        name: 'enemy',
                         type: Sprite,
                         config: {
-                            src: 'img/github.png'
+                            x: 240,
+                            y: 240,
+                            src: 'img/player.png',
+                            width: 120,
+                            height: 120,
+                            srcWidth: 120,
+                            srcHeight: 120
                         }
-                    }
+                    },
                 ]
             }
         ],
