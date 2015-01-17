@@ -37,8 +37,10 @@ define([], function(Input) {
         },
 
         hit : function(a, b) {
-            if (a.x + a.width > b.x || a.x < b.x + b.width) {
-                if (a.y + a.height > b.y || a.y < b.y + b.width) {
+            if ((a.x + a.width >= b.x && a.x + a.width <= b.x + b.width) ||
+                (a.x >= b.x && a.x <= b.x + b.width)) {
+                if ((a.y + a.height >= b.y && a.y + a.height <= b.y + b.height) ||
+                    (a.y >= b.y && a.y <= b.y + b.height)) {
                     return true;
                 }
             }
