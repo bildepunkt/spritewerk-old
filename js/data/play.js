@@ -38,19 +38,6 @@ define([
                         }
                     },
                     {
-                        name: 'enemy',
-                        type: Sprite,
-                        config: {
-                            x: 240,
-                            y: 240,
-                            src: 'img/enemy.png',
-                            width: 120,
-                            height: 120,
-                            srcWidth: 120,
-                            srcHeight: 120
-                        }
-                    },
-                    {
                         name: 'weapon',
                         type: Sprite,
                         config: {
@@ -64,8 +51,36 @@ define([
                         }
                     }
                 ]
+            }, {
+                name: 'enemies',
+                entities: [
+                    {
+                        type: Sprite,
+                        config: {
+                            x: 240,
+                            y: 240,
+                            src: 'img/enemy.png',
+                            width: 120,
+                            height: 120,
+                            srcWidth: 120,
+                            srcHeight: 120
+                        }
+                    }, {
+                        type: Sprite,
+                        config: {
+                            x: 480,
+                            y: 480,
+                            src: 'img/enemy.png',
+                            width: 120,
+                            height: 120,
+                            srcWidth: 120,
+                            srcHeight: 120
+                        }
+                    }
+                ]
             }
         ],
+
         scrollRegions: {
             right: 760,
             left: 200,

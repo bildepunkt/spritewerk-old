@@ -17,7 +17,6 @@ define([
             // TODO move getEntity to state method, add layer name as second, optional param
             this.player = this.layers.main.getEntity('player');
             this.weapon = this.layers.main.getEntity('weapon');
-            this.enemy = this.layers.main.getEntity('enemy');
 
             this.player.containable = true;
             this.player.follow = true;
@@ -42,10 +41,25 @@ define([
         },
 
         update: function() {
-            if (Collision.hit(this.weapon, this.enemy)) {
-                this.layers.main.removeEntity(this.enemy);
-                this.enemy = null;
+            var enemy;
+
+            for (var i = 0, len = this.layers.enemies.entities.length; i < len; i += 1) {
+                enemy = this.layers.enemies.entities[i];
+
+                if (enemy && Collision.hit(this.player, enemy)) {
+                    alert('ouch. :|');
+                    this.player.x = 0;
+                    this.player.y = 0;
+                }
+
+                if (enemy && Collision.hit(this.weapon, enemy)) {
+                    this.layers.enemies.removeEntity(enemy);
+                    if (!this.layers.enemies.entities.length) {
+                        alert('you win. :|');
+                    }
+                }
             }
+            
 
             this.$state.update.apply(this);
         }

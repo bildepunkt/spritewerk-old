@@ -29,6 +29,8 @@ define([
             this._canvas.width  = this._width;
             this._canvas.height = this._height;
 
+            document.title = config.title;
+
             this._styleElements();
 
             if (config.stretch) {

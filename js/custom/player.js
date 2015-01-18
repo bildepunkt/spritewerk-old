@@ -123,7 +123,7 @@ define([
             var self = this;
 
             this.srcY = this.height;
-
+            clearInterval(this.animInterval);
             this.animInterval = setInterval(function() {
                 if (self.srcY === 0) {
                     self.srcY = self.height;
