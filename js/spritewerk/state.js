@@ -105,11 +105,19 @@ define([
         _onInputReceived: function(e) {
             var factor = 100 / Input._scaleFactor() / 100;
             var inputEvent = e.detail.inputEvent;
+            var offsetX = parseInt(this._canvas.style.left, 10);
+            var offsetY = parseInt(this._canvas.style.top,  10);
             var evt = {
-                domEvent: inputEvent,
-                absX: (inputEvent.hasOwnProperty('offsetX') ? inputEvent.offsetX : inputEvent.layerX),
-                absY: (inputEvent.hasOwnProperty('offsetY') ? inputEvent.offsetY : inputEvent.layerY)
+                domEvent: inputEvent
             };
+
+            if (inputEvent.hasOwnProperty('touches')) {
+                evt.absX = inputEvent.touches[0].pageX - offsetX;
+                evt.absY = inputEvent.touches[0].pageY - offsetY;
+            } else {
+                evt.absX = (inputEvent.hasOwnProperty('clientX') ? inputEvent.clientX : inputEvent.screenX) - offsetX,
+                evt.absY = (inputEvent.hasOwnProperty('clientY') ? inputEvent.clientY : inputEvent.screenY) - offsetY
+            }
 
             // coordinate positions relative to canvas scaling
             evt.x = evt.absX * factor;
