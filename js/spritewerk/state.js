@@ -180,6 +180,13 @@ define([
 
             Draw.clearCanvas().fillCanvas(this.backgroundColor);
 
+            if (this.walls && !this.camera.fixed && (this.camera.vx !== 0 || this.camera.vy !== 0)) {
+                for (wallInd = 0, wallLen = this.walls.length; wallInd < wallLen; wallInd += 1) {
+                    this.walls[wallInd].x -= this.camera.vx;
+                    this.walls[wallInd].y -= this.camera.vy;
+                }
+            }
+
             for(var layerInd = 0; layerInd < this.layers._sorted.length; layerInd += 1) {
                 layer = this.layers._sorted[layerInd];
 
@@ -198,19 +205,11 @@ define([
                             entity.y -= this.camera.vy * layer.scrollDepth;
                         }
 
-                        if (entity.x + entity.width <= 0  || entity.x >= config.width ||
-                            entity.y + entity.height <= 0 || entity.y >= config.height) {
+                        if (entity.right()  <= 0 || entity.x >= config.width ||
+                            entity.bottom() <= 0 || entity.y >= config.height) {
                             entity.visible = false;
                         } else {
                             entity.visible = true;
-                        }
-                    }
-
-                    if (this.walls && entityInd === 0 && !this.camera.fixed && (this.camera.vx !== 0 || this.camera.vy !== 0)) {
-                        for (wallInd = 0, wallLen = this.walls.length; wallInd < wallLen; wallInd += 1) {
-                            // update pos before checking for overlap
-                            this.walls[wallInd].x -= this.camera.vx;
-                            this.walls[wallInd].y -= this.camera.vy;
                         }
                     }
 

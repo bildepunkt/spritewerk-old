@@ -41,8 +41,8 @@ define([
                         name: 'weapon',
                         type: Sprite,
                         config: {
-                            x: -4096,
-                            y: -4096,
+                            x: Infinity,
+                            y: Infinity,
                             src: 'img/weapon.png',
                             width: 120,
                             height: 120,
@@ -80,7 +80,6 @@ define([
                 ]
             }
         ],
-
         scrollRegions: {
             right: 760,
             left: 200,

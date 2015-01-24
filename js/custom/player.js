@@ -90,8 +90,8 @@ define([
             this.srcY = this.height;
 
             setTimeout(function() {
-                self.weapon.x = -4096;
-                self.weapon.y = -4096;
+                self.weapon.x = Infinity;
+                self.weapon.y = Infinity;
                 self.srcY = 0;
             }, this.attackTime);
         },

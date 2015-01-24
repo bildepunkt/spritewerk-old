@@ -31,7 +31,7 @@ define([], {
     /**
      * @member {boolean} Config.bindTouchInput - set to true if using touch-enabled devices
      */
-    bindTouchInput: false,
+    bindTouchInput: true,
 
     /**
      * @member {boolean} Config.bindMouseMove - determines if mousemove event is bound (set to false if not using the event to save cycles)

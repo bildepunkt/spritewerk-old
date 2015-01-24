@@ -21,6 +21,7 @@ define([
             this.player.containable = true;
             this.player.follow = true;
             this.player.blockable = true;
+            this.player.canBeHit = true;
             this.player.weapon = this.weapon;
 
             this.canScroll = true;
@@ -43,13 +44,13 @@ define([
         update: function() {
             var enemy;
 
+            this.$state.update.apply(this);
+
             for (var i = 0, len = this.layers.enemies.entities.length; i < len; i += 1) {
                 enemy = this.layers.enemies.entities[i];
 
                 if (enemy && Collision.hit(this.player, enemy)) {
-                    alert('ouch. :|');
-                    this.player.x = 0;
-                    this.player.y = 0;
+                    this.playerHit();
                 }
 
                 if (enemy && Collision.hit(this.weapon, enemy)) {
@@ -59,9 +60,21 @@ define([
                     }
                 }
             }
-            
+        },
 
-            this.$state.update.apply(this);
+        playerHit: function() {
+            var self = this;
+
+            if (this.player.canBeHit) {
+                this.player.canBeHit = false;
+
+                self.player.opacity = 0.5;
+
+                setTimeout(function() {
+                    self.player.opacity = 1;
+                    self.player.canBeHit = true;
+                }, 500);
+            }
         }
     });
 });
