@@ -27,99 +27,82 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * base class for movable objects
+ * class for movable, visible objects
  *
  * @class Sprite
  */
 define([
-    '../lib/protos',
+    './shade',
     '../lib/radio'
-], function(Protos, radio) {
-    return Protos.extend({
+], function(Shade, radio) {
+    return Shade.extend({
         protosName: 'sprite',
-
-        /** 
-         * @member {number} Sprite.prototype.x - the entity's x position
-         */
-        x: 0,
-                
-        /** 
-         * @member {number} Sprite.prototype.y - the entity's y position
-         */
-        y: 0,
-                
-        //z: null,
-                
-        /** 
-         * @member {number} Sprite.prototype.vx
-         */
-        vx: 0,
-                
-        /** 
-         * @member {number} Sprite.prototype.vy
-         */
-        vy: 0,
-                
-        /** 
-         * @member {number} Sprite.prototype.width
-         */
-        width: 0,
-                
-        /** 
-         * @member {number} Sprite.prototype.height
-         */
-        height: 0,
-                
-        //halfWidth: 0,
-                
-        //halfHeight: 0,
 
         /** 
          * @member {number} Sprite.prototype.srcX
          */
         srcX: 0,
-        
+
         /** 
          * @member {number} Sprite.prototype.srcY
          */
         srcY: 0,
-                
+
         /** 
          * @member {number} Sprite.prototype.srcWidth
          */
         srcWidth: 0,
-                
+
         /** 
          * @member {number} Sprite.prototype.srcHeight
          */
         srcHeight: 0,
-                
+
+        /**
+         *
+         */
         //scale: 1,
-                
+
         /** 
          * @member {number} Sprite.prototype.rotation - the rotation of the entity
          */
         rotation: 0,
-                
+
         /** 
          * @member {number} Sprite.prototype.opacity - the opacity the entity is rendered at
          */
         opacity: 1,
-                
+
         /** 
          * @member {HTMLElement} Sprite.prototype.img - the image element that the canvas renders
          */
         img: null,
-                
+
         /** 
          * @member {string} Sprite.prototype.src - the src path for the entity's img element
          */
         src: null,
-                
+
+        /** 
+         * @member {boolean} Sprite.prototype.hidden - if true entity will not be rendered
+         */
+        hidden: false,
+
         /** 
          * @member {boolean} Sprite.prototype.visible - if entity is outside camera bounds, visible is set to false and entity is not rendered
+         * @private
          */
-        visible: true,
+        _visible: true,
+
+        /** 
+         * @member {boolean} Sprite.prototype.blockable - if entity can be blocked by shades in state's walls array
+         */
+        blockable: false,
+
+        /** 
+         * @member {boolean} Sprite.prototype.containable - if entity can be contained by camera dimensions
+         */
+        containable: false,
 
         /**
          * unbind listener and set w/h and src w/h
@@ -139,6 +122,10 @@ define([
                 this.width = this.img.width;
                 this.height = this.img.height;
             }
+
+            radio.broadcast('entityready', {
+                entity: this
+            });
         },
 
         /**
@@ -155,8 +142,7 @@ define([
             radio.tuneIn(this.img, 'load', this._onLoad, this);
 
             this.img.src = this.src;
-        },
-                
+        }
     });
 });</code></pre>
         </article>
@@ -168,13 +154,13 @@ define([
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Config.html">Config</a></li><li><a href="Crud.html">Crud</a></li><li><a href="DomControl.html">DomControl</a></li><li><a href="Draw.html">Draw</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Game.html">Game</a></li><li><a href="Input.html">Input</a></li><li><a href="Layer.html">Layer</a></li><li><a href="Observable.html">Observable</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="State.html">State</a></li><li><a href="StateControl.html">StateControl</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Camera.html">Camera</a></li><li><a href="Config.html">Config</a></li><li><a href="DomControl.html">DomControl</a></li><li><a href="Draw.html">Draw</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Game.html">Game</a></li><li><a href="Input.html">Input</a></li><li><a href="Layer.html">Layer</a></li><li><a href="Shade.html">Shade</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="State.html">State</a></li><li><a href="StateControl.html">StateControl</a></li></ul>
 </nav>
 
-<br clear="both">
+<br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha10</a> on Sun Nov 09 2014 23:26:13 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Sun Jan 25 2015 11:22:53 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>
