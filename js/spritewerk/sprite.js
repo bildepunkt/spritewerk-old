@@ -77,20 +77,6 @@ define([
         containable: false,
 
         /**
-         *
-         */
-        init: function() {
-            this.$shade.init.apply(this);
-        },
-
-        /**
-         *
-         */
-        update: function() {
-            this.$shade.update.apply(this);
-        },
-
-        /**
          * unbind listener and set w/h and src w/h
          *
          * @method Sprite.prototype._onLoad

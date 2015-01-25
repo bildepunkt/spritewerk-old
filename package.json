@@ -20,7 +20,7 @@
     "preloader": "git://github.com/c-concat-p/preloader.git#master",
     "proto": "git://github.com/c-concat-p/proto.git#master",
     "radio": "git://github.com/c-concat-p/radio.git#master",
-    "jsdoc": "^3.3.0-alpha9"
+    "jsdoc": "^3.3.0-beta1"
   },
   "dependencies": {
     "requirejs": "^2.1.15"
