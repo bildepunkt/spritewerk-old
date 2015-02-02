@@ -1,49 +1,110 @@
 <!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            font-family: sans-serif;
-        }
-        iframe {
-            border: 1px dashed #ccc;
-        }
-        #wrapper {
-            margin: 28px auto 0;
-            max-width: 740px;
-        }
-        #footer {
-            margin: 36px;
-            text-align: center;
-            font-size: 12px;
-        }
-        .big {
-            font-size: 24px;
-        }
-    </style>
-    <title>Spritewerk</title>
-</head>
-<body>
-    <div id="wrapper">
-        <img alt="Spritewerk" src="img/spritewerk-logo.jpg">
-        <p class="big">Spritewerk is a canvas based framework to ease and speed up the process of multi-platform html game development</p>
-        <p class="big">This project is a culmination of my own curiosity and desire to improve my skills coupled (loosely amirite?) with my interest in producing traditional, console-style games playable on any device.</p>
-        <h3><a href="game/prod.html">Play!</a></h3>
-        <a href="//github.com/c-concat-p/spritewerk">view source</a>
-        <br>
-        <br>
-        <h2>Documentation</h2>
-        <iframe src="docs/" width="740" height="740"></iframe>
-        <p id="footer">Chris Peters &copy; <span id="date"></span></p>
-    </div>
+<html class="no-js" lang="">
+    <head>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans|Homenaje' rel='stylesheet' type='text/css'>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Spritewerk</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script>
-        window.onload = function() {
-            var date = document.querySelector('#date');
-            date.innerHTML = new Date().getFullYear();
-        };
-    </script>
-</body>
+        <style>
+            body {
+                margin: 0;
+                font-family: 'Open Sans', sans-serif;   
+            }
+
+            header {
+                background-color: #1c81d5;
+                background-image: url('img/bg-tile.png');
+                padding: 12px 36px;
+            }
+
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            nav {
+
+            }
+
+            nav.scroll {
+                position: fixed;
+            }
+
+            .title {
+                color: #fff;
+                font-size: 124px;
+                margin: 12px 0;
+                font-family: Homenaje, sans-serif;
+            }
+
+            .subtitle {
+                color: #accbe4;
+                margin-top: 8px;
+                font-size: 32px;
+                width: 58%;
+            }
+
+            .hero-icon {
+                width: 512px;
+                height: 512px;
+                margin: -256px 36px 0 0;
+                background-image: url('img/devices.png');
+                float: right;
+            }
+
+            .mobile-spacer {
+                height: 256px;
+                display: none;
+            }
+
+            .buttons {
+                margin: 36px 0 0 36px;
+            }
+
+            .buttons .btn {
+                margin-right: 12px;
+            }
+
+            .btn {
+                background-color: #055597;
+                color: #fff;
+                padding: 12px 20px;
+                cursor: pointer;
+                font-size: 16px;
+                line-height: 16px;
+                background-repeat: no-repeat;
+            }
+
+            .btn.download {
+                background-image: url('img/download.png');
+                background-position: 17px 10px;
+                padding: 12px 20px 12px 60px;
+            }
+
+            .btn.github {
+                background-image: url('img/GitHub-Mark-Light-32px');
+                background-position: 16px 8px;
+                padding: 12px 20px 12px 60px;
+            }
+        </style>
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <!-- Place favicon.ico in the root directory -->
+    </head>
+    <body>
+        <header>
+            <!-- <nav>DOCS</nav> -->
+            <h1 class="title">SPRITEWERK</h1>
+            <p class="subtitle">A small, friendly HTML5 framework for device-agnostic game development</p>
+            <div class="mobile-spacer"></div>
+        </header>
+        <div class="hero-icon"></div>
+        <div class="buttons">
+            <span class="btn download">download</span>
+            <span class="btn github"><a href="//github.com/c-concat-p/spritewerk">source</a></span>
+        </div>
+    </body>
 </html>
