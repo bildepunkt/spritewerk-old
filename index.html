@@ -65,29 +65,41 @@
             }
 
             .buttons .btn {
-                margin-right: 12px;
+                margin: 0 12px 12px 0;
+                float: left;
             }
 
-            .btn {
-                background-color: #055597;
-                color: #fff;
-                padding: 12px 20px;
-                cursor: pointer;
-                font-size: 16px;
-                line-height: 16px;
+            .btn > a {
                 background-repeat: no-repeat;
+                background-color: #055597;
+                display: inline-block;
+                padding: 16px 20px;
+                color: #fff;
+                font-size: 16px;
+                line-height: 20px;
+                text-decoration: none;
+                #
+                -webkit-transition: all 0.4s;
+                -moz-transition: all 0.4s;
+                -ms-transition: all 0.4s;
+                -o-transition: all 0.4s;
+                transition: all 0.4s;
             }
 
-            .btn.download {
+            .btn > a:hover {
+                background-color: #2277BD;
+            }
+
+            .btn.download > a {
                 background-image: url('img/download.png');
-                background-position: 17px 10px;
-                padding: 12px 20px 12px 60px;
+                background-position: 17px 15px;
+                padding: 18px 20px 18px 60px;
             }
 
-            .btn.github {
+            .btn.github > a {
                 background-image: url('img/GitHub-Mark-Light-32px.png');
-                background-position: 16px 8px;
-                padding: 12px 20px 12px 60px;
+                background-position: 16px 12px;
+                padding: 18px 20px 18px 60px;
             }
         </style>
 
@@ -103,8 +115,12 @@
         </header>
         <div class="hero-icon"></div>
         <div class="buttons">
-            <span class="btn download"><a href="//github.com/c-concat-p/spritewerk/archive/master.zip">download</a></span>
-            <span class="btn github"><a href="//github.com/c-concat-p/spritewerk">source</a></span>
+            <div class="btn download">
+                <a href="//github.com/c-concat-p/spritewerk/archive/master.zip">download</a>
+            </div>
+            <div class="btn github">
+                <a href="//github.com/c-concat-p/spritewerk">source</a>
+            </div>
         </div>
     </body>
 </html>
