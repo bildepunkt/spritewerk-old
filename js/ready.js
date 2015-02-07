@@ -2,11 +2,12 @@ function init() {
     window.removeEventListener('load', init, false);
 
     require([
-        './src/canvas',
-        './src/draw',
-        './src/engine',
-        './src/media-manager',
-        './main'
+        // relative path in ./index.html
+        './js/src/canvas',
+        './js/src/draw',
+        './js/src/engine',
+        './js/src/media-manager',
+        './js/main'
     ], function(Canvas, Draw, Engine, MediaManager, main) {
         main();
     });
