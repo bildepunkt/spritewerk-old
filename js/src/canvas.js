@@ -1,15 +1,26 @@
-var Canvas = Protos.extend({
-    protosName: 'canvas',
+define([
+    '../lib/protos',
+    './config'
+], function(Protos, config) {
 
-    canvas: null,
+    /**
+     *
+     */
+    var Canvas = Protos.extend({
+        protosName: 'canvas',
 
-    init: function() {
-        this.canvas = document.getElementById('spritewerk');
-        this.canvas.width = config.width;
-        this.canvas.height = config.height;
-    },
+        canvas: null,
 
-    getCanvas: function() {
-        return this.canvas;
-    }
+        init: function() {
+            this.canvas = document.getElementById('spritewerk');
+            this.canvas.width = config.width;
+            this.canvas.height = config.height;
+        },
+
+        getCanvas: function() {
+            return this.canvas;
+        }
+    });
+
+    return new Canvas();
 });

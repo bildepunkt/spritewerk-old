@@ -1,60 +1,74 @@
-var Pool = Protos.extend({
-    protosName: 'pool',
-
-    entities: [],
-
-    entitiesToAdd: null,
-
-    entitiesAdded: null,
-
-    entityBeingLoaded: null,
+define([
+    '../lib/protos'
+], function(Protos) {
 
     /**
-     * @param {array} arguments - array of Sprite configs
+     * Pool
      */
-    add: function() {
-        var data = arguments;
+    return Protos.extend({
+        protosName: 'pool',
 
-        this.entitiesToAdd = data.length;
-        this.entitiesAdded = 0;
+        sortedEntities: [],
 
-        for(var i = 0, len = data.length; i < len; i += 1) {
-            this.setupEntity(data[i]);
-        }
-    },
+        entities: {},
 
-    setupEntity: function(data) {
-        var EntityType = data.type;
-        var entity;
+        /**
+         * @param {array} arguments - array of entity configs
+         */
+        add: function() {
+            var data = arguments;
 
-        // so we don't pollute members
-        delete data.type;
+            for(var i = 0, len = data.length; i < len; i += 1) {
+                this.setupEntity(data[i]);
+            }
+        },
 
-        entity = new EntityType(data);
+        setupEntity: function(data) {
+            var EntityType = data.type;
+            var entityName = data.name;
+            var entity;
 
-        this.entities.push(entity);
+            // so we don't pollute instance members
+            delete data.type;
+            delete data.name;
 
-        this.entitiesAdded += 1;
+            entity = new EntityType(data);
 
-        if (this.entitiesAdded === this.entitiesToAdd) {
-            radio.broadcast('entitiesready', {
-                data: this.entities
-            });
-        }
-    },
+            if (!entityName) {
+                entityName = entity.displayType + entity._uid;
+            }
 
-    remove: function(entity) {
-        for(var i = 0, len = this.entities.length; i < len; i += 1) {
-            if (entity === this.entities[i]) {
-                this.entities.splice(i, 1);
-                break;
+            this.entities[entityName] = entity;
+            this.sortedEntities.push(entity);
+        },
+
+        remove: function(name) {
+            var entity;
+
+            if (!this.entities[name]) {
+                return false;
+            }
+
+            entity = this.entities[name];
+
+            for(var i = 0, len = this.sortedEntities.length; i < len; i += 1) {
+                if (entity._uid === this.sortedEntities[i]._uid) {
+                    this.sortedEntities[i] = null;
+                    this.sortedEntities.splice(i, 1);
+                    break;
+                }
+            }
+
+            this.entities[name] = null;
+            delete this.entities[name];
+
+            return true;
+        },
+
+        sortedEach: function(fn) {
+            for(var i = 0, len = this.sortedEntities.length; i < len; i += 1) {
+                fn(this.sortedEntities[i], i);
             }
         }
-    },
-
-    each: function(fn) {
-        for(var i = 0, len = this.entities.length; i < len; i += 1) {
-            fn(this.entities[i], i);
-        }
-    }
+    });
 });
