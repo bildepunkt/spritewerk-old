@@ -28,6 +28,14 @@ define([
 
         scaleY: 1,
 
+        rotationOffsetX: 0,
+
+        rotationOffsetY: 0,
+
+        scaleOffsetX: 0,
+
+        scaleOffsetY: 0,
+
         rotation: 0,
 
         image: null,

@@ -11,21 +11,29 @@ define([
     return function() {
         radio.tuneIn('preloadcomplete', function() {
             var pool = new Pool();
+            var foo;
 
             pool.add({
                 type: Sprite,
-                x: 200,
-                y: 200,
-                rotation: 45,
+                name: 'foo',
+                x: 100,
+                y: 100,
+                rotationOffsetX: 100,
+                rotationOffsetY: 100,
                 width: 200,
                 height: 200,
-                scaleY: -1,
-                scaleX: 2,
                 opacity: 0.5,
                 image: mediaManager.images.sun_set
             });
 
-            radio.tuneIn('newframe', function() {
+            foo = pool.entities.foo;
+
+            radio.tuneIn('newframe', function(e) {
+                if (e.detail.frame % 60 === 0) {
+                    pool.entities.foo.rotation += 45;
+                    pool.entities.foo.scaleY += 0.5;
+                }
+
                 draw.clear();
                 pool.sortedEach(function(entity) {
                     draw.render(entity);

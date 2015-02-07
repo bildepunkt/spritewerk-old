@@ -12,15 +12,13 @@ define([
 
         context: null,
 
-        drawCenter: false,
+        drawOffset: true,
 
         centerColor: '#C00',
 
         init: function() {
             var _canvas = canvas.getCanvas();
             this.context = _canvas.getContext('2d');
-
-            this.drawCenter = true;
         },
 
         clear: function(dimensions) {
@@ -37,12 +35,22 @@ define([
         },
 
         render: function(entity) {
+            // remember: context transforms are cumulative :)
             this.context.save();
-            this.context.translate(Math.floor(entity.x), Math.floor(entity.y));
+            this.context.translate(entity.x, entity.y);
+
             if (entity.rotation !== 0) {
+                this.context.translate(entity.rotationOffsetX, entity.rotationOffsetY);
                 this.context.rotate((Math.PI / 180) * entity.rotation);
+                this.context.translate(-entity.rotationOffsetX, -entity.rotationOffsetY);
             }
-            this.context.scale(entity.scaleX, entity.scaleY);
+
+            if (entity.scaleX !== 1 || entity.scaleY !== 1) {
+                this.context.translate(entity.scaleOffsetX, entity.scaleOffsetY);
+                this.context.scale(entity.scaleX, entity.scaleY);
+                this.context.translate(-entity.scaleOffsetX, -entity.scaleOffsetY);
+            }
+
             this.context.globalAlpha = entity.opacity;
             this.context.globalCompositeOperation = entity.composite;
 
@@ -61,20 +69,13 @@ define([
                 break;
             }
 
-            if (this.drawCenter) {
-                this.context.globalCompositeOperation = 'source-over';
-                this.context.globalAlpha = 1;
-                this.context.fillStyle = this.centerColor;
-                this.context.fillRect(-2, -2, 4, 4);
-            }
-
             this.context.restore();
         },
 
         renderShape: function(entity) {
             switch(entity.shape.type) {
                 case 'rectangle':
-                    this.context.fillRect(-entity.getHalfWidth(), -entity.getHalfHeight(), entity.width, entity.height);
+                    this.context.fillRect(0, 0, entity.width, entity.height);
                 break;
             }
         },
@@ -94,8 +95,7 @@ define([
                 entity.srcY,
                 entity.srcWidth,
                 entity.srcHeight,
-                -entity.getHalfWidth(),
-                -entity.getHalfHeight(),
+                0, 0,
                 entity.width,
                 entity.height
             );
