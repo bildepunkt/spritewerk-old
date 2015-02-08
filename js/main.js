@@ -5,8 +5,9 @@ define([
     './src/engine',
     './src/pool',
     './lib/radio',
-    './lib/preloader'
-], function(Sprite, mediaManager, draw, engine, Pool, radio, Preloader) {
+    './lib/preloader',
+    './src/tween'
+], function(Sprite, mediaManager, draw, engine, Pool, radio, Preloader, Tween) {
 
     return function() {
         radio.tuneIn('preloadcomplete', function() {
@@ -20,6 +21,8 @@ define([
                 y: 100,
                 rotationOffsetX: 100,
                 rotationOffsetY: 100,
+                scaleOffsetX: 100,
+                scaleOffsetY: 100,
                 width: 200,
                 height: 200,
                 opacity: 0.5,
@@ -28,11 +31,19 @@ define([
 
             foo = pool.entities.foo;
 
+            new Tween({
+                entity: foo,
+                from: {rotation: 0},
+                to: {rotation: 360},
+                ms: 1000,
+                easing: 'easeOutOvershoot'
+            })
+
             radio.tuneIn('newframe', function(e) {
-                if (e.detail.frame % 60 === 0) {
+                /*if (e.detail.frame % 60 === 0) {
                     pool.entities.foo.rotation += 45;
                     pool.entities.foo.scaleY += 0.5;
-                }
+                }*/
 
                 draw.clear();
                 pool.sortedEach(function(entity) {

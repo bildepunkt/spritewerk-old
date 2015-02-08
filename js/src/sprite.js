@@ -66,20 +66,20 @@ define([
             }
         },
 
-        getLeft: function() {
-            return this.x - this.getHalfWidth();
-        },
-
-        getTop: function() {
-            return this.y - this.getHalfHeight();
-        },
-
         getRight: function() {
-            return this.x + this.getHalfWidth();
+            return this.x + this.width;
         },
 
         getBottom: function() {
-            return this.y + this.getHalfHeight();
+            return this.y + this.height;
+        },
+
+        getCenterX: function() {
+            return this.x + this.halfWidth();
+        },
+
+        getCenterY: function() {
+            return this.y + this.halfHeight();
         },
 
         getHalfWidth: function() {

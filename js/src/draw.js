@@ -12,10 +12,6 @@ define([
 
         context: null,
 
-        drawOffset: true,
-
-        centerColor: '#C00',
-
         init: function() {
             var _canvas = canvas.getCanvas();
             this.context = _canvas.getContext('2d');
