@@ -1,9 +1,10 @@
 define([
+    './media-manager',
     '../lib/protos'
-], function(Protos) {
+], function(mediaManager, Protos) {
 
     /**
-     * Pool
+     * Layer
      */
     return Protos.extend({
         protosName: 'pool',
@@ -24,8 +25,13 @@ define([
         },
 
         setupEntity: function(data) {
-            var entity = new data.type(data.config);
-            var entityName = data.name ? data.name : entity.displayType + entity._uid;
+            var entity;
+            var entityName;
+
+            data.config.image = data.config.imageName ? mediaManager.images[data.config.imageName] : null;
+
+            entity = new data.type(data.config);
+            entityName = data.name ? data.name : entity.displayType + entity._uid;
 
             this.pool[entityName] = entity;
             this.sortedPool.push(entity);

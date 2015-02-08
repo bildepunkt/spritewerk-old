@@ -3,7 +3,9 @@ define([
 ], function(Protos) {
 
     /**
-     * Media Manager
+     * Media Manager stores media files and plays sound files
+     *
+     * @singleton
      */
     var MediaManager = Protos.extend({
         protosName: 'mediamanager',

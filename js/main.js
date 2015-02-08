@@ -8,7 +8,16 @@ define([
 ], function(mediaManager, draw, engine, Sprite, State, radio) {
 
     return function() {
-        new State({
+        var state;
+
+        radio.tuneIn('stateready', function() {
+            draw.clear();
+            state.sortedLayers[0].sortedEach(function(item) {
+                draw.render(item);
+            });
+        });
+
+        var state = new State({
             assets: [
                 'img/sun-set.jpg'
             ],
@@ -28,7 +37,7 @@ define([
                             width: 200,
                             height: 200,
                             opacity: 0.5,
-                            image: mediaManager.images.sun_set
+                            imageName: 'sun_set'
                         }
                     }
                 }

@@ -3,7 +3,7 @@ define([
 ], function(Protos) {
 
     /**
-     *
+     * An entity with image display
      */
     return Protos.extend({
         protosName: 'sprite',

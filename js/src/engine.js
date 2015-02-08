@@ -5,7 +5,9 @@ define([
 ], function(radio, Protos, config) {
 
     /**
+     * Engine runs the game loop
      *
+     * @singleton
      */
     var Engine = Protos.extend({
         protosName: 'engine',

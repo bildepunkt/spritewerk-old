@@ -5,7 +5,9 @@ define([
 ], function(config, canvas, Protos) {
 
     /**
+     * Draws various entities on the canvas
      *
+     * @singleton
      */
     var Draw = Protos.extend({
         protosName: 'draw',
