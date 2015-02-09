@@ -14,18 +14,12 @@ define([
 
         sounds: {},
 
-        addImage: function(path, img) {
-            var name = this.getName(path);
+        addImage: function(name, img) {
             this.images[name] = img;
         },
 
-        addSound: function(path, snd) {
-            var name = this.getName(path);
+        addSound: function(name, snd) {
             this.sounds[name] = snd;
-        },
-
-        getName: function(path) {
-            return path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.')).replace(/[^a-z0-9]/i, '_');
         },
 
         play: function(name) {

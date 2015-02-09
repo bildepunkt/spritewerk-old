@@ -18,14 +18,14 @@ define([
         });
 
         var state = new State({
-            assets: [
-                'img/sun-set.jpg'
-            ],
+            assets: {
+                sunset: 'img/sun-set.jpg'
+            },
             layers: [
                 {
                     name: 'main',
                     entities: {
-                        name: 'sunSet',
+                        name: 'sunset',
                         type: Sprite,
                         config: {
                             x: 100,
@@ -37,7 +37,7 @@ define([
                             width: 200,
                             height: 200,
                             opacity: 0.5,
-                            imageName: 'sun_set'
+                            imageName: 'sunset'
                         }
                     }
                 }

@@ -6,6 +6,8 @@ define([
     return Protos.extend({
         protosName: 'preloader',
 
+        paths: null,
+
         total: 0,
 
         loaded: 0,
@@ -18,22 +20,27 @@ define([
          * @params {MediaManager}  [options.mediaManager] - instance of MediaManager
          */
         init : function(options) {
-            var paths = options.paths;
+            var assetCount = 0;
+            var prop;
+
+            this.paths = options.paths;
 
             this.mediaManager = options.mediaManager;
 
-            this.total = paths.length;
+            for(prop in this.paths) {
+                this.total += 1;
+            }
 
-            for (var i = 0; i < this.total; i += 1) {
-                if (paths[i].indexOf('.png') > 0 || paths[i].indexOf('.jpg') > 0) {
+            for (prop in this.paths) {
+                if (this.paths[prop].indexOf('.png') > 0 || this.paths[prop].indexOf('.jpg') > 0) {
                     var img = new Image();
-                    img.src = paths[i];
+                    img.src = this.paths[prop];
 
                     radio.tuneIn(img, 'load',  this.loadHandler, this);
                     radio.tuneIn(img, 'error', this.error, this);
-                } else if (paths[i].indexOf('.mp3') > 0 || paths[i].indexOf('.wav') > 0 || paths[i].indexOf('.ogg') > 0) {
+                } else if (this.paths[prop].indexOf('.mp3') > 0 || this.paths[prop].indexOf('.wav') > 0 || this.paths[prop].indexOf('.ogg') > 0) {
                     var audio = new Audio();
-                    audio.src = paths[i];
+                    audio.src = this.paths[prop];
 
                     radio.tuneIn(audio, 'canplaythrough', this.loadHandler, this);
                     radio.tuneIn(audio, 'error', this.error, this);
@@ -49,7 +56,11 @@ define([
                 radio.tuneOut(el, 'error', this.error);
 
                 if (this.mediaManager) {
-                    this.mediaManager.addImage(el.src, el);
+                    for(var name in this.paths) {
+                        if (this.getFileName(this.paths[name]) === this.getFileName(el.src)) {
+                            this.mediaManager.addImage(name, el);
+                        }
+                    }
                 }
             } else if (type == 'audio') {
                 radio.tuneOut(el, 'canplaythrough', this.loadHandler);
@@ -80,6 +91,10 @@ define([
 
         error: function(e) {
             console.log(e.status);
+        },
+
+        getFileName: function(path) {
+            return path.substring(path.lastIndexOf('/') + 1, path.length + 1);
         }
     });
 });
