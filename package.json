@@ -18,5 +18,8 @@
   "homepage": "https://github.com/c-concat-p/spritewerk",
   "devDependencies": {
     "radio": "git://github.com/c-concat-p/radio"
+  },
+  "dependencies": {
+    "browserify": "^8.1.3"
   }
 }
