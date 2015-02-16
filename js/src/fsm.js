@@ -45,13 +45,13 @@ SW.FSM = SW.Collection.extend({
 
         for(var g = 0, gLen = data.groups.length; g < gLen; g += 1) {
             group = data.groups[g];
-            state.add(group.name, new Collection());
+            state.add(group.name, new SW.Collection());
 
             for(var e = 0, eLen = group.entities.length; e < eLen; e += 1) {
                 entityData = group.entities[e];
 
                 if (entityData.config.imageName) {
-                    entityData.config.img = MediaManager.images[entityData.config.imageName];
+                    entityData.config.img = SW.MediaManager.images[entityData.config.imageName];
                 }
 
                 entity = new entityData.type(entityData.config);

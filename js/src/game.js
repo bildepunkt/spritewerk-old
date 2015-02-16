@@ -24,7 +24,7 @@ SW.Game = Protos.extend({
 
                 state.sortedEach(function(group) {
                     group.sortedEach(function(entity) {
-                        Draw.render(entity);
+                        SW.Draw.render(entity);
                     });
                 });
             }

@@ -14,7 +14,7 @@ SW.Loading = SW.State.extend({
                 entities: [
                     {
                         name: 'spinnerA',
-                        type: Rectangle,
+                        type: SW.Rectangle,
                         config: {
                             x: 288,
                             y: 176,
@@ -22,11 +22,11 @@ SW.Loading = SW.State.extend({
                             rotationOffsetY: 36,
                             width: 24,
                             height: 24,
-                            fill: '#3C3'
+                            fill: '#33C'
                         }
                     }, {
                         name: 'spinnerB',
-                        type: Rectangle,
+                        type: SW.Rectangle,
                         config: {
                             x: 288,
                             y: 224,
@@ -45,8 +45,6 @@ SW.Loading = SW.State.extend({
     update: function() {
         var spinnerA = this.get('main').get('spinnerA');
         var spinnerB = this.get('main').get('spinnerB');
-
-        spinnerA.x += Math.sin(spinnerA.rotation) * 24;
 
         spinnerA.rotation += 4;
         spinnerB.rotation += 4;
