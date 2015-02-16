@@ -1,7 +1,7 @@
 SW.Dom = Protos.extend({
     
     init: function() {
-        document.title = config.title;
+        document.title = SW.Config.title;
 
         this._styleElements();
 
@@ -9,8 +9,6 @@ SW.Dom = Protos.extend({
             radio.tuneIn(window, 'resize', this._onWindowResize, this);
             // TODO is this needed?
             radio.tuneIn(window, 'orientationchange', this._onWindowResize, this);
-            
-            this._onWindowResize();
         }
     },
 
@@ -28,7 +26,5 @@ SW.Dom = Protos.extend({
         body.style.backgroundColor = SW.Config.backgroundColor;
         body.style.margin = 0;
         body.style.padding = 0;
-
-        this.canvas.style.position = 'absolute';
     }
 });

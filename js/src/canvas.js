@@ -10,11 +10,16 @@ SW.Canvas = Protos.extend({
         this.canvas.width = this.width;
         this.canvas.height = this.height;
 
-        radio.tuneIn('screenresize', this._onScreenResize, this);
+        this.canvas.style.position = 'absolute';
+
+        if (SW.Config.stretch) {
+            radio.tuneIn('screenresize', this._onScreenResize, this);
+            this._onScreenResize();
+        }
     },
 
     /**
-     * @method DomControl._onWindowResize
+     * @method Canvas._onScreenResize
      * @private
      */
     _onScreenResize: function() {
