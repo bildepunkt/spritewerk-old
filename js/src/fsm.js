@@ -45,7 +45,7 @@ SW.FSM = SW.Collection.extend({
 
         for(var g = 0, gLen = data.groups.length; g < gLen; g += 1) {
             group = data.groups[g];
-            state.add(group.name, new SW.Collection());
+            state.add(group.name, new SW. Collection());
 
             for(var e = 0, eLen = group.entities.length; e < eLen; e += 1) {
                 entityData = group.entities[e];
@@ -64,18 +64,22 @@ SW.FSM = SW.Collection.extend({
         state.data = null;
         delete state.data;
 
+        state.setup();
         SW.Collection.prototype.add.call(this, this.beingLoaded.name, state);
     },
 
     setActive: function(name) {
         var state = this.items[name];
 
-        this.sortedEach(function(item, i) {
+        this.sortedEach(function(item, i, list) {
             if (state === item) {
                 item.active = true;
                 item.visible = true;
-                this.sortedStates.splice(i, 1);
-                this.sortedStates.push(item);
+
+                if (i < list.length - 1) {
+                    this.sortedStates.splice(i, 1);
+                    this.sortedStates.push(item);
+                }
             } else {
                 item.active = false;
                 item.visible = false;

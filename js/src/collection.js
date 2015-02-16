@@ -25,7 +25,7 @@ SW.Collection = Protos.extend({
 
     sortedEach: function(fn) {
         for(var i = 0, len = this.sortedItems.length; i < len; i += 1) {
-            fn(this.sortedItems[i], i);
+            fn(this.sortedItems[i], i, this.sortedItems);
         }
     },
 

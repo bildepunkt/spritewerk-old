@@ -21,6 +21,8 @@ SW.State = SW.Collection.extend({
         }
     },
 
+    setup: function() {},
+
     update: function() {},
 
     destroy: function() {
