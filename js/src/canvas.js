@@ -1,10 +1,10 @@
-var Canvas = Protos.extend({
+SW.Canvas = Protos.extend({
     canvas: null,
 
     init: function() {
         this.canvas = document.querySelector('canvas');
-        this.canvas.width = Config.width;
-        this.canvas.height = Config.height;
+        this.canvas.width = SW.Config.width;
+        this.canvas.height = SW.Config.height;
     },
 
     getCanvas: function() {

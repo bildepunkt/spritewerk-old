@@ -2,7 +2,7 @@
   "name": "spritewerk",
   "version": "0.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "js/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,8 +18,5 @@
   "homepage": "https://github.com/c-concat-p/spritewerk",
   "devDependencies": {
     "radio": "git://github.com/c-concat-p/radio"
-  },
-  "dependencies": {
-    "browserify": "^8.1.3"
   }
 }

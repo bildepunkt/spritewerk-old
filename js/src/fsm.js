@@ -1,4 +1,4 @@
-var FSM = Collection.extend({
+SW.FSM = SW.Collection.extend({
     beingLoaded: {
         name: null,
         data: null
@@ -19,7 +19,7 @@ var FSM = Collection.extend({
         this.beingLoaded.state = new State();
 
         if (this.beingLoaded.state.assets) {
-            new Preloader({
+            new SW.Preloader({
                 assets: this.beingLoaded.state.assets
             });
         } else {
@@ -64,7 +64,7 @@ var FSM = Collection.extend({
         state.data = null;
         delete state.data;
 
-        Collection.prototype.add.call(this, this.beingLoaded.name, state);
+        SW.Collection.prototype.add.call(this, this.beingLoaded.name, state);
     },
 
     setActive: function(name) {

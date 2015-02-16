@@ -1,4 +1,4 @@
-var Sprite = Renderable.extend({
+SW.Sprite = SW.Renderable.extend({
     img: null,
 
     displayType: 'sprite',

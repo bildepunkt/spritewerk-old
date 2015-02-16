@@ -1,4 +1,4 @@
-var MediaManager = Protos.extend({
+SW.MediaManager = Protos.extend({
     images: {},
 
     sounds: {},

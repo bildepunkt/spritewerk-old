@@ -5,79 +5,10 @@
 </head>
 <body>
     <canvas></canvas>
-    <script src="radio/radio.js"></script>
-    <script src="protos.js"></script>
-    <script>
-        var Loading = State.extend({
-            data: {
-                assets: {
-                    sunset: '256.jpg'
-                },
-
-                config: {
-                    bgColor: '#C3C'
-                },
-
-                groups: [
-                    {
-                        name: 'main',
-                        entities: [
-                            {
-                                name: 'spinnerA',
-                                type: Rectangle,
-                                config: {
-                                    x: 288,
-                                    y: 176,
-                                    rotationOffsetX: 12,
-                                    rotationOffsetY: 36,
-                                    width: 24,
-                                    height: 24,
-                                    fill: '#3C3'
-                                }
-                            }, {
-                                name: 'spinnerB',
-                                type: Rectangle,
-                                config: {
-                                    x: 288,
-                                    y: 224,
-                                    rotationOffsetX: 12,
-                                    rotationOffsetY: -12,
-                                    width: 24,
-                                    height: 24,
-                                    fill: '#3C3'
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-
-            update: function() {
-                var spinnerA = this.get('main').get('spinnerA');
-                var spinnerB = this.get('main').get('spinnerB');
-
-                spinnerA.x += Math.sin(spinnerA.rotation) * 24;
-
-                spinnerA.rotation += 4;
-                spinnerB.rotation += 4;
-            }
-        });
-
-        function init() {
-            radio.tuneOut(window, 'load', init);
-
-            MediaManager = new MediaManager();
-            Canvas = new Canvas();
-            Draw = new Draw();
-            FSM = new FSM({
-                state: Loading
-            });
-            Game = new Game();
-
-            Game.start();
-        };
-
-        radio.tuneIn(window, 'load', init);
-    </script>
+    <script src="js/lib/radio/radio.js"></script>
+    <script src="js/lib/protos.js"></script>
+    
+    <script src="js/src/spritewerk.js"></script>
+    <script src="js/main"></script>
 </body>
 </html>

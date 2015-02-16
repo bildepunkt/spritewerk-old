@@ -1,4 +1,4 @@
-var Collection = Protos.extend({
+SW.Collection = Protos.extend({
     items: {},
     sortedItems: [],
 

@@ -1,4 +1,4 @@
-var Renderable = Protos.extend({
+SW.Renderable = Protos.extend({
     x: 0,
 
     y: 0,

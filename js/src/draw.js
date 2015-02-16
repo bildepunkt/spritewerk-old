@@ -1,9 +1,9 @@
-var Draw = Protos.extend({
+SW.Draw = Protos.extend({
     canvas: null,
     context: null,
 
     init: function() {
-        this.canvas = Canvas.getCanvas();
+        this.canvas = SW.Canvas.getCanvas();
         this.context = this.canvas.getContext('2d');
     },
 

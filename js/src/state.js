@@ -1,4 +1,4 @@
-var State = Collection.extend({
+SW.State = SW.Collection.extend({
     active: true,
 
     visible: true,

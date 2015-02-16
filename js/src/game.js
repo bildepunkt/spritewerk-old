@@ -1,9 +1,9 @@
-var Game = Protos.extend({
+SW.Game = Protos.extend({
     frame: 0,
 
     start: function(name, state) {
         if (name && state) {
-            FSM.add(name, state);
+            SW.FSM.add(name, state);
         }
 
         this.scopedUpdate = this.update.bind(this);
@@ -12,15 +12,15 @@ var Game = Protos.extend({
     },
 
     update: function() {
-        FSM.sortedEach(function(state) {
-            Draw.clear();
+        SW.FSM.sortedEach(function(state) {
+            SW.Draw.clear();
 
             if (state.active) {
                 state.update();
             }
 
             if (state.visible) {
-                Draw.clear().fill(state.config.bgColor);
+                SW.Draw.clear().fill(state.config.bgColor);
 
                 state.sortedEach(function(group) {
                     group.sortedEach(function(entity) {
