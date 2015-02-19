@@ -5,5 +5,6 @@ SW.Config = {
     stretch: true,
     backgroundColor: '#444',
     bindMouseInput: true,
-    bindTouchInput: true
+    bindTouchInput: true,
+    title: 'spritewerk game'
 };

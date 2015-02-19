@@ -4,10 +4,10 @@ SW.FSM = SW.Collection.extend({
         data: null
     },
 
-    init: function(options) {
-        this.add('loading', options.state);
+    init: function() {
+        this.add('loading', SW.Loading);
 
-        radio.tuneIn('preloadcomplete', this.onPreloadComplete, this);
+        radio.tuneIn('preloadcomplete', this._onPreloadComplete, this);
     },
 
     add: function(name, State) {
@@ -18,16 +18,28 @@ SW.FSM = SW.Collection.extend({
         this.beingLoaded.name = name;
         this.beingLoaded.state = new State();
 
-        if (this.beingLoaded.state.assets) {
+        if (this.beingLoaded.state.data.assets) {
             new SW.Preloader({
-                assets: this.beingLoaded.state.assets
+                assets: this.beingLoaded.state.data.assets
             });
         } else {
-            this.onPreloadComplete();
+            this._onPreloadComplete();
         }
     },
 
-    onPreloadComplete: function() {
+    remove: function(name) {
+        var state = this.get(name);
+
+        radio.tuneOut('inputreceived', state._onInputReceived);
+        state.destroy();
+        SW.Collection.prototype.remove.call(this, name);
+    },
+
+    /**
+     * @method FSM.prototype._onPreloadComplete
+     * @private
+     */
+    _onPreloadComplete: function() {
         var state = this.beingLoaded.state;
         var data = state.data;
         var group;
@@ -35,17 +47,11 @@ SW.FSM = SW.Collection.extend({
         var entityData;
         var entityName;
 
-        this.sortedEach(function(item) {
-            item.active = false;
-            item.visible = false;
-        });
-
         state.config = data.config;
-
 
         for(var g = 0, gLen = data.groups.length; g < gLen; g += 1) {
             group = data.groups[g];
-            state.add(group.name, new SW. Collection());
+            state.add(group.name, new SW.Collection());
 
             for(var e = 0, eLen = group.entities.length; e < eLen; e += 1) {
                 entityData = group.entities[e];
@@ -65,11 +71,28 @@ SW.FSM = SW.Collection.extend({
         delete state.data;
 
         state.setup();
+
         SW.Collection.prototype.add.call(this, this.beingLoaded.name, state);
+
+        this.setActive(this.beingLoaded.name);
+    },
+
+    getActive: function() {
+        return this.sortedItems[this.getCount() - 1];
     },
 
     setActive: function(name) {
-        var state = this.items[name];
+        var state = this.get(name);
+
+        if (!state) {
+            return false;
+        }
+
+        if (this.getCount() === 1) {
+            state.active = true;
+            state.visible = true;
+            return false;
+        }
 
         this.sortedEach(function(item, i, list) {
             if (state === item) {
@@ -77,8 +100,8 @@ SW.FSM = SW.Collection.extend({
                 item.visible = true;
 
                 if (i < list.length - 1) {
-                    this.sortedStates.splice(i, 1);
-                    this.sortedStates.push(item);
+                    list.splice(i, 1);
+                    list.push(item);
                 }
             } else {
                 item.active = false;

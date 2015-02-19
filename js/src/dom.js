@@ -12,12 +12,16 @@ SW.Dom = Protos.extend({
         }
     },
 
+    /**
+     * @method Dom._onWindowResize
+     * @private
+     */
     _onWindowResize: function() {
         radio.broadcast('screenresize');
     },
 
     /**
-     * @method DomControl._styleElements
+     * @method Dom._styleElements
      * @private
      */
     _styleElements: function() {

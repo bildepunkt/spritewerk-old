@@ -24,20 +24,6 @@ SW.State = SW.Collection.extend({
     boundingBox: null,
 
     /**
-     * (aquired via data object) contains sorted array of and named references of objects with a config options and a collection of entities
-     *
-     * @member {array} State.prototype.layers
-     */
-    layers: {},
-
-    /**
-     * (aquired via data object)
-     *
-     * @member {string} State.prototype.backgroundColor
-     */
-    backgroundColor: null,
-
-    /**
      * (aquired via data object)
      *
      * @member {array} State.prototype.walls
@@ -47,7 +33,7 @@ SW.State = SW.Collection.extend({
     /**
      * (aquired via data object) the largest entity object which is used in determining scrolling
      *
-     * @method State.prototype.boundingBox
+     * @method State.prototype.scrollRegions
      */ 
     scrollRegions: null,
 
@@ -71,7 +57,24 @@ SW.State = SW.Collection.extend({
      */
     pressup: function() {},
 
+    /**
+     * @method State.prototype.setup
+     */
+    setup: function() {},
+
+    /**
+     * @method State.prototype.update
+     */
+    update: function() {},
+
+    /**
+     * @method State.prototype.destroy
+     */
+    destroy: function() {},
+
     init: function() {
+        this.canvas = SW.Canvas.getCanvas();
+        // this event gets tuned out by FSM
         radio.tuneIn('inputreceived', this._onInputReceived, this);
     },
 
@@ -79,11 +82,15 @@ SW.State = SW.Collection.extend({
      * @method State.prototype._onInputReceived
      * @private
      */
-    _onInputReceived: function(e) {/*
-        var factor = 100 / Input._getScaleFactor() / 100;
+    _onInputReceived: function(e) {
+        if (!this.active) {
+            return false;
+        }
+
+        var factor = 100 / SW.Input._getScaleFactor() / 100;
         var inputEvent = e.detail.inputEvent;
-        var offsetX = parseInt(this._canvas.style.left, 10);
-        var offsetY = parseInt(this._canvas.style.top,  10);
+        var offsetX = parseInt(this.canvas.style.left, 10);
+        var offsetY = parseInt(this.canvas.style.top,  10);
         var evt = {
             domEvent: inputEvent
         };
@@ -92,8 +99,8 @@ SW.State = SW.Collection.extend({
             evt.absX = inputEvent.touches[0].pageX - offsetX;
             evt.absY = inputEvent.touches[0].pageY - offsetY;
         } else {
-            evt.absX = (inputEvent.hasOwnProperty('clientX') ? inputEvent.clientX : inputEvent.screenX) - offsetX,
-            evt.absY = (inputEvent.hasOwnProperty('clientY') ? inputEvent.clientY : inputEvent.screenY) - offsetY
+            evt.absX = (inputEvent.hasOwnProperty('clientX') ? inputEvent.clientX : inputEvent.screenX) - offsetX;
+            evt.absY = (inputEvent.hasOwnProperty('clientY') ? inputEvent.clientY : inputEvent.screenY) - offsetY;
         }
 
         // coordinate positions relative to canvas scaling
@@ -120,39 +127,24 @@ SW.State = SW.Collection.extend({
                 this.pressup(evt);
             break;
         }
-    */},
+    },
 
     /**
      * @method State.prototype._getTarget
      * @private
      */
-    _getTarget: function(e) {/*
+    _getTarget: function(e) {
         var topmostEntity;
-        var entity;
-        var layer;
 
-        // TODO possibly setup event queue which is triggered in update loop (and subsequently emptied)
-        for(var layerInd = 0; layerInd < this.layers._sorted.length; layerInd += 1) {
-            layer = this.layers._sorted[layerInd];
-
-            for(var entityInd = 0; entityInd < layer.entities.length; entityInd += 1) {
-                entity = layer.entities[entityInd];
-
-                if (Collision.hitPoint(e.x, e.y, entity)) {
+        this.sortedEach(function(group) {
+            group.sortedEach(function(entity) {
+                if (SW.Collision.hitPoint(e.x, e.y, entity)) {
                     // continually assign higher sorted entity
                     topmostEntity = entity;
                 }
-            }
-        }
+            });
+        });
 
         return topmostEntity;
-    */},
-
-    setup: function() {},
-
-    update: function() {},
-
-    destroy: function() {
-        radio.tuneOut('inputreceived', this.inputHandler);
     }
 });

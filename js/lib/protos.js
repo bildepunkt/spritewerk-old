@@ -49,9 +49,7 @@ var Protos = (function() {
             }
         }
 
-        for(prop in alpha) {
-            Beta.prototype[prop] = alpha[prop];
-        }
+        Beta.prototype = alpha;
 
         Beta.extend = function(members) {
             return Protos(members, new this(null, true));

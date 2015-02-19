@@ -44,24 +44,32 @@ SW.Draw = Protos.extend({
 
         switch(entity.displayType) {
             case 'rectangle':
-                this.renderRectangle(entity);
+                this._renderRectangle(entity);
             break;
             case 'sprite':
-                this.renderSprite(entity);
+                this._renderSprite(entity);
             break;
         }
 
         this.context.restore();
     },
 
-    renderRectangle: function(entity) {
+    /**
+     * @method Draw.prototype._renderRectangle
+     * @private
+     */
+    _renderRectangle: function(entity) {
         this.context.fillStyle = entity.fill;
         this.context.fillRect(0, 0, entity.width, entity.height);
     },
 
-    renderSprite: function(entity) {
+    /**
+     * @method Draw.prototype._renderSprite
+     * @private
+     */
+    _renderSprite: function(entity) {
         this.context.drawImage(
-            entity.image,
+            entity.img,
             entity.srcX,
             entity.srcY,
             entity.srcWidth,

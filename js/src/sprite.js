@@ -1,6 +1,10 @@
 SW.Sprite = SW.Renderable.extend({
     img: null,
-
+    imageName: null,
+    srcX: 0,
+    srcY: 0,
+    srcWidth: null,
+    srcHeight: null,
     displayType: 'sprite',
 
     init: function() {

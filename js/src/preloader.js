@@ -19,7 +19,7 @@ SW.Preloader = Protos.extend({
         }
 
         for (prop in this.assets) {
-            if (this.assets[prop].indexOf('.png') > 0 || this.assets[prop].indexOf('.jpg') > 0) {
+            if (this.assets[prop].indexOf('.png') > 0 || this.assets[prop].indexOf('.jpg') > 0 || this.assets[prop].indexOf('.gif') > 0) {
                 var img = new Image();
                 img.src = this.assets[prop];
 
@@ -31,6 +31,8 @@ SW.Preloader = Protos.extend({
 
                 radio.tuneIn(audio, 'canplaythrough', this.loadHandler, this);
                 radio.tuneIn(audio, 'error', this.error, this);
+            } else {
+                throw new Error('File type not supported');
             }
         }
     },
@@ -43,10 +45,10 @@ SW.Preloader = Protos.extend({
             radio.tuneOut(el, 'load',  this.loadHandler);
             radio.tuneOut(el, 'error', this.error);
 
-            if (this.MediaManager) {
+            if (SW.MediaManager) {
                 for(name in this.assets) {
                     if (this.getFileName(this.assets[name]) === this.getFileName(el.src)) {
-                        this.MediaManager.addImage(name, el);
+                        SW.MediaManager.addImage(name, el);
                     }
                 }
             }
@@ -54,10 +56,10 @@ SW.Preloader = Protos.extend({
             radio.tuneOut(el, 'canplaythrough', this.loadHandler);
             radio.tuneOut(el, 'error', this.error);
 
-            if (this.MediaManager) {
+            if (SW.MediaManager) {
                 for(name in this.assets) {
                     if (this.getFileName(this.assets[name]) === this.getFileName(el.src)) {
-                        this.MediaManager.addSound(name, el);
+                        SW.MediaManager.addSound(name, el);
                     }
                 }
             }

@@ -6,12 +6,12 @@ SW.Game = Protos.extend({
             SW.FSM.add(name, state);
         }
 
-        this.scopedUpdate = this.update.bind(this);
+        this.scopedUpdate = this._update.bind(this);
 
-        this.update();
+        this._update();
     },
 
-    update: function() {
+    _update: function() {
         SW.FSM.sortedEach(function(state) {
             SW.Draw.clear();
 

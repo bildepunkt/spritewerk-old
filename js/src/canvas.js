@@ -19,7 +19,7 @@ SW.Canvas = Protos.extend({
     },
 
     /**
-     * @method Canvas._onScreenResize
+     * @method Canvas.prototype._onScreenResize
      * @private
      */
     _onScreenResize: function() {
@@ -69,6 +69,9 @@ SW.Canvas = Protos.extend({
         //}, 1);
     },
 
+    /**
+     * @method Canvas.prototype.getCanvas
+     */
     getCanvas: function() {
         return this.canvas;
     }
