@@ -3,6 +3,8 @@ SW.Config = {
     height: 400,
     fps: 60,
     stretch: true,
+    loader: 'progress',
+    imageSmoothing: false,
     backgroundColor: '#444',
     bindMouseInput: true,
     bindTouchInput: true,

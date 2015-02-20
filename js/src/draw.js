@@ -5,6 +5,7 @@ SW.Draw = Protos.extend({
     init: function() {
         this.canvas = SW.Canvas.getCanvas();
         this.context = this.canvas.getContext('2d');
+        this.context.imageSmoothingEnabled = SW.Config.imageSmoothing;
     },
 
     clear: function() {

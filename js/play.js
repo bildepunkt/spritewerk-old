@@ -1,11 +1,12 @@
 var MyGame = MyGame || {};
-MyGame.Game = (function() {
+MyGame.Play = (function() {
     'use strict';
 
     return SW.State.extend({
         data: {
             assets: {
-                seattle: '../seattle.jpg'
+                ss: '../solar-system.png',
+                yellowstone: '../yellowstone.jpg'
             },
 
             config: {

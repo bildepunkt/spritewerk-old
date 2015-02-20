@@ -1,9 +1,11 @@
 (function() {
 'use strict';
 
-var wh = 24;
-var x = SW.Config.width / 2 - 12;
-var y = SW.Config.height / 2 - 24;
+var halfWidth = SW.Config.width / 2;
+var halfHeight = SW.Config.height / 2;
+var spinnerSize = 24;
+var spinnerX = halfWidth - 12;
+var spinnerY = halfHeight - 36;
 var rotOffX = 12;
 var rotOffY = 36;
 
@@ -14,43 +16,64 @@ SW.Loading = SW.State.extend({
         },
 
         groups: [{
-            name: 'main',
+            name: 'bars',
             entities: [{
-                name: 'spinnerA',
+                name: 'container',
                 type: SW.Rectangle,
                 config: {
-                    x: x,
-                    y: y,
+                    y: halfHeight - 3,
+                    width: SW.Config.width,
+                    height: 6,
+                    fill: '#444'
+                }
+            }, {
+                name: 'progress',
+                type: SW.Rectangle,
+                config: {
+                    y: halfHeight - 3,
+                    width: 0,
+                    height: 6,
+                    fill: '#888'
+                }
+            }]
+        },{
+            name: 'spinner',
+            entities: [{
+                name: 'a',
+                type: SW.Rectangle,
+                config: {
+                    x: spinnerX,
+                    y: spinnerY,
                     rotationOffsetX: rotOffX,
                     rotationOffsetY: rotOffY,
-                    width: wh,
-                    height: wh,
+                    width: spinnerSize,
+                    height: spinnerSize,
                     fill: '#CC3'
                 }
             }, {
-                name: 'spinnerB',
+                name: 'b',
                 type: SW.Rectangle,
                 config: {
-                    x: x,
-                    y: y,
+                    x: spinnerX,
+                    y: spinnerY,
                     rotationOffsetX: rotOffX,
                     rotationOffsetY: rotOffY,
                     rotation: 120,
-                    width: wh,
-                    height: wh,
+                    width: spinnerSize,
+                    height: spinnerSize,
                     fill: '#C3C'
                 }
             }, {
-                name: 'spinnerC',
+                name: 'c',
                 type: SW.Rectangle,
                 config: {
-                    x: x,
-                    y: y,
+                    x: spinnerX,
+                    y: spinnerY,
                     rotationOffsetX: rotOffX,
                     rotationOffsetY: rotOffY,
                     rotation: 240,
-                    width: wh,
-                    height: wh,
+                    width: spinnerSize,
+                    height: spinnerSize,
                     fill: '#3CC'
                 }
             }]
@@ -58,15 +81,39 @@ SW.Loading = SW.State.extend({
     },
 
     setup: function() {
-        this.spinnerA = this.get('main').get('spinnerA');
-        this.spinnerB = this.get('main').get('spinnerB');
-        this.spinnerC = this.get('main').get('spinnerC');
+        radio.tuneIn('preloadupdate', this.updateBar, this);
+
+        switch(SW.Config.loader) {
+            case 'spinner':
+                this.spinnerA = this.get('spinner').get('a');
+                this.spinnerB = this.get('spinner').get('b');
+                this.spinnerC = this.get('spinner').get('c');
+                this.remove('bars');
+            break;
+            case 'progress':
+                this.progressBar = this.get('bars').get('progress');
+                this.remove('spinner');
+            break;
+        }
+
+    },
+
+    updateBar: function(e) {
+        var data = e.detail;
+
+        this.progressBar.width = SW.Config.width / data.total * data.loaded;
     },
 
     update: function() {
-        this.spinnerA.rotation += 4;
-        this.spinnerB.rotation += 4;
-        this.spinnerC.rotation += 4;
+        if (SW.Config.loader === 'spinner') {
+            this.spinnerA.rotation += 4;
+            this.spinnerB.rotation += 4;
+            this.spinnerC.rotation += 4;
+        }
+    },
+
+    destroy: function() {
+        radio.tuneOut('preloadupdate', this.updateBar, this);
     }
 });
 

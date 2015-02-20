@@ -71,15 +71,13 @@ SW.Preloader = Protos.extend({
 
         this.loaded += 1;
 
+        radio.broadcast('preloadupdate', {
+            loaded: this.loaded,
+            total : this.total
+        });
+
         if (this.loaded === this.total) {
             radio.broadcast('preloadcomplete');
-        } else {
-            radio.broadcast('preloadupdate', {
-                detail: {
-                    loaded: this.loaded,
-                    total : this.total
-                }
-            });
         }
     },
 

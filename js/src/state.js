@@ -12,6 +12,7 @@ SW.State = SW.Collection.extend({
     canScroll: false,
 
     /**
+     * instance of the {@link SW.Camera} object
      * @member {object} State.prototype.camera
      */
     camera: null,
@@ -19,9 +20,9 @@ SW.State = SW.Collection.extend({
     /**
      * the largest entity object which is used in determining scrolling
      *
-     * @method State.prototype.boundingBox
+     * @method State.prototype.stateBoundingBox
      */        
-    boundingBox: null,
+    stateBoundingBox: null,
 
     /**
      * (aquired via data object)
@@ -33,9 +34,17 @@ SW.State = SW.Collection.extend({
     /**
      * (aquired via data object) the largest entity object which is used in determining scrolling
      *
-     * @method State.prototype.scrollRegions
+     * @member State.prototype.scrollRegions
      */ 
     scrollRegions: null,
+
+    /**
+     * the target from a mousedown/touchstart event; used for click/tap replication
+     *
+     * @member State.prototype.pressCandidate
+     * @private
+     */
+    pressCandidate: null,
 
     /**
      * @method State.prototype.press
@@ -112,7 +121,9 @@ SW.State = SW.Collection.extend({
         switch(inputEvent.type) {
             case 'click':
             case 'tap':
-                this.press(evt);
+                if (this.pressCandidate && this.pressCandidate === evt.target) {
+                    this.press(evt);
+                }
             break;
             case 'dblclick':
             case 'dbltap':
@@ -120,6 +131,7 @@ SW.State = SW.Collection.extend({
             break;
             case 'mousedown':
             case 'touchstart':
+                this.pressCandidate = evt.target;
                 this.pressdown(evt);
             break;
             case 'mouseup':

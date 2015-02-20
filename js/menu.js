@@ -5,7 +5,9 @@ MyGame.Menu = (function() {
     return SW.State.extend({
         data: {
             assets: {
-                startBtn: '../start.gif'
+                startBtn: '../start.gif',
+                seattle: '../seattle.jpg',
+                desktop: '../desktop.png'
             },
 
             config: {
@@ -18,7 +20,9 @@ MyGame.Menu = (function() {
                     name: 'startBtn',
                     type: SW.Sprite,
                     config: {
-                        imageName: 'startBtn'
+                        imageName: 'startBtn',
+                        height: 16,
+                        width: 16
                     }
                 }]
             }]
@@ -30,7 +34,7 @@ MyGame.Menu = (function() {
 
         press: function(e) {
             if (e.target === this.startBtn) {
-                SW.FSM.add('game', MyGame.Game);
+                SW.FSM.add('game', MyGame.Play);
             }
         },
 

@@ -23,17 +23,17 @@ SW.Collection = Protos.extend({
     remove: function(name) {
         var item = this.items[name];
 
-        this.sortedEach(function(iterItem, i) {
+        this.sortedEach(function(iterItem, i, items) {
             if (item === iterItem) {
                 iterItem = null;
-                this.sortedItems.splice(i, 1);
-
-                this.items[name] = null;
-                delete this.items[name];
+                items.splice(i, 1);
 
                 return true;
             }
         });
+
+        this.items[name] = null;
+        delete this.items[name];
     },
 
     /**

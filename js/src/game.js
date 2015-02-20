@@ -31,9 +31,7 @@ SW.Game = Protos.extend({
         });
 
         radio.broadcast('newframe', {
-            detail: {
-                frame: ++this.frame
-            }
+            frame: ++this.frame
         });
 
         requestAnimationFrame(this.scopedUpdate);
