@@ -2,10 +2,10 @@
     'use strict';
 
     function init() {
-        radio.tuneOut('spritewerkready', init);
+        SW.Radio.tuneOut('spritewerkready', init);
 
         SW.Game.start('desktop', MyGame.Menu);
     }
 
-    radio.tuneIn('spritewerkready', init);
+    SW.Radio.tuneIn('spritewerkready', init);
 }());

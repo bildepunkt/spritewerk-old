@@ -36,12 +36,6 @@ MyGame.Menu = (function() {
             if (e.target === this.startBtn) {
                 SW.FSM.add('game', MyGame.Play);
             }
-        },
-
-        update: function() {
-        },
-
-        destroy: function() {
         }
     });
 }());

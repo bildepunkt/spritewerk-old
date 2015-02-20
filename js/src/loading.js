@@ -81,7 +81,7 @@ SW.Loading = SW.State.extend({
     },
 
     setup: function() {
-        radio.tuneIn('preloadupdate', this.updateBar, this);
+        SW.Radio.tuneIn('preloadupdate', this.updateBar, this);
 
         switch(SW.Config.loader) {
             case 'spinner':
@@ -113,7 +113,7 @@ SW.Loading = SW.State.extend({
     },
 
     destroy: function() {
-        radio.tuneOut('preloadupdate', this.updateBar, this);
+        SW.Radio.tuneOut('preloadupdate', this.updateBar, this);
     }
 });
 

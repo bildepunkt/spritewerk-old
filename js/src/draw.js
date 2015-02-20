@@ -1,47 +1,48 @@
-SW.Draw = Protos.extend({
-    canvas: null,
-    context: null,
+SW.Draw = SW.Protos.extend({
+    _canvas: null,
+
+    _context: null,
 
     init: function() {
-        this.canvas = SW.Canvas.getCanvas();
-        this.context = this.canvas.getContext('2d');
-        this.context.imageSmoothingEnabled = SW.Config.imageSmoothing;
+        this._canvas = SW.Canvas.getCanvas();
+        this._context = this._canvas.getContext('2d');
+        this._context.imageSmoothingEnabled = SW.Config.imageSmoothing;
     },
 
     clear: function() {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
 
         return this;
     },
 
     fill: function(color) {
-        this.context.save();
-        this.context.fillStyle = color;
-        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        this.context.restore();
+        this._context.save();
+        this._context.fillStyle = color;
+        this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
+        this._context.restore();
 
         return this;
     },
 
     render: function(entity) {
         // remember: context transforms are cumulative :)
-        this.context.save();
-        this.context.translate(entity.x, entity.y);
+        this._context.save();
+        this._context.translate(entity.x, entity.y);
 
         if (entity.rotation !== 0) {
-            this.context.translate(entity.rotationOffsetX, entity.rotationOffsetY);
-            this.context.rotate((Math.PI / 180) * entity.rotation);
-            this.context.translate(-entity.rotationOffsetX, -entity.rotationOffsetY);
+            this._context.translate(entity.rotationOffsetX, entity.rotationOffsetY);
+            this._context.rotate((Math.PI / 180) * entity.rotation);
+            this._context.translate(-entity.rotationOffsetX, -entity.rotationOffsetY);
         }
 
         if (entity.scaleX !== 1 || entity.scaleY !== 1) {
-            this.context.translate(entity.scaleOffsetX, entity.scaleOffsetY);
-            this.context.scale(entity.scaleX, entity.scaleY);
-            this.context.translate(-entity.scaleOffsetX, -entity.scaleOffsetY);
+            this._context.translate(entity.scaleOffsetX, entity.scaleOffsetY);
+            this._context.scale(entity.scaleX, entity.scaleY);
+            this._context.translate(-entity.scaleOffsetX, -entity.scaleOffsetY);
         }
 
-        this.context.globalAlpha = entity.opacity;
-        this.context.globalCompositeOperation = entity.composite;
+        this._context.globalAlpha = entity.opacity;
+        this._context.globalCompositeOperation = entity.composite;
 
         switch(entity.displayType) {
             case 'rectangle':
@@ -52,7 +53,7 @@ SW.Draw = Protos.extend({
             break;
         }
 
-        this.context.restore();
+        this._context.restore();
     },
 
     /**
@@ -60,8 +61,8 @@ SW.Draw = Protos.extend({
      * @private
      */
     _renderRectangle: function(entity) {
-        this.context.fillStyle = entity.fill;
-        this.context.fillRect(0, 0, entity.width, entity.height);
+        this._context.fillStyle = entity.fill;
+        this._context.fillRect(0, 0, entity.width, entity.height);
     },
 
     /**
@@ -69,7 +70,7 @@ SW.Draw = Protos.extend({
      * @private
      */
     _renderSprite: function(entity) {
-        this.context.drawImage(
+        this._context.drawImage(
             entity.img,
             entity.srcX,
             entity.srcY,

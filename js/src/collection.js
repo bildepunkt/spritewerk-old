@@ -1,4 +1,4 @@
-SW.Collection = Protos.extend({
+SW.Collection = SW.Protos.extend({
     items: {},
     sortedItems: [],
 
@@ -12,6 +12,11 @@ SW.Collection = Protos.extend({
     add: function(name, value) {
         this.items[name] = value;
         this.sortedItems.push(value);
+    },
+
+    addAt: function(name, value, index) {
+        this.items[name] = value;
+        this.sortedItems.splice(index, 0, value);
     },
 
     /**

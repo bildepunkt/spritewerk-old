@@ -1,4 +1,4 @@
-var Protos = (function() {
+var SW.Protos = (function() {
     var uidCounter = 0;
 
     // deep copy an object
@@ -17,7 +17,7 @@ var Protos = (function() {
         return obj;
     }
 
-    var Protos = function(members, alpha) {
+    var SW.Protos = function(members, alpha) {
         var prop;
         var Beta = function(options, extending) {
             var prop;
@@ -52,11 +52,11 @@ var Protos = (function() {
         Beta.prototype = alpha;
 
         Beta.extend = function(members) {
-            return Protos(members, new this(null, true));
+            return SW.Protos(members, new this(null, true));
         };
 
         return Beta;
     };
 
-    return Protos();
+    return SW.Protos();
 }());

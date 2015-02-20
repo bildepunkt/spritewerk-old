@@ -1,4 +1,4 @@
-SW.Renderable = Protos.extend({
+SW.Renderable = SW.Protos.extend({
     x: 0,
 
     y: 0,
@@ -22,6 +22,10 @@ SW.Renderable = Protos.extend({
     rotation: 0,
 
     opacity: 1,
+
+    visible: true,
+
+    hidden: false,
 
     composite: 'source-over',
 

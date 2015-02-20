@@ -2,7 +2,7 @@
     'use strict';
 
     function init() {
-        radio.tuneOut(window, 'load', init);
+        SW.Radio.tuneOut(window, 'load', init);
 
         SW.MediaManager = new SW.MediaManager();
         SW.Dom = new SW.Dom();
@@ -13,8 +13,8 @@
         SW.FSM = new SW.FSM();
         SW.Game = new SW.Game();
 
-        radio.broadcast('spritewerkready');
+        SW.Radio.broadcast('spritewerkready');
     }
 
-    radio.tuneIn(window, 'load', init);
+    SW.Radio.tuneIn(window, 'load', init);
 }());

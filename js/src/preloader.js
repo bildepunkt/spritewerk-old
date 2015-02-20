@@ -1,4 +1,7 @@
-SW.Preloader = Protos.extend({
+/**
+ * @private
+ */
+SW.Preloader = SW.Protos.extend({
     assets: null,
 
     total: 0,
@@ -23,14 +26,14 @@ SW.Preloader = Protos.extend({
                 var img = new Image();
                 img.src = this.assets[prop];
 
-                radio.tuneIn(img, 'load',  this.loadHandler, this);
-                radio.tuneIn(img, 'error', this.error, this);
+                SW.Radio.tuneIn(img, 'load',  this.loadHandler, this);
+                SW.Radio.tuneIn(img, 'error', this.error, this);
             } else if (this.assets[prop].indexOf('.mp3') > 0 || this.assets[prop].indexOf('.wav') > 0 || this.assets[prop].indexOf('.ogg') > 0) {
                 var audio = new Audio();
                 audio.src = this.assets[prop];
 
-                radio.tuneIn(audio, 'canplaythrough', this.loadHandler, this);
-                radio.tuneIn(audio, 'error', this.error, this);
+                SW.Radio.tuneIn(audio, 'canplaythrough', this.loadHandler, this);
+                SW.Radio.tuneIn(audio, 'error', this.error, this);
             } else {
                 throw new Error('File type not supported');
             }
@@ -42,8 +45,8 @@ SW.Preloader = Protos.extend({
         var name;
 
         if (type == 'img') {
-            radio.tuneOut(el, 'load',  this.loadHandler);
-            radio.tuneOut(el, 'error', this.error);
+            SW.Radio.tuneOut(el, 'load',  this.loadHandler);
+            SW.Radio.tuneOut(el, 'error', this.error);
 
             if (SW.MediaManager) {
                 for(name in this.assets) {
@@ -53,8 +56,8 @@ SW.Preloader = Protos.extend({
                 }
             }
         } else if (type == 'audio') {
-            radio.tuneOut(el, 'canplaythrough', this.loadHandler);
-            radio.tuneOut(el, 'error', this.error);
+            SW.Radio.tuneOut(el, 'canplaythrough', this.loadHandler);
+            SW.Radio.tuneOut(el, 'error', this.error);
 
             if (SW.MediaManager) {
                 for(name in this.assets) {
@@ -71,13 +74,13 @@ SW.Preloader = Protos.extend({
 
         this.loaded += 1;
 
-        radio.broadcast('preloadupdate', {
+        SW.Radio.broadcast('preloadupdate', {
             loaded: this.loaded,
             total : this.total
         });
 
         if (this.loaded === this.total) {
-            radio.broadcast('preloadcomplete');
+            SW.Radio.broadcast('preloadcomplete');
         }
     },
 

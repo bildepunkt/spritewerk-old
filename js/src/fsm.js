@@ -1,26 +1,31 @@
 SW.FSM = SW.Collection.extend({
-    beingLoaded: {
+    _beingLoaded: {
         name: null,
         data: null
+    },
+
+    _boundingBox: {
+        width: 0,
+        height: 0
     },
 
     init: function() {
         this.add('loading', SW.Loading);
 
-        radio.tuneIn('preloadcomplete', this._onPreloadComplete, this);
+        SW.Radio.tuneIn('preloadcomplete', this._onPreloadComplete, this);
     },
 
     add: function(name, State) {
         if (this.get('loading')) {
-            this.setActive('loading');
+            this.setActiveState('loading');
         }
 
-        this.beingLoaded.name = name;
-        this.beingLoaded.state = new State();
+        this._beingLoaded.name = name;
+        this._beingLoaded.state = new State();
 
-        if (this.beingLoaded.state.data.assets) {
+        if (this._beingLoaded.state.data.assets) {
             new SW.Preloader({
-                assets: this.beingLoaded.state.data.assets
+                assets: this._beingLoaded.state.data.assets
             });
         } else {
             this._onPreloadComplete();
@@ -30,8 +35,8 @@ SW.FSM = SW.Collection.extend({
     remove: function(name) {
         var state = this.get(name);
 
-        radio.tuneOut('inputreceived', state._onInputReceived);
         state.destroy();
+        SW.Radio.tuneOut('inputreceived', state._onInputReceived);
         SW.Collection.prototype.remove.call(this, name);
     },
 
@@ -40,7 +45,7 @@ SW.FSM = SW.Collection.extend({
      * @private
      */
     _onPreloadComplete: function() {
-        var state = this.beingLoaded.state;
+        var state = this._beingLoaded.state;
         var data = state.data;
         var group;
         var entity;
@@ -63,6 +68,13 @@ SW.FSM = SW.Collection.extend({
                 entity = new entityData.type(entityData.config);
                 entityName = entityData.name ? entityData.name : entity.displayType + entity._uid;
 
+                if (entity.width > this._boundingBox.width) {
+                    state.boundingBox.width = entity.width;
+                }
+                if (entity.height > this._boundingBox.height) {
+                    state.boundingBox.height = entity.height;
+                }
+
                 state.get(group.name).add(entityName, entity);
             }
         }
@@ -70,18 +82,23 @@ SW.FSM = SW.Collection.extend({
         state.data = null;
         delete state.data;
 
+        state.camera = new SW.Camera();
+
         state.setup();
 
-        SW.Collection.prototype.add.call(this, this.beingLoaded.name, state);
+        SW.Collection.prototype.add.call(this, this._beingLoaded.name, state);
 
-        this.setActive(this.beingLoaded.name);
+        this.setActiveState(this._beingLoaded.name);
+
+        this._beingLoaded.state = null;
+        this._beingLoaded.name = null;
     },
 
-    getActive: function() {
+    getActiveState: function() {
         return this.sortedItems[this.getCount() - 1];
     },
 
-    setActive: function(name) {
+    setActiveState: function(name) {
         var state = this.get(name);
 
         if (!state) {
@@ -89,23 +106,23 @@ SW.FSM = SW.Collection.extend({
         }
 
         if (this.getCount() === 1) {
-            state.active = true;
-            state.visible = true;
+            state.active(true);
+            state.visible(true);
             return false;
         }
 
         this.sortedEach(function(item, i, list) {
             if (state === item) {
-                item.active = true;
-                item.visible = true;
+                item.active(true);
+                item.visible(true);
 
                 if (i < list.length - 1) {
                     list.splice(i, 1);
                     list.push(item);
                 }
             } else {
-                item.active = false;
-                item.visible = false;
+                item.active(false);
+                item.visible(false);
             }
         });
     }

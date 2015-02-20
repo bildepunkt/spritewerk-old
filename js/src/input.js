@@ -1,21 +1,21 @@
-SW.Input = Protos.extend({
-    canvas: null,
+SW.Input = SW.Protos.extend({
+    _canvas: null,
 
     init: function() {
-        this.canvas = SW.Canvas.getCanvas();
+        this._canvas = SW.Canvas.getCanvas();
 
         if (SW.Config.bindMouseInput) {
-            radio.tuneIn(this.canvas, 'click',     this._receiveEvent);
-            radio.tuneIn(this.canvas, 'dblclick',  this._receiveEvent);
-            radio.tuneIn(this.canvas, 'mousedown', this._receiveEvent);
-            radio.tuneIn(this.canvas, 'mouseup',   this._receiveEvent);
+            SW.Radio.tuneIn(this._canvas, 'click',     this._receiveEvent);
+            SW.Radio.tuneIn(this._canvas, 'dblclick',  this._receiveEvent);
+            SW.Radio.tuneIn(this._canvas, 'mousedown', this._receiveEvent);
+            SW.Radio.tuneIn(this._canvas, 'mouseup',   this._receiveEvent);
         }
 
         if (SW.Config.bindTouchInput) {
-            radio.tuneIn(this.canvas, 'tap',        this._receiveEvent);
-            radio.tuneIn(this.canvas, 'dbltap',     this._receiveEvent);
-            radio.tuneIn(this.canvas, 'touchstart', this._receiveEvent);
-            radio.tuneIn(this.canvas, 'touchend',   this._receiveEvent);
+            SW.Radio.tuneIn(this._canvas, 'tap',        this._receiveEvent);
+            SW.Radio.tuneIn(this._canvas, 'dbltap',     this._receiveEvent);
+            SW.Radio.tuneIn(this._canvas, 'touchstart', this._receiveEvent);
+            SW.Radio.tuneIn(this._canvas, 'touchend',   this._receiveEvent);
         }
     },
 
@@ -27,9 +27,9 @@ SW.Input = Protos.extend({
         var factor = 1;
         var canvasCssWidth;
 
-        if (this.canvas.style.width) {
-            canvasCssWidth = parseInt(this.canvas.style.width, 10);
-            factor = canvasCssWidth / this.canvas.width;
+        if (this._canvas.style.width) {
+            canvasCssWidth = parseInt(this._canvas.style.width, 10);
+            factor = canvasCssWidth / this._canvas.width;
         }
 
         return factor;
@@ -42,7 +42,7 @@ SW.Input = Protos.extend({
      * @private
      */
     _receiveEvent: function(e) {
-        radio.broadcast('inputreceived', {
+        SW.Radio.broadcast('inputreceived', {
             inputEvent: e
         });
     }

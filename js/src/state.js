@@ -1,28 +1,43 @@
 SW.State = SW.Collection.extend({
-    active: true,
+    _canvas: null,
 
-    visible: true,
+    _active: true,
 
-    data: null,
+    _visible: true,
 
     /**
-     * @member {boolean} State.prototype.scroll
+     * @member {boolean} State.prototype.config
      * @default false
      */
-    canScroll: false,
+    config: {
+        /**
+         * @member {boolean} State.prototype.config.scroll
+         * @default false
+         */
+        canScroll: false,
+
+        /**
+         * (aquired via data object) the largest entity object which is used in determining scrolling
+         *
+         * @member State.prototype.config.scrollRegions
+         */ 
+        scrollRegions: null,
+
+        bgColor: null
+    },
 
     /**
      * instance of the {@link SW.Camera} object
-     * @member {object} State.prototype.camera
+     * @member {SW.Camera} State.prototype.camera
      */
     camera: null,
 
     /**
      * the largest entity object which is used in determining scrolling
      *
-     * @method State.prototype.stateBoundingBox
+     * @method State.prototype.boundingBox
      */        
-    stateBoundingBox: null,
+    boundingBox: null,
 
     /**
      * (aquired via data object)
@@ -30,13 +45,6 @@ SW.State = SW.Collection.extend({
      * @member {array} State.prototype.walls
      */
     walls: null,
-
-    /**
-     * (aquired via data object) the largest entity object which is used in determining scrolling
-     *
-     * @member State.prototype.scrollRegions
-     */ 
-    scrollRegions: null,
 
     /**
      * the target from a mousedown/touchstart event; used for click/tap replication
@@ -74,7 +82,75 @@ SW.State = SW.Collection.extend({
     /**
      * @method State.prototype.update
      */
-    update: function() {},
+    update: function() {
+        var overlap;
+        var wallInd;
+        var wallLen;
+
+        if (this.config.bgColor) {
+            SW.Draw.fill(this.config.bgColor);
+        }
+
+        // update wall's positions
+        if (this.walls && !this.camera.fixed && (this.camera.vx !== 0 || this.camera.vy !== 0)) {
+            for (wallInd = 0, wallLen = this.walls.length; wallInd < wallLen; wallInd += 1) {
+                this.walls[wallInd].x -= this.camera.vx;
+                this.walls[wallInd].y -= this.camera.vy;
+            }
+        }
+
+        this.sortedEach(function(group) {
+            group.sortedEach(function(entity) {
+
+                entity.update();
+
+                if (entity.follow && this.canScroll && this.boundingBox && this.scrollRegions) {
+                    this.camera._scroll(entity, this.boundingBox, this.scrollRegions);
+                }
+
+                if (!group.isHUD) {
+                    if (!this.camera.fixed && (this.camera.vx !== 0 || this.camera.vy !== 0)) {
+                        entity.x -= this.camera.vx * group.scrollDepth;
+                        entity.y -= this.camera.vy * group.scrollDepth;
+                    }
+
+                    if (entity.right()  <= 0 || entity.x >= SW.Config.width ||
+                        entity.bottom() <= 0 || entity.y >= SW.Config.height) {
+                        entity.visible = false;
+                    } else {
+                        entity.visible = true;
+                    }
+                }
+
+                if (entity.visible) {
+                    if (entity.blockable && this.walls) {
+                        for (wallInd = 0, wallLen = this.walls.length; wallInd < wallLen; wallInd += 1) {
+                            overlap = SW.Collision.block(entity, this.walls[wallInd]);
+
+                            if (overlap) {
+                                entity.x += overlap.x;
+                                entity.y += overlap.y;
+                            }
+                        }
+                    }
+
+                    if (entity.containable) {
+                        this.camera._contain(entity);
+                    }
+                }
+            });
+        });
+    },
+
+    render: function() {
+        this.sortedEach(function(group) {
+            group.sortedEach(function(entity) {
+                if (entity.visible && !entity.hidden) {
+                    SW.Draw.render(entity);
+                }
+            });
+        });
+    },
 
     /**
      * @method State.prototype.destroy
@@ -82,9 +158,9 @@ SW.State = SW.Collection.extend({
     destroy: function() {},
 
     init: function() {
-        this.canvas = SW.Canvas.getCanvas();
+        this._canvas = SW.Canvas.getCanvas();
         // this event gets tuned out by FSM
-        radio.tuneIn('inputreceived', this._onInputReceived, this);
+        SW.Radio.tuneIn('inputreceived', this._onInputReceived, this);
     },
 
     /**
@@ -98,8 +174,8 @@ SW.State = SW.Collection.extend({
 
         var factor = 100 / SW.Input._getScaleFactor() / 100;
         var inputEvent = e.detail.inputEvent;
-        var offsetX = parseInt(this.canvas.style.left, 10);
-        var offsetY = parseInt(this.canvas.style.top,  10);
+        var offsetX = parseInt(this._canvas.style.left, 10);
+        var offsetY = parseInt(this._canvas.style.top,  10);
         var evt = {
             domEvent: inputEvent
         };
@@ -158,5 +234,25 @@ SW.State = SW.Collection.extend({
         });
 
         return topmostEntity;
+    },
+
+    getActive: function() {
+        return this._active;
+    },
+
+    setActive: function(val) {
+        if (typeof val === 'boolean') {
+            this._active = val;
+        }
+    },
+
+    getVisible: function() {
+        return this._visible;
+    },
+
+    setVisible: function(val) {
+        if (typeof val === 'boolean') {
+            this._visible = val;
+        }
     }
 });

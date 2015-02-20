@@ -1,4 +1,4 @@
-SW.Dom = Protos.extend({
+SW.Dom = SW.Protos.extend({
     
     init: function() {
         document.title = SW.Config.title;
@@ -6,9 +6,9 @@ SW.Dom = Protos.extend({
         this._styleElements();
 
         if (SW.Config.stretch) {
-            radio.tuneIn(window, 'resize', this._onWindowResize, this);
+            SW.Radio.tuneIn(window, 'resize', this._onWindowResize, this);
             // TODO is this needed?
-            radio.tuneIn(window, 'orientationchange', this._onWindowResize, this);
+            SW.Radio.tuneIn(window, 'orientationchange', this._onWindowResize, this);
         }
     },
 
@@ -17,7 +17,7 @@ SW.Dom = Protos.extend({
      * @private
      */
     _onWindowResize: function() {
-        radio.broadcast('screenresize');
+        SW.Radio.broadcast('screenresize');
     },
 
     /**

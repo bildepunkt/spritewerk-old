@@ -1,19 +1,19 @@
-SW.Canvas = Protos.extend({
-    canvas: null,
-    width: null,
-    height: null,
+SW.Canvas = SW.Protos.extend({
+    _canvas: null,
+    _width: null,
+    _height: null,
 
     init: function() {
-        this.canvas = document.getElementById('spritewerk');
-        this.width = SW.Config.width;
-        this.height = SW.Config.height;
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
+        this._canvas = document.getElementById('spritewerk');
+        this._width = SW.Config.width;
+        this._height = SW.Config.height;
+        this._canvas.width = this._width;
+        this._canvas.height = this._height;
 
-        this.canvas.style.position = 'absolute';
+        this._canvas.style.position = 'absolute';
 
         if (SW.Config.stretch) {
-            radio.tuneIn('screenresize', this._onScreenResize, this);
+            SW.Radio.tuneIn('screenresize', this._onScreenResize, this);
             this._onScreenResize();
         }
     },
@@ -57,10 +57,10 @@ SW.Canvas = Protos.extend({
             }
         }
 
-        this.canvas.style.width  = Math.round(canW) + 'px';
-        this.canvas.style.height = Math.round(canH) + 'px';
-        this.canvas.style.left   = Math.round(left) + 'px';
-        this.canvas.style.top    = Math.round(top)  + 'px';
+        this._canvas.style.width  = Math.round(canW) + 'px';
+        this._canvas.style.height = Math.round(canH) + 'px';
+        this._canvas.style.left   = Math.round(left) + 'px';
+        this._canvas.style.top    = Math.round(top)  + 'px';
 
         // we use a timeout here because some mobile browsers
         // don't fire if there is not a short delay
@@ -73,6 +73,6 @@ SW.Canvas = Protos.extend({
      * @method Canvas.prototype.getCanvas
      */
     getCanvas: function() {
-        return this.canvas;
+        return this._canvas;
     }
 });

@@ -33,12 +33,6 @@ MyGame.Play = (function() {
             if (e.target === this.seattle) {
                 console.log(this.seattle);
             }
-        },
-
-        update: function() {
-        },
-
-        destroy: function() {
         }
     });
 }());

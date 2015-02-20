@@ -1,4 +1,4 @@
-SW.Collision = Protos.extend({
+SW.Collision = SW.Protos.extend({
     block : function(player, wall) {
         var dx = wall.x - player.x,
             ox = (wall.width + player.width) / 2 - Math.abs(dx),

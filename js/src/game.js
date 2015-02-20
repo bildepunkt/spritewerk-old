@@ -1,5 +1,5 @@
-SW.Game = Protos.extend({
-    frame: 0,
+SW.Game = SW.Protos.extend({
+    _frame: 0,
 
     start: function(name, state) {
         if (name && state) {
@@ -12,26 +12,21 @@ SW.Game = Protos.extend({
     },
 
     _update: function() {
-        SW.FSM.sortedEach(function(state) {
-            SW.Draw.clear();
+        SW.Draw.clear();
 
-            if (state.active) {
+        SW.FSM.sortedEach(function(state) {
+
+            if (state.getActive()) {
                 state.update();
             }
 
-            if (state.visible) {
-                SW.Draw.clear().fill(state.config.bgColor);
-
-                state.sortedEach(function(group) {
-                    group.sortedEach(function(entity) {
-                        SW.Draw.render(entity);
-                    });
-                });
+            if (state.getVisible()) {
+                state.render();
             }
         });
 
-        radio.broadcast('newframe', {
-            frame: ++this.frame
+        SW.Radio.broadcast('newframe', {
+            frame: ++this._frame
         });
 
         requestAnimationFrame(this.scopedUpdate);
