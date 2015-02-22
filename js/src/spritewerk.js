@@ -1,7 +1,7 @@
 var SW = {
-    SW.Protos: SW.Protos,
-    Radio: SW.Radio
+    Protos: Protos,
+    Radio: radio
 };
 
-SW.Protos = null;
-SW.Radio = null
+Protos = null;
+radio = null

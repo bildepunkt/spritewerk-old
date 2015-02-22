@@ -83,6 +83,7 @@ SW.State = SW.Collection.extend({
      * @method State.prototype.update
      */
     update: function() {
+        var self = this;
         var overlap;
         var wallInd;
         var wallLen;
@@ -104,18 +105,18 @@ SW.State = SW.Collection.extend({
 
                 entity.update();
 
-                if (entity.follow && this.canScroll && this.boundingBox && this.scrollRegions) {
-                    this.camera._scroll(entity, this.boundingBox, this.scrollRegions);
+                if (entity.follow && self.config.canScroll && self.boundingBox && self.config.scrollRegions) {
+                    self.camera._scroll(entity, self.boundingBox, self.config.scrollRegions);
                 }
 
                 if (!group.isHUD) {
-                    if (!this.camera.fixed && (this.camera.vx !== 0 || this.camera.vy !== 0)) {
-                        entity.x -= this.camera.vx * group.scrollDepth;
-                        entity.y -= this.camera.vy * group.scrollDepth;
+                    if (!self.camera.fixed && (self.camera.vx !== 0 || self.camera.vy !== 0)) {
+                        entity.x -= self.camera.vx * group.scrollDepth;
+                        entity.y -= self.camera.vy * group.scrollDepth;
                     }
 
-                    if (entity.right()  <= 0 || entity.x >= SW.Config.width ||
-                        entity.bottom() <= 0 || entity.y >= SW.Config.height) {
+                    if (entity.getRight()  <= 0 || entity.x >= SW.Config.width ||
+                        entity.getBottom() <= 0 || entity.y >= SW.Config.height) {
                         entity.visible = false;
                     } else {
                         entity.visible = true;
@@ -123,9 +124,9 @@ SW.State = SW.Collection.extend({
                 }
 
                 if (entity.visible) {
-                    if (entity.blockable && this.walls) {
-                        for (wallInd = 0, wallLen = this.walls.length; wallInd < wallLen; wallInd += 1) {
-                            overlap = SW.Collision.block(entity, this.walls[wallInd]);
+                    if (entity.blockable && self.walls) {
+                        for (wallInd = 0, wallLen = self.walls.length; wallInd < wallLen; wallInd += 1) {
+                            overlap = SW.Collision.block(entity, self.walls[wallInd]);
 
                             if (overlap) {
                                 entity.x += overlap.x;
@@ -135,7 +136,7 @@ SW.State = SW.Collection.extend({
                     }
 
                     if (entity.containable) {
-                        this.camera._contain(entity);
+                        self.camera._contain(entity);
                     }
                 }
             });
@@ -168,7 +169,7 @@ SW.State = SW.Collection.extend({
      * @private
      */
     _onInputReceived: function(e) {
-        if (!this.active) {
+        if (!this.getActive()) {
             return false;
         }
 

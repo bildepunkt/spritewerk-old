@@ -46,7 +46,7 @@ var _compliant = 'addEventListener' in window,
     _body = document.getElementsByTagName('body')[0],
     _handlerManager = {};
 
-_mediator.id = 'SW.Radio-mediator';
+_mediator.id = 'radio-mediator';
 _body.appendChild(_mediator);
 
 /**
@@ -111,7 +111,7 @@ function _getEl(selector) {
 }
 
 /** public */
-var SW.Radio = {
+var radio = {
     // when using @context, assign return value to original handler to make it scope-bound
     tuneIn: function(el, type, handler, context) {
         var handlers;
@@ -208,12 +208,12 @@ var SW.Radio = {
 };
 
 try {
-    module.exports = SW.Radio;
+    module.exports = radio;
 } catch(e) {
     try {
-        define([], SW.Radio);
+        define([], radio);
     } catch(e) {
-        window.SW.Radio = SW.Radio;
+        window.radio = radio;
     }
 }
 

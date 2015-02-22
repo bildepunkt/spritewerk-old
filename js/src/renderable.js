@@ -3,6 +3,10 @@ SW.Renderable = SW.Protos.extend({
 
     y: 0,
 
+    vx: 0,
+
+    vy: 0,
+
     width: null,
 
     height: null,
@@ -28,6 +32,15 @@ SW.Renderable = SW.Protos.extend({
     hidden: false,
 
     composite: 'source-over',
+
+    follow: false,
+
+    containable: false,
+
+    update: function() {
+        this.x += this.vx;
+        this.y += this.vy;
+    },
 
     getRight: function() {
         return this.x + this.width;

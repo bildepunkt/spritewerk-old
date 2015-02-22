@@ -31,10 +31,8 @@ SW.Camera = SW.Protos.extend({
     fixed: false,
 
     init: function() {
-        this.$shade.init.apply(this, arguments);
-
-        this.width = config.width;
-        this.height = config.height;
+        this.width = SW.Config.width;
+        this.height = SW.Config.height;
     },
 
     _scroll: function(player, boundingBox, regions) {

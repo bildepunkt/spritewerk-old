@@ -5,34 +5,52 @@ MyGame.Play = (function() {
     return SW.State.extend({
         data: {
             assets: {
-                ss: '../solar-system.png',
-                yellowstone: '../yellowstone.jpg'
+                em: 'img/Emerald.png',
+                fire: 'img/Fire.png',
+                ghost: 'img/Ghost.png',
+                heart: 'img/Heart.png',
+                bg: 'img/nebula-dark.jpg'
             },
 
             config: {
-                bgColor: '#ccc'
+                bgColor: '#ccc',
+                scrollRegions: {
+                    left: 100,
+                    right: 500
+                },
+                canScroll: true
             },
 
             groups: [{
                 name: 'main',
                 entities: [{
-                    name: 'seattle',
+                    name: 'bg',
                     type: SW.Sprite,
                     config: {
-                        imageName: 'seattle'
+                        imageName: 'bg'
+                    }
+                }, {
+                    name: 'ghost',
+                    type: MyGame.Player,
+                    config: {
+                        imageName: 'ghost',
+                        follow: true,
+                        containable: true
                     }
                 }]
             }]
         },
 
         setup: function() {
-            this.seattle = this.get('main').get('seattle');
+            this.ghost = this.get('main').get('ghost');
         },
 
-        press: function(e) {
-            if (e.target === this.seattle) {
-                console.log(this.seattle);
-            }
+        pressdown: function(e) {
+            this.ghost.onPressdown(e);
+        },
+
+        pressup: function(e) {
+            this.ghost.onPressup(e);
         }
     });
 }());

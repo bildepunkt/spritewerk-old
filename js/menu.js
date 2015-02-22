@@ -5,9 +5,9 @@ MyGame.Menu = (function() {
     return SW.State.extend({
         data: {
             assets: {
-                startBtn: '../start.gif',
-                seattle: '../seattle.jpg',
-                desktop: '../desktop.png'
+                chain: 'img/Chain.png',
+                chest: 'img/Chest.png',
+                crate: 'img/Crate.png'
             },
 
             config: {
@@ -17,23 +17,23 @@ MyGame.Menu = (function() {
             groups: [{
                 name: 'main',
                 entities: [{
-                    name: 'startBtn',
+                    name: 'crate',
                     type: SW.Sprite,
                     config: {
-                        imageName: 'startBtn',
-                        height: 16,
-                        width: 16
+                        x: 284,
+                        y: 184,
+                        imageName: 'crate'
                     }
                 }]
             }]
         },
 
         setup: function() {
-            this.startBtn = this.get('main').get('startBtn');
+            this.crate = this.get('main').get('crate');
         },
 
         press: function(e) {
-            if (e.target === this.startBtn) {
+            if (e.target === this.crate) {
                 SW.FSM.add('game', MyGame.Play);
             }
         }

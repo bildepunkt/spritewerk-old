@@ -4,11 +4,6 @@ SW.FSM = SW.Collection.extend({
         data: null
     },
 
-    _boundingBox: {
-        width: 0,
-        height: 0
-    },
-
     init: function() {
         this.add('loading', SW.Loading);
 
@@ -54,9 +49,18 @@ SW.FSM = SW.Collection.extend({
 
         state.config = data.config;
 
+        // create dummy BB
+        state.boundingBox = {
+            width: 0,
+            height: 0
+        };
+
         for(var g = 0, gLen = data.groups.length; g < gLen; g += 1) {
             group = data.groups[g];
+
             state.add(group.name, new SW.Collection());
+
+            state.get(group.name).scrollDepth = group.scrollDepth || 1;
 
             for(var e = 0, eLen = group.entities.length; e < eLen; e += 1) {
                 entityData = group.entities[e];
@@ -68,11 +72,8 @@ SW.FSM = SW.Collection.extend({
                 entity = new entityData.type(entityData.config);
                 entityName = entityData.name ? entityData.name : entity.displayType + entity._uid;
 
-                if (entity.width > this._boundingBox.width) {
-                    state.boundingBox.width = entity.width;
-                }
-                if (entity.height > this._boundingBox.height) {
-                    state.boundingBox.height = entity.height;
+                if (entity.width > state.boundingBox.width || entity.height > state.boundingBox.height) {
+                    state.boundingBox = entity;
                 }
 
                 state.get(group.name).add(entityName, entity);
@@ -106,23 +107,23 @@ SW.FSM = SW.Collection.extend({
         }
 
         if (this.getCount() === 1) {
-            state.active(true);
-            state.visible(true);
+            state.setActive(true);
+            state.setVisible(true);
             return false;
         }
 
         this.sortedEach(function(item, i, list) {
             if (state === item) {
-                item.active(true);
-                item.visible(true);
+                item.setActive(true);
+                item.setVisible(true);
 
                 if (i < list.length - 1) {
                     list.splice(i, 1);
                     list.push(item);
                 }
             } else {
-                item.active(false);
-                item.visible(false);
+                item.setActive(false);
+                item.setVisible(false);
             }
         });
     }
