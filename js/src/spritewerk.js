@@ -1,5 +1,6 @@
 /**
- * SW - the namespace for the Spritewerk framework
+ * @author Chris Peters <c.concat.p@gmail.com>
+ * the namespace for the Spritewerk framework
  *
  * @namespace
  */

@@ -45,7 +45,7 @@ SW.State = SW.Collection.extend({
     /**
      * the largest entity object which is used in determining scrolling
      *
-     * @method SW.State.prototype.boundingBox
+     * @member SW.State.prototype.boundingBox
      */        
     boundingBox: null,
 

@@ -1,20 +1,20 @@
 /**
  * Configuration object
  *
- * @member SW.Config
+ * @prop SW.Config
  * @belongsto SW
  */
 SW.Config = {
     /**
-     * @member {int} SW.Config.width
+     * @property {number} SW.Config.width
      */
     width: 600,
     /**
-     * @member {int} SW.Config.height
+     * @prop {number} SW.Config.height
      */
     height: 400,
     /**
-     * @member {int} SW.Config.fps
+     * @member {number} SW.Config.fps
      */
     fps: 60,
     /**
@@ -23,7 +23,7 @@ SW.Config = {
     stretch: true,
     /**
      * the loading screen type. options: "progress", "spinner"
-     * @member {enum} SW.Config.loader
+     * @member {string} SW.Config.loader
      */
     loader: 'progress',
     /**
