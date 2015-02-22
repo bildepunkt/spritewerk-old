@@ -1,3 +1,9 @@
+/**
+ * manages sounds and images, and plays sounds
+ *
+ * @class SW.MediaManager
+ * @belongsto SW
+ */
 SW.MediaManager = SW.Protos.extend({
     images: {},
 

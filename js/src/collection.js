@@ -1,3 +1,9 @@
+/**
+ * Collection - //
+ *
+ * @class SW.Collection
+ * @memberof SW
+ */
 SW.Collection = SW.Protos.extend({
     items: {},
     sortedItems: [],

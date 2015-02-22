@@ -1,3 +1,10 @@
+/**
+ * The base state class to extend from
+ *
+ * @class SW.State
+ * @extends SW.Collection
+ * @belongsto SW
+ */
 SW.State = SW.Collection.extend({
     _canvas: null,
 
@@ -6,61 +13,63 @@ SW.State = SW.Collection.extend({
     _visible: true,
 
     /**
-     * @member {boolean} State.prototype.config
-     * @default false
+     * object aquired via state's data object
+     * @member {object} SW.State.prototype.config
      */
     config: {
         /**
-         * @member {boolean} State.prototype.config.scroll
+         * @member {boolean} SW.State.prototype.config.scroll
          * @default false
          */
         canScroll: false,
 
         /**
-         * (aquired via data object) the largest entity object which is used in determining scrolling
-         *
-         * @member State.prototype.config.scrollRegions
+         * the largest entity object which is used in determining scrolling
+         * @member {object} SW.State.prototype.config.scrollRegions
          */ 
         scrollRegions: null,
 
+        /**
+         * the background color of the state; accepts hex, HSL(A)
+         * @member {string} SW.State.prototype.config.bgColor
+         */ 
         bgColor: null
     },
 
     /**
      * instance of the {@link SW.Camera} object
-     * @member {SW.Camera} State.prototype.camera
+     * @member {SW.Camera} SW.State.prototype.camera
      */
     camera: null,
 
     /**
      * the largest entity object which is used in determining scrolling
      *
-     * @method State.prototype.boundingBox
+     * @method SW.State.prototype.boundingBox
      */        
     boundingBox: null,
 
     /**
-     * (aquired via data object)
-     *
-     * @member {array} State.prototype.walls
+     * an array of wall objects for blocking entities
+     * @member {array} SW.State.prototype.walls
      */
     walls: null,
 
     /**
      * the target from a mousedown/touchstart event; used for click/tap replication
      *
-     * @member State.prototype.pressCandidate
+     * @member SW.State.prototype.pressCandidate
      * @private
      */
     pressCandidate: null,
 
     /**
-     * @method State.prototype.press
+     * @method SW.State.prototype.press
      */
     press: function() {},
 
     /**
-     * @method State.prototype.dblpress
+     * @method SW.State.prototype.dblpress
      */
     dblpress: function() {},
 

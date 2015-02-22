@@ -1,3 +1,9 @@
+/**
+ * manages user input
+ *
+ * @class SW.Input
+ * @belongsto SW
+ */
 SW.Input = SW.Protos.extend({
     _canvas: null,
 

@@ -1,3 +1,9 @@
+/**
+ * class for controlling various dom elements
+ *
+ * @class SW.Dom
+ * @belongsto SW
+ */
 SW.Dom = SW.Protos.extend({
     
     init: function() {

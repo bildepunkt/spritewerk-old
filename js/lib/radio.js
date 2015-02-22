@@ -1,6 +1,4 @@
-/**
- * CustomEvent polyfill
- */
+// CustomEvent polyfill
 CustomEvent = window.CustomEvent ||
 function( event, params ) {
     params = params || { bubbles: false, cancelable: false, detail: undefined };
@@ -10,9 +8,7 @@ function( event, params ) {
 };
 CustomEvent.prototype = window.Event.prototype;
 
-/**
- * Bind polyfill
- */
+// Bind polyfill
 if (!Function.prototype.bind) {
   Function.prototype.bind = function (oThis) {
     if (typeof this !== "function") {
@@ -111,8 +107,23 @@ function _getEl(selector) {
 }
 
 /** public */
+
+/**
+ * event handler
+ *
+ * @class SW.Radio
+ * @belongsto SW
+ */
 var radio = {
-    // when using @context, assign return value to original handler to make it scope-bound
+    /**
+     * tune in to events from a dom element or built-in mediator
+     *
+     * @method SW.Radio.prototype.tuneIn
+     * @param {HTMLElement} [el] - the element to listen to (if not present, will listen to built-in mediator)
+     * @param {string} type - event type; can be custom or DOM
+     * @param {function} handler - the event handler
+     * @param {object} [context] - if present will call handler with this scope
+     */
     tuneIn: function(el, type, handler, context) {
         var handlers;
         // no element, shift args over
@@ -149,6 +160,14 @@ var radio = {
         }
     },
 
+    /**
+     * tune out events from a dom element or built-in mediator
+     *
+     * @method SW.Radio.prototype.tuneOut
+     * @param {HTMLElement} [el] - the element to stop listening to (if not present, will tune out the built-in mediator)
+     * @param {string} type - event type; can be custom or DOM
+     * @param {function} handler - the event handler
+     */
     tuneOut: function(el, type, handler) {
         // no element, shift args over
         if (typeof(el) === 'string' && typeof(type) === 'function') {
@@ -181,6 +200,14 @@ var radio = {
         }
     },
 
+    /**
+     * broadcast events from a dom element or built-in mediator
+     *
+     * @method SW.Radio.prototype.broadcast
+     * @param {HTMLElement} [el] - the element to broadcast from (if not present, will broadcast from built-in mediator)
+     * @param {string} type - event type
+     * @param {object} data - the data to pass to the handler
+     */
     broadcast: function(el, type, data) {
         // no element, shift args over
         if (typeof(el) === 'string' && typeof(type) !== 'string') {

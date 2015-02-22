@@ -1,3 +1,9 @@
+/**
+ * draws various types of objects on the canvas
+ *
+ * @class SW.Draw
+ * @belongsto SW
+ */
 SW.Draw = SW.Protos.extend({
     _canvas: null,
 

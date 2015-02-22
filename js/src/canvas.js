@@ -1,3 +1,9 @@
+/**
+ * manages the canvas element
+ *
+ * @class SW.Canvas
+ * @belongsto SW
+ */
 SW.Canvas = SW.Protos.extend({
     _canvas: null,
     _width: null,

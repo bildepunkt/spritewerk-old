@@ -1,3 +1,9 @@
+/**
+ * the renderable base object
+ *
+ * @class SW.Renderable
+ * @belongsto SW
+ */
 SW.Renderable = SW.Protos.extend({
     x: 0,
 

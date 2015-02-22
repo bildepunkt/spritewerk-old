@@ -1,3 +1,10 @@
+/**
+ * Finite State Manager - Responsible for handling adding, removing, and swapping game states
+ *
+ * @class SW.FSM
+ * @extends SW.Collection
+ * @belongsto SW
+ */
 SW.FSM = SW.Collection.extend({
     _beingLoaded: {
         name: null,

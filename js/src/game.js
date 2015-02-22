@@ -1,3 +1,9 @@
+/**
+ * starts game and controls game loop
+ *
+ * @class SW.Game
+ * @belongsto SW
+ */
 SW.Game = SW.Protos.extend({
     _frame: 0,
 

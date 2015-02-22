@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/state.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/state.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * The base state class to extend from
+ *
+ * @class SW.State
+ * @extends SW.Collection
+ * @belongsto SW
+ */
+SW.State = SW.Collection.extend({
+    _canvas: null,
+
+    _active: true,
+
+    _visible: true,
+
+    /**
+     * object aquired via state's data object
+     * @member {object} SW.State.prototype.config
+     */
+    config: {
+        /**
+         * @member {boolean} SW.State.prototype.config.scroll
+         * @default false
+         */
+        canScroll: false,
+
+        /**
+         * the largest entity object which is used in determining scrolling
+         * @member {object} SW.State.prototype.config.scrollRegions
+         */ 
+        scrollRegions: null,
+
+        /**
+         * the background color of the state; accepts hex, HSL(A)
+         * @member {string} SW.State.prototype.config.bgColor
+         */ 
+        bgColor: null
+    },
+
+    /**
+     * instance of the {@link SW.Camera} object
+     * @member {SW.Camera} SW.State.prototype.camera
+     */
+    camera: null,
+
+    /**
+     * the largest entity object which is used in determining scrolling
+     *
+     * @method SW.State.prototype.boundingBox
+     */        
+    boundingBox: null,
+
+    /**
+     * an array of wall objects for blocking entities
+     * @member {array} SW.State.prototype.walls
+     */
+    walls: null,
+
+    /**
+     * the target from a mousedown/touchstart event; used for click/tap replication
+     *
+     * @member SW.State.prototype.pressCandidate
+     * @private
+     */
+    pressCandidate: null,
+
+    /**
+     * @method SW.State.prototype.press
+     */
+    press: function() {},
+
+    /**
+     * @method SW.State.prototype.dblpress
+     */
+    dblpress: function() {},
+
+    /**
+     * @method State.prototype.pressdown
+     */
+    pressdown: function() {},
+
+    /**
+     * @method State.prototype.pressup
+     */
+    pressup: function() {},
+
+    /**
+     * @method State.prototype.setup
+     */
+    setup: function() {},
+
+    /**
+     * @method State.prototype.update
+     */
+    update: function() {
+        var self = this;
+        var overlap;
+        var wallInd;
+        var wallLen;
+
+        if (this.config.bgColor) {
+            SW.Draw.fill(this.config.bgColor);
+        }
+
+        // update wall's positions
+        if (this.walls &amp;&amp; !this.camera.fixed &amp;&amp; (this.camera.vx !== 0 || this.camera.vy !== 0)) {
+            for (wallInd = 0, wallLen = this.walls.length; wallInd &lt; wallLen; wallInd += 1) {
+                this.walls[wallInd].x -= this.camera.vx;
+                this.walls[wallInd].y -= this.camera.vy;
+            }
+        }
+
+        this.sortedEach(function(group) {
+            group.sortedEach(function(entity) {
+
+                entity.update();
+
+                if (entity.follow &amp;&amp; self.config.canScroll &amp;&amp; self.boundingBox &amp;&amp; self.config.scrollRegions) {
+                    self.camera._scroll(entity, self.boundingBox, self.config.scrollRegions);
+                }
+
+                if (!group.isHUD) {
+                    if (!self.camera.fixed &amp;&amp; (self.camera.vx !== 0 || self.camera.vy !== 0)) {
+                        entity.x -= self.camera.vx * group.scrollDepth;
+                        entity.y -= self.camera.vy * group.scrollDepth;
+                    }
+
+                    if (entity.getRight()  &lt;= 0 || entity.x >= SW.Config.width ||
+                        entity.getBottom() &lt;= 0 || entity.y >= SW.Config.height) {
+                        entity.visible = false;
+                    } else {
+                        entity.visible = true;
+                    }
+                }
+
+                if (entity.visible) {
+                    if (entity.blockable &amp;&amp; self.walls) {
+                        for (wallInd = 0, wallLen = self.walls.length; wallInd &lt; wallLen; wallInd += 1) {
+                            overlap = SW.Collision.block(entity, self.walls[wallInd]);
+
+                            if (overlap) {
+                                entity.x += overlap.x;
+                                entity.y += overlap.y;
+                            }
+                        }
+                    }
+
+                    if (entity.containable) {
+                        self.camera._contain(entity);
+                    }
+                }
+            });
+        });
+    },
+
+    render: function() {
+        this.sortedEach(function(group) {
+            group.sortedEach(function(entity) {
+                if (entity.visible &amp;&amp; !entity.hidden) {
+                    SW.Draw.render(entity);
+                }
+            });
+        });
+    },
+
+    /**
+     * @method State.prototype.destroy
+     */
+    destroy: function() {},
+
+    init: function() {
+        this._canvas = SW.Canvas.getCanvas();
+        // this event gets tuned out by FSM
+        SW.Radio.tuneIn('inputreceived', this._onInputReceived, this);
+    },
+
+    /**
+     * @method State.prototype._onInputReceived
+     * @private
+     */
+    _onInputReceived: function(e) {
+        if (!this.getActive()) {
+            return false;
+        }
+
+        var factor = 100 / SW.Input._getScaleFactor() / 100;
+        var inputEvent = e.detail.inputEvent;
+        var offsetX = parseInt(this._canvas.style.left, 10);
+        var offsetY = parseInt(this._canvas.style.top,  10);
+        var evt = {
+            domEvent: inputEvent
+        };
+
+        if (inputEvent.hasOwnProperty('touches')) {
+            evt.absX = inputEvent.touches[0].pageX - offsetX;
+            evt.absY = inputEvent.touches[0].pageY - offsetY;
+        } else {
+            evt.absX = (inputEvent.hasOwnProperty('clientX') ? inputEvent.clientX : inputEvent.screenX) - offsetX;
+            evt.absY = (inputEvent.hasOwnProperty('clientY') ? inputEvent.clientY : inputEvent.screenY) - offsetY;
+        }
+
+        // coordinate positions relative to canvas scaling
+        evt.x = evt.absX * factor;
+        evt.y = evt.absY * factor;
+
+        evt.target = this._getTarget(evt);
+
+        switch(inputEvent.type) {
+            case 'click':
+            case 'tap':
+                if (this.pressCandidate &amp;&amp; this.pressCandidate === evt.target) {
+                    this.press(evt);
+                }
+            break;
+            case 'dblclick':
+            case 'dbltap':
+                this.dblpress(evt);
+            break;
+            case 'mousedown':
+            case 'touchstart':
+                this.pressCandidate = evt.target;
+                this.pressdown(evt);
+            break;
+            case 'mouseup':
+            case 'touchend':
+                this.pressup(evt);
+            break;
+        }
+    },
+
+    /**
+     * @method State.prototype._getTarget
+     * @private
+     */
+    _getTarget: function(e) {
+        var topmostEntity;
+
+        this.sortedEach(function(group) {
+            group.sortedEach(function(entity) {
+                if (SW.Collision.hitPoint(e.x, e.y, entity)) {
+                    // continually assign higher sorted entity
+                    topmostEntity = entity;
+                }
+            });
+        });
+
+        return topmostEntity;
+    },
+
+    getActive: function() {
+        return this._active;
+    },
+
+    setActive: function(val) {
+        if (typeof val === 'boolean') {
+            this._active = val;
+        }
+    },
+
+    getVisible: function() {
+        return this._visible;
+    },
+
+    setVisible: function(val) {
+        if (typeof val === 'boolean') {
+            this._visible = val;
+        }
+    }
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="SW.Camera.html">Camera</a></li><li><a href="SW.Canvas.html">Canvas</a></li><li><a href="SW.Collection.html">Collection</a></li><li><a href="SW.Collision.html">Collision</a></li><li><a href="SW.Dom.html">Dom</a></li><li><a href="SW.Draw.html">Draw</a></li><li><a href="SW.FSM.html">FSM</a></li><li><a href="SW.Game.html">Game</a></li><li><a href="SW.Input.html">Input</a></li><li><a href="SW.MediaManager.html">MediaManager</a></li><li><a href="SW.Preloader.html">Preloader</a></li><li><a href="SW.Radio.html">Radio</a></li><li><a href="SW.Rectangle.html">Rectangle</a></li><li><a href="SW.Renderable.html">Renderable</a></li><li><a href="SW.Sprite.html">Sprite</a></li><li><a href="SW.State.html">State</a></li></ul><h3>Namespaces</h3><ul><li><a href="SW.html">SW</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Sun Feb 22 2015 10:29:24 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

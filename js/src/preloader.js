@@ -1,4 +1,6 @@
 /**
+ * @class SW.Preloader
+ * @belongsto SW
  * @private
  */
 SW.Preloader = SW.Protos.extend({
@@ -9,8 +11,10 @@ SW.Preloader = SW.Protos.extend({
     loaded: 0,
 
     /**
-     * @params {object} options
-     * @params {array}  options.assets - array of url paths
+     * @method SW.Preloader.prototype.init
+     * @param {object} options
+     * @param {array}  options.assets - array of url paths
+     * @private
      */
     init : function(options) {
         var prop;

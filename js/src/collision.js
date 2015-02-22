@@ -1,12 +1,27 @@
+/**
+ * Singleton of collision methods
+ *
+ * @class SW.Collision
+ * @belongsto SW
+ * @singleton
+ */
 SW.Collision = SW.Protos.extend({
-    block : function(player, wall) {
-        var dx = wall.x - player.x,
-            ox = (wall.width + player.width) / 2 - Math.abs(dx),
+    /**
+     * blocks an entity
+     *
+     * @method SW.Collision.prototype.block
+     * @param {SW.Renderable} entity
+     * @param {object} wall
+     * @return {object} point vector
+     */
+    block : function(entity, wall) {
+        var dx = wall.x - entity.x,
+            ox = (wall.width + entity.width) / 2 - Math.abs(dx),
             dy, oy;
 
         if (ox > 0) {
-            dy = player.y - wall.y;
-            oy = (wall.height + player.height) / 2 - Math.abs(dy);
+            dy = entity.y - wall.y;
+            oy = (wall.height + entity.height) / 2 - Math.abs(dy);
 
             if (oy > 0) {
                 if (ox >= oy) {
@@ -32,6 +47,13 @@ SW.Collision = SW.Protos.extend({
         }
     },
 
+    /**
+     * returns true if two entities are touching/overlapping
+     *
+     * @method SW.Collision.prototype.hit
+     * @param {SW.Renderable} a
+     * @param {SW.Renderable} b
+     */
     hit : function(a, b) {
         if ((a.x + a.width >= b.x && a.x + a.width <= b.x + b.width) ||
             (a.x >= b.x && a.x <= b.x + b.width)) {
@@ -43,10 +65,12 @@ SW.Collision = SW.Protos.extend({
     },
 
     /**
-     * @method State.prototype._hitPoint
-     * @param {number} x - mouse/touch position
-     * @param {number} y - mouse/touch position
-     * @param {Sprite} entity
+     * returns true if x/y is inside entity's bounding box
+     *
+     * @method SW.Collision.prototype.hitPoint
+     * @param {int} x - mouse/touch position
+     * @param {int} y - mouse/touch position
+     * @param {SW.Renderable} entity
      */
     hitPoint: function(x, y, entity) {
         if (x >= entity.x &&

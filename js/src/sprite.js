@@ -1,3 +1,10 @@
+/**
+ * an image display entity
+ *
+ * @class SW.Sprite
+ * @extends SW.Renderable
+ * @belongsto SW
+ */
 SW.Sprite = SW.Renderable.extend({
     img: null,
     imageName: null,
