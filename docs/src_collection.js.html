@@ -27,21 +27,28 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Collection - //
+ * for the holding and sorting of objects in an array (sorted) with a named reference in a literal object/dictionary
  *
  * @class SW.Collection
  * @memberof SW
  */
 SW.Collection = SW.Protos.extend({
+    /**
+     * @member {array} SW.Collection.prototype.items - the literal object/dictionary
+     */
     items: {},
+    
+    /**
+     * @member {object} SW.Collection.prototype.sortedItems - the sorted list
+     */
     sortedItems: [],
 
     /**
      * add an object to both this.items/this.sortedItems
      *
-     * @method Collection.prototype.add
-     * @params {string} name
-     * @params {object} value
+     * @method SW.Collection.prototype.add
+     * @param {string} name
+     * @param {object} value
      */
     add: function(name, value) {
         this.items[name] = value;
@@ -56,8 +63,8 @@ SW.Collection = SW.Protos.extend({
     /**
      * remove -by name- an object from both this.items/this.sortedItems
      *
-     * @method Collection.prototype.remove
-     * @params {string} name
+     * @method SW.Collection.prototype.remove
+     * @param {string} name
      */
     remove: function(name) {
         var item = this.items[name];
@@ -78,8 +85,8 @@ SW.Collection = SW.Protos.extend({
     /**
      * iterate this.sortedItems. provides the item, index, and the list being iterated to the provided function
      *
-     * @method Collection.prototype.sortedEach
-     * @params {function} fn
+     * @method SW.Collection.prototype.sortedEach
+     * @param {function} fn
      */
     sortedEach: function(fn) {
         for(var i = 0, len = this.sortedItems.length; i &lt; len; i += 1) {
@@ -90,8 +97,8 @@ SW.Collection = SW.Protos.extend({
     /**
      * iterate this.items. provides the item, propery, and the list being iterated to the provided function
      *
-     * @method Collection.prototype.each
-     * @params {function} fn
+     * @method SW.Collection.prototype.each
+     * @param {function} fn
      */
     each: function(fn) {
         for(var prop in this.items) {
@@ -100,10 +107,10 @@ SW.Collection = SW.Protos.extend({
     },
 
     /**
-     * iterate this.items that meet criteria
+     * iterate items and return the ones that meet criteria
      *
-     * @method Collection.prototype.filter
-     * @params {function} fn
+     * @method SW.Collection.prototype.filter
+     * @param {function} fn
      * @return {array} filteredItems
      */
     filter: function(fn) {
@@ -123,7 +130,7 @@ SW.Collection = SW.Protos.extend({
     /**
      * get the count of items in collection
      *
-     * @method Collection.prototype.getCount
+     * @method SW.Collection.prototype.getCount
      * @return {integer}
      */
     getCount: function() {
@@ -133,7 +140,7 @@ SW.Collection = SW.Protos.extend({
     /**
      * alter an existing item
      *
-     * @method Collection.prototype.set
+     * @method SW.Collection.prototype.set
      * @param {string} name
      * @param {object} value
      */
@@ -144,7 +151,7 @@ SW.Collection = SW.Protos.extend({
     /**
      * get an existing item by name
      *
-     * @method Collection.prototype.get
+     * @method SW.Collection.prototype.get
      * @return {object}
      */
     get: function(name) {
@@ -160,13 +167,13 @@ SW.Collection = SW.Protos.extend({
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="SW.Camera.html">Camera</a></li><li><a href="SW.Canvas.html">Canvas</a></li><li><a href="SW.Collection.html">Collection</a></li><li><a href="SW.Collision.html">Collision</a></li><li><a href="SW.Dom.html">Dom</a></li><li><a href="SW.Draw.html">Draw</a></li><li><a href="SW.FSM.html">FSM</a></li><li><a href="SW.Game.html">Game</a></li><li><a href="SW.Input.html">Input</a></li><li><a href="SW.MediaManager.html">MediaManager</a></li><li><a href="SW.Preloader.html">Preloader</a></li><li><a href="SW.Radio.html">Radio</a></li><li><a href="SW.Rectangle.html">Rectangle</a></li><li><a href="SW.Renderable.html">Renderable</a></li><li><a href="SW.Sprite.html">Sprite</a></li><li><a href="SW.State.html">State</a></li></ul><h3>Namespaces</h3><ul><li><a href="SW.html">SW</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="SW.Camera.html">Camera</a></li><li><a href="SW.Canvas.html">Canvas</a></li><li><a href="SW.Collection.html">Collection</a></li><li><a href="SW.Collision.html">Collision</a></li><li><a href="SW.Config.html">Config</a></li><li><a href="SW.Dom.html">Dom</a></li><li><a href="SW.Draw.html">Draw</a></li><li><a href="SW.FSM.html">FSM</a></li><li><a href="SW.Game.html">Game</a></li><li><a href="SW.Input.html">Input</a></li><li><a href="SW.MediaManager.html">MediaManager</a></li><li><a href="SW.Preloader.html">Preloader</a></li><li><a href="SW.Radio.html">Radio</a></li><li><a href="SW.Rectangle.html">Rectangle</a></li><li><a href="SW.Renderable.html">Renderable</a></li><li><a href="SW.Sprite.html">Sprite</a></li><li><a href="SW.State.html">State</a></li></ul><h3>Namespaces</h3><ul><li><a href="SW.html">SW</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Sun Feb 22 2015 10:54:49 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Mon Feb 23 2015 20:59:15 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

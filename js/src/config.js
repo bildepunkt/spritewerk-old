@@ -1,7 +1,7 @@
 /**
  * Configuration object
  *
- * @prop SW.Config
+ * @class SW.Config
  * @belongsto SW
  */
 SW.Config = {
