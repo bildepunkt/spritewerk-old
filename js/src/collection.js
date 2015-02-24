@@ -1,19 +1,26 @@
 /**
- * Collection - //
+ * for the holding and sorting of objects in an array (sorted) with a named reference in a literal object/dictionary
  *
  * @class SW.Collection
  * @memberof SW
  */
 SW.Collection = SW.Protos.extend({
+    /**
+     * @prop {array} SW.Collection.prototype.items - the literal object/dictionary
+     */
     items: {},
+    
+    /**
+     * @prop {object} SW.Collection.prototype.sortedItems - the sorted list
+     */
     sortedItems: [],
 
     /**
      * add an object to both this.items/this.sortedItems
      *
-     * @method Collection.prototype.add
-     * @params {string} name
-     * @params {object} value
+     * @method SW.Collection.prototype.add
+     * @param {string} name
+     * @param {object} value
      */
     add: function(name, value) {
         this.items[name] = value;
@@ -28,8 +35,8 @@ SW.Collection = SW.Protos.extend({
     /**
      * remove -by name- an object from both this.items/this.sortedItems
      *
-     * @method Collection.prototype.remove
-     * @params {string} name
+     * @method SW.Collection.prototype.remove
+     * @param {string} name
      */
     remove: function(name) {
         var item = this.items[name];
@@ -50,8 +57,8 @@ SW.Collection = SW.Protos.extend({
     /**
      * iterate this.sortedItems. provides the item, index, and the list being iterated to the provided function
      *
-     * @method Collection.prototype.sortedEach
-     * @params {function} fn
+     * @method SW.Collection.prototype.sortedEach
+     * @param {function} fn
      */
     sortedEach: function(fn) {
         for(var i = 0, len = this.sortedItems.length; i < len; i += 1) {
@@ -62,8 +69,8 @@ SW.Collection = SW.Protos.extend({
     /**
      * iterate this.items. provides the item, propery, and the list being iterated to the provided function
      *
-     * @method Collection.prototype.each
-     * @params {function} fn
+     * @method SW.Collection.prototype.each
+     * @param {function} fn
      */
     each: function(fn) {
         for(var prop in this.items) {
@@ -72,10 +79,10 @@ SW.Collection = SW.Protos.extend({
     },
 
     /**
-     * iterate this.items that meet criteria
+     * iterate items and return the ones that meet criteria
      *
-     * @method Collection.prototype.filter
-     * @params {function} fn
+     * @method SW.Collection.prototype.filter
+     * @param {function} fn
      * @return {array} filteredItems
      */
     filter: function(fn) {
@@ -95,7 +102,7 @@ SW.Collection = SW.Protos.extend({
     /**
      * get the count of items in collection
      *
-     * @method Collection.prototype.getCount
+     * @method SW.Collection.prototype.getCount
      * @return {integer}
      */
     getCount: function() {
@@ -105,7 +112,7 @@ SW.Collection = SW.Protos.extend({
     /**
      * alter an existing item
      *
-     * @method Collection.prototype.set
+     * @method SW.Collection.prototype.set
      * @param {string} name
      * @param {object} value
      */
@@ -116,7 +123,7 @@ SW.Collection = SW.Protos.extend({
     /**
      * get an existing item by name
      *
-     * @method Collection.prototype.get
+     * @method SW.Collection.prototype.get
      * @return {object}
      */
     get: function(name) {

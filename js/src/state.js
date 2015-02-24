@@ -97,10 +97,6 @@ SW.State = SW.Collection.extend({
         var wallInd;
         var wallLen;
 
-        if (this.config.bgColor) {
-            SW.Draw.fill(this.config.bgColor);
-        }
-
         // update wall's positions
         if (this.walls && !this.camera.fixed && (this.camera.vx !== 0 || this.camera.vy !== 0)) {
             for (wallInd = 0, wallLen = this.walls.length; wallInd < wallLen; wallInd += 1) {
@@ -153,6 +149,10 @@ SW.State = SW.Collection.extend({
     },
 
     render: function() {
+        if (this.config.bgColor) {
+            SW.Draw.fill(this.config.bgColor);
+        }
+        
         this.sortedEach(function(group) {
             group.sortedEach(function(entity) {
                 if (entity.visible && !entity.hidden) {

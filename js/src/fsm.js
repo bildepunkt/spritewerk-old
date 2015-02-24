@@ -108,6 +108,7 @@ SW.FSM = SW.Collection.extend({
 
     setActiveState: function(name) {
         var state = this.get(name);
+        var spliceIndex;
 
         if (!state) {
             return false;
@@ -125,13 +126,17 @@ SW.FSM = SW.Collection.extend({
                 item.setVisible(true);
 
                 if (i < list.length - 1) {
-                    list.splice(i, 1);
-                    list.push(item);
+                    spliceIndex = i;
                 }
             } else {
                 item.setActive(false);
                 item.setVisible(false);
             }
         });
+
+        if (typeof spliceIndex === 'number') {
+            this.sortedItems.splice(spliceIndex, 1);
+            this.sortedItems.push(state);
+        }
     }
 });

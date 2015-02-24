@@ -12,7 +12,7 @@ var rotOffY = 36;
 SW.Loading = SW.State.extend({
     data: {
         config: {
-            bgColor: '#000'
+            bgColor: '#C00'
         },
 
         groups: [{
@@ -105,6 +105,8 @@ SW.Loading = SW.State.extend({
     },
 
     update: function() {
+        //SW.State.prototype.update.call(this);
+
         if (SW.Config.loader === 'spinner') {
             this.spinnerA.rotation += 4;
             this.spinnerB.rotation += 4;
