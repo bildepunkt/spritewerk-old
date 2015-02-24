@@ -6,11 +6,12 @@
  */
 SW.Config = {
     /**
-     * @property {number} SW.Config.width
+     * the width of the game canvas
+     * @member {number} SW.Config.prototype.width
      */
     width: 600,
     /**
-     * @prop {number} SW.Config.height
+     * @member {number} SW.Config.height
      */
     height: 400,
     /**

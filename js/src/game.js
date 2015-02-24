@@ -7,12 +7,22 @@
 SW.Game = SW.Protos.extend({
     _frame: 0,
 
-    start: function(name, state) {
+    init: function() {
+        this.scopedUpdate = this._update.bind(this);
+    },
+
+    start: function(name, state, config) {
         if (name && state) {
             SW.FSM.add(name, state);
         }
 
-        this.scopedUpdate = this._update.bind(this);
+        if (config) {
+            for(var prop in config) {
+                if (SW.Config[prop] !== undefined) {
+                    SW.Config[prop] = config[prop];
+                }
+            }
+        }
 
         this._update();
     },

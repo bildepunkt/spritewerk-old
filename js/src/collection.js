@@ -6,12 +6,12 @@
  */
 SW.Collection = SW.Protos.extend({
     /**
-     * @prop {array} SW.Collection.prototype.items - the literal object/dictionary
+     * @member {array} SW.Collection.prototype.items - the literal object/dictionary
      */
     items: {},
     
     /**
-     * @prop {object} SW.Collection.prototype.sortedItems - the sorted list
+     * @member {object} SW.Collection.prototype.sortedItems - the sorted list
      */
     sortedItems: [],
 
