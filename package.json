@@ -1,0 +1,30 @@
+{
+  "name": "spritewerk",
+  "version": "0.0.0",
+  "description": "",
+  "main": "js/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/c-concat-p/spritewerk"
+  },
+  "author": "Chris Peters",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/c-concat-p/spritewerk/issues"
+  },
+  "homepage": "https://github.com/c-concat-p/spritewerk",
+  "devDependencies": {
+    "radio": "git://github.com/c-concat-p/radio",
+    "del": "^1.1.1",
+    "gulp": "^0.4.5",
+    "gulp-uglify": "^1.1.0",
+    "gulp-concat": "^0.1.6",
+    "jsdoc": "^3.3.0-beta1"
+  },
+  "scripts": {
+    "docgen": "rm -r docs && node_modules/.bin/jsdoc --readme README.md -p -r src/js/ -d docs"
+  }
+}
