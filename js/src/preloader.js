@@ -10,16 +10,19 @@ SW._Preloader = (function() {
 
         /**
          * @member {object} SW._Preloader.prototype.assets
+         * @private
          */
         this.assets = assets;
 
         /**
          * @member {integer} SW._Preloader.prototype.total
+         * @private
          */
         this.total = 0;
 
         /**
          * @member {integer} SW._Preloader.prototype.loaded
+         * @private
          */
         this.loaded = 0;
 

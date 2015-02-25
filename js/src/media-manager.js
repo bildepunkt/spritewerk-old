@@ -27,6 +27,7 @@ SW.MediaManager = (function() {
 
     /**
      * @method SW.MediaManager.prototype.preload
+     * @param {object} assets - a hashtable of asset names & paths
      */
     MediaManager.prototype.preload = function(assets) {
         this.preloader = new SW._Preloader(assets);
