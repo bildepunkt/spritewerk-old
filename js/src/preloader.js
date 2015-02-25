@@ -69,15 +69,17 @@ SW._Preloader = (function() {
      * @private
      */
     _Preloader.prototype._loadHandler = function(e) {
-        var asset = e.currentTarget;
+        var el = e.currentTarget;
+        var type = el.tagName.toLowerCase();
+        var assetName;
 
-        this._tuneOutCurrent(asset);
+        this._tuneOutCurrent(el);
 
         this.loaded += 1;
 
         for(var name in this.assets) {
-            if (this._getFileName(this.assets[name]) === this._getFileName(asset.src)) {
-                SW.MediaManager._addSound(name, asset);
+            if (this._getFileName(this.assets[name]) === this._getFileName(el.src)) {
+                assetName = name;
             }
         }
 
@@ -85,14 +87,17 @@ SW._Preloader = (function() {
          * reports that an asset has been successfully preloaded
          *
          * @event SW.Radio#preload/update
-         * @property {HTMLElement} asset
+         * @property {HTMLElement} el
+         * @property {string} name
          * @property {integer} loaded
          * @property {integer} total
          */
-        SW.Radio.broadcast('preloadupdate', {
+        SW.Radio.broadcast('preload/update', {
             loaded: this.loaded,
             total : this.total,
-            asset : asset
+            name: assetName,
+            el: el,
+            type: type
         });
 
         if (this.loaded === this.total) {
@@ -101,7 +106,7 @@ SW._Preloader = (function() {
              *
              * @event SW.Radio#preload/complete
              */
-            SW.Radio.broadcast('preloadcomplete');
+            SW.Radio.broadcast('preload/complete');
         }
     };
 

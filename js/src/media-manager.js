@@ -29,7 +29,7 @@ SW.MediaManager = (function() {
      * @method SW.MediaManager.prototype.preload
      */
     MediaManager.prototype.preload = function(assets) {
-        this.preloader = new Preloader(assets);
+        this.preloader = new SW._Preloader(assets);
     };
 
     /**
@@ -39,7 +39,14 @@ SW.MediaManager = (function() {
      * @private
      */
     MediaManager.prototype._onUpdate = function(e) {
-        this.images[name] = img;
+        switch(e.detail.type) {
+            case 'img':
+                this.images[e.detail.name] = e.detail.el;
+            break;
+            case 'audio':
+                this.sounds[e.detail.name] = e.detail.el;
+            break;
+        }
     };
 
     /**
@@ -57,6 +64,10 @@ SW.MediaManager = (function() {
     MediaManager.prototype._addSound = function(name, snd) {
         this.sounds[name] = snd;
     };
+
+    MediaManager.prototype.getImage = function(name) {
+        return this.images[name];
+    }
 
     MediaManager.prototype.play = function(name) {
         var sound = this.sounds[name];

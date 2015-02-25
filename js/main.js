@@ -5,7 +5,8 @@
         SW.Radio.tuneOut('spritewerk/ready', init);
 
         SW.Radio.tuneIn('preload/complete', function() {
-            console.log('PreCom');
+            var sprite = new SW.Sprite();
+            sprite.setImage(SW.MediaManager.getImage('ghost'));
         });
 
         SW.MediaManager.preload({

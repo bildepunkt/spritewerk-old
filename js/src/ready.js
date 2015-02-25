@@ -9,7 +9,12 @@
 
         SW.MediaManager = new SW.MediaManager();
 
-        SW.Radio.broadcast('spritewerkready');
+        /**
+         * reports that the DOM and Spritewerk are ready
+         *
+         * @event SW.Radio#spritewerk/ready
+         */
+        SW.Radio.broadcast('spritewerk/ready');
     }
 
     SW.Radio.tuneIn(window, 'load', init);
