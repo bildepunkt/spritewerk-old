@@ -5,6 +5,7 @@ SW.Dom = (function() {
      *
      * @class SW.Dom
      * @belongsto SW
+     * @requires SW.Config
      * @singleton
      */
     var Dom = function() {

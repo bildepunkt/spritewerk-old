@@ -4,6 +4,7 @@ SW.Canvas = (function() {
      *
      * @class SW.Canvas
      * @belongsto SW
+     * @requires SW.Config
      * @singleton
      */
     var Canvas = function() {
@@ -82,4 +83,4 @@ SW.Canvas = (function() {
     };
 
     return Canvas;
-});
+}());
