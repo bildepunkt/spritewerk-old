@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: src/base.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,38 +17,76 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: src/base.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>SPRITEWERK</h1><h3>A small, friendly HTML5 framework for device-agnostic game development</h3><h4>Architecture</h4><ul>
-<li>all object properties are private and thus, should only be accessed through methods</li>
-</ul></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>SW.Base = (function() {
+    /**
+     * @class SW.Base
+     * @extends SW.Unique
+     * @belongsto SW
+     */
+    var Base = function() {};
+
+    Base.prototype = new SW.Unique();
+
+   /**
+     * @method SW.Base.prototype._set
+     * @param {string} key
+     * @param {any} value
+     * @private
+     */
+    Base.prototype._set = function(key, value) {
+        if (/\-\=[0-9]+/.test(value)) {
+            this[key] -= value;
+        } else if (/\+\=[0-9]+/.test(value)) {
+            this[key] += value;
+        } else {
+            this[key] = value;
+        }
+    };
+
+    /**
+     * @method SW.Base.prototype.set
+     * @param {string} key
+     * @param {any} value
+     */
+    Base.prototype.set = function(key, value) {
+        value = this._parseValue(value);
+        this[key] = value;
+    };
+
+    /**
+     * @method SW.Base.prototype.setMany
+     * @param {object} values
+     */
+    Base.prototype.setMany = function(values) {
+        for(var prop in values) {
+            if (this[prop] !== undefined) {
+                this._set(prop, values[prop]);
+            }
+        }
+    };
+
+    /**
+     * @method SW.Base.prototype.get
+     * @param {string} key
+     * @return {any}
+     */
+    Base.prototype.get = function(key) {
+        return this[key];
+    };
+
+    return Base; 
+}());</code></pre>
+        </article>
     </section>
-
-
 
 
 

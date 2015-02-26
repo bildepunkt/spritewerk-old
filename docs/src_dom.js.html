@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: src/dom.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,38 +17,67 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: src/dom.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>SPRITEWERK</h1><h3>A small, friendly HTML5 framework for device-agnostic game development</h3><h4>Architecture</h4><ul>
-<li>all object properties are private and thus, should only be accessed through methods</li>
-</ul></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+SW.Dom = (function() {
+    /**
+     * class for controlling various dom elements
+     *
+     * @class SW.Dom
+     * @belongsto SW
+     * @singleton
+     */
+    var Dom = function() {
+        document.title = SW.Config.title;
+
+        this._styleElements();
+
+        if (SW.Config.stretch) {
+            SW.Radio.tuneIn(window, 'resize', this._onWindowResize, this);
+            // TODO is this needed?
+            SW.Radio.tuneIn(window, 'orientationchange', this._onWindowResize, this);
+        }
+    };
+
+    /**
+     * @method SW.Dom.prototype._onWindowResize
+     * @listens window#resize
+     * @listens window#orientationchange
+     * @fires SW.Radio#screen/resize
+     * @private
+     */
+    Dom.prototype._onWindowResize = function() {
+        /**
+         * reports that the window size has changed
+         * @event SW.Radio#screen/resize
+         */
+        SW.Radio.broadcast('screen/resize');
+    };
+
+    /**
+     * @method SW.Dom.prototype._styleElements
+     * @private
+     */
+    Dom.prototype._styleElements = function() {
+        var body = document.getElementsByTagName('body')[0];
+
+        body.style.backgroundColor = SW.Config.backgroundColor;
+        body.style.margin = 0;
+        body.style.padding = 0;
+    };
+
+    return Dom;
+}());</code></pre>
+        </article>
     </section>
-
-
 
 
 

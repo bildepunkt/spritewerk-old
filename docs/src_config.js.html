@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: src/config.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,38 +17,69 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: src/config.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>SPRITEWERK</h1><h3>A small, friendly HTML5 framework for device-agnostic game development</h3><h4>Architecture</h4><ul>
-<li>all object properties are private and thus, should only be accessed through methods</li>
-</ul></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Configuration object
+ *
+ * @class SW.Config
+ * @belongsto SW
+ */
+SW.Config = {
+    /**
+     * the width of the game canvas
+     * @member {number} SW.Config.prototype.width
+     */
+    width: 600,
+    /**
+     * @member {number} SW.Config.prototype.height
+     */
+    height: 400,
+    /**
+     * @member {number} SW.Config.prototype.fps
+     */
+    fps: 60,
+    /**
+     * @member {boolean} SW.Config.prototype.stretch
+     */
+    stretch: true,
+    /**
+     * the loading screen type. options: "progress", "spinner"
+     * @member {string} SW.Config.prototype.loader
+     */
+    loader: 'progress',
+    /**
+     * @member {boolean} SW.Config.prototype.imageSmoothing
+     */
+    imageSmoothing: false,
+    /**
+     * the bg color that fills the remainder of the screen around the canvas
+     * @member {string} SW.Config.prototype.backgroundColor
+     */
+    backgroundColor: '#444',
+    /**
+     * @member {boolean} SW.Config.prototype.bindMouseInput
+     */
+    bindMouseInput: true,
+    /**
+     * @member {boolean} SW.Config.prototype.bindTouchInput
+     */
+    bindTouchInput: true,
+    /**
+     * assigned to the title tag of the page
+     * @member {string} SW.Config.prototype.title
+     */
+    title: 'spritewerk game'
+};</code></pre>
+        </article>
     </section>
-
-
 
 
 

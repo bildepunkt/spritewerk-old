@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/renderable.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/renderable.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>SW.Renderable = (function() {
+    /**
+     * the renderable object
+     *
+     * @class SW.Renderable
+     * @extends SW.Movable
+     * @belongsto SW
+     */
+    var Renderable = function() {
+        /**
+         * @member {integer} SW.Renderable.prototype.width
+         * @default null
+         * @private
+         */
+        this.width = null;
+
+        /**
+         * @member {integer} SW.Renderable.prototype.height
+         * @default null
+         * @private
+         */
+        this.height = null;
+
+        /**
+         * @member {integer} SW.Renderable.prototype.scaleX
+         * @default 1
+         * @private
+         */
+        this.scaleX = 1;
+
+        /**
+         * @member {integer} SW.Renderable.prototype.scaleY
+         * @default 1
+         * @private
+         */
+        this.scaleY = 1;
+
+        /**
+         * @member {integer} SW.Renderable.prototype.rotationOffsetX
+         * @default 0
+         * @private
+         */
+        this.rotationOffsetX = 0;
+
+        /**
+         * @member {integer} SW.Renderable.prototype.rotationOffsetY
+         * @default 0
+         * @private
+         */
+        this.rotationOffsetY = 0;
+
+        /**
+         * @member {integer} SW.Renderable.prototype.scaleOffsetX
+         * @default 0
+         * @private
+         */
+        this.scaleOffsetX = 0;
+
+        /**
+         * @member {integer} SW.Renderable.prototype.scaleOffsetY
+         * @default 0
+         * @private
+         */
+        this.scaleOffsetY = 0;
+
+        /**
+         * @member {integer} SW.Renderable.prototype.rotation
+         * @default 0
+         * @private
+         */
+        this.rotation = 0;
+
+        /**
+         * @member {integer} SW.Renderable.prototype.opacity
+         * @default 1
+         * @private
+         */
+        this.opacity = 1;
+
+        /**
+         * @member {boolean} SW.Renderable.prototype.visible
+         * @default true
+         * @private
+         */
+        this.visible = true;
+
+        /**
+         * used internally, not for api
+         *
+         * @member {boolean} SW.Renderable.prototype._inView
+         * @default true
+         * @private
+         */
+        this._inView = true;
+
+        /**
+         * @member {string} SW.Renderable.prototype.composite
+         * @default 'source-over'
+         * @private
+         */
+        this.composite = 'source-over';
+
+        /**
+         * @member {boolean} SW.Renderable.prototype.tracked
+         * @default false
+         * @private
+         */
+        this.tracked = false;
+
+        /**
+         * @member {boolean} SW.Renderable.prototype.visible
+         * @default false
+         * @private
+         */
+        this.containable = false;
+
+        /**
+         * @member {boolean} SW.Renderable.prototype.blockable
+         * @default false
+         * @private
+         */
+        this.blockable = false;
+    };
+
+    Renderable.prototype = new SW.Movable();
+
+    /**
+     * get the object's right-most position
+     * @method SW.Renderable.prototype.getRight
+     */
+    Renderable.prototype.getRight = function() {
+        return this.x + this.width;
+    };
+
+    /**
+     * get the object's bottom-most
+     * @method SW.Renderable.prototype.getBottom
+     */
+    Renderable.prototype.getBottom = function() {
+        return this.y + this.height;
+    };
+
+    /**
+     * get the object's center x position
+     * @method SW.Renderable.prototype.getCenterX
+     */
+    Renderable.prototype.getCenterX = function() {
+        return this.x + this.halfWidth();
+    };
+
+    /**
+     * get the object's center y position
+     * @method SW.Renderable.prototype.getCenterY
+     */
+    Renderable.prototype.getCenterY = function() {
+        return this.y + this.halfHeight();
+    };
+
+    /**
+     * get the object's half width
+     * @method SW.Renderable.prototype.getHalfWidth
+     */
+    Renderable.prototype.getHalfWidth = function() {
+        return this.width / 2;
+    };
+
+    /**
+     * get the object's half height
+     * @method SW.Renderable.prototype.getHalfHeight
+     */
+    Renderable.prototype.getHalfHeight = function() {
+        return this.height / 2;
+    };
+
+    return Renderable;
+}());</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="SW._Preloader.html">_Preloader</a></li><li><a href="SW.Base.html">Base</a></li><li><a href="SW.Canvas.html">Canvas</a></li><li><a href="SW.Collection.html">Collection</a></li><li><a href="SW.Config.html">Config</a></li><li><a href="SW.Dom.html">Dom</a></li><li><a href="SW.Input.html">Input</a></li><li><a href="SW.MediaManager.html">MediaManager</a></li><li><a href="SW.Movable.html">Movable</a></li><li><a href="SW.Radio.html">Radio</a></li><li><a href="SW.Renderable.html">Renderable</a></li><li><a href="SW.Unique.html">Unique</a></li><li><a href="SW.Util.html">Util</a></li></ul><h3>Events</h3><ul><li><a href="SW.Radio.html#event:dblpress">dblpress</a></li><li><a href="SW.Radio.html#event:preload/complete">preload/complete</a></li><li><a href="SW.Radio.html#event:preload/update">preload/update</a></li><li><a href="SW.Radio.html#event:press">press</a></li><li><a href="SW.Radio.html#event:pressdown">pressdown</a></li><li><a href="SW.Radio.html#event:pressup">pressup</a></li><li><a href="SW.Radio.html#event:screen/resize">screen/resize</a></li><li><a href="SW.Radio.html#event:spritewerk/ready">spritewerk/ready</a></li></ul><h3>Namespaces</h3><ul><li><a href="SW.html">SW</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Wed Feb 25 2015 22:08:30 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

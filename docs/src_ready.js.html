@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: src/ready.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,38 +17,41 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: src/ready.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>SPRITEWERK</h1><h3>A small, friendly HTML5 framework for device-agnostic game development</h3><h4>Architecture</h4><ul>
-<li>all object properties are private and thus, should only be accessed through methods</li>
-</ul></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>(function() {
+    'use strict';
+
+    /**
+     * @fires SW.Radio#spritewerk/ready
+     */
+    function init() {
+        SW.Radio.tuneOut(window, 'load', init);
+
+        SW.Util = new SW.Util();
+        SW.Dom = new SW.Dom();
+        SW.Canvas = new SW.Canvas();
+        SW.MediaManager = new SW.MediaManager();
+
+        /**
+         * reports that the DOM and Spritewerk are ready
+         *
+         * @event SW.Radio#spritewerk/ready
+         */
+        SW.Radio.broadcast('spritewerk/ready');
+    }
+
+    SW.Radio.tuneIn(window, 'load', init);
+}());</code></pre>
+        </article>
     </section>
-
-
 
 
 

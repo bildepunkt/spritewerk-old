@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: src/movable.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,38 +17,67 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: src/movable.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>SPRITEWERK</h1><h3>A small, friendly HTML5 framework for device-agnostic game development</h3><h4>Architecture</h4><ul>
-<li>all object properties are private and thus, should only be accessed through methods</li>
-</ul></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>SW.Movable = (function() {
+    /**
+     * the base movable object
+     *
+     * @class SW.Movable
+     * @extends SW.Base
+     * @belongsto SW
+     */
+    var Movable = function() {
+        /**
+         * @member {integer} SW.Movable.prototype.x
+         * @default 0
+         * @private
+         */
+        this.x = 0;
+
+        /**
+         * @member {integer} SW.Movable.prototype.y
+         * @default 0
+         * @private
+         */
+        this.y = 0;
+
+        /**
+         * @member {integer} SW.Movable.prototype.vx
+         * @default 0
+         * @private
+         */
+        this.vx = 0;
+
+        /**
+         * @member {integer} SW.Movable.prototype.vx
+         * @default 0
+         * @private
+         */
+        this.vy = 0;
+    };
+
+    Movable.prototype = new SW.Base();
+
+    /**
+     * @method SW.Movable.prototype.update
+     */
+    Movable.prototype.update = function() {
+        this.x += this.vx;
+        this.y += this.vy;
+    };
+
+    return Movable;
+}());</code></pre>
+        </article>
     </section>
-
-
 
 
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: src/util.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,38 +17,48 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: src/util.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>SPRITEWERK</h1><h3>A small, friendly HTML5 framework for device-agnostic game development</h3><h4>Architecture</h4><ul>
-<li>all object properties are private and thus, should only be accessed through methods</li>
-</ul></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>SW.Util = (function() {
+    /**
+     * @class SW.Util
+     * @belongsto SW
+     * @singleton
+     */
+    var Util = function() {
+
+    };
+
+    /**
+     * returns true if x/y is inside entity's bounding box
+     *
+     * @method SW.Util.prototype.hitPoint
+     * @param {integer} x - mouse/touch position
+     * @param {integer} y - mouse/touch position
+     * @param {SW.Renderable} entity
+     * @return {boolean}
+     */
+    Util.prototype.hitPoint = function(x, y, entity) {
+        if (x >= entity.x &amp;&amp;
+            x &lt;= entity.x + entity.width &amp;&amp;
+            y >= entity.y &amp;&amp;
+            y &lt;= entity.y + entity.height) {
+            return true;
+        }
+        return false;
+    };
+
+    return Util;
+}());</code></pre>
+        </article>
     </section>
-
-
 
 
 

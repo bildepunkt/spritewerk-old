@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: src/unique.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,38 +17,35 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: src/unique.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>SPRITEWERK</h1><h3>A small, friendly HTML5 framework for device-agnostic game development</h3><h4>Architecture</h4><ul>
-<li>all object properties are private and thus, should only be accessed through methods</li>
-</ul></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>SW.Unique = (function() {
+    var uidCounter = 0;
+
+    /**
+     * @class SW.Unique
+     * @belongsto SW
+     */
+    var Unique = function() {
+        /**
+         * @member {integer} SW.Unique.prototype._uid - the object's unique ID
+         * @private
+         * @readonly
+         */
+        this._uid = ++uidCounter;
+    };
+
+    return Unique;
+}());</code></pre>
+        </article>
     </section>
-
-
 
 
 
