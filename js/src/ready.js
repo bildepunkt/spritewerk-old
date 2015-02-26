@@ -7,6 +7,9 @@
     function init() {
         SW.Radio.tuneOut(window, 'load', init);
 
+        SW.Util = new SW.Util();
+        SW.Dom = new SW.Dom();
+        SW.Canvas = new SW.Canvas();
         SW.MediaManager = new SW.MediaManager();
 
         /**

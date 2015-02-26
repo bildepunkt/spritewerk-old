@@ -25,6 +25,6 @@
     "jsdoc": "^3.3.0-beta1"
   },
   "scripts": {
-    "docgen": "rm -r docs && node_modules/.bin/jsdoc --readme README.md -p -r js/ -d docs"
+    "docgen": "if [ -d \"docs\" ]; then rm -r docs; fi; node_modules/.bin/jsdoc --readme README.md -p -r js/ -d docs"
   }
 }
