@@ -1,7 +1,10 @@
 SW.Unique = (function() {
+    'use strict';
+
     var uidCounter = 0;
 
     /**
+     * provides a unique identifier to sub prototypes
      * @class SW.Unique
      * @belongsto SW
      */

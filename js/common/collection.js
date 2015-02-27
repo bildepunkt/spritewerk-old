@@ -1,22 +1,34 @@
 SW.Collection = (function() {
+    'use strict';
+
     /**
+     * provides management of, and an interface for, a list of entities
+     *
      * @class SW.Collection
      * @extends SW.Unique
+     * @param {object} [items] - a hash of items to add to the new collection
      * @belongsto SW
      */
-    var Collection = function() {
+    var Collection = function(items) {
         /**
          * @member {array} SW.Collection.prototype.sortedItems - the sorted list
          * @private
          */
         this.sortedItems = [];
         /**
-         * @member {object} SW.Collection.prototype.items - the object literal list
+         * @member {object} SW.Collection.prototype.items - the hash list
          * @private
          */
         this.items = {};
+
+        if (typeof items === 'object') {
+            for (var key in items) {
+                this.addItem(key, items[key]);
+            }
+        }
     };
 
+    // inherit unique
     Collection.prototype = new SW.Unique();
 
     /**
@@ -36,7 +48,7 @@ SW.Collection = (function() {
      *
      * @method Collection.prototype.addItemAt
      * @param {string} name
-     * @param {any} value,
+     * @param {any} value
      * @param {integer} index
      */
     Collection.prototype.addItemAt = function(name, value, index) {
@@ -141,6 +153,71 @@ SW.Collection = (function() {
     Collection.prototype.getItem = function(name) {
         return this.items[name];
     };
+
+    /**
+     * moves item to new index
+     * 
+     * @method SW.Collection.prototype.setIndex
+     * @param {string} name
+     * @param {int|string} newDepth - int use: 0 for back, -1 for front, or anything inbetween. string use: '++' or '--' for forward or back respectively
+     */
+    /*Collection.prototype.setIndex = function(name, newDepth) {
+        var entitiesLen = this.entities.length;
+        var entityObject;
+        var depth;
+        var i;
+
+        for (i = 0; i < entitiesLen; i += 1) {
+            if (this.entities[i]._uid === entity._uid) {
+                entityObject = this.entities[i];
+                depth = i;
+                break;
+            }
+        }
+
+        if (newDepth === -1 && depth === this.entities.length -1) {
+            return;
+        }
+
+        if (newDepth === 0  && depth === 0) {
+            return;
+        }
+
+        this.entities.splice(depth, 1);
+
+        switch(typeof newDepth) {
+            case 'number':
+                if (newDepth === -1 || newDepth >= this.entities.length) {
+                    this.entities.push(entityObject);
+                } else {
+                    this.entities.splice(newDepth, 0, entityObject);
+                }
+            break;
+            case 'string':
+                if (newDepth === '++') {
+                    this.entities.splice(depth + 1, 0, entityObject);
+                } else if (newDepth === '--') {
+                    this.entities.splice(depth - 1, 0, entityObject);
+                }
+            break;
+        }
+    };*/
+
+    /**
+     * @method SW.Collection.prototype.getItemIndex
+     * @param {string} name
+     * @return {integer}
+     */
+    /*getItemIndex = function(entity) {
+        var entitiesLen = this.entities.length;
+        var i;
+
+        for (i = 0; i < entitiesLen; i += 1) {
+            if (this.entities[i]._uid === entity._uid) {
+                return i;
+            }
+        }
+    };*/
 
     return Collection;
 }());

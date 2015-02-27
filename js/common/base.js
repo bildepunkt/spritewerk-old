@@ -1,24 +1,29 @@
 SW.Base = (function() {
+    'use strict';
+
     /**
+     * provides an interface for getting and setting properties
+     *
      * @class SW.Base
      * @extends SW.Unique
      * @belongsto SW
      */
     var Base = function() {};
 
+    // inherit Unique
     Base.prototype = new SW.Unique();
 
    /**
-     * @method SW.Base.prototype._set
+     * @method SW.Base.prototype.parseValue
      * @param {string} key
      * @param {any} value
      * @private
      */
-    Base.prototype._set = function(key, value) {
+    Base.prototype.parseValue = function(key, value) {
         if (/\-\=[0-9]+/.test(value)) {
-            this[key] -= value;
+            this[key] -= parseInt(value.replace('-=', ''), 10);
         } else if (/\+\=[0-9]+/.test(value)) {
-            this[key] += value;
+            this[key] += parseInt(value.replace('+=', ''), 10);
         } else {
             this[key] = value;
         }
@@ -30,8 +35,7 @@ SW.Base = (function() {
      * @param {any} value
      */
     Base.prototype.set = function(key, value) {
-        value = this._parseValue(value);
-        this[key] = value;
+        this[key] = this.parseValue(value);
     };
 
     /**
@@ -41,7 +45,7 @@ SW.Base = (function() {
     Base.prototype.setMany = function(values) {
         for(var prop in values) {
             if (this[prop] !== undefined) {
-                this._set(prop, values[prop]);
+                this.parseValue(prop, values[prop]);
             }
         }
     };

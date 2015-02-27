@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/c-concat-p/spritewerk",
   "devDependencies": {
-    "radio": "git://github.com/c-concat-p/radio",
     "del": "^1.1.1",
     "gulp": "^0.4.5",
     "gulp-uglify": "^1.1.0",

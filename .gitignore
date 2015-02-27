@@ -3,6 +3,8 @@ node_modules
 npm-debug.log
 docs
 img
-old
+dist
+4.0
+3.0
 *.sublime-workspace
     
