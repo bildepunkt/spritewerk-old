@@ -12,43 +12,19 @@ SW.Canvas = (function() {
     var Canvas = function(options) {
         /**
          * @member {HTMLEntity} SW.Canvas.prototype.canvasEl - the canvas element
+         * @private
          */
         this.canvasEl = document.getElementById(options.id);
         /**
-         * @member {integer} width - the canvas element's width
+         * @member {integer} SW.Canvas.prototype.width - the canvas element's width
+         * @private
          */
         this.width = options.width;
         /**
-         * @member {integer} height - the canvas element's height
+         * @member {integer} SW.Canvas.prototype.height - the canvas element's height
+         * @private
          */
         this.height = options.height;
-        /**
-         * @member {SW.Collection} layers - the collection of layers
-         */
-        this.layers = new SW.Collection();
-    };
-
-    /**
-     * create a new collection
-     *
-     * @method
-     * @param {string} name
-     * @param {object} [items] - a hash of items to add to the new layer
-     */
-    Canvas.prototype.createLayer = function(name, items) {
-        this.layers.addItem(name, new SW.Collection(items));
-    };
-
-    /**
-     * create a new collection at a given index
-     *
-     * @method
-     * @param {string} name
-     * @param {integer} index
-     * @param {object} [items] - a hash of items to add to the new layer
-     */
-    Canvas.prototype.createLayerAt = function(name, index, items) {
-        this.layers.addItemAt(name, new SW.Collection(items), index);
     };
 
     return Canvas;

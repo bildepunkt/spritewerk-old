@@ -32,9 +32,9 @@ SW.Collection = (function() {
     Collection.prototype = new SW.Unique();
 
     /**
-     * add an object to both this.items/this.sortedItems
+     * adds an object to both this.items/this.sortedItems
      *
-     * @method Collection.prototype.addItem
+     * @method SW.Collection.prototype.addItem
      * @param {string} name
      * @param {object} value
      */
@@ -44,9 +44,9 @@ SW.Collection = (function() {
     };
 
     /**
-     * add an object to both this.items/this.sortedItems at a specific index
+     * adds an object to both this.items/this.sortedItems at a specific index
      *
-     * @method Collection.prototype.addItemAt
+     * @method SW.Collection.prototype.addItemAt
      * @param {string} name
      * @param {any} value
      * @param {integer} index
@@ -57,9 +57,9 @@ SW.Collection = (function() {
     };
 
     /**
-     * remove -by name- an object from both this.items/this.sortedItems
+     * removes -by name- an object from both this.items/this.sortedItems
      *
-     * @method Collection.prototype.removeItem
+     * @method SW.Collection.prototype.removeItem
      * @param {string} name
      */
     Collection.prototype.removeItem = function(name) {
@@ -79,9 +79,9 @@ SW.Collection = (function() {
     };
 
     /**
-     * iterate the collection's sortedItems. The item, index, and the list being iterated are supplied to the provided function
+     * iterates the collection's sortedItems. The item, index, and the list being iterated are supplied to the provided function
      *
-     * @method Collection.prototype.sortedEach
+     * @method SW.Collection.prototype.sortedEach
      * @param {function} fn
      */
     Collection.prototype.sortedEach = function(fn) {
@@ -91,9 +91,9 @@ SW.Collection = (function() {
     };
 
     /**
-     * iterate the collection's items. The item, property, and the list being iterated are supplied to the provided function
+     * iterates the collection's items. The item, property, and the list being iterated are supplied to the provided function
      *
-     * @method Collection.prototype.each
+     * @method SW.Collection.prototype.each
      * @param {function} fn
      */
     Collection.prototype.each = function(fn) {
@@ -103,9 +103,9 @@ SW.Collection = (function() {
     };
 
     /**
-     * iterate items and return the ones that meet criteria
+     * iterates items and return the ones that meet criteria
      *
-     * @method Collection.prototype.filter
+     * @method SW.Collection.prototype.filter
      * @param {function} fn
      * @return {array} filteredItems
      */
@@ -124,9 +124,9 @@ SW.Collection = (function() {
     };
 
     /**
-     * get the count of items in collection
+     * gets the count of items in collection
      *
-     * @method Collection.prototype.getItemCount
+     * @method SW.Collection.prototype.getItemCount
      * @return {integer}
      */
     Collection.prototype.getItemCount = function() {
@@ -134,9 +134,9 @@ SW.Collection = (function() {
     };
 
     /**
-     * alter an existing item
+     * alters an existing item
      *
-     * @method Collection.prototype.setItem
+     * @method SW.Collection.prototype.setItem
      * @param {string} name
      * @param {any} value
      */
@@ -145,9 +145,9 @@ SW.Collection = (function() {
     };
 
     /**
-     * get an existing item by name
+     * gets an existing item by name
      *
-     * @method Collection.prototype.getItem
+     * @method SW.Collection.prototype.getItem
      * @return {any}
      */
     Collection.prototype.getItem = function(name) {
@@ -157,67 +157,42 @@ SW.Collection = (function() {
     /**
      * moves item to new index
      * 
-     * @method SW.Collection.prototype.setIndex
+     * @method SW.Collection.prototype.setItemIndex
      * @param {string} name
-     * @param {int|string} newDepth - int use: 0 for back, -1 for front, or anything inbetween. string use: '++' or '--' for forward or back respectively
+     * @param {integer} index
      */
-    /*Collection.prototype.setIndex = function(name, newDepth) {
-        var entitiesLen = this.entities.length;
-        var entityObject;
-        var depth;
-        var i;
+    Collection.prototype.setItemIndex = function(name, index) {
+        var item = this.getItem(name);
+        var currentIndex = this.getItemIndex(name);
 
-        for (i = 0; i < entitiesLen; i += 1) {
-            if (this.entities[i]._uid === entity._uid) {
-                entityObject = this.entities[i];
-                depth = i;
-                break;
-            }
-        }
-
-        if (newDepth === -1 && depth === this.entities.length -1) {
+        if (index === currentIndex) {
             return;
         }
 
-        if (newDepth === 0  && depth === 0) {
-            return;
-        }
-
-        this.entities.splice(depth, 1);
-
-        switch(typeof newDepth) {
-            case 'number':
-                if (newDepth === -1 || newDepth >= this.entities.length) {
-                    this.entities.push(entityObject);
-                } else {
-                    this.entities.splice(newDepth, 0, entityObject);
-                }
-            break;
-            case 'string':
-                if (newDepth === '++') {
-                    this.entities.splice(depth + 1, 0, entityObject);
-                } else if (newDepth === '--') {
-                    this.entities.splice(depth - 1, 0, entityObject);
-                }
-            break;
-        }
-    };*/
+        this.removeItem(name);
+        this.addItemAt(name, item, index);
+    };
 
     /**
+     * gets an items current index
+     *
      * @method SW.Collection.prototype.getItemIndex
      * @param {string} name
      * @return {integer}
      */
-    /*getItemIndex = function(entity) {
-        var entitiesLen = this.entities.length;
-        var i;
+    Collection.prototype.getItemIndex = function(name) {
+        var theItem = this.getItem(name);
+        var index;
 
-        for (i = 0; i < entitiesLen; i += 1) {
-            if (this.entities[i]._uid === entity._uid) {
-                return i;
+        this.sortedEach(function(item, i) {
+            if (theItem._uid === item._uid) {
+                index = i;
+                return;
             }
-        }
-    };*/
+        });
+
+        return index;
+    };
 
     return Collection;
 }());
