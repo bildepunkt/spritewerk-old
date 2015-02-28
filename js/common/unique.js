@@ -5,6 +5,7 @@ SW.Unique = (function() {
 
     /**
      * provides a unique identifier to sub prototypes
+     *
      * @class SW.Unique
      * @belongsto SW
      */

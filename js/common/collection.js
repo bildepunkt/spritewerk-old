@@ -2,30 +2,23 @@ SW.Collection = (function() {
     'use strict';
 
     /**
-     * provides management of, and an interface for, a list of entities
+     * provides management of, and an interface for, a (named and indexed) list of entities
      *
      * @class SW.Collection
      * @extends SW.Unique
-     * @param {object} [items] - a hash of items to add to the new collection
      * @belongsto SW
      */
-    var Collection = function(items) {
+    var Collection = function() {
         /**
-         * @member {array} SW.Collection.prototype.sortedItems - the sorted list
+         * @member {array} SW.Collection.prototype._sortedItems - the sorted list
          * @private
          */
-        this.sortedItems = [];
+        this._sortedItems = [];
         /**
-         * @member {object} SW.Collection.prototype.items - the hash list
+         * @member {object} SW.Collection.prototype._items - the hash list
          * @private
          */
-        this.items = {};
-
-        if (typeof items === 'object') {
-            for (var key in items) {
-                this.addItem(key, items[key]);
-            }
-        }
+        this._items = {};
     };
 
     // inherit unique
@@ -39,8 +32,8 @@ SW.Collection = (function() {
      * @param {object} value
      */
     Collection.prototype.addItem = function(name, value) {
-        this.items[name] = value;
-        this.sortedItems.push(value);
+        this._items[name] = value;
+        this._sortedItems.push(value);
     };
 
     /**
@@ -52,8 +45,8 @@ SW.Collection = (function() {
      * @param {integer} index
      */
     Collection.prototype.addItemAt = function(name, value, index) {
-        this.items[name] = value;
-        this.sortedItems.splice(index, 0, value);
+        this._items[name] = value;
+        this._sortedItems.splice(index, 0, value);
     };
 
     /**
@@ -74,8 +67,8 @@ SW.Collection = (function() {
             }
         });
 
-        this.items[name] = null;
-        delete this.items[name];
+        this._items[name] = null;
+        delete this._items[name];
     };
 
     /**
@@ -85,8 +78,8 @@ SW.Collection = (function() {
      * @param {function} fn
      */
     Collection.prototype.sortedEach = function(fn) {
-        for(var i = 0, len = this.sortedItems.length; i < len; i += 1) {
-            fn(this.sortedItems[i], i, this.sortedItems);
+        for(var i = 0, len = this._sortedItems.length; i < len; i += 1) {
+            fn(this._sortedItems[i], i, this._sortedItems);
         }
     };
 
@@ -97,8 +90,8 @@ SW.Collection = (function() {
      * @param {function} fn
      */
     Collection.prototype.each = function(fn) {
-        for(var prop in this.items) {
-            fn(this.items[prop], prop, this.items);
+        for(var prop in this._items) {
+            fn(this._items[prop], prop, this._items);
         }
     };
 
@@ -130,7 +123,7 @@ SW.Collection = (function() {
      * @return {integer}
      */
     Collection.prototype.getItemCount = function() {
-        return this.sortedItems.length;
+        return this._sortedItems.length;
     };
 
     /**
@@ -141,7 +134,7 @@ SW.Collection = (function() {
      * @param {any} value
      */
     Collection.prototype.setItem = function(name, value) {
-        this.items[name] = value;
+        this._items[name] = value;
     };
 
     /**
@@ -151,7 +144,7 @@ SW.Collection = (function() {
      * @return {any}
      */
     Collection.prototype.getItem = function(name) {
-        return this.items[name];
+        return this._items[name];
     };
 
     /**

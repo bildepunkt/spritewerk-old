@@ -1,34 +1,54 @@
 SW.Scene = (function() {
     'use strict';
 
+    /**
+     * manages layers and their entities
+     *
+     * @class SW.Scene
+     * @requires SW.Collection
+     * @requires SW.Layer
+     * @belongsto SW
+     */
     var Scene = function() {
         /**
-         * @member {SW.Collection} SW.Scene.prototype.layers - the collection of layers
+         * @member {SW.Collection} SW.Scene.prototype._layers - the collection of layers
+         * @private
          */
-        this.layers = new SW.Collection();
+        this._layers = new SW.Collection();
+        /**
+         * @member {SW.Collection} SW.Scene.prototype._bgColor
+         * @private
+         */
+        this._bgColor = null;
     };
 
     /**
-     * creates a new layer ({@link SW.Collection})
+     * creates a new layer ({@link SW.Layer})
      *
-     * @method SW.Scene.prototype.createLayer
+     * @method SW.Scene.prototype.addLayer
      * @param {string} name
-     * @param {object} [items] - a hash of items to add to the new layer
      */
-    Scene.prototype.createLayer = function(name, items) {
-        this.layers.addItem(name, new SW.Collection(items));
+    Scene.prototype.addLayer = function(name) {
+        this._layers.addItem(name, new SW.Layer());
     };
 
     /**
-     * creates a new layer ({@link SW.Collection}) at a given index
+     * creates a new layer ({@link SW.Layer}) at a given index
      *
-     * @method SW.Scene.prototype.createLayerAt
+     * @method SW.Scene.prototype.addLayerAt
      * @param {string} name
      * @param {integer} index
-     * @param {object} [items] - a hash of items to add to the new layer
      */
-    Scene.prototype.createLayerAt = function(name, index, items) {
-        this.layers.addItemAt(name, new SW.Collection(items), index);
+    Scene.prototype.addLayerAt = function(name, index) {
+        this._layers.addItemAt(name, new SW.Layer(), index);
+    };
+
+    /**
+     * @method SW.Scene.prototype.getLayers
+     * @return {SW.Collection}
+     */
+    Scene.prototype.getLayers = function() {
+        return this._layers;
     };
 
     return Scene; 
