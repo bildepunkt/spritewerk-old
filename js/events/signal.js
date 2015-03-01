@@ -1,11 +1,5 @@
 SW.Signal = (function() {
 
-    function getMediator() {
-        window.removeEventListener('load', getMediator);
-
-        Signal.prototype._mediator = document;
-    }
-
     /**
      * event handler
      *
@@ -16,7 +10,7 @@ SW.Signal = (function() {
     var Signal = function() {
         this._handlerManager = {};
 
-        window.addEventListener('load', getMediator);
+        this._mediator = document;
     };
 
     /**
@@ -52,7 +46,7 @@ SW.Signal = (function() {
             this._handlerManager[type].push(handlers);
         }
 
-        el.addEventListener(type, handler, false);
+        el.addEventListener(type, handlers ? handlers.boundHandler : handler, false);
     };
 
     /**
@@ -94,9 +88,7 @@ SW.Signal = (function() {
      * @param {object} data - the data to pass to the handler
      */
     Signal.prototype.dispatch = function(el, type, data) {
-        var customEvent = new CustomEvent(type, {
-            detail : data
-        });
+        var customEvent;
 
         // no element, shift args over
         if (typeof el === 'string' && typeof type !== 'string') {
@@ -104,6 +96,10 @@ SW.Signal = (function() {
             type = el;
             el = this._mediator;
         }
+        
+        customEvent = new CustomEvent(type, {
+            detail : data
+        });
 
         el.dispatchEvent(customEvent);
     };
