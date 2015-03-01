@@ -3,7 +3,7 @@ SW.MediaManager = (function() {
      * manages and preloads media, plays audio
      *
      * @class SW.MediaManager
-     * @requires SW.Preloader
+     * @requires SW.Signal
      * @belongsto SW
      * @singleton
      */
@@ -26,6 +26,7 @@ SW.MediaManager = (function() {
     /**
      * @method SW.MediaManager.prototype.preload
      * @param {object} assets - a hashtable of asset names & paths
+     * @requires SW.Preloader
      */
     MediaManager.prototype.preload = function(assets) {
         new SW.Preloader(assets);

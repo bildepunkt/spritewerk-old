@@ -34,11 +34,11 @@ SW.Rectangle = (function() {
      */
     Rectangle.prototype.fillColor = function(value) {
         if (value === undefined) {
-            return this._fill;
+            return this._fillColor;
         }
 
         if (typeof value === 'string') {
-            this._fill = value;
+            this._fillColor = value;
         }
 
         return this;

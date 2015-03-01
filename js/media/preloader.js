@@ -54,6 +54,7 @@ SW.Preloader = (function() {
      * @method SW.Preloader.prototype._loadHandler
      * @fires SW.Signal#preload/update
      * @fires SW.Signal#preload/complete
+     * @requires SW.Signal
      * @private
      */
     Preloader.prototype._loadHandler = function(e) {
@@ -100,6 +101,7 @@ SW.Preloader = (function() {
 
     /**
      * @method SW.Preloader.prototype._tuneOutCurrent
+     * @requires SW.Signal
      * @private
      */
     Preloader.prototype._tuneOutCurrent = function(el) {

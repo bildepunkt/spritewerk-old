@@ -153,7 +153,7 @@ SW.Canvas = (function() {
         var srcPosition = entity.srcPosition();
 
         this._context.drawImage(
-            entity.img,
+            entity.image(),
             srcPosition.x,
             srcPosition.y,
             srcDimension.x,

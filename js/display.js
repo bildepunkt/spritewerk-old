@@ -1,5 +1,4 @@
 (function() {
-
     function init() {
         SW.Signal.removeListener(window, 'load', init);
 
