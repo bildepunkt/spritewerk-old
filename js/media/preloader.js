@@ -1,28 +1,28 @@
-SW.Preloader = (function() {
+SW.Media.Preloader = (function() {
     /**
-     * @class SW.Preloader
+     * @class SW.Media.Preloader
      * @belongsto SW
      * @param {object} assets
-     * @requires SW.Signal
+     * @requires SW.Events.Signal
      * @private
      */
     var Preloader = function(assets) {
         var prop;
 
         /**
-         * @member {object} SW.Preloader.prototype.assets
+         * @member {object} SW.Media.Preloader.prototype.assets
          * @private
          */
         this.assets = assets;
 
         /**
-         * @member {integer} SW.Preloader.prototype.total
+         * @member {integer} SW.Media.Preloader.prototype.total
          * @private
          */
         this.total = 0;
 
         /**
-         * @member {integer} SW.Preloader.prototype.loaded
+         * @member {integer} SW.Media.Preloader.prototype.loaded
          * @private
          */
         this.loaded = 0;
@@ -36,14 +36,14 @@ SW.Preloader = (function() {
                 var img = new Image();
                 img.src = this.assets[prop];
 
-                SW.Signal.addListener(img, 'load',  this._loadHandler, this);
-                SW.Signal.addListener(img, 'error', this._error, this);
+                SW.Events.Signal.addListener(img, 'load',  this._loadHandler, this);
+                SW.Events.Signal.addListener(img, 'error', this._error, this);
             } else if (this.assets[prop].indexOf('.mp3') > 0 || this.assets[prop].indexOf('.wav') > 0 || this.assets[prop].indexOf('.ogg') > 0) {
                 var audio = new Audio();
                 audio.src = this.assets[prop];
 
-                SW.Signal.addListener(audio, 'canplaythrough', this._loadHandler, this);
-                SW.Signal.addListener(audio, 'error', this._error, this);
+                SW.Events.Signal.addListener(audio, 'canplaythrough', this._loadHandler, this);
+                SW.Events.Signal.addListener(audio, 'error', this._error, this);
             } else {
                 throw new Error('File type not supported');
             }
@@ -51,10 +51,10 @@ SW.Preloader = (function() {
     };
 
     /**
-     * @method SW.Preloader.prototype._loadHandler
-     * @fires SW.Signal#preload/update
-     * @fires SW.Signal#preload/complete
-     * @requires SW.Signal
+     * @method SW.Media.Preloader.prototype._loadHandler
+     * @fires SW.Events.Signal#preload/update
+     * @fires SW.Events.Signal#preload/complete
+     * @requires SW.Events.Signal
      * @private
      */
     Preloader.prototype._loadHandler = function(e) {
@@ -75,13 +75,13 @@ SW.Preloader = (function() {
         /**
          * reports that an asset has been successfully preloaded
          *
-         * @event SW.Signal#preload/update
+         * @event SW.Events.Signal#preload/update
          * @property {HTMLElement} el
          * @property {string} name
          * @property {integer} loaded
          * @property {integer} total
          */
-        SW.Signal.dispatch('preload/update', {
+        SW.Events.Signal.dispatch('preload/update', {
             loaded: this.loaded,
             total : this.total,
             name: assetName,
@@ -93,31 +93,31 @@ SW.Preloader = (function() {
             /**
              * reports that all assets have been successfully preloaded
              *
-             * @event SW.Signal#preload/complete
+             * @event SW.Events.Signal#preload/complete
              */
-            SW.Signal.dispatch('preload/complete');
+            SW.Events.Signal.dispatch('preload/complete');
         }
     };
 
     /**
-     * @method SW.Preloader.prototype._tuneOutCurrent
-     * @requires SW.Signal
+     * @method SW.Media.Preloader.prototype._tuneOutCurrent
+     * @requires SW.Events.Signal
      * @private
      */
     Preloader.prototype._tuneOutCurrent = function(el) {
         var type = el.tagName.toLowerCase();
 
         if (type == 'img') {
-            SW.Signal.removeListener(el, 'load',  this._loadHandler);
-            SW.Signal.removeListener(el, 'error', this._error);
+            SW.Events.Signal.removeListener(el, 'load',  this._loadHandler);
+            SW.Events.Signal.removeListener(el, 'error', this._error);
         } else if (type == 'audio') {
-            SW.Signal.removeListener(el, 'canplaythrough', this._loadHandler);
-            SW.Signal.removeListener(el, 'error', this._error);
+            SW.Events.Signal.removeListener(el, 'canplaythrough', this._loadHandler);
+            SW.Events.Signal.removeListener(el, 'error', this._error);
         }
     };
 
     /**
-     * @method SW.Preloader.prototype._error
+     * @method SW.Media.Preloader.prototype._error
      * @private
      */
     Preloader.prototype._error = function(e) {
@@ -127,7 +127,7 @@ SW.Preloader = (function() {
     };
 
     /**
-     * @method SW.Preloader.prototype._getFileName
+     * @method SW.Media.Preloader.prototype._getFileName
      * @param {string} path
      * @private
      */

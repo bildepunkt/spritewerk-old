@@ -1,41 +1,41 @@
-SW.Line = (function() {
+SW.Display.Line = (function() {
     'use strict';
 
     /**
      * a line display entity
      *
-     * @class SW.Line
-     * @extends SW.Renderable
+     * @class SW.Display.Line
+     * @extends SW.Display.Renderable
      * @belongsto SW
      */
     var Line = function() {
-        SW.Util.inherit(this, SW.Renderable);
+        SW.Common.Util.inherit(this, SW.Display.Renderable);
 
         /**
-         * @member {array} SW.Line.prototype._coordinates
+         * @member {array} SW.Display.Line.prototype._coordinates
          * @private
          */
         this._coordinates = [];
         /**
-         * @member {string} SW.Line.prototype._color
+         * @member {string} SW.Display.Line.prototype._color
          * @private
          */
         this._color = '#000';
         /**
-         * @member {float} SW.Line.prototype._width
+         * @member {float} SW.Display.Line.prototype._width
          * @default 1
          * @private
          */
         this._width = 1;
         /**
-         * @member {string} SW.Line.prototype._cap
+         * @member {string} SW.Display.Line.prototype._cap
          * @default 'butt'
          * @private
          */
         this._cap = 'butt';
 
         /**
-         * @member {string} SW.Line.prototype._displayType
+         * @member {string} SW.Display.Line.prototype._displayType
          * @default 'line'
          * @private
          * @readonly
@@ -44,9 +44,9 @@ SW.Line = (function() {
     };
 
     /**
-     * @method SW.Line.prototype.coordinates
-     * @param {SW.Vector} [arguments] - n amount of coordinates
-     * @return {array|SW.Line}
+     * @method SW.Display.Line.prototype.coordinates
+     * @param {SW.Display.Vector} [arguments] - n amount of coordinates
+     * @return {array|SW.Display.Line}
      * @chainable
      */
     Line.prototype.coordinates = function() {
@@ -62,9 +62,9 @@ SW.Line = (function() {
     };
 
     /**
-     * @method SW.Line.prototype.color
+     * @method SW.Display.Line.prototype.color
      * @param {string} value
-     * @return {string|SW.Line}
+     * @return {string|SW.Display.Line}
      * @chainable
      */
     Line.prototype.color = function(value) {

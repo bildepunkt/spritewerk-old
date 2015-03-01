@@ -1,15 +1,15 @@
 function loadHandler() {
-    SW.Signal.removeListener(window, 'load', loadHandler);
+    SW.Events.Signal.removeListener(window, 'load', loadHandler);
 
-    SW.Canvas = new SW.Canvas({
+    SW.Display.Canvas = new SW.Display.Canvas({
         id: 'spritewerk',
         width: 600,
         height: 400
     });
 
-    SW.Signal.addListener(SW.Canvas.getCanvasEl(), 'click', function(e) {
+    SW.Events.Signal.addListener(SW.Display.Canvas.getCanvasEl(), 'click', function(e) {
         console.log(e);
     });
 }
 
-SW.Signal.addListener(window, 'load', loadHandler);
+SW.Events.Signal.addListener(window, 'load', loadHandler);

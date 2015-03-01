@@ -1,7 +1,7 @@
-SW.Util = (function() {
+SW.Common.Util = (function() {
     /**
      * provides generic, useful functions
-     * @class SW.Util
+     * @class SW.Common.Util
      * @belongsto SW
      * @singleton
      */
@@ -10,7 +10,7 @@ SW.Util = (function() {
     /**
      * recursively deep copies an object
      *
-     * @method SW.Util.prototype.clone
+     * @method SW.Common.Util.prototype.clone
      * @param {object} src
      * @return {object}
      */
@@ -32,7 +32,7 @@ SW.Util = (function() {
     /**
      * adds parent properties and methods to the child
      *
-     * @method SW.Util.prototype.inherit
+     * @method SW.Common.Util.prototype.inherit
      * @param {object} child
      * @param {constructor} Parent
      */

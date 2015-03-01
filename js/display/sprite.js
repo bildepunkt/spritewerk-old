@@ -1,37 +1,37 @@
-SW.Sprite = (function() {
+SW.Display.Sprite = (function() {
     'use strict';
 
     /**
      * a image display entity
      *
-     * @class SW.Sprite
-     * @extends SW.Renderable
-     * @requires SW.Vector
+     * @class SW.Display.Sprite
+     * @extends SW.Display.Renderable
+     * @requires SW.Display.Vector
      * @belongsto SW
      */
     var Sprite = function() {
-        SW.Util.inherit(this, SW.Renderable);
+        SW.Common.Util.inherit(this, SW.Display.Renderable);
 
         /**
-         * @member {string} SW.Sprite.prototype._image
+         * @member {string} SW.Display.Sprite.prototype._image
          * @private
          */
         this._image = null;
 
         /**
-         * @member {SW.Vector} SW.Sprite.prototype._srcPosition
+         * @member {SW.Display.Vector} SW.Display.Sprite.prototype._srcPosition
          * @private
          */
-        this._srcPosition = new SW.Vector();
+        this._srcPosition = new SW.Display.Vector();
         
         /**
-         * @member {SW.Vector} SW.Sprite.prototype._srcSize
+         * @member {SW.Display.Vector} SW.Display.Sprite.prototype._srcSize
          * @private
          */
-        this._srcDimension = new SW.Vector();
+        this._srcDimension = new SW.Display.Vector();
 
         /**
-         * @member {string} SW.Sprite.prototype._displayType
+         * @member {string} SW.Display.Sprite.prototype._displayType
          * @default 'rectangle'
          * @private
          * @readonly
@@ -40,10 +40,10 @@ SW.Sprite = (function() {
     };
 
     /**
-     * @method SW.Sprite.prototype.srcPosition
+     * @method SW.Display.Sprite.prototype.srcPosition
      * @param {float} [x]
      * @param {float} [y]
-     * @return {SW.Vector|SW.Sprite}
+     * @return {SW.Display.Vector|SW.Display.Sprite}
      * @chainable
      */
     Sprite.prototype.srcPosition = function(x, y) {
@@ -63,10 +63,10 @@ SW.Sprite = (function() {
     };
 
     /**
-     * @method SW.Sprite.prototype.srcDimension
+     * @method SW.Display.Sprite.prototype.srcDimension
      * @param {float} [x]
      * @param {float} [y]
-     * @return {SW.Vector|SW.Sprite}
+     * @return {SW.Display.Vector|SW.Display.Sprite}
      * @chainable
      */
     Sprite.prototype.srcDimension = function(x, y) {
@@ -86,9 +86,11 @@ SW.Sprite = (function() {
     };
 
     /**
-     * @method SW.Sprite.prototype.image
+     * get/set image property; if not already set, sets dimension/srcDimension to image size
+     *
+     * @method SW.Display.Sprite.prototype.image
      * @param {HTMLEntity} value
-     * @return {HTMLEntity|SW.Sprite}
+     * @return {HTMLEntity|SW.Display.Sprite}
      * @chainable
      */
     Sprite.prototype.image = function(value) {

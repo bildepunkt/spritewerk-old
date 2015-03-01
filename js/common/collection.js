@@ -1,20 +1,20 @@
-SW.Collection = (function() {
+SW.Common.Collection = (function() {
     'use strict';
 
     /**
      * provides management of, and an interface for, a (named and indexed) list of entities
      *
-     * @class SW.Collection
+     * @class SW.Common.Collection
      * @belongsto SW
      */
     var Collection = function() {
         /**
-         * @member {array} SW.Collection.prototype._sortedItems - the sorted list
+         * @member {array} SW.Common.Collection.prototype._sortedItems - the sorted list
          * @private
          */
         this._sortedItems = [];
         /**
-         * @member {object} SW.Collection.prototype._items - the hash list
+         * @member {object} SW.Common.Collection.prototype._items - the hash list
          * @private
          */
         this._items = {};
@@ -23,7 +23,7 @@ SW.Collection = (function() {
     /**
      * adds an object to both this.items/this.sortedItems
      *
-     * @method SW.Collection.prototype.addItem
+     * @method SW.Common.Collection.prototype.addItem
      * @param {string} name
      * @param {object} value
      */
@@ -35,7 +35,7 @@ SW.Collection = (function() {
     /**
      * adds an object to both this.items/this.sortedItems at a specific index
      *
-     * @method SW.Collection.prototype.addItemAt
+     * @method SW.Common.Collection.prototype.addItemAt
      * @param {string} name
      * @param {any} value
      * @param {integer} index
@@ -48,7 +48,7 @@ SW.Collection = (function() {
     /**
      * removes -by name- an object from both this.items/this.sortedItems
      *
-     * @method SW.Collection.prototype.removeItem
+     * @method SW.Common.Collection.prototype.removeItem
      * @param {string} name
      */
     Collection.prototype.removeItem = function(name) {
@@ -70,7 +70,7 @@ SW.Collection = (function() {
     /**
      * iterates the collection's sortedItems. The item, index, and the list being iterated are supplied to the provided function
      *
-     * @method SW.Collection.prototype.sortedEach
+     * @method SW.Common.Collection.prototype.sortedEach
      * @param {function} fn
      */
     Collection.prototype.sortedEach = function(fn) {
@@ -82,7 +82,7 @@ SW.Collection = (function() {
     /**
      * iterates the collection's items. The item, property, and the list being iterated are supplied to the provided function
      *
-     * @method SW.Collection.prototype.each
+     * @method SW.Common.Collection.prototype.each
      * @param {function} fn
      */
     Collection.prototype.each = function(fn) {
@@ -94,7 +94,7 @@ SW.Collection = (function() {
     /**
      * iterates items and return the ones that meet criteria
      *
-     * @method SW.Collection.prototype.filter
+     * @method SW.Common.Collection.prototype.filter
      * @param {function} fn
      * @return {array} filteredItems
      */
@@ -115,7 +115,7 @@ SW.Collection = (function() {
     /**
      * gets the count of items in collection
      *
-     * @method SW.Collection.prototype.getItemCount
+     * @method SW.Common.Collection.prototype.getItemCount
      * @return {integer}
      */
     Collection.prototype.getItemCount = function() {
@@ -125,7 +125,7 @@ SW.Collection = (function() {
     /**
      * alters an existing item
      *
-     * @method SW.Collection.prototype.setItem
+     * @method SW.Common.Collection.prototype.setItem
      * @param {string} name
      * @param {any} value
      */
@@ -136,7 +136,7 @@ SW.Collection = (function() {
     /**
      * gets an existing item by name
      *
-     * @method SW.Collection.prototype.getItem
+     * @method SW.Common.Collection.prototype.getItem
      * @return {any}
      */
     Collection.prototype.getItem = function(name) {
@@ -146,7 +146,7 @@ SW.Collection = (function() {
     /**
      * moves item to new index
      * 
-     * @method SW.Collection.prototype.setItemIndex
+     * @method SW.Common.Collection.prototype.setItemIndex
      * @param {string} name
      * @param {integer} index
      */
@@ -165,7 +165,7 @@ SW.Collection = (function() {
     /**
      * gets an items current index
      *
-     * @method SW.Collection.prototype.getItemIndex
+     * @method SW.Common.Collection.prototype.getItemIndex
      * @param {string} name
      * @return {integer}
      */

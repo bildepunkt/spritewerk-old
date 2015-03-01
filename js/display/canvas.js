@@ -1,10 +1,10 @@
-SW.Canvas = (function() {
+SW.Display.Canvas = (function() {
     'use strict';
 
     /**
      * displays entities
      *
-     * @class SW.Canvas
+     * @class SW.Display.Canvas
      * @param {object} options
      * @param {string} options.id - the canvas element's id
      * @param {string} options.width - the canvas element's width
@@ -13,22 +13,22 @@ SW.Canvas = (function() {
      */
     var Canvas = function(options) {
         /**
-         * @member {HTMLEntity} SW.Canvas.prototype._canvasEl - the canvas element
+         * @member {HTMLEntity} SW.Display.Canvas.prototype._canvasEl - the canvas element
          * @private
          */
         this._canvasEl = document.getElementById(options.id);
         /**
-         * @member {HTMLEntity} SW.Canvas.prototype._context - the canvas element's context object
+         * @member {HTMLEntity} SW.Display.Canvas.prototype._context - the canvas element's context object
          * @private
          */
         this._context = this._canvasEl.getContext('2d');
         /**
-         * @member {integer} SW.Canvas.prototype._width - the canvas element's width
+         * @member {integer} SW.Display.Canvas.prototype._width - the canvas element's width
          * @private
          */
         this._width = options.width;
         /**
-         * @member {integer} SW.Canvas.prototype._height - the canvas element's height
+         * @member {integer} SW.Display.Canvas.prototype._height - the canvas element's height
          * @private
          */
         this._height = options.height;
@@ -38,7 +38,7 @@ SW.Canvas = (function() {
     };
 
     /**
-     * @method SW.Canvas.prototype.clearAll
+     * @method SW.Display.Canvas.prototype.clearAll
      * @chainable
      */
     Canvas.prototype.clearAll = function() {
@@ -50,7 +50,7 @@ SW.Canvas = (function() {
     /**
      * fills the entire canvas
      *
-     * @method SW.Canvas.prototype.fillAll
+     * @method SW.Display.Canvas.prototype.fillAll
      * @param {string} color - supports color names, hex & rgb(a)
      * @chainable
      */
@@ -66,7 +66,7 @@ SW.Canvas = (function() {
     /**
      * prepares context and decides how to render the entity
      *
-     * @method SW.Canvas.prototype.render
+     * @method SW.Display.Canvas.prototype.render
      * @param {SW.renderable} entity
      */
     Canvas.prototype.render = function(entity) {
@@ -165,7 +165,7 @@ SW.Canvas = (function() {
     };
 
     /**
-     * @method SW.Canvas.prototype.getCanvasEl
+     * @method SW.Display.Canvas.prototype.getCanvasEl
      * @return {HTMLEntity}
      */
     Canvas.prototype.getCanvasEl = function() {

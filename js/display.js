@@ -1,16 +1,16 @@
 (function() {
     function init() {
-        SW.Signal.removeListener(window, 'load', init);
+        SW.Events.Signal.removeListener(window, 'load', init);
 
         var w = 600;
         var h = 400;
-        var canvas = new SW.Canvas({
+        var canvas = new SW.Display.Canvas({
             id: 'spritewerk',
             width: w,
             height: h
         });
 
-        var scene = new SW.Scene();
+        var scene = new SW.Display.Scene();
         var rectangle;
         var rectLayer;
         var line;
@@ -22,17 +22,17 @@
         lineLayer = scene.getLayers().getItem('lineLayer');
 
         for(var i = 0; i < 2500; i += 1) {
-            rectangle = new SW.Rectangle();
+            rectangle = new SW.Display.Rectangle();
             rectangle.position(Math.random()*w, Math.random()*h);
             rectangle.dimension(16, 16);
             rectangle.opacity(0.2);
             rectLayer.addItem('recto' + i, rectangle);
 
-            line = new SW.Line();
+            line = new SW.Display.Line();
             line.opacity(0.2);
             line.coordinates(
-                new SW.Vector(Math.random()*w, Math.random()*h),
-                new SW.Vector(Math.random()*w, Math.random()*h)
+                new SW.Display.Vector(Math.random()*w, Math.random()*h),
+                new SW.Display.Vector(Math.random()*w, Math.random()*h)
             );
             lineLayer.addItem('lino' + i, line);
         }
@@ -53,5 +53,5 @@
         }, 33);
     }
 
-    SW.Signal.addListener(window, 'load', init);
+    SW.Events.Signal.addListener(window, 'load', init);
 }());

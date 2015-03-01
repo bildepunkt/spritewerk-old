@@ -1,41 +1,41 @@
-SW.MediaManager = (function() {
+SW.Media.MediaManager = (function() {
     /**
      * manages and preloads media, plays audio
      *
-     * @class SW.MediaManager
-     * @requires SW.Signal
+     * @class SW.Media.MediaManager
+     * @requires SW.Events.Signal
      * @belongsto SW
      * @singleton
      */
     var MediaManager = function() {
         /**
-         * @member {object} SW.MediaManager.prototype._images
+         * @member {object} SW.Media.MediaManager.prototype._images
          * @private
          */
         this._images = {};
 
         /**
-         * @member {object} SW.MediaManager.prototype._images
+         * @member {object} SW.Media.MediaManager.prototype._images
          * @private
          */
         this._sounds = {};
 
-        SW.Signal.addListener('preload/update', this._onUpdate, this);
+        SW.Events.Signal.addListener('preload/update', this._onUpdate, this);
     };
 
     /**
-     * @method SW.MediaManager.prototype.preload
+     * @method SW.Media.MediaManager.prototype.preload
      * @param {object} assets - a hashtable of asset names & paths
-     * @requires SW.Preloader
+     * @requires SW.Media.Preloader
      */
     MediaManager.prototype.preload = function(assets) {
-        new SW.Preloader(assets);
+        new SW.Media.Preloader(assets);
     };
 
     /**
-     * @method SW.MediaManager.prototype._onUpdate
-     * @param {SW.Signal#preload/update} e
-     * @listens SW.Signal#preload/update
+     * @method SW.Media.MediaManager.prototype._onUpdate
+     * @param {SW.Events.Signal#preload/update} e
+     * @listens SW.Events.Signal#preload/update
      * @private
      */
     MediaManager.prototype._onUpdate = function(e) {
@@ -50,7 +50,7 @@ SW.MediaManager = (function() {
     };
 
     /**
-     * @method SW.MediaManager.prototype._addImage
+     * @method SW.Media.MediaManager.prototype._addImage
      * @private
      */
     MediaManager.prototype._addImage = function(name, img) {
@@ -58,7 +58,7 @@ SW.MediaManager = (function() {
     };
 
     /**
-     * @method SW.MediaManager.prototype._addSound
+     * @method SW.Media.MediaManager.prototype._addSound
      * @private
      */
     MediaManager.prototype._addSound = function(name, snd) {
@@ -66,7 +66,7 @@ SW.MediaManager = (function() {
     };
 
     /**
-     * @method SW.MediaManager.prototype.getImage
+     * @method SW.Media.MediaManager.prototype.getImage
      * @param {string} name
      * @return {HTMLEntity}
      */
@@ -75,7 +75,7 @@ SW.MediaManager = (function() {
     };
 
     /**
-     * @method SW.MediaManager.prototype.playSound
+     * @method SW.Media.MediaManager.prototype.playSound
      * @param {string} name
      */
     MediaManager.prototype.playSound = function(name) {
@@ -86,7 +86,7 @@ SW.MediaManager = (function() {
     };
 
     /**
-     * @method SW.MediaManager.prototype.pauseSound
+     * @method SW.Media.MediaManager.prototype.pauseSound
      * @param {string} name
      */
     MediaManager.prototype.pauseSound = function(name) {
@@ -96,7 +96,7 @@ SW.MediaManager = (function() {
     };
 
     /**
-     * @method SW.MediaManager.prototype.resumeSound
+     * @method SW.Media.MediaManager.prototype.resumeSound
      * @param {string} name
      */
     MediaManager.prototype.resumeSound = function(name) {
@@ -106,7 +106,7 @@ SW.MediaManager = (function() {
     };
 
     /**
-     * @method SW.MediaManager.prototype.pauseAllSounds
+     * @method SW.Media.MediaManager.prototype.pauseAllSounds
      */
     MediaManager.prototype.pauseAllSounds = function() {
         for(var sound in this._sounds) {

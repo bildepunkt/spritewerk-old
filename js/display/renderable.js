@@ -1,94 +1,95 @@
-SW.Renderable = (function() {
+SW.Display.Renderable = (function() {
     'use strict';
 
     /**
      * is the base prototype for all renderable entities
      *
-     * @class SW.Renderable
-     * @extends SW.Unique
-     * @belongsto SW
+     * @class SW.Display.Renderable
+     * @extends SW.Common.Unique
+     * @requires SW.Display.Vector
+     * @belongsto SW.Display
      */
     var Renderable = function() {
-        SW.Util.inherit(this, SW.Unique);
+        SW.Common.Util.inherit(this, SW.Common.Unique);
  
         /**
-         * @member {SW.Vector} SW.Renderable.prototype._position
+         * @member {SW.Display.Vector} SW.Display.Renderable.prototype._position
          * @default 0
          * @private
          */
-        this._position = new SW.Vector();
+        this._position = new SW.Display.Vector();
 
         /**
-         * @member {SW.Vector} SW.Renderable.prototype._velocity
+         * @member {SW.Display.Vector} SW.Display.Renderable.prototype._velocity
          * @default 0
          * @private
          */
-        this._velocity = new SW.Vector();
+        this._velocity = new SW.Display.Vector();
 
         /**
-         * @member {SW.Vector} SW.Renderable.prototype._dimension
+         * @member {SW.Display.Vector} SW.Display.Renderable.prototype._dimension
          * @private
          */
-        this._dimension = new SW.Vector();
+        this._dimension = new SW.Display.Vector();
 
         /**
-         * @member {SW.Vector} SW.Renderable.prototype._scale
+         * @member {SW.Display.Vector} SW.Display.Renderable.prototype._scale
          * @default 1
          * @private
          */
-        this._scale = new SW.Vector(1, 1);
+        this._scale = new SW.Display.Vector(1, 1);
 
         /**
-         * @member {SW.Vector} SW.Renderable.prototype._rotationOffset
+         * @member {SW.Display.Vector} SW.Display.Renderable.prototype._rotationOffset
          * @default 0
          * @private
          */
-        this._rotationOffset = new SW.Vector();
+        this._rotationOffset = new SW.Display.Vector();
 
         /**
-         * @member {SW.Vector} SW.Renderable.prototype._scaleOffset
+         * @member {SW.Display.Vector} SW.Display.Renderable.prototype._scaleOffset
          * @default 0
          * @private
          */
-        this._scaleOffset = new SW.Vector();
+        this._scaleOffset = new SW.Display.Vector();
 
         /**
-         * @member {integer} SW.Renderable.prototype._rotation
+         * @member {integer} SW.Display.Renderable.prototype._rotation
          * @default 0
          * @private
          */
         this._rotation = 0;
 
         /**
-         * @member {integer} SW.Renderable.prototype._opacity
+         * @member {integer} SW.Display.Renderable.prototype._opacity
          * @default 1
          * @private
          */
         this._opacity = 1;
 
         /**
-         * @member {boolean} SW.Renderable.prototype._visible
+         * @member {boolean} SW.Display.Renderable.prototype._visible
          * @default true
          * @private
          */
         this._visible = true;
 
         /**
-         * @member {boolean} SW.Renderable.prototype._hidden
+         * @member {boolean} SW.Display.Renderable.prototype._hidden
          * @default false
          * @private
          */
         this._hidden = false;
 
         /**
-         * @member {string} SW.Renderable.prototype._composite
+         * @member {string} SW.Display.Renderable.prototype._composite
          * @default 'source-over'
          * @private
          */
         this._composite = 'source-over';
 
         /**
-         * @member {string} SW.Renderable.prototype._displayType
+         * @member {string} SW.Display.Renderable.prototype._displayType
          * @default ''
          * @private
          * @readonly
@@ -97,7 +98,7 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.getDisplayType
+     * @method SW.Display.Renderable.prototype.getDisplayType
      * @return {string}
      * @chainable
      */
@@ -106,10 +107,10 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.position
+     * @method SW.Display.Renderable.prototype.position
      * @param {float} [x]
      * @param {float} [y]
-     * @return {SW.Vector|SW.Renderable}
+     * @return {SW.Display.Vector|SW.Display.Renderable}
      * @chainable
      */
     Renderable.prototype.position = function(x, y) {
@@ -129,9 +130,9 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.dimension
+     * @method SW.Display.Renderable.prototype.dimension
      * @param {float} [value]
-     * @return {float|SW.Renderable}
+     * @return {float|SW.Display.Renderable}
      * @chainable
      */
     Renderable.prototype.dimension = function(x, y) {
@@ -151,9 +152,9 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.rotation
+     * @method SW.Display.Renderable.prototype.rotation
      * @param {float} [value]
-     * @return {float|SW.Renderable}
+     * @return {float|SW.Display.Renderable}
      * @chainable
      */
     Renderable.prototype.rotation = function(value) {
@@ -169,10 +170,10 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.rotationOffset
+     * @method SW.Display.Renderable.prototype.rotationOffset
      * @param {float} [x]
      * @param {float} [y]
-     * @return {SW.Vector|SW.Renderable}
+     * @return {SW.Display.Vector|SW.Display.Renderable}
      * @chainable
      */
     Renderable.prototype.rotationOffset = function(x, y) {
@@ -192,10 +193,10 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.scale
+     * @method SW.Display.Renderable.prototype.scale
      * @param {float} [x]
      * @param {float} [y]
-     * @return {SW.Vector|SW.Renderable}
+     * @return {SW.Display.Vector|SW.Display.Renderable}
      * @chainable
      */
     Renderable.prototype.scale = function(x, y) {
@@ -215,10 +216,10 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.scaleOffset
+     * @method SW.Display.Renderable.prototype.scaleOffset
      * @param {float} [x]
      * @param {float} [y]
-     * @return {SW.Vector|SW.Renderable}
+     * @return {SW.Display.Vector|SW.Display.Renderable}
      * @chainable
      */
     Renderable.prototype.scaleOffset = function(x, y) {
@@ -238,9 +239,9 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.opacity
+     * @method SW.Display.Renderable.prototype.opacity
      * @param {float} [value]
-     * @return {float|SW.Renderable}
+     * @return {float|SW.Display.Renderable}
      * @chainable
      */
     Renderable.prototype.opacity = function(value) {
@@ -256,9 +257,9 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.composite
+     * @method SW.Display.Renderable.prototype.composite
      * @param {string} [value]
-     * @return {string|SW.Renderable}
+     * @return {string|SW.Display.Renderable}
      * @chainable
      */
     Renderable.prototype.composite = function(value) {
@@ -274,27 +275,27 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.getOuterPosition
-     * @return {SW.Vector}
+     * @method SW.Display.Renderable.prototype.getOuterPosition
+     * @return {SW.Display.Vector}
      */
     Renderable.prototype.getOuterPosition = function() {
-        return new SW.Vector(this._position.x + this._dimension.x, this._position.y + this._dimension.y);
+        return new SW.Display.Vector(this._position.x + this._dimension.x, this._position.y + this._dimension.y);
     };
 
     /**
-     * @method SW.Renderable.prototype.getCenterPosition
-     * @return {SW.Vector}
+     * @method SW.Display.Renderable.prototype.getCenterPosition
+     * @return {SW.Display.Vector}
      */
     Renderable.prototype.getCenterPosition = function() {
-        return new SW.Vector(this._position.x - this._dimension.x / 2, this._position.y - this._dimension.y / 2);
+        return new SW.Display.Vector(this._position.x - this._dimension.x / 2, this._position.y - this._dimension.y / 2);
     };
 
     /**
-     * @method SW.Renderable.prototype.getHalfDimension
-     * @return {SW.Vector}
+     * @method SW.Display.Renderable.prototype.getHalfDimension
+     * @return {SW.Display.Vector}
      */
     Renderable.prototype.getHalfDimension = function() {
-        return new SW.Vector(this._dimension.x / 2, this._dimension.y / 2);
+        return new SW.Display.Vector(this._dimension.x / 2, this._dimension.y / 2);
     };
 
     return Renderable;
