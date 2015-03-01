@@ -5,7 +5,6 @@ SW.Collection = (function() {
      * provides management of, and an interface for, a (named and indexed) list of entities
      *
      * @class SW.Collection
-     * @extends SW.Unique
      * @belongsto SW
      */
     var Collection = function() {
@@ -20,9 +19,6 @@ SW.Collection = (function() {
          */
         this._items = {};
     };
-
-    // inherit unique
-    Collection.prototype = new SW.Unique();
 
     /**
      * adds an object to both this.items/this.sortedItems

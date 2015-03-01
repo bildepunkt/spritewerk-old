@@ -9,6 +9,7 @@ SW.Layer = (function() {
      * @belongsto SW
      */
     var Layer = function() {
+        SW.Util.inherit(this, SW.Collection);
 
         /**
          * if scrolling employed, describes the factor
@@ -19,9 +20,6 @@ SW.Layer = (function() {
          */
         this._scrollFactor = 1;
     };
-
-    // inherit collection
-    Layer.prototype = new SW.Collection();
 
     /**
      * adds properties to item and then calls {@link SW.Collection#addItem}

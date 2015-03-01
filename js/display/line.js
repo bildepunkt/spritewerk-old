@@ -9,6 +9,8 @@ SW.Line = (function() {
      * @belongsto SW
      */
     var Line = function() {
+        SW.Util.inherit(this, SW.Renderable);
+
         /**
          * @member {array} SW.Line.prototype._coordinates
          * @private
@@ -40,9 +42,6 @@ SW.Line = (function() {
          */
         this._displayType = 'line';
     };
-
-    // inherit renderable
-    Line.prototype = new SW.Renderable();
 
     /**
      * @method SW.Line.prototype.coordinates

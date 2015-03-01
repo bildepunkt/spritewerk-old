@@ -164,5 +164,13 @@ SW.Canvas = (function() {
         );
     };
 
+    /**
+     * @method SW.Canvas.prototype.getCanvasEl
+     * @return {HTMLEntity}
+     */
+    Canvas.prototype.getCanvasEl = function() {
+        return this._canvasEl;
+    };
+
     return Canvas;
 }());

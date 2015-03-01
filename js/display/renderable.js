@@ -9,6 +9,8 @@ SW.Renderable = (function() {
      * @belongsto SW
      */
     var Renderable = function() {
+        SW.Util.inherit(this, SW.Unique);
+ 
         /**
          * @member {SW.Vector} SW.Renderable.prototype._position
          * @default 0
@@ -93,9 +95,6 @@ SW.Renderable = (function() {
          */
         this._displayType = '';
     };
-
-    // inherit Unique
-    Renderable.prototype = new SW.Unique();
 
     /**
      * @method SW.Renderable.prototype.getDisplayType

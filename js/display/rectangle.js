@@ -9,6 +9,8 @@ SW.Rectangle = (function() {
      * @belongsto SW
      */
     var Rectangle = function() {
+        SW.Util.inherit(this, SW.Renderable);
+
         /**
          * @member {string} SW.Rectangle.prototype._fillColor
          * @private
@@ -23,9 +25,6 @@ SW.Rectangle = (function() {
          */
         this._displayType = 'rectangle';
     };
-
-    // inherit renderable
-    Rectangle.prototype = new SW.Renderable();
 
     /**
      * @method SW.Rectangle.prototype.gsFillColor
