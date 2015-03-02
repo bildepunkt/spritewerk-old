@@ -50,5 +50,27 @@ SW.Common.Util = (function() {
         }
     };
 
+    /**
+     * returns true if x/y is inside entity's bounding box
+     *
+     * @method SW.Common.Util.prototype.hitPoint
+     * @param {integer} x - mouse/touch position
+     * @param {integer} y - mouse/touch position
+     * @param {SW.Display.Renderable} entity
+     * @return {boolean}
+     */
+    Util.prototype.hitPoint = function(x, y, entity) {
+        var position = entity.position();
+        var dimension = entity.dimension();
+
+        if (x >= position.x &&
+            x <= position.x + dimension.x &&
+            y >= position.y &&
+            y <= position.y + dimension.y) {
+            return true;
+        }
+        return false;
+    };
+
     return new Util();
 }());

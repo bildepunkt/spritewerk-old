@@ -14,6 +14,7 @@ SW.Display.Layer = (function() {
         /**
          * if scrolling employed, describes the factor
          * this property is not used on the layer but is passed to its entities
+         *
          * @member {float} SW.Display.Scene.prototype._scrollFactor
          * @default 1
          * @private
