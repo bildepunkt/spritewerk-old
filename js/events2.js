@@ -33,6 +33,15 @@ function loadHandler() {
     SW.Display.Canvas.render(rectangle);
 
     input.setLayers(scene.getLayers());
+
+    function renderAll() {
+        SW.Display.Canvas.clearAll();
+        SW.Display.Canvas.render(rectangle);
+    }
+
+    setInterval(function() {
+        requestAnimationFrame(renderAll);
+    }, 33);
 }
 
 SW.Events.Signal.addListener(window, 'load', loadHandler);

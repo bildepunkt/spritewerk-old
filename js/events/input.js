@@ -1,3 +1,21 @@
+/*
+SPRITEWERK
+==========
+
+### A small, friendly HTML5 framework for device-agnostic game development  
+
+SPRITEWERK is a culmination of:
+* my desire to learn and keep up with advances
+* self-expression (read: the ability to write code the way I want)
+* a want to easily prototype my game/interactive ideas
+
+#### Architecture
+* all object properties are private and thus, should only be accessed through methods
+* gettable properites will have getters, settable > setters, and get/settable will have an overloaded method (sans prefix)
+* currently the SPRITEWERK interaction paradigm is that game control is device-agnostic.  
+  Therefore touch/mouse events are normalized and merged into these singular events: press, dblpress, pressup, pressdown, drag (mousemove after mousedown)
+*/
+
 SW.Events.Input = (function() {
     /**
      * @class SW.Events.Input
@@ -18,7 +36,7 @@ SW.Events.Input = (function() {
          * @private
          */
         this._mouseEvents = [
-            'click', 'dblclick', 'mousedown', 'mouseup'
+            'click', 'dblclick', 'mousedown', 'mouseup', 'mousemove'
         ];
 
         /**
@@ -26,7 +44,7 @@ SW.Events.Input = (function() {
          * @private
          */
         this._touchEvents = [
-            'tap', 'dbltap', 'touchstart', 'touchend'
+            'tap', 'dbltap', 'touchstart', 'touchend', 'touchmove'
         ];
 
         /**
@@ -42,7 +60,25 @@ SW.Events.Input = (function() {
         this._canvasStretch = options.canvasStretch;
 
         /**
-         * the layers of entities to check against the interaction
+         * @member {SW.Renderable} SW.Events.Input.prototype._pressCandidate
+         * @private
+         */
+        this._pressCandidate = null;
+
+        /**
+         * @member {SW.Renderable} SW.Events.Input.prototype._canDrag
+         * @private
+         */
+        this._canDrag = false;
+
+        /**
+         * @member {SW.Renderable} SW.Events.Input.prototype._isDragging
+         * @private
+         */
+        this._isDragging = false;
+
+        /**
+         * the collection of layers of entities to check against the interaction
          * 
          * @member {SW.Common.Collection} SW.Events.Input.prototype._layers
          * @private
@@ -72,14 +108,17 @@ SW.Events.Input = (function() {
 
     /**
      * @method SW.Input.prototype._receiveEvent
+     * @requires SW.Display.Vector
      * @listens this.canvas#click
      * @listens this.canvas#dblclick
      * @listens this.canvas#mousedown
      * @listens this.canvas#mouseup
+     * @listens this.canvas#mousemove
      * @listens this.canvas#tap
      * @listens this.canvas#dbltap
      * @listens this.canvas#touchstart
      * @listens this.canvas#touchend
+     * @listens this.canvas#touchmove
      * @fires SW.Events.Signal#press
      * @fires SW.Events.Signal#dblpress
      * @fires SW.Events.Signal#pressdown
@@ -93,7 +132,8 @@ SW.Events.Input = (function() {
         var eventData = {
             domEvent: inputEvent
         };
-        var eventType;
+        var eventTypes = [];
+        var dragCandidatePosition;
 
         if (inputEvent.hasOwnProperty('touches')) {
             eventData.absX = inputEvent.touches[0].pageX - offsetX;
@@ -112,27 +152,59 @@ SW.Events.Input = (function() {
         switch(inputEvent.type) {
             case 'click':
             case 'tap':
-                if (!this.pressCandidate && this.pressCandidate !== eventData.target) {
-                    eventsData.target = undefined;
+                if (!this._pressCandidate && this._pressCandidate._uid !== eventData.target._uid) {
+                    // remove potential target if it was not pressed AND released on
+                    eventData.target = undefined;
                 }
-                eventType = 'press';
+                this._pressCandidate = null;
+                eventTypes.push('press');
             break;
             case 'dblclick':
             case 'dbltap':
-                eventType = 'dblpress';
+                eventTypes.push('dblpress');
             break;
             case 'mousedown':
             case 'touchstart':
-                this.pressCandidate = eventData.target;
-                eventType = 'pressdown';
+                this._pressCandidate = eventData.target;
+                this._dragCandidate = eventData.target;
+                if (this._dragCandidate) {
+                    dragCandidatePosition = this._dragCandidate.position();
+                    this._dragCandidateOffsetX = eventData.x - dragCandidatePosition.x;
+                    this._dragCandidateOffsetY = eventData.y - dragCandidatePosition.y;
+                }
+                this._canDrag = true;
+                eventTypes.push('pressdown');
             break;
             case 'mouseup':
             case 'touchend':
-                eventType = 'pressup';
+                this._canDrag = false;
+                if (this._isDragging) {
+                    this._isDragging = false;
+                    this._dragCandidate = null;
+                    eventTypes.push('dragend');
+                }
+                eventTypes.push('pressup');
+            break;
+            case 'mousemove':
+            case 'touchmove':
+                if (this._canDrag) {
+                    eventTypes.push('drag');
+
+                    if (this._dragCandidate) {
+                        dragCandidatePosition = this._dragCandidate.position();
+                        this._dragCandidate.position(
+                            eventData.x - this._dragCandidateOffsetX,
+                            eventData.y - this._dragCandidateOffsetY
+                        );
+                    }
+
+                    if (!this._isDragging) {
+                        this._isDragging = true;
+                        eventTypes.push('dragstart');
+                    }
+                }
             break;
         }
-
-        eventData.type = eventType;
 
         /**
          * reports either a click, a tap or both
@@ -170,9 +242,38 @@ SW.Events.Input = (function() {
          * @property {SW.Display.Renderable} target - a targeted entity
          * @property {object} domEvent - the original dom event object
          */
-        SW.Events.Signal.dispatch(eventType, {
-            eventData: eventData
-        });
+         /**
+         * reports a mousemove (if mousedown) and touchmove
+         * @event SW.Events.Signal#drag
+         * @property {string} type - the event type
+         * @property {integer} x - the input's x coordinate
+         * @property {integer} y - the input's x coordinate
+         * @property {SW.Display.Renderable} target - a targeted entity
+         * @property {object} domEvent - the original dom event object
+         */
+        /**
+         * reports the start of dragging
+         * @event SW.Events.Signal#dragstart
+         * @property {string} type - the event type
+         * @property {integer} x - the input's x coordinate
+         * @property {integer} y - the input's x coordinate
+         * @property {SW.Display.Renderable} target - a targeted entity
+         * @property {object} domEvent - the original dom event object
+         */
+        /**
+         * reports the end of dragging
+         * @event SW.Events.Signal#dragend
+         * @property {string} type - the event type
+         * @property {integer} x - the input's x coordinate
+         * @property {integer} y - the input's x coordinate
+         * @property {SW.Display.Renderable} target - a targeted entity
+         * @property {object} domEvent - the original dom event object
+         */
+        for(var i = 0, len = eventTypes.length; i < len; i += 1) {
+            SW.Events.Signal.dispatch(eventTypes[i], {
+                eventData: eventData
+            });
+        }
     };
 
     /**
