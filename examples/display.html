@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>spritewerk display</title>
+
+    <script src="../js/spritewerk.js"></script>
+
+    <script src="../js/common/util.js"></script>
+    <script src="../js/common/unique.js"></script>
+    <script src="../js/common/collection.js"></script>
+
+    <script src="../js/display/vector.js"></script>
+    <script src="../js/display/canvas.js"></script>
+    <script src="../js/display/renderable.js"></script>
+    <script src="../js/display/sprite.js"></script>
+    <script src="../js/display/line.js"></script>
+    <script src="../js/display/rectangle.js"></script>
+
+    <script>
+        window.onload = function() {
+            var w = 600;
+            var h = 400;
+            var canvas = new SW.Display.Canvas({
+                id: 'spritewerk',
+                width: w,
+                height: h
+            });
+
+            var collection = new SW.Common.Collection();
+            var rectangle;
+            var line;
+
+            for(var i = 0; i < 2500; i += 1) {
+                rectangle = new SW.Display.Rectangle();
+                rectangle.position(Math.random()*w, Math.random()*h);
+                rectangle.dimension(16, 16);
+                rectangle.opacity(0.2);
+                collection.addItem('recto' + i, rectangle);
+
+                line = new SW.Display.Line();
+                line.opacity(0.2);
+                line.coordinates(
+                    new SW.Display.Vector(Math.random()*w, Math.random()*h),
+                    new SW.Display.Vector(Math.random()*w, Math.random()*h)
+                );
+                collection.addItem('lino' + i, line);
+            }
+
+            function renderAll() {
+                canvas.clearAll();
+
+                collection.each(function(entity) {
+                    entity.position(Math.random()*w, Math.random()*h);
+                    canvas.render(entity);
+                });
+            }
+
+            setInterval(function() {
+                requestAnimationFrame(renderAll);
+            }, 33);
+        };
+    </script>
+</head>
+<body>
+    <canvas id="spritewerk"></canvas>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>spritewerk</title>
+
+    <script src="../js/spritewerk.js"></script>
+
+    <script src="../js/common/util.js"></script>
+    <script src="../js/common/unique.js"></script>
+    <script src="../js/common/collection.js"></script>
+
+    <script src="../js/events/signal.js"></script>
+    <script src="../js/events/input.js"></script>
+
+    <script src="../js/media/preloader.js"></script>
+    <script src="../js/media/media-manager.js"></script>
+
+    <script src="../js/display/vector.js"></script>
+    <script src="../js/display/canvas.js"></script>
+    <script src="../js/display/renderable.js"></script>
+    <script src="../js/display/sprite.js"></script>
+    <script src="../js/display/line.js"></script>
+    <script src="../js/display/rectangle.js"></script>
+    <script src="../js/display/scene.js"></script>
+
+    <script src="../js/scenes/layer.js"></script>
+    <script src="../js/scenes/scene.js"></script>
+    <script src="../js/scenes/scene-manager.js"></script>
+
+    <script>
+        var MyScene = function() {
+            SW.Common.Util.inherit(this, SW.Scenes.Scene);
+        };
+
+        MyScene.prototype.pressdown = function(e) {
+            console.log(e);
+        };
+
+        MyScene.prototype.init = function() {
+            var rect = new SW.Display.Rectangle().dimension(64, 64);
+
+            this.addItem('main');
+            this.getItem('main').addItem('rect', rect);
+        };
+
+        function init() {
+            SW.Events.Signal.removeListener(document, 'DOMContentLoaded', init);
+
+            var canvas = new SW.Display.Canvas({
+                id: 'spritewerk',
+                width: 600,
+                height: 400
+            });
+
+            var input = new SW.Events.Input({
+                eventEl: canvas.getCanvasEl(),
+                bindMouseInput: true
+            });
+
+            var myScene = new MyScene();
+
+            input.setScene(myScene);
+            
+            SW.Scenes.SceneManager.addScene('myscene', myScene);
+
+            myScene.each(function(layer) {
+                layer.each(function(entity) {
+                    canvas.render(entity);
+                });
+            });
+        }
+
+        SW.Events.Signal.addListener(document, 'DOMContentLoaded', init);
+    </script>
+</head>
+<body>
+    <canvas id="spritewerk"></canvas>
+</body>
+</html>

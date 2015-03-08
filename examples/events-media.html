@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>spritewerk events &amp; media</title>
+
+    <script src="../js/spritewerk.js"></script>
+
+    <script src="../js/common/util.js"></script>
+    <script src="../js/common/unique.js"></script>
+    <script src="../js/common/collection.js"></script>
+
+    <script src="../js/events/signal.js"></script>
+    <script src="../js/events/input.js"></script>
+
+    <script src="../js/media/preloader.js"></script>
+    <script src="../js/media/media-manager.js"></script>
+
+    <script>
+        function init() {
+            SW.Events.Signal.removeListener(window, 'load', init);
+            SW.Events.Signal.addListener('preload/complete', onPreloadComplete);
+
+            SW.Media.MediaManager.preload({
+                ghost: '../img/Ghost.png'
+            });
+
+            function onPreloadComplete() {
+                SW.Events.Signal.removeListener('preload/complete', onPreloadComplete);
+
+                var body = document.querySelector('body');
+                var image = SW.Media.MediaManager.getImage('ghost');
+
+                body.appendChild(image);
+            }
+        }
+
+        SW.Events.Signal.addListener(window, 'load', init);
+    </script>
+</head>
+<body>
+    <canvas id="spritewerk"></canvas>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>spritewerk events &amp; display</title>
+
+    <script src="../js/spritewerk.js"></script>
+
+    <script src="../js/common/util.js"></script>
+    <script src="../js/common/unique.js"></script>
+    <script src="../js/common/collection.js"></script>
+
+    <script src="../js/events/signal.js"></script>
+    <script src="../js/events/input.js"></script>
+
+    <script src="../js/display/vector.js"></script>
+    <script src="../js/display/canvas.js"></script>
+    <script src="../js/display/renderable.js"></script>
+    <script src="../js/display/sprite.js"></script>
+    <script src="../js/display/line.js"></script>
+    <script src="../js/display/rectangle.js"></script>
+
+    <script>
+        function loadHandler() {
+            var collection;
+            var rectangle;
+            var input;
+            var canvas;
+
+            SW.Events.Signal.removeListener(window, 'load', loadHandler);
+
+            SW.Events.Signal.addListener('press', function(e) {
+                console.log(e.type, e.detail.target);
+            });
+            SW.Events.Signal.addListener('pressup', function(e) {
+                console.log(e.type, e.detail.target);
+            });
+            SW.Events.Signal.addListener('pressdown', function(e) {
+                console.log(e.type, e.detail.target);
+            });
+            SW.Events.Signal.addListener('dblpress', function(e) {
+                console.log(e.type, e.detail.target);
+            });
+            SW.Events.Signal.addListener('pressleave', function(e) {
+                console.log(e.type, e.detail.target);
+            });
+            SW.Events.Signal.addListener('dragstart', function(e) {
+                console.log(e.type, e.detail.target);
+            });
+            SW.Events.Signal.addListener('drag', function(e) {
+                console.log(e.type, e.detail.target);
+            });
+            SW.Events.Signal.addListener('dragend', function(e) {
+                console.log(e.type, e.detail.target);
+            });
+            SW.Events.Signal.addListener('dragleave', function(e) {
+                console.log(e.type, e.detail.target);
+            });
+
+            canvas = new SW.Display.Canvas({
+                id: 'spritewerk',
+                width: 600,
+                height: 400
+            });
+
+            input = new SW.Events.Input({
+                eventEl: canvas.getCanvasEl(),
+                bindMouseInput: true,
+                bindTouchInput: true
+            });
+
+            collection = new SW.Common.Collection();
+
+            rectangle = new SW.Display.Rectangle().dimension(128, 128);
+            collection.addItem('recto', rectangle);
+
+            rectangle = new SW.Display.Rectangle().position(null, 128).dimension(128, 128).draggable(false).fillColor('#C4C');
+            collection.addItem('recto2', rectangle);
+
+            // can be collection
+            input.setLayer(collection);
+
+            function renderAll() {
+                canvas.clearAll();
+                collection.each(function(entity) {
+                    canvas.render(entity);
+                });
+            }
+
+            setInterval(function() {
+                requestAnimationFrame(renderAll);
+            }, 33);
+        }
+
+        SW.Events.Signal.addListener(window, 'load', loadHandler);
+    </script>
+</head>
+<body>
+    <canvas id="spritewerk"></canvas>
+</body>
+</html>

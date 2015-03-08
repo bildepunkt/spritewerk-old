@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>spritewerk events</title>
+
+    <script src="../js/spritewerk.js"></script>
+
+    <script src="../js/common/util.js"></script>
+    <script src="../js/common/unique.js"></script>
+    <script src="../js/common/collection.js"></script>
+
+    <script src="../js/events/signal.js"></script>
+    <script src="../js/events/input.js"></script>
+
+    <script>
+        function loadHandler() {
+            SW.Events.Signal.removeListener(window, 'load', loadHandler);
+
+            SW.Events.Signal.addListener(document, 'click', function(e) {
+                console.log(e);
+            });
+        }
+
+        SW.Events.Signal.addListener(window, 'load', loadHandler);
+    </script>
+</head>
+<body>
+    <canvas id="spritewerk"></canvas>
+</body>
+</html>
