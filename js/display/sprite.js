@@ -13,7 +13,7 @@ SW.Display.Sprite = (function() {
         SW.Common.Util.inherit(this, SW.Display.Renderable);
 
         /**
-         * @member {string} SW.Display.Sprite.prototype._image
+         * @member {String} SW.Display.Sprite.prototype._image
          * @private
          */
         this._image = null;
@@ -31,7 +31,7 @@ SW.Display.Sprite = (function() {
         this._srcDimension = new SW.Display.Vector();
 
         /**
-         * @member {string} SW.Display.Sprite.prototype._displayType
+         * @member {String} SW.Display.Sprite.prototype._displayType
          * @default 'rectangle'
          * @private
          * @readonly
@@ -41,8 +41,8 @@ SW.Display.Sprite = (function() {
 
     /**
      * @method SW.Display.Sprite.prototype.srcPosition
-     * @param {float} [x]
-     * @param {float} [y]
+     * @param {Float} [x]
+     * @param {Float} [y]
      * @return {SW.Display.Vector|SW.Display.Sprite}
      * @chainable
      */
@@ -64,8 +64,8 @@ SW.Display.Sprite = (function() {
 
     /**
      * @method SW.Display.Sprite.prototype.srcDimension
-     * @param {float} [x]
-     * @param {float} [y]
+     * @param {Float} [x]
+     * @param {Float} [y]
      * @return {SW.Display.Vector|SW.Display.Sprite}
      * @chainable
      */

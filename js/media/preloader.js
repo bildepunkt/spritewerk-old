@@ -2,7 +2,7 @@ SW.Media.Preloader = (function() {
     /**
      * @class SW.Media.Preloader
      * @belongsto SW
-     * @param {object} assets
+     * @param {Object} assets
      * @requires SW.Events.Signal
      * @private
      */
@@ -10,19 +10,19 @@ SW.Media.Preloader = (function() {
         var prop;
 
         /**
-         * @member {object} SW.Media.Preloader.prototype.assets
+         * @member {Object} SW.Media.Preloader.prototype.assets
          * @private
          */
         this.assets = assets;
 
         /**
-         * @member {integer} SW.Media.Preloader.prototype.total
+         * @member {Integer} SW.Media.Preloader.prototype.total
          * @private
          */
         this.total = 0;
 
         /**
-         * @member {integer} SW.Media.Preloader.prototype.loaded
+         * @member {Integer} SW.Media.Preloader.prototype.loaded
          * @private
          */
         this.loaded = 0;
@@ -77,9 +77,9 @@ SW.Media.Preloader = (function() {
          *
          * @event SW.Events.Signal#preload/update
          * @property {HTMLElement} el
-         * @property {string} name
-         * @property {integer} loaded
-         * @property {integer} total
+         * @property {String} name
+         * @property {Integer} loaded
+         * @property {Integer} total
          */
         SW.Events.Signal.dispatch('preload/update', {
             loaded: this.loaded,
@@ -128,7 +128,7 @@ SW.Media.Preloader = (function() {
 
     /**
      * @method SW.Media.Preloader.prototype._getFileName
-     * @param {string} path
+     * @param {String} path
      * @private
      */
     Preloader.prototype._getFileName = function(path) {

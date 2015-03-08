@@ -18,9 +18,9 @@ SW.Events.Signal = (function() {
      *
      * @method SW.Events.Signal.prototype.addListener
      * @param {HTMLElement} [el] - the element to listen to (if not present, will listen to built-in mediator)
-     * @param {string} type - event type; can be custom or DOM
+     * @param {String} type - event type; can be custom or DOM
      * @param {function} handler - the event handler
-     * @param {object} [context] - if present will call handler with this scope
+     * @param {Object} [context] - if present will call handler with this scope
      */
     Signal.prototype.addListener = function(el, type, handler, context) {
         var handlers;
@@ -54,7 +54,7 @@ SW.Events.Signal = (function() {
      *
      * @method SW.Events.Signal.prototype.removeListener
      * @param {HTMLElement} [el] - the element to stop listening to (if not present, will tune out the built-in mediator)
-     * @param {string} type - event type; can be custom or DOM
+     * @param {String} type - event type; can be custom or DOM
      * @param {function} handler - the event handler
      */
     Signal.prototype.removeListener = function(el, type, handler) {
@@ -84,8 +84,8 @@ SW.Events.Signal = (function() {
      *
      * @method SW.Events.Signal.prototype.dispatch
      * @param {HTMLElement} [el] - the element to broadcast from (if not present, will broadcast from built-in mediator)
-     * @param {string} type - event type
-     * @param {object} data - the data to pass to the handler
+     * @param {String} type - event type
+     * @param {Object} data - the data to pass to the handler
      */
     Signal.prototype.dispatch = function(el, type, data) {
         var customEvent;

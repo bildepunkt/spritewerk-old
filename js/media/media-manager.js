@@ -1,4 +1,6 @@
 SW.Media.MediaManager = (function() {
+    'use strict';
+
     /**
      * manages and preloads media, plays audio
      *
@@ -9,13 +11,13 @@ SW.Media.MediaManager = (function() {
      */
     var MediaManager = function() {
         /**
-         * @member {object} SW.Media.MediaManager.prototype._images
+         * @member {Object} SW.Media.MediaManager.prototype._images
          * @private
          */
         this._images = {};
 
         /**
-         * @member {object} SW.Media.MediaManager.prototype._images
+         * @member {Object} SW.Media.MediaManager.prototype._images
          * @private
          */
         this._sounds = {};
@@ -25,7 +27,7 @@ SW.Media.MediaManager = (function() {
 
     /**
      * @method SW.Media.MediaManager.prototype.preload
-     * @param {object} assets - a hashtable of asset names & paths
+     * @param {Object} assets - a hashtable of asset names & paths
      * @requires SW.Media.Preloader
      */
     MediaManager.prototype.preload = function(assets) {
@@ -67,7 +69,7 @@ SW.Media.MediaManager = (function() {
 
     /**
      * @method SW.Media.MediaManager.prototype.getImage
-     * @param {string} name
+     * @param {String} name
      * @return {HTMLEntity}
      */
     MediaManager.prototype.getImage = function(name) {
@@ -76,7 +78,7 @@ SW.Media.MediaManager = (function() {
 
     /**
      * @method SW.Media.MediaManager.prototype.playSound
-     * @param {string} name
+     * @param {String} name
      */
     MediaManager.prototype.playSound = function(name) {
         var sound = this._sounds[name];
@@ -87,7 +89,7 @@ SW.Media.MediaManager = (function() {
 
     /**
      * @method SW.Media.MediaManager.prototype.pauseSound
-     * @param {string} name
+     * @param {String} name
      */
     MediaManager.prototype.pauseSound = function(name) {
         var sound = this._sounds[name];
@@ -97,7 +99,7 @@ SW.Media.MediaManager = (function() {
 
     /**
      * @method SW.Media.MediaManager.prototype.resumeSound
-     * @param {string} name
+     * @param {String} name
      */
     MediaManager.prototype.resumeSound = function(name) {
         var sound = this._sounds[name];

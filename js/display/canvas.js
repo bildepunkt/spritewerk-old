@@ -5,10 +5,10 @@ SW.Display.Canvas = (function() {
      * displays entities
      *
      * @class SW.Display.Canvas
-     * @param {object} options
-     * @param {string} options.id - the canvas element's id
-     * @param {string} options.width - the canvas element's width
-     * @param {string} options.height - the canvas element's height
+     * @param {Object} options
+     * @param {String} options.id - the canvas element's id
+     * @param {String} options.width - the canvas element's width
+     * @param {String} options.height - the canvas element's height
      * @belongsto SW
      */
     var Canvas = function(options) {
@@ -23,12 +23,12 @@ SW.Display.Canvas = (function() {
          */
         this._context = this._canvasEl.getContext('2d');
         /**
-         * @member {integer} SW.Display.Canvas.prototype._width - the canvas element's width
+         * @member {Integer} SW.Display.Canvas.prototype._width - the canvas element's width
          * @private
          */
         this._width = options.width;
         /**
-         * @member {integer} SW.Display.Canvas.prototype._height - the canvas element's height
+         * @member {Integer} SW.Display.Canvas.prototype._height - the canvas element's height
          * @private
          */
         this._height = options.height;
@@ -51,7 +51,7 @@ SW.Display.Canvas = (function() {
      * fills the entire canvas
      *
      * @method SW.Display.Canvas.prototype.fillAll
-     * @param {string} color - supports color names, hex & rgb(a)
+     * @param {String} color - supports color names, hex & rgb(a)
      * @chainable
      */
     Canvas.prototype.fillAll = function(color) {

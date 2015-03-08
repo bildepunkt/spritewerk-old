@@ -11,7 +11,7 @@ SW.Common.Unique = (function() {
      */
     var Unique = function() {
         /**
-         * @member {integer} SW.Common.Unique.prototype._uid - the object's unique ID
+         * @member {Integer} SW.Common.Unique.prototype._uid - the object's unique ID
          * @private
          * @readonly
          */

@@ -12,13 +12,13 @@ SW.Display.Rectangle = (function() {
         SW.Common.Util.inherit(this, SW.Display.Renderable);
 
         /**
-         * @member {string} SW.Display.Rectangle.prototype._fillColor
+         * @member {String} SW.Display.Rectangle.prototype._fillColor
          * @private
          */
         this._fillColor = '#000';
 
         /**
-         * @member {string} SW.Display.Rectangle.prototype._displayType
+         * @member {String} SW.Display.Rectangle.prototype._displayType
          * @default 'rectangle'
          * @private
          * @readonly
@@ -28,7 +28,7 @@ SW.Display.Rectangle = (function() {
 
     /**
      * @method SW.Display.Rectangle.prototype.gsFillColor
-     * @param {string} value
+     * @param {String} value
      * @return {string|SW.Display.Rectangle}
      * @chainable
      */

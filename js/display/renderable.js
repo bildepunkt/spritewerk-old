@@ -54,42 +54,49 @@ SW.Display.Renderable = (function() {
         this._scaleOffset = new SW.Display.Vector();
 
         /**
-         * @member {integer} SW.Display.Renderable.prototype._rotation
+         * @member {Boolean} SW.Display.Renderable.prototype._draggable
+         * @default true
+         * @private
+         */
+        this._draggable = true;
+
+        /**
+         * @member {Integer} SW.Display.Renderable.prototype._rotation
          * @default 0
          * @private
          */
         this._rotation = 0;
 
         /**
-         * @member {integer} SW.Display.Renderable.prototype._opacity
+         * @member {Integer} SW.Display.Renderable.prototype._opacity
          * @default 1
          * @private
          */
         this._opacity = 1;
 
         /**
-         * @member {boolean} SW.Display.Renderable.prototype._visible
+         * @member {Boolean} SW.Display.Renderable.prototype._visible
          * @default true
          * @private
          */
         this._visible = true;
 
         /**
-         * @member {boolean} SW.Display.Renderable.prototype._hidden
+         * @member {Boolean} SW.Display.Renderable.prototype._hidden
          * @default false
          * @private
          */
         this._hidden = false;
 
         /**
-         * @member {string} SW.Display.Renderable.prototype._composite
+         * @member {String} SW.Display.Renderable.prototype._composite
          * @default 'source-over'
          * @private
          */
         this._composite = 'source-over';
 
         /**
-         * @member {string} SW.Display.Renderable.prototype._displayType
+         * @member {String} SW.Display.Renderable.prototype._displayType
          * @default ''
          * @private
          * @readonly
@@ -99,7 +106,7 @@ SW.Display.Renderable = (function() {
 
     /**
      * @method SW.Display.Renderable.prototype.getDisplayType
-     * @return {string}
+     * @return {String}
      * @chainable
      */
     Renderable.prototype.getDisplayType = function() {
@@ -108,8 +115,8 @@ SW.Display.Renderable = (function() {
 
     /**
      * @method SW.Display.Renderable.prototype.position
-     * @param {float} [x]
-     * @param {float} [y]
+     * @param {Float} [x]
+     * @param {Float} [y]
      * @return {SW.Display.Vector|SW.Display.Renderable}
      * @chainable
      */
@@ -131,7 +138,7 @@ SW.Display.Renderable = (function() {
 
     /**
      * @method SW.Display.Renderable.prototype.dimension
-     * @param {float} [value]
+     * @param {Float} [value]
      * @return {float|SW.Display.Renderable}
      * @chainable
      */
@@ -153,7 +160,7 @@ SW.Display.Renderable = (function() {
 
     /**
      * @method SW.Display.Renderable.prototype.rotation
-     * @param {float} [value]
+     * @param {Float} [value]
      * @return {float|SW.Display.Renderable}
      * @chainable
      */
@@ -171,8 +178,8 @@ SW.Display.Renderable = (function() {
 
     /**
      * @method SW.Display.Renderable.prototype.rotationOffset
-     * @param {float} [x]
-     * @param {float} [y]
+     * @param {Float} [x]
+     * @param {Float} [y]
      * @return {SW.Display.Vector|SW.Display.Renderable}
      * @chainable
      */
@@ -194,8 +201,8 @@ SW.Display.Renderable = (function() {
 
     /**
      * @method SW.Display.Renderable.prototype.scale
-     * @param {float} [x]
-     * @param {float} [y]
+     * @param {Float} [x]
+     * @param {Float} [y]
      * @return {SW.Display.Vector|SW.Display.Renderable}
      * @chainable
      */
@@ -217,8 +224,8 @@ SW.Display.Renderable = (function() {
 
     /**
      * @method SW.Display.Renderable.prototype.scaleOffset
-     * @param {float} [x]
-     * @param {float} [y]
+     * @param {Float} [x]
+     * @param {Float} [y]
      * @return {SW.Display.Vector|SW.Display.Renderable}
      * @chainable
      */
@@ -239,8 +246,26 @@ SW.Display.Renderable = (function() {
     };
 
     /**
+     * @method SW.Display.Renderable.prototype.draggable
+     * @param {Boolean} [value]
+     * @return {boolean|SW.Display.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.draggable = function(value) {
+        if (value === undefined) {
+            return this._draggable;
+        }
+
+        if (typeof value === 'boolean') {
+            this._draggable = value;
+        }
+
+        return this;
+    };
+
+    /**
      * @method SW.Display.Renderable.prototype.opacity
-     * @param {float} [value]
+     * @param {Float} [value]
      * @return {float|SW.Display.Renderable}
      * @chainable
      */
@@ -258,7 +283,7 @@ SW.Display.Renderable = (function() {
 
     /**
      * @method SW.Display.Renderable.prototype.composite
-     * @param {string} [value]
+     * @param {String} [value]
      * @return {string|SW.Display.Renderable}
      * @chainable
      */

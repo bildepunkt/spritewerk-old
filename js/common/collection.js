@@ -8,13 +8,15 @@ SW.Common.Collection = (function() {
      * @belongsto SW
      */
     var Collection = function() {
+        SW.Common.Util.inherit(this, SW.Common.Unique);
+
         /**
-         * @member {array} SW.Common.Collection.prototype._sortedItems - the sorted list
+         * @member {Array} SW.Common.Collection.prototype._sortedItems - the sorted list
          * @private
          */
         this._sortedItems = [];
         /**
-         * @member {object} SW.Common.Collection.prototype._items - the hash list
+         * @member {Object} SW.Common.Collection.prototype._items - the hash list
          * @private
          */
         this._items = {};
@@ -24,8 +26,8 @@ SW.Common.Collection = (function() {
      * adds an object to both this.items/this.sortedItems
      *
      * @method SW.Common.Collection.prototype.addItem
-     * @param {string} name
-     * @param {object} value
+     * @param {String} name
+     * @param {Object} value
      */
     Collection.prototype.addItem = function(name, value) {
         this._items[name] = value;
@@ -36,9 +38,9 @@ SW.Common.Collection = (function() {
      * adds an object to both this.items/this.sortedItems at a specific index
      *
      * @method SW.Common.Collection.prototype.addItemAt
-     * @param {string} name
+     * @param {String} name
      * @param {any} value
-     * @param {integer} index
+     * @param {Integer} index
      */
     Collection.prototype.addItemAt = function(name, value, index) {
         this._items[name] = value;
@@ -49,7 +51,7 @@ SW.Common.Collection = (function() {
      * removes -by name- an object from both this.items/this.sortedItems
      *
      * @method SW.Common.Collection.prototype.removeItem
-     * @param {string} name
+     * @param {String} name
      */
     Collection.prototype.removeItem = function(name) {
         var item = this.items[name];
@@ -96,7 +98,7 @@ SW.Common.Collection = (function() {
      *
      * @method SW.Common.Collection.prototype.filter
      * @param {function} fn
-     * @return {array} filteredItems
+     * @return {Array} filteredItems
      */
     Collection.prototype.filter = function(fn) {
         var filteredItems = [];
@@ -116,7 +118,7 @@ SW.Common.Collection = (function() {
      * gets the count of items in collection
      *
      * @method SW.Common.Collection.prototype.getItemCount
-     * @return {integer}
+     * @return {Integer}
      */
     Collection.prototype.getItemCount = function() {
         return this._sortedItems.length;
@@ -126,7 +128,7 @@ SW.Common.Collection = (function() {
      * alters an existing item
      *
      * @method SW.Common.Collection.prototype.setItem
-     * @param {string} name
+     * @param {String} name
      * @param {any} value
      */
     Collection.prototype.setItem = function(name, value) {
@@ -147,8 +149,8 @@ SW.Common.Collection = (function() {
      * moves item to new index
      * 
      * @method SW.Common.Collection.prototype.setItemIndex
-     * @param {string} name
-     * @param {integer} index
+     * @param {String} name
+     * @param {Integer} index
      */
     Collection.prototype.setItemIndex = function(name, index) {
         var item = this.getItem(name);
@@ -166,8 +168,8 @@ SW.Common.Collection = (function() {
      * gets an items current index
      *
      * @method SW.Common.Collection.prototype.getItemIndex
-     * @param {string} name
-     * @return {integer}
+     * @param {String} name
+     * @return {Integer}
      */
     Collection.prototype.getItemIndex = function(name) {
         var theItem = this.getItem(name);

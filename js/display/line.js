@@ -12,30 +12,30 @@ SW.Display.Line = (function() {
         SW.Common.Util.inherit(this, SW.Display.Renderable);
 
         /**
-         * @member {array} SW.Display.Line.prototype._coordinates
+         * @member {Array} SW.Display.Line.prototype._coordinates
          * @private
          */
         this._coordinates = [];
         /**
-         * @member {string} SW.Display.Line.prototype._color
+         * @member {String} SW.Display.Line.prototype._color
          * @private
          */
         this._color = '#000';
         /**
-         * @member {float} SW.Display.Line.prototype._width
+         * @member {Float} SW.Display.Line.prototype._width
          * @default 1
          * @private
          */
         this._width = 1;
         /**
-         * @member {string} SW.Display.Line.prototype._cap
+         * @member {String} SW.Display.Line.prototype._cap
          * @default 'butt'
          * @private
          */
         this._cap = 'butt';
 
         /**
-         * @member {string} SW.Display.Line.prototype._displayType
+         * @member {String} SW.Display.Line.prototype._displayType
          * @default 'line'
          * @private
          * @readonly
@@ -63,7 +63,7 @@ SW.Display.Line = (function() {
 
     /**
      * @method SW.Display.Line.prototype.color
-     * @param {string} value
+     * @param {String} value
      * @return {string|SW.Display.Line}
      * @chainable
      */
