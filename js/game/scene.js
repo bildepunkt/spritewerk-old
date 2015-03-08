@@ -1,10 +1,10 @@
-SW.Scenes.Scene = (function() {
+SW.Game.Scene = (function() {
     'use strict';
 
     /**
      * manages layers and their entities
      *
-     * @class SW.Scenes.Scene
+     * @class SW.Game.Scene
      * @extends SW.Common.Collection
      * @param {Object} [options]
      * @param {Object} options.assets - a hash of names and src paths for images and audio files
@@ -16,7 +16,7 @@ SW.Scenes.Scene = (function() {
      * @listens SW.Events.Signal#drag
      * @listens SW.Events.Signal#dragend
      * @requires SW.Display.Layer
-     * @belongsto SW.Scenes
+     * @belongsto SW.Game
      */
     var Scene = function(options) {
         SW.Common.Util.inherit(this, SW.Common.Collection);
@@ -24,46 +24,46 @@ SW.Scenes.Scene = (function() {
         options = options || {};
 
         /**
-         * @member {String} SW.Scenes.Scene.prototype._bgColor
+         * @member {String} SW.Game.Scene.prototype._bgColor
          * @private
          */
         this._bgColor = null;
 
         /**
-         * @member {String} SW.Scenes.Scene.prototype._assets
+         * @member {String} SW.Game.Scene.prototype._assets
          * @private
          */
         this._assets = options.assets;
 
         /**
-         * the collection of {@link SW.Scenes.Layer} objects
-         * @member {String} SW.Scenes.Scene.prototype._items
+         * the collection of {@link SW.Game.Layer} objects
+         * @member {String} SW.Game.Scene.prototype._items
          * @private
          */
     };
 
     /**
-     * initialization method; for all setup work related to this scene; called when scene is first added to {@link SW.Scenes.SceneManager}
-     * @method SW.Scenes.Scene.prototype.init
+     * initialization method; for all setup work related to this scene; called when scene is first added to {@link SW.Game.SceneManager}
+     * @method SW.Game.Scene.prototype.init
      */
     Scene.prototype.init = function() {};
 
     /**
      * called on every frame; for updating all entity properties
-     * @method SW.Scenes.Scene.prototype.update
+     * @method SW.Game.Scene.prototype.update
      */
     Scene.prototype.update = function() {};
 
     /**
-     * called when a scene is removed from {@link SW.Scenes.SceneManager}; for removal of event listeners
-     * @method SW.Scenes.Scene.prototype.destroy
+     * called when a scene is removed from {@link SW.Game.SceneManager}; for removal of event listeners
+     * @method SW.Game.Scene.prototype.destroy
      */
     Scene.prototype.destroy = function() {};
 
     /**
      * the scene's press event handler
      *
-     * @method SW.Scenes.Scene.prototype.press
+     * @method SW.Game.Scene.prototype.press
      * @param {object} event {@link SW.Events.Input#_receiveEvent}
      */
     Scene.prototype.press = function() {};
@@ -71,7 +71,7 @@ SW.Scenes.Scene = (function() {
     /**
      * the scene's dblpress event handler
      *
-     * @method SW.Scenes.Scene.prototype.dblpress
+     * @method SW.Game.Scene.prototype.dblpress
      * @param {object} event {@link SW.Events.Input#_receiveEvent}
      */
     Scene.prototype.dblpress = function() {};
@@ -79,7 +79,7 @@ SW.Scenes.Scene = (function() {
     /**
      * the scene's pressdown event handler
      *
-     * @method SW.Scenes.Scene.prototype.pressdown
+     * @method SW.Game.Scene.prototype.pressdown
      * @param {object} event {@link SW.Events.Input#_receiveEvent}
      */
     Scene.prototype.pressdown = function() {};
@@ -87,7 +87,7 @@ SW.Scenes.Scene = (function() {
     /**
      * the scene's pressup event handler
      *
-     * @method SW.Scenes.Scene.prototype.pressup
+     * @method SW.Game.Scene.prototype.pressup
      * @param {object} event {@link SW.Events.Input#_receiveEvent}
      */
     Scene.prototype.pressup = function() {};
@@ -95,7 +95,7 @@ SW.Scenes.Scene = (function() {
     /**
      * the scene's dragstart event handler
      *
-     * @method SW.Scenes.Scene.prototype.dragstart
+     * @method SW.Game.Scene.prototype.dragstart
      * @param {object} event {@link SW.Events.Input#_receiveEvent}
      */
     Scene.prototype.dragstart = function() {};
@@ -103,7 +103,7 @@ SW.Scenes.Scene = (function() {
     /**
      * the scene's drag event handler
      *
-     * @method SW.Scenes.Scene.prototype.drag
+     * @method SW.Game.Scene.prototype.drag
      * @param {object} event {@link SW.Events.Input#_receiveEvent}
      */
     Scene.prototype.drag = function() {};
@@ -111,7 +111,7 @@ SW.Scenes.Scene = (function() {
     /**
      * the scene's dragend event handler
      *
-     * @method SW.Scenes.Scene.prototype.dragend
+     * @method SW.Game.Scene.prototype.dragend
      * @param {object} event {@link SW.Events.Input#_receiveEvent}
      */
     Scene.prototype.dragend = function() {};
@@ -119,9 +119,9 @@ SW.Scenes.Scene = (function() {
     /**
      * gets/sets assets
      *
-     * @method SW.Scenes.Scene.prototype.assets
+     * @method SW.Game.Scene.prototype.assets
      * @param {Object} [value]
-     * @return {Boolean|SW.Scenes.Scene}
+     * @return {Boolean|SW.Game.Scene}
      * @chainable
      */
     Scene.prototype.assets = function(value) {

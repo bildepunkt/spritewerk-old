@@ -1,10 +1,10 @@
-SW.Scenes.Layer = (function() {
+SW.Game.Layer = (function() {
     'use strict';
 
     /**
      * holds display configurations and entities 
      *
-     * @class SW.Scenes.Layer
+     * @class SW.Game.Layer
      * @extends SW.Common.Collection
      * @belongsto SW
      */
@@ -15,7 +15,7 @@ SW.Scenes.Layer = (function() {
          * if scrolling employed, describes the factor
          * this property is not used on the layer but is passed to its entities
          *
-         * @member {Float} SW.Scenes.Scene.prototype._scrollFactor
+         * @member {Float} SW.Game.Scene.prototype._scrollFactor
          * @default 1
          * @private
          */

@@ -1,15 +1,15 @@
-SW.Scenes.SceneManager = (function() {
+SW.Game.SceneManager = (function() {
     'use strict';
 
     /**
      * manages scenes
      *
-     * @class SW.Scenes.SceneManager
+     * @class SW.Game.SceneManager
      * @extends SW.Common.Collection
      * @requires SW.Common.Util
      * @requires SW.Media.MediaManager
      * @listens SW.Events.Signal#preload/complete
-     * @belongsto SW.Scenes
+     * @belongsto SW.Game
      */
     var SceneManager = function() {
         var eventType;
@@ -19,7 +19,7 @@ SW.Scenes.SceneManager = (function() {
         /**
          * name of the scene currently being loaded
          *
-         * @member SW.Scenes.SceneManager.prototype._loadingName
+         * @member SW.Game.SceneManager.prototype._loadingName
          * @private
          */
         this._loadingName = null;
@@ -27,7 +27,7 @@ SW.Scenes.SceneManager = (function() {
         /**
          * the scene currently being loaded
          *
-         * @member SW.Scenes.SceneManager.prototype._loadingScene
+         * @member SW.Game.SceneManager.prototype._loadingScene
          * @private
          */
         this._loadingScene = null;
@@ -35,7 +35,7 @@ SW.Scenes.SceneManager = (function() {
         /**
          * the SW input event types
          *
-         * @member SW.Scenes.SceneManager.prototype._eventTypes
+         * @member SW.Game.SceneManager.prototype._eventTypes
          * @private
          */
         this._eventTypes = ['press', 'dblpress', 'pressdown', 'pressup', 'dragstart', 'drag', 'dragend'];
@@ -52,7 +52,7 @@ SW.Scenes.SceneManager = (function() {
     /**
      * SW input event handler to dispatch to current scene (with SW event data as event param)
      *
-     * @method SW.Scenes.SceneManager.prototype._handleEvents
+     * @method SW.Game.SceneManager.prototype._handleEvents
      * @param {DOMEvent} e
      * @private
      */
@@ -66,9 +66,9 @@ SW.Scenes.SceneManager = (function() {
     /**
      * preloads scene's assets (if any), adds scene to stack, calls scene's init()
      *
-     * @method SW.Scenes.SceneManager.prototype.addScene
+     * @method SW.Game.SceneManager.prototype.addScene
      * @param {String} name
-     * @param {SW.Scenes.Scene} scene
+     * @param {SW.Game.Scene} scene
      * @private
      */
     SceneManager.prototype.addScene = function(name, scene) {
@@ -87,9 +87,9 @@ SW.Scenes.SceneManager = (function() {
     /**
      * gets/sets the active scene
      *
-     * @method SW.Scenes.SceneManager.prototype.activeScene
+     * @method SW.Game.SceneManager.prototype.activeScene
      * @param {String} [name]
-     * @return {SW.Scenes.Scene|SW.Scenes.SceneManager}
+     * @return {SW.Game.Scene|SW.Game.SceneManager}
      * @private
      * @chainable
      */
@@ -110,7 +110,7 @@ SW.Scenes.SceneManager = (function() {
     /**
      * finishes adding scene after preload
      *
-     * @method SW.Scenes.SceneManager.prototype._onPreloadComplete
+     * @method SW.Game.SceneManager.prototype._onPreloadComplete
      * @private
      */
     SceneManager.prototype._onPreloadComplete = function() {
