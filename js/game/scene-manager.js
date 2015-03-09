@@ -14,7 +14,7 @@ SW.Game.SceneManager = (function() {
     var SceneManager = function() {
         var eventType;
 
-        SW.Common.Util.inherit(this, SW.Common.Collection);
+        SW.Common.Collection.call(this);
 
         /**
          * name of the scene currently being loaded
@@ -49,11 +49,13 @@ SW.Game.SceneManager = (function() {
         SW.Events.Signal.addListener('preload/complete', this._onPreloadComplete, this);
     };
 
+    SceneManager.prototype = SW.Common.Collection.prototype;
+
     /**
      * SW input event handler to dispatch to current scene (with SW event data as event param)
      *
      * @method SW.Game.SceneManager.prototype._handleEvents
-     * @param {DOMEvent} e
+     * @param {DOMEvent} event
      * @private
      */
     SceneManager.prototype._handleEvents = function(e) {
@@ -68,10 +70,11 @@ SW.Game.SceneManager = (function() {
      *
      * @method SW.Game.SceneManager.prototype.addScene
      * @param {String} name
-     * @param {SW.Game.Scene} scene
+     * @param {SW.Game.Scene} Scene
      * @private
      */
-    SceneManager.prototype.addScene = function(name, scene) {
+    SceneManager.prototype.addScene = function(name, Scene) {
+        var scene = new Scene();
         var assets = scene.assets();
 
         this._loadingName = name;
@@ -89,6 +92,7 @@ SW.Game.SceneManager = (function() {
      *
      * @method SW.Game.SceneManager.prototype.activeScene
      * @param {String} [name]
+     * @fires SW.Events.Signal#scene/activated
      * @return {SW.Game.Scene|SW.Game.SceneManager}
      * @private
      * @chainable
@@ -102,6 +106,10 @@ SW.Game.SceneManager = (function() {
 
         if (typeof name === 'string') {
             this.setItemIndex(name, lastIndex);
+
+            SW.Events.Signal.dispatch('scene/activated', {
+                scene: this._sortedItems[lastIndex]
+            });
         }
 
         return this;
@@ -111,12 +119,17 @@ SW.Game.SceneManager = (function() {
      * finishes adding scene after preload
      *
      * @method SW.Game.SceneManager.prototype._onPreloadComplete
+     * @fires SW.Events.Signal#scene/activated
      * @private
      */
     SceneManager.prototype._onPreloadComplete = function() {
         var eventType;
 
         this.addItem(this._loadingName, this._loadingScene);
+
+        SW.Events.Signal.dispatch('scene/activated', {
+            scene: this.loadingScene
+        });
 
         this._loadingScene.init();
 

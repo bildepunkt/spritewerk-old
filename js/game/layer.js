@@ -9,7 +9,7 @@ SW.Game.Layer = (function() {
      * @belongsto SW
      */
     var Layer = function() {
-        SW.Common.Util.inherit(this, SW.Common.Collection);
+        SW.Common.Collection.call(this);
 
         /**
          * if scrolling employed, describes the factor
@@ -21,6 +21,8 @@ SW.Game.Layer = (function() {
          */
         this._scrollFactor = 1;
     };
+
+    Layer.prototype = SW.Common.Collection.prototype;
 
     return Layer;
 }());

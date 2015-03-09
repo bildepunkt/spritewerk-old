@@ -10,7 +10,7 @@ SW.Display.Renderable = (function() {
      * @belongsto SW.Display
      */
     var Renderable = function() {
-        SW.Common.Util.inherit(this, SW.Common.Unique);
+        SW.Common.Unique.call(this);
  
         /**
          * @member {SW.Display.Vector} SW.Display.Renderable.prototype._position
@@ -103,6 +103,8 @@ SW.Display.Renderable = (function() {
          */
         this._displayType = '';
     };
+
+    Renderable.prototype = SW.Common.Unique.prototype;
 
     /**
      * @method SW.Display.Renderable.prototype.getDisplayType

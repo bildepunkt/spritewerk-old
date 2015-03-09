@@ -19,7 +19,7 @@ SW.Game.Scene = (function() {
      * @belongsto SW.Game
      */
     var Scene = function(options) {
-        SW.Common.Util.inherit(this, SW.Common.Collection);
+        SW.Common.Collection.call(this, options);
 
         options = options || {};
 
@@ -41,6 +41,8 @@ SW.Game.Scene = (function() {
          * @private
          */
     };
+
+    Scene.prototype = SW.Common.Collection.prototype;
 
     /**
      * initialization method; for all setup work related to this scene; called when scene is first added to {@link SW.Game.SceneManager}

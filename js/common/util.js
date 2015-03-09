@@ -51,36 +51,6 @@ SW.Common.Util = (function() {
     };
 
     /**
-     * adds parent properties and methods to the child
-     * we don't want to overwrite existing methods because 
-     * due to the nature of prototypal inheritance, we can reference (or "super") this method inside the original
-     * eg:
-     *      Child.prototype.foo = function(...args) {
-     *          // do stuff
-     *          Parent.prototype.foo.call(this, ...args);
-     *      };
-     *
-     * @method SW.Common.Util.prototype.inherit
-     * @param {Object} child
-     * @param {constructor} Parent
-     */
-    Util.prototype.inherit = function(child, Parent) {
-        var parent = new Parent();
-
-        for(var key in parent) {
-            if (child[key] === undefined) {
-                if (typeof parent[key] === 'function') {
-                    child[key] = parent[key];
-                } else if (typeof parent[key] === 'object' && parent[key] !== null) {
-                    child[key] = this.clone(parent[key]);
-                } else {
-                    child[key] = parent[key];
-                }
-            }
-        }
-    };
-
-    /**
      * returns true if x/y is inside entity's bounding box
      *
      * @method SW.Common.Util.prototype.hitPoint

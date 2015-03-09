@@ -9,7 +9,7 @@ SW.Display.Line = (function() {
      * @belongsto SW
      */
     var Line = function() {
-        SW.Common.Util.inherit(this, SW.Display.Renderable);
+        SW.Display.Renderable.call(this);
 
         /**
          * @member {Array} SW.Display.Line.prototype._coordinates
@@ -42,6 +42,8 @@ SW.Display.Line = (function() {
          */
         this._displayType = 'line';
     };
+
+    Line.prototype = SW.Display.Renderable.prototype;
 
     /**
      * @method SW.Display.Line.prototype.coordinates

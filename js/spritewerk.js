@@ -33,5 +33,5 @@ var SW = {
      * @requires SW.Media
      * @belongsto SW
      */
-    Scenes: {}
+    Game: {}
 };

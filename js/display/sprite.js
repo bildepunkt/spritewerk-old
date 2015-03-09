@@ -10,7 +10,7 @@ SW.Display.Sprite = (function() {
      * @belongsto SW
      */
     var Sprite = function() {
-        SW.Common.Util.inherit(this, SW.Display.Renderable);
+        SW.Display.Renderable.call(this);
 
         /**
          * @member {String} SW.Display.Sprite.prototype._image
@@ -38,6 +38,8 @@ SW.Display.Sprite = (function() {
          */
         this._displayType = 'sprite';
     };
+
+    Sprite.prototype = SW.Display.Renderable.prototype;
 
     /**
      * @method SW.Display.Sprite.prototype.srcPosition

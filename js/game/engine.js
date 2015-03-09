@@ -48,9 +48,12 @@ SW.Game.Engine = (function() {
         this._paused = false;
 
         /**
-         * @method
+         * the update method with the proper scope (for use with rAF)
+         *
+         * @method SW.Game.Engine.prototype._boundUpdate
+         * @private
          */
-        //this._boundUpdate = this._update.bind(this);
+        this._boundUpdate = this._update.bind(this);
     };
 
     /**
@@ -67,6 +70,7 @@ SW.Game.Engine = (function() {
      *
      * @fires newframe - triggers on every frame
      * @method SW.Game.Engine.prototype._update
+     * @fires SW.Game.Engine#new/frame
      * @private
      */
     Engine.prototype._update = function() {
@@ -82,19 +86,11 @@ SW.Game.Engine = (function() {
             this._then = this._now - (this._delta % this._interval);
             this._counter += 1;
 
-            radio.broadcast('newframe', {
+            radio.broadcast('new/frame', {
                 frame: this._counter
             });
         }
     };
-
-    /**
-     * the update method with the proper scope
-     *
-     * @method SW.Game.Engine.prototype._boundUpdate
-     * @private
-     */
-    Engine.prototype._boundUpdate = this._update.bind(Engine);
 
     /**
      * Pauses the game by stopping the engine

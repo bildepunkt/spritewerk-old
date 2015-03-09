@@ -9,7 +9,7 @@ SW.Display.Rectangle = (function() {
      * @belongsto SW
      */
     var Rectangle = function() {
-        SW.Common.Util.inherit(this, SW.Display.Renderable);
+        SW.Display.Renderable.call(this);
 
         /**
          * @member {String} SW.Display.Rectangle.prototype._fillColor
@@ -26,10 +26,12 @@ SW.Display.Rectangle = (function() {
         this._displayType = 'rectangle';
     };
 
+    Rectangle.prototype = SW.Display.Renderable.prototype;
+
     /**
      * @method SW.Display.Rectangle.prototype.gsFillColor
      * @param {String} value
-     * @return {string|SW.Display.Rectangle}
+     * @return {String|SW.Display.Rectangle}
      * @chainable
      */
     Rectangle.prototype.fillColor = function(value) {

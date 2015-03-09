@@ -8,7 +8,7 @@ SW.Common.Collection = (function() {
      * @belongsto SW
      */
     var Collection = function() {
-        SW.Common.Util.inherit(this, SW.Common.Unique);
+        SW.Common.Unique.call(this);
 
         /**
          * @member {Array} SW.Common.Collection.prototype._sortedItems - the sorted list
@@ -21,6 +21,8 @@ SW.Common.Collection = (function() {
          */
         this._items = {};
     };
+
+    Collection.prototype = SW.Common.Unique.prototype;
 
     /**
      * adds an object to both this.items/this.sortedItems
