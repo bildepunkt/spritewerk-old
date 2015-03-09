@@ -10,6 +10,7 @@ SW.Game.SceneManager = (function() {
      * @requires SW.Media.MediaManager
      * @listens SW.Events.Signal#preload/complete
      * @belongsto SW.Game
+     * @singleton
      */
     var SceneManager = function() {
         var eventType;

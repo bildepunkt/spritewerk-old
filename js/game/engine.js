@@ -1,5 +1,9 @@
 SW.Game.Engine = (function() {
-
+    /**
+     * runs the game loop
+     * @class SW.Game.Engine
+     * @belongsto SW.Game
+     */
     var Engine = function(options) {
         /**
          * the (desired) amount of times per second the game loop executes
