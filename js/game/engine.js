@@ -3,6 +3,7 @@ SW.Game.Engine = (function() {
      * runs the game loop
      * @class SW.Game.Engine
      * @belongsto SW.Game
+     * @singleton
      */
     var Engine = function(options) {
         /**
@@ -90,7 +91,11 @@ SW.Game.Engine = (function() {
             this._then = this._now - (this._delta % this._interval);
             this._counter += 1;
 
-            radio.broadcast('new/frame', {
+            /**
+             * @event SW.Events.Signal#new/frame
+             * @property {Integer} frame - the current frame count
+             */
+            SW.Events.Signal.dispatch('new/frame', {
                 frame: this._counter
             });
         }

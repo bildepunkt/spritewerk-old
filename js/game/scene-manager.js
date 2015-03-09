@@ -108,6 +108,9 @@ SW.Game.SceneManager = (function() {
         if (typeof name === 'string') {
             this.setItemIndex(name, lastIndex);
 
+            /**
+             * @event SW.Events.Signal#scene/activated
+             */
             SW.Events.Signal.dispatch('scene/activated', {
                 scene: this._sortedItems[lastIndex]
             });
