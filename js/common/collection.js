@@ -2,7 +2,7 @@ SW.Common.Collection = (function() {
     'use strict';
 
     /**
-     * provides management of, and an interface for, a (named and indexed) list of entities
+     * provides management of, and an interface for, a list of items
      *
      * @class SW.Common.Collection
      * @belongsto SW
@@ -14,84 +14,96 @@ SW.Common.Collection = (function() {
          * @member {Array} SW.Common.Collection.prototype._sortedItems - the sorted list
          * @private
          */
-        this._sortedItems = [];
-        /**
-         * @member {Object} SW.Common.Collection.prototype._items - the hash list
-         * @private
-         */
-        this._items = {};
+        this._items = [];
     };
 
     Collection.prototype = SW.Common.Unique.prototype;
 
     /**
-     * adds an object to both this.items/this.sortedItems
+     * adds an object to the collection's items
      *
      * @method SW.Common.Collection.prototype.addItem
      * @param {String} name
      * @param {Object} value
+     * @chainable
      */
     Collection.prototype.addItem = function(name, value) {
-        this._items[name] = value;
-        this._sortedItems.push(value);
+        this._items.push({
+            name: name,
+            value: value
+        });
+
+        return this;
     };
 
     /**
-     * adds an object to both this.items/this.sortedItems at a specific index
+     * adds an object to the collection's items at a specific index
      *
      * @method SW.Common.Collection.prototype.addItemAt
      * @param {String} name
      * @param {any} value
      * @param {Integer} index
+     * @chainable
      */
     Collection.prototype.addItemAt = function(name, value, index) {
-        this._items[name] = value;
-        this._sortedItems.splice(index, 0, value);
+        this._items.splice(index, 0, {
+            name: name,
+            value: value
+        });
+
+        return this;
     };
 
     /**
-     * removes -by name- an object from both this.items/this.sortedItems
+     * removes -by name- an object from the collection's items
      *
      * @method SW.Common.Collection.prototype.removeItem
      * @param {String} name
      */
     Collection.prototype.removeItem = function(name) {
-        var item = this.items[name];
-
-        this.sortedEach(function(iterItem, i, items) {
-            if (item._uid === iterItem._uid) {
+        this._rawEach(function(iterItem, i, iterName, items) {
+            if (name === iterName) {
                 iterItem = null;
                 items.splice(i, 1);
 
-                return true;
+                // break out of loop
+                return false;
             }
         });
-
-        this._items[name] = null;
-        delete this._items[name];
     };
 
     /**
-     * iterates the collection's sortedItems. The item, index, and the list being iterated are supplied to the provided function
+     * iterates the collection's sortedItems. The item, index, and name are supplied to the provided function
      *
      * @method SW.Common.Collection.prototype.sortedEach
-     * @param {function} fn
+     * @param {Function} fn
+     * @param {Object} scope
      */
-    Collection.prototype.sortedEach = function(fn) {
-        for(var i = 0, len = this._sortedItems.length; i < len; i += 1) {
-            fn(this._sortedItems[i], i, this._sortedItems);
+    Collection.prototype.each = function(fn, scope) {
+        var item;
+
+        fn = scope ? fn.bind(scope) : fn;
+
+        for(var i = 0, len = this._items.length; i < len; i += 1) {
+            item = this._items[i];
+            if (fn(item.value, i, item.name) === false) {
+                break;
+            }
         }
     };
 
     /**
-     * iterates the collection's items. The item, property, and the list being iterated are supplied to the provided function
+     * iterates the collection's sortedItems. The raw item, index, name, and the list being iterated are supplied to the provided function
      *
-     * @method SW.Common.Collection.prototype.each
+     * @method SW.Common.Collection.prototype.sortedEach
      * @param {function} fn
+     * @private
      */
-    Collection.prototype.each = function(fn) {
-        for(var prop in this._items) {
-            fn(this._items[prop], prop, this._items);
+    Collection.prototype._rawEach = function(fn) {
+        for(var i = 0, len = this._items.length; i < len; i += 1) {
+            if (fn(this._items[i], i, this._items[i].name, this._items) === false) {
+                break;
+            }
         }
     };
 
@@ -102,16 +114,16 @@ SW.Common.Collection = (function() {
      * @param {function} fn
      * @return {Array} filteredItems
      */
-    Collection.prototype.filter = function(fn) {
+    Collection.prototype.filter = function(fn, scope) {
         var filteredItems = [];
         var filteredItem;
 
-        this.sortedEach(function(item, i, items) {
-            filteredItem = fn(item, i, items);
+        this.each(function(item, i, name) {
+            filteredItem = fn(item, i, name);
             if (filteredItem) {
                 filteredItems.push(filteredItem);
             }
-        });
+        }, scope);
 
         return filteredItems;
     };
@@ -123,7 +135,7 @@ SW.Common.Collection = (function() {
      * @return {Integer}
      */
     Collection.prototype.getItemCount = function() {
-        return this._sortedItems.length;
+        return this._items.length;
     };
 
     /**
@@ -132,9 +144,18 @@ SW.Common.Collection = (function() {
      * @method SW.Common.Collection.prototype.setItem
      * @param {String} name
      * @param {any} value
+     * @chainable
      */
     Collection.prototype.setItem = function(name, value) {
-        this._items[name] = value;
+        this._rawEach(function(iterItem, i, iterName) {
+            if (name === iterName) {
+                iterItem.value = value;
+
+                return false;
+            }
+        });
+
+        return this;
     };
 
     /**
@@ -144,7 +165,37 @@ SW.Common.Collection = (function() {
      * @return {any}
      */
     Collection.prototype.getItem = function(name) {
-        return this._items[name];
+        var item;
+
+        this.each(function(iterItem, i, iterName) {
+            if (name === iterName) {
+                item = iterItem;
+
+                return false;
+            }
+        });
+
+        return item;
+    };
+
+    /**
+     * gets a raw item by name
+     *
+     * @method SW.Common.Collection.prototype.getItem
+     * @return {any}
+     */
+    Collection.prototype._getRawItem = function(name) {
+        var item;
+
+        this._rawEach(function(iterItem, i, iterName) {
+            if (name === iterName) {
+                item = iterItem;
+
+                return false;
+            }
+        });
+
+        return item;
     };
 
     /**
@@ -155,32 +206,33 @@ SW.Common.Collection = (function() {
      * @param {Integer} index
      */
     Collection.prototype.setItemIndex = function(name, index) {
-        var item = this.getItem(name);
+        var item;
         var currentIndex = this.getItemIndex(name);
 
         if (index === currentIndex) {
             return;
         }
 
+        item = this._getRawItem(name);
         this.removeItem(name);
-        this.addItemAt(name, item, index);
+        this._items.splice(index, 0, item);
     };
 
     /**
-     * gets an items current index
+     * gets an item's current index
      *
      * @method SW.Common.Collection.prototype.getItemIndex
      * @param {String} name
      * @return {Integer}
      */
     Collection.prototype.getItemIndex = function(name) {
-        var theItem = this.getItem(name);
         var index;
 
-        this.sortedEach(function(item, i) {
-            if (theItem._uid === item._uid) {
+        this.each(function(iterItem, i, iterName) {
+            if (name === iterName) {
                 index = i;
-                return;
+
+                return false;
             }
         });
 
