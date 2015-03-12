@@ -31,12 +31,22 @@
     <script src="../js/game/game.js"></script>
 
     <script>
+        var MyScene = function() {
+            SW.Game.Scene.call(this);
+        };
+        MyScene.prototype = SW.Game.Scene.prototype;
+        MyScene.prototype.init = function() {
+            this.addItem('main', new SW.Game.Layer());
+            this.getItem('main').addItem('foo', new SW.Display.Rectangle().dimension(64, 64).draggable(true));
+        };
+
         SW.Events.Signal.addListener('spritewerk/ready', function() {
-            game.sceneManager.addScene('myscene', SW.Game.Scene);
+            game.sceneManager.addScene('myscene', MyScene);
         });
 
         var game = new SW.Game.Game({
-            canvasId: 'spritewerk'
+            canvasId: 'spritewerk',
+            canvasFit: true
         });
     </script>
 </head>

@@ -12,8 +12,6 @@ SW.Events.Input = (function() {
     var Input = function(options) {
         var index;
 
-        options = options || {};
-
         /**
          * @member {Array} SW.Events.Input.prototype._mouseEvents
          * @private
@@ -37,10 +35,10 @@ SW.Events.Input = (function() {
         this._eventEl = options.eventEl;
 
         /**
-         * @member {Array} SW.Events.Input.prototype._canvasStretch
+         * @member {Array} SW.Events.Input.prototype._canvasFit
          * @private
          */
-        this._canvasStretch = options.canvasStretch;
+        this._canvasFit = options.canvasFit;
 
         /**
          * @member {SW.Renderable} SW.Events.Input.prototype._pressCandidate
@@ -138,7 +136,7 @@ SW.Events.Input = (function() {
      * @private
      */
     Input.prototype._receiveEvent = function(inputEvent) {
-        var factor = this._canvasStretch ? 100 / this._getScaleFactor() / 100 : 1;
+        var factor = this._canvasFit ? 100 / this._getScaleFactor() / 100 : 1;
         var offsetX = this._eventEl.offsetLeft;
         var offsetY = this._eventEl.offsetTop;
         var eventData = {

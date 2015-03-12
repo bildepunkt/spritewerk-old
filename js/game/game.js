@@ -43,6 +43,11 @@ SW.Game.Game = (function() {
          * @private
          */
         this._fps = options.fps || 60;
+        /**
+         * @member {Boolean} SW.Game.Game.prototype._canvasFit
+         * @private
+         */
+        this._canvasFit = options.canvasFit || false;
 
         /**
          * @member {SW.Display.Canvas} SW.Game.Game.prototype.canvas
@@ -63,9 +68,27 @@ SW.Game.Game = (function() {
 
         SW.Events.Signal.addListener(window, 'load', this._onReady, this);
         SW.Events.Signal.addListener('scene/activated', this._onSceneActivated, this);
+        SW.Events.Signal.addListener('new/frame', this._onNewFrame, this);
     };
 
     /**
+     *
+     */
+    Game.prototype._onNewFrame = function() {
+        var self = this;
+        var activeScene = this.sceneManager.activeScene();
+
+        this.canvas.clearAll().fillAll(activeScene.bgColor());
+
+        activeScene.each(function(layer) {
+            layer.each(function(entity) {
+                self.canvas.render(entity);
+            });
+        });
+    };
+
+    /**
+     * @method SW.Game.Game.prototype._onReady
      * @fires SW.Events.Signal#spritewerk/ready
      */
     Game.prototype._onReady = function() {
@@ -76,13 +99,15 @@ SW.Game.Game = (function() {
         this.canvas = new SW.Display.Canvas({
             id: this._canvasId,
             width: this._width,
-            height: this._height
+            height: this._height,
+            canvasFit: this._canvasFit
         });
 
         this.input = new SW.Events.Input({
             eventEl: this.canvas.getCanvasEl(),
             bindMouseInput: this._bindMouseInput,
-            bindTouchInput: this._bindTouchInput
+            bindTouchInput: this._bindTouchInput,
+            canvasFit: this._canvasFit
         });
 
         this.engine = new SW.Game.Engine({

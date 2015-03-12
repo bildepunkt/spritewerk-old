@@ -27,7 +27,7 @@ SW.Game.Scene = (function() {
          * @member {String} SW.Game.Scene.prototype._bgColor
          * @private
          */
-        this._bgColor = null;
+        this._bgColor = options.bgColor || '#ddd';
 
         /**
          * @member {String} SW.Game.Scene.prototype._assets
@@ -43,6 +43,21 @@ SW.Game.Scene = (function() {
     };
 
     Scene.prototype = SW.Common.Collection.prototype;
+
+    /**
+     * @method SW.Game.Scene.prototype.bgColor
+     */
+    Scene.prototype.bgColor = function(value) {
+        if (value === undefined) {
+            return this._bgColor;
+        }
+
+        if (typeof value === 'string') {
+            this._bgColor = value;
+        }
+
+        return this;
+    };
 
     /**
      * initialization method; for all setup work related to this scene; called when scene is first added to {@link SW.Game.SceneManager}

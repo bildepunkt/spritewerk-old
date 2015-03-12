@@ -50,8 +50,8 @@ SW.Display.Canvas = (function() {
      * @private
      */
     Canvas.prototype._onScreenResize = function() {
-        var LANDSCAPE_RATIO = SW.Config.height / SW.Config.width;
-        var PORTRAIT_RATIO  = SW.Config.width / SW.Config.height;
+        var LANDSCAPE_RATIO = this._height / this._width;
+        var PORTRAIT_RATIO  = this._width / this._height;
         var IS_LANDSCAPE    = LANDSCAPE_RATIO < PORTRAIT_RATIO ? true : false;
         var winW = window.innerWidth;
         var winH = window.innerHeight;
@@ -84,10 +84,10 @@ SW.Display.Canvas = (function() {
             }
         }
 
-        this._canvas.style.width  = Math.round(canW) + 'px';
-        this._canvas.style.height = Math.round(canH) + 'px';
-        this._canvas.style.left   = Math.round(left) + 'px';
-        this._canvas.style.top    = Math.round(top)  + 'px';
+        this._canvasEl.style.width  = Math.round(canW) + 'px';
+        this._canvasEl.style.height = Math.round(canH) + 'px';
+        this._canvasEl.style.left   = Math.round(left) + 'px';
+        this._canvasEl.style.top    = Math.round(top)  + 'px';
 
         // we use a timeout here because some mobile browsers
         // don't fire if there is not a short delay
@@ -136,7 +136,7 @@ SW.Display.Canvas = (function() {
 
         // remember: context transforms are cumulative :)
         this._context.save();
-        this._context.translate(position.x, position.y);
+        this._context.translate(Math.floor(position.x), Math.floor(position.y));
 
         if (entity.rotation() !== 0) {
             this._context.translate(rotationOffset.x, rotationOffset.y);
