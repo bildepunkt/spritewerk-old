@@ -139,12 +139,12 @@ SW.Display.Renderable = (function() {
     };
 
     /**
-     * @method SW.Display.Renderable.prototype.dimension
+     * @method SW.Display.Renderable.prototype.dimensions
      * @param {Float} [value]
      * @return {float|SW.Display.Renderable}
      * @chainable
      */
-    Renderable.prototype.dimension = function(x, y) {
+    Renderable.prototype.dimensions = function(x, y) {
         if (x === undefined && y === undefined) {
             return this._dimension;
         }

@@ -173,7 +173,7 @@ SW.Display.Canvas = (function() {
      * @private
      */
     Canvas.prototype.renderRectangle = function(entity) {
-        var dimension = entity.dimension();
+        var dimension = entity.dimensions();
 
         this._context.save();
         this._context.fillStyle = entity.fillColor();
@@ -207,7 +207,7 @@ SW.Display.Canvas = (function() {
      * @private
      */
     Canvas.prototype.renderSprite = function(entity) {
-        var dimension = entity.dimension();
+        var dimension = entity.dimensions();
         var srcDimension = entity.srcDimension();
         var srcPosition = entity.srcPosition();
 

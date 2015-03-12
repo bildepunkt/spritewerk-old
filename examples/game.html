@@ -37,7 +37,7 @@
         MyScene.prototype = SW.Game.Scene.prototype;
         MyScene.prototype.init = function() {
             this.addItem('main', new SW.Game.Layer());
-            this.getItem('main').addItem('foo', new SW.Display.Rectangle().dimension(64, 64).draggable(true));
+            this.getItem('main').addItem('foo', new SW.Display.Rectangle().dimensions(64, 64).draggable(true));
         };
 
         SW.Events.Signal.addListener('spritewerk/ready', function() {

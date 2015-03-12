@@ -61,7 +61,7 @@ SW.Common.Util = (function() {
      */
     Util.prototype.hitPoint = function(x, y, entity) {
         var position = entity.position();
-        var dimension = entity.dimension();
+        var dimension = entity.dimensions();
 
         if (x >= position.x &&
             x <= position.x + dimension.x &&
