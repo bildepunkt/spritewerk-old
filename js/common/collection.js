@@ -11,7 +11,7 @@ SW.Common.Collection = (function() {
         SW.Common.Unique.call(this);
 
         /**
-         * @member {Array} SW.Common.Collection.prototype._sortedItems - the sorted list
+         * @member {Array} SW.Common.Collection.prototype._items - the sorted list
          * @private
          */
         this._items = [];
@@ -75,7 +75,7 @@ SW.Common.Collection = (function() {
     /**
      * iterates the collection's sortedItems. The item, index, and name are supplied to the provided function
      *
-     * @method SW.Common.Collection.prototype.sortedEach
+     * @method SW.Common.Collection.prototype.each
      * @param {Function} fn
      * @param {Object} scope
      */
@@ -95,7 +95,7 @@ SW.Common.Collection = (function() {
     /**
      * iterates the collection's sortedItems. The raw item, index, name, and the list being iterated are supplied to the provided function
      *
-     * @method SW.Common.Collection.prototype.sortedEach
+     * @method SW.Common.Collection.prototype._rawEach
      * @param {function} fn
      * @private
      */
@@ -176,6 +176,16 @@ SW.Common.Collection = (function() {
         });
 
         return item;
+    };
+
+    /**
+     * gets an existing item by name index
+     *
+     * @method SW.Common.Collection.prototype.getItem
+     * @return {any}
+     */
+    Collection.prototype.getItemAt = function(index) {
+        return this._items[index].value;
     };
 
     /**

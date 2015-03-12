@@ -102,7 +102,7 @@ SW.Game.SceneManager = (function() {
         var lastIndex = this.getItemCount() - 1;
 
         if (name === undefined) {
-            return this._sortedItems[lastIndex];
+            return this.getItemAt(lastIndex);
         }
 
         if (typeof name === 'string') {
@@ -112,7 +112,7 @@ SW.Game.SceneManager = (function() {
              * @event SW.Events.Signal#scene/activated
              */
             SW.Events.Signal.dispatch('scene/activated', {
-                scene: this._sortedItems[lastIndex]
+                scene: this.getItemAt(lastIndex)
             });
         }
 
@@ -132,7 +132,7 @@ SW.Game.SceneManager = (function() {
         this.addItem(this._loadingName, this._loadingScene);
 
         SW.Events.Signal.dispatch('scene/activated', {
-            scene: this.loadingScene
+            scene: this._loadingScene
         });
 
         this._loadingScene.init();

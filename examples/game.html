@@ -8,6 +8,7 @@
     <script src="../js/common/util.js"></script>
     <script src="../js/common/unique.js"></script>
     <script src="../js/common/collection.js"></script>
+    <script src="../js/common/dom.js"></script>
 
     <script src="../js/events/signal.js"></script>
     <script src="../js/events/input.js"></script>
@@ -30,8 +31,12 @@
     <script src="../js/game/game.js"></script>
 
     <script>
-        var game = new Game({
+        SW.Events.Signal.addListener('spritewerk/ready', function() {
+            game.sceneManager.addScene('myscene', SW.Game.Scene);
+        });
 
+        var game = new SW.Game.Game({
+            canvasId: 'spritewerk'
         });
     </script>
 </head>

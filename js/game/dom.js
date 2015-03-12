@@ -14,6 +14,8 @@ SW.Game.Dom = (function() {
          */
         this.title = options.title;
 
+        this.bgColor = options.bgColor || '#444';
+
         document.title = this.title || 'spritewerk game';
 
         this._styleElements();
@@ -28,7 +30,7 @@ SW.Game.Dom = (function() {
     Dom.prototype._styleElements = function() {
         var body = document.getElementsByTagName('body')[0];
 
-        body.style.backgroundColor = SW.Config.backgroundColor;
+        body.style.backgroundColor = this.bgColor;
         body.style.margin = 0;
         body.style.padding = 0;
     };

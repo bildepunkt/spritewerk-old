@@ -1,9 +1,9 @@
-SW.Game.Dom = (function() {
+SW.Common.Dom = (function() {
     /**
      * manipulates various dom elements
      *
-     * @class SW.Game.Dom
-     * @belongsto SW.Game
+     * @class SW.Common.Dom
+     * @belongsto SW.Common
      */
     var Dom = function() {
         SW.Events.Signal.addListener(window, 'resize', this._onWindowResize, this);
@@ -12,7 +12,7 @@ SW.Game.Dom = (function() {
     };
 
     /**
-     * @method SW.Game.Dom.prototype._onWindowResize
+     * @method SW.Common.Dom.prototype._onWindowResize
      * @listens window#resize
      * @listens window#orientationchange
      * @fires SW.Events.Signal#screen/resize

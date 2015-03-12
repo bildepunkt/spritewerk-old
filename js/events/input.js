@@ -87,6 +87,12 @@ SW.Events.Input = (function() {
                 SW.Events.Signal.addListener(this._eventEl, this._touchEvents[index], this._receiveEvent, this);
             }
         }
+
+        SW.Events.Signal.addListener('scene/activated', this.receiveScene, this);
+    };
+
+    Input.prototype.receiveScene = function(e) {
+        this.setScene(e.detail.scene);
     };
 
     /**
@@ -318,8 +324,8 @@ SW.Events.Input = (function() {
         var topmostEntity;
 
         if (this._scene) {
-            this._scene.sortedEach(function(layer) {
-                layer.sortedEach(function(entity) {
+            this._scene.each(function(layer) {
+                layer.each(function(entity) {
                     if (SW.Common.Util.hitPoint(e.x, e.y, entity)) {
                         // continually assign higher sorted entity
                         topmostEntity = entity;
@@ -327,7 +333,7 @@ SW.Events.Input = (function() {
                 });
             });
         } else if (this._layer) {
-            this._layer.sortedEach(function(entity) {
+            this._layer.each(function(entity) {
                 if (SW.Common.Util.hitPoint(e.x, e.y, entity)) {
                     // continually assign higher sorted entity
                     topmostEntity = entity;

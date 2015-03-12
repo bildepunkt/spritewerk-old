@@ -17,32 +17,32 @@ SW.Game.Game = (function() {
          * @member {Integer} SW.Game.Game.prototype._width
          * @private
          */
-        this._width = options.width;
+        this._width = options.width || 600;
         /**new
          * @member {Integer} SW.Game.Game.prototype._height
          * @private
          */
-        this._height = options.height;
+        this._height = options.height || 400;
         /**
          * @member {Boolean} SW.Game.Game.prototype._bindMouseInput
          * @private
          */
-        this._bindMouseInput = options.bindMouseInput;
+        this._bindMouseInput = options.bindMouseInput || true;
         /**
          * @member {Boolean} SW.Game.Game.prototype._bindTouchInput
          * @private
          */
-        this._bindTouchInput = options.bindTouchInput;
+        this._bindTouchInput = options.bindTouchInput || true;
         /**
          * @member {Boolean} SW.Game.Game.prototype._title
          * @private
          */
-        this._title = options.title;
+        this._title = options.title || 'spritewerk game';
         /**
          * @member {Boolean} SW.Game.Game.prototype._fps
          * @private
          */
-        this._fps = options.fps;
+        this._fps = options.fps || 60;
 
         /**
          * @member {SW.Display.Canvas} SW.Game.Game.prototype.canvas
@@ -65,6 +65,9 @@ SW.Game.Game = (function() {
         SW.Events.Signal.addListener('scene/activated', this._onSceneActivated, this);
     };
 
+    /**
+     * @fires SW.Events.Signal#spritewerk/ready
+     */
     Game.prototype._onReady = function() {
         this.dom = new SW.Game.Dom({
             title: this._title
@@ -83,10 +86,17 @@ SW.Game.Game = (function() {
         });
 
         this.engine = new SW.Game.Engine({
-            fps: options._fps
+            fps: this._fps
         });
 
-        this.sceneManager = new SW.Game.SceneManager();
+        this.sceneManager = SW.Game.SceneManager;
+
+        this.engine.start();
+
+        /**
+         * @event SW.Events.Signal#spritewerk/ready
+         */
+        SW.Events.Signal.dispatch('spritewerk/ready');
     };
 
     Game.prototype._onSceneActivated = function(e) {
