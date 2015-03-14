@@ -55,10 +55,10 @@ SW.Display.Renderable = (function() {
 
         /**
          * @member {Boolean} SW.Display.Renderable.prototype._draggable
-         * @default true
+         * @default false
          * @private
          */
-        this._draggable = true;
+        this._draggable = false;
 
         /**
          * @member {Integer} SW.Display.Renderable.prototype._rotation
