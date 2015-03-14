@@ -61,10 +61,6 @@ SW.Game.Game = (function() {
          * @member {SW.Game.Engine} SW.Game.Game.prototype.engine
          */
         this.engine = null;
-        /**
-         * @member {SW.Game.SceneManager} SW.Game.Game.prototype.sceneManager
-         */
-        this.sceneManager = null;
 
         SW.Events.Signal.addListener(window, 'load', this._onReady, this);
         SW.Events.Signal.addListener('scene/activated', this._onSceneActivated, this);
@@ -76,7 +72,7 @@ SW.Game.Game = (function() {
      */
     Game.prototype._onNewFrame = function() {
         var self = this;
-        var activeScene = this.sceneManager.activeScene();
+        var activeScene = SW.Game.SceneManager.activeScene();
 
         this.canvas.clearAll().fillAll(activeScene.bgColor());
 
@@ -113,8 +109,6 @@ SW.Game.Game = (function() {
         this.engine = new SW.Game.Engine({
             fps: this._fps
         });
-
-        this.sceneManager = SW.Game.SceneManager;
 
         // @todo engine firing before scene set
         //this.engine.start();

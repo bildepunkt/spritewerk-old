@@ -41,7 +41,7 @@
         };
 
         SW.Events.Signal.addListener('spritewerk/ready', function() {
-            game.sceneManager.addScene('myscene', MyScene);
+            SW.Game.SceneManager.addScene('myscene', MyScene);
         });
 
         var game = new SW.Game.Game({
