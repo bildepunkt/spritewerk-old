@@ -116,7 +116,8 @@ SW.Game.Game = (function() {
 
         this.sceneManager = SW.Game.SceneManager;
 
-        this.engine.start();
+        // @todo engine firing before scene set
+        //this.engine.start();
 
         /**
          * @event SW.Events.Signal#spritewerk/ready

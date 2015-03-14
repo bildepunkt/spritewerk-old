@@ -131,11 +131,11 @@ SW.Game.SceneManager = (function() {
 
         this.addItem(this._loadingName, this._loadingScene);
 
+        this._loadingScene.init();
+
         SW.Events.Signal.dispatch('scene/activated', {
             scene: this._loadingScene
         });
-
-        this._loadingScene.init();
 
         // remove references for GC (in case no more scenes added and this scene removed)
         this._loadingName = null;
