@@ -61,12 +61,14 @@ SW.Game.Scene = (function() {
 
     /**
      * initialization method; for all setup work related to this scene; called when scene is first added to {@link SW.Game.SceneManager}
+     *
      * @method SW.Game.Scene.prototype.init
      */
     Scene.prototype.init = function() {};
 
     /**
      * called on every frame; for updating all entity properties
+     *
      * @method SW.Game.Scene.prototype.update
      */
     Scene.prototype.update = function() {};
