@@ -73,6 +73,19 @@ SW.Common.Collection = (function() {
     };
 
     /**
+     * removes all items from collection
+     *
+     * @method SW.Common.Collection.prototype.removeAllItems
+     * @return {SW.Common.Collection}
+     * @chainable
+     */
+    Collection.prototype.removeAllItems = function() {
+        this._items = [];
+
+        return this;
+    };
+
+    /**
      * iterates the collection's sortedItems. The item, index, and name are supplied to the provided function
      *
      * @method SW.Common.Collection.prototype.each
