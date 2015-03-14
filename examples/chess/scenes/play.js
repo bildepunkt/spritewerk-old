@@ -1,10 +1,24 @@
 var Play = function() {
     SW.Game.Scene.call(this);
 
-    this.rows = 8;
-    this.cols = 8;
     this.spaceSize = 64;
-    this.pieceSize = 56;
+    this.pieceSize = 48;
+    this.highlightColor = '#C64';
+
+    this.legend = ['', 'sarbaz', 'rukh', 'asb', 'pil', 'fers', 'shah'];
+    this.map = [
+        [2, 3, 4, 6, 5, 4, 3, 2],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [2, 3, 4, 5, 6, 4, 3, 2],
+    ];
+
+    this.rows = this.map.length;
+    this.cols = this.map[0].length;
 
     this.assets({
         pieces: 'images/chess-pieces.png'
@@ -23,7 +37,6 @@ Play.prototype.init = function() {
     this.highlightLayer = this.getItem('highlight');
     this.lightPiecesLayer = this.getItem('lightPieces');
     this.darkPiecesLayer = this.getItem('darkPieces');
-    this.highlightColor = '#C64';
 
     this.piecesSprite = SW.Media.MediaManager.getImage('pieces');
 
@@ -36,17 +49,17 @@ Play.prototype.createBoard = function() {
     var evenOdd = 0;
     var lightColor = '#999';
     var darkColor = '#666';
-    var rect;
+    var space;
 
-    for(var c = 0; c < this.cols; c += 1) {
+    for(var r = 0; r < this.rows; r += 1) {
         evenOdd = evenOdd ? 0 : 1;
-        for(var r = 0; r < this.rows; r += 1) {
-            rect = new SW.Display.Rectangle()
+        for(var c = 0; c < this.cols; c += 1) {
+            space = new SW.Display.Rectangle()
                 .dimensions(this.spaceSize, this.spaceSize)
-                .fillColor(r % 2 === evenOdd ? lightColor : darkColor)
-                .position(r * this.spaceSize, c * this.spaceSize);
+                .fillColor(c % 2 === evenOdd ? lightColor : darkColor)
+                .position(c * this.spaceSize, r * this.spaceSize);
 
-            this.boardLayer.addItem('col' + c + 'row' +  r, rect);
+            this.boardLayer.addItem('row' + r + 'col' + c, space);
         }
     }
 };
@@ -58,92 +71,44 @@ Play.prototype.pressdown = function(e) {
         return false;
     }
 
-    this.displayMoves(piece.type, piece.col, piece.row);
+    this.showMoves(piece.type, piece.col, piece.row);
 };
 
 Play.prototype.pressup = function() {
-    this.removeMoves();
+    this.hideMoves();
 };
 
-Play.prototype.displayMoves = function(type, col, row) {
-    var colrow = 'col' + col + 'row' + row;
-    var highlightSpace;
-    var spaceNames;
-    var i, len;
-
-    switch(type) {
-        case 'rukh':
-            spaceNames = [
-                'col' + col + 'row0',
-                'col' + col + 'row1',
-                'col' + col + 'row2',
-                'col' + col + 'row3',
-                'col' + col + 'row4',
-                'col' + col + 'row5',
-                'col' + col + 'row6',
-                'col' + col + 'row7',
-                'col0row' + row,
-                'col1row' + row,
-                'col2row' + row,
-                'col3row' + row,
-                'col4row' + row,
-                'col5row' + row,
-                'col6row' + row,
-                'col7row' + row
-            ];
-        break;
-    }
-
-    // remove hightlight-space-name that piece is currently on
-    for(i = 0, len = spaceNames.length; i < len; i += 1) {
-        if (spaceNames[i] == colrow) {
-            spaceNames.splice(i, 1);
-        }
-    }
-
-    this.boardLayer.each(function(space, index, name) {
-        for(i = 0, len = spaceNames.length; i < len; i += 1) {
-            if (name == spaceNames[i]) {
-                highlightSpace = new SW.Display.Rectangle()
-                    .position(space.position().x, space.position().y)
-                    .dimensions(this.spaceSize, this.spaceSize)
-                    .fillColor(this.highlightColor)
-                    .opacity(0.5);
-
-                this.highlightLayer.addItem('_' + i, highlightSpace);
-            }
-        }
-    }, this);
+Play.prototype.showMoves = function(type, col, row) {
+    
 };
 
-Play.prototype.removeMoves = function() {
-    this.highlightLayer._items = [];
+Play.prototype.hideMoves = function() {
+    this.highlightLayer.removeAllItems();
 };
 
 Play.prototype.addPieces = function() {
-    this.darkRukhA = new SW.Display.Rectangle().position(8, 8).dimensions(48, 48);
-    this.darkRukhA.type = 'rukh';
-    this.darkRukhA.row = 0;
-    this.darkRukhA.col = 0;
+    var piece;
+    var key;
 
-    this.darkRukhB = new SW.Display.Rectangle().position(456, 8).dimensions(48, 48);
-    this.darkRukhB.type = 'rukh';
-    this.darkRukhB.row = 7;
-    this.darkRukhB.col = 0;
+    for(var r = 0; r < this.rows; r += 1) {
+        for(var c = 0; c < this.cols; c += 1) {
+            if (this.map[r][c]) {
+                piece = new SW.Display.Rectangle()
+                    .dimensions(this.pieceSize, this.pieceSize)
+                    .position(c * this.spaceSize + 8, r * this.spaceSize + 8)
+                    .draggable(true);
 
-    this.darkPiecesLayer.addItem('darkRukhA', this.darkRukhA);
-    this.darkPiecesLayer.addItem('darkRukhB', this.darkRukhB);
+                piece.type = this.legend[this.map[r][c]];
+                console.log(piece.type);
 
-    this.lightRukhA = new SW.Display.Rectangle().position(8, 456).dimensions(48, 48).fillColor('#FFF');
-    this.lightRukhA.type = 'rukh';
-    this.lightRukhA.row = 0;
-    this.lightRukhA.col = 7;
-
-    this.lightRukhB = new SW.Display.Rectangle().position(456, 456).dimensions(48, 48).fillColor('#FFF');
-    this.lightRukhB.type = 'rukh';
-    this.lightRukhB.row = 7;
-    this.lightRukhB.col = 7;
-
-    this.lightPiecesLayer.addItem('lightRukhA', this.lightRukhA);
-    this.lightPiecesLayer.addItem('lightRukhB', this.lightRukhB);
+                if (r < 2) {
+                    piece.fillColor('#000');
+                    this.darkPiecesLayer.addItem('col' + c + 'row' + r, piece);
+                } else {
+                    piece.fillColor('#FFF');
+                    this.lightPiecesLayer.addItem('col' + c + 'row' + r, piece);
+                }
+            }
+        }
+    }
 };

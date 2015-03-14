@@ -35,6 +35,7 @@
     <script>
         SW.Events.Signal.addListener('spritewerk/ready', function() {
             game.sceneManager.addScene('play', Play);
+            game.engine.start();
         });
 
         var game = new SW.Game.Game({
