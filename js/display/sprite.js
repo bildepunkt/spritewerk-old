@@ -28,7 +28,7 @@ SW.Display.Sprite = (function() {
          * @member {SW.Display.Vector} SW.Display.Sprite.prototype._srcSize
          * @private
          */
-        this._srcDimension = new SW.Display.Vector();
+        this._srcDimensions = new SW.Display.Vector();
 
         /**
          * @member {String} SW.Display.Sprite.prototype._displayType
@@ -65,23 +65,23 @@ SW.Display.Sprite = (function() {
     };
 
     /**
-     * @method SW.Display.Sprite.prototype.srcDimension
+     * @method SW.Display.Sprite.prototype.srcDimensions
      * @param {Float} [x]
      * @param {Float} [y]
      * @return {SW.Display.Vector|SW.Display.Sprite}
      * @chainable
      */
-    Sprite.prototype.srcDimension = function(x, y) {
+    Sprite.prototype.srcDimensions = function(x, y) {
         if (x === undefined && y === undefined) {
-            return this._srcDimension;
+            return this._srcDimensions;
         }
 
         if (typeof x === 'number') {
-            this._scrDimension.x = x;
+            this._srcDimension.x = x;
         }
 
         if (typeof y === 'number') {
-            this._scrDimension.y = y;
+            this._srcDimension.y = y;
         }
 
         return this;
@@ -103,9 +103,9 @@ SW.Display.Sprite = (function() {
         if (typeof value === 'object') {
             this._image = value;
 
-            if (!this._srcDimension.x && !this._srcDimension.y) {
-                this._srcDimension.x = this._image.width;
-                this._srcDimension.y = this._image.height;
+            if (!this._srcDimensions.x && !this._srcDimensions.y) {
+                this._srcDimensions.x = this._image.width;
+                this._srcDimensions.y = this._image.height;
             }
 
             if (!this._dimension.x && !this._dimension.y) {
