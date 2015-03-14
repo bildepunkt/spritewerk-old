@@ -33,13 +33,9 @@
     <script src="scenes/play.js"></script>
 
     <script>
-        SW.Events.Signal.addListener('spritewerk/ready', function() {
-            SW.Game.SceneManager.addScene('play', Play);
-            game.engine.start();
-        });
-
-        var game = new SW.Game.Game({
+        var game = new SW.Game.Game('play', Play, {
             canvasId: 'spritewerk',
+            title: 'Shatranj | Spritewerk',
             canvasFit: true,
             width: 512,
             height: 512

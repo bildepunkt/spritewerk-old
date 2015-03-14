@@ -7,7 +7,20 @@ SW.Game.Game = (function() {
     * @listens SW.Events.Signal#scene/activated
     * @belongsto SW.Game
     */
-   var Game = function(options) {
+   var Game = function(initialSceneName, InitialScene, options) {
+        /**
+         * @member {String} SW.Game.Game.prototype._initialSceneName
+         * @private
+         */
+        this._initialSceneName = initialSceneName;
+        /**
+         * @member {SW.Game.Scene} SW.Game.Game.prototype._InitialScene
+         * @private
+         */
+        this._InitialScene = InitialScene;
+
+        options = options || {};
+
         /**
          * @member {String} SW.Game.Game.prototype._canvasId
          * @private
@@ -110,8 +123,7 @@ SW.Game.Game = (function() {
             fps: this._fps
         });
 
-        // @todo engine firing before scene set
-        //this.engine.start();
+        SW.Game.SceneManager.addScene(this._initialSceneName, this._InitialScene);
 
         /**
          * @event SW.Events.Signal#spritewerk/ready
@@ -120,6 +132,10 @@ SW.Game.Game = (function() {
     };
 
     Game.prototype._onSceneActivated = function(e) {
+        if (!this.engineStarted) {
+            this.engine.start();
+        }
+
         this.input.setScene(e.detail.scene);
     };
 

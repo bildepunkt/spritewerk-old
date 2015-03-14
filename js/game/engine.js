@@ -3,7 +3,6 @@ SW.Game.Engine = (function() {
      * runs the game loop
      * @class SW.Game.Engine
      * @belongsto SW.Game
-     * @singleton
      */
     var Engine = function(options) {
         /**
