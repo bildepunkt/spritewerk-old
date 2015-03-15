@@ -7,5 +7,5 @@ dist
 4.0
 3.0
 tests/lib
-*.sublime-workspace
+*.sublime-*
     
