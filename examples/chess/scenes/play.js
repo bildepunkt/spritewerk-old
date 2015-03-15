@@ -2,27 +2,28 @@ var Play = function() {
     SW.Game.Scene.call(this);
 
     this.spaceSize = 64;
-    this.pieceSize = 48;
+    this.pieceSize = 36;
+    this.piecePadding = (this.spaceSize - this.pieceSize) / 2;
     this.highlightColor = '#C64';
 
     this.legend = ['', 'sarbaz', 'rukh', 'asb', 'pil', 'fers', 'shah'];
     this.map = [
-        [2, 3, 4, 6, 5, 4, 3, 2],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [2, 3, 4, 5, 6, 4, 3, 2],
+        [{type: 2, team: 0}, {type: 3, team: 0}, {type: 4, team: 0}, {type: 6, team: 0}, {type: 5, team: 0}, {type: 4, team: 0}, {type: 3, team: 0}, {type: 2, team: 0}],
+        [{type: 1, team: 0}, {type: 1, team: 0}, {type: 1, team: 0}, {type: 1, team: 0}, {type: 1, team: 0}, {type: 1, team: 0}, {type: 1, team: 0}, {type: 1, team: 0}],
+        [{type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}],
+        [{type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}],
+        [{type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}],
+        [{type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}, {type: 0}],
+        [{type: 1, team: 1}, {type: 1, team: 1}, {type: 1, team: 1}, {type: 1, team: 1}, {type: 1, team: 1}, {type: 1, team: 1}, {type: 1, team: 1}, {type: 1, team: 1}],
+        [{type: 2, team: 1}, {type: 3, team: 1}, {type: 4, team: 1}, {type: 5, team: 1}, {type: 6, team: 1}, {type: 4, team: 1}, {type: 3, team: 1}, {type: 2, team: 1}]
     ];
 
     this.rows = this.map.length;
     this.cols = this.map[0].length;
 
-    this.assets({
+    /*this.assets({
         pieces: 'images/chess-pieces.png'
-    });
+    });*/
 };
 
 Play.prototype = SW.Game.Scene.prototype;
@@ -67,19 +68,93 @@ Play.prototype.createBoard = function() {
 Play.prototype.pressdown = function(e) {
     var piece = e.target;
 
+    this.originSpace = this.boardLayer.getItem('row' + piece.row + 'col' + piece.col);
+
     if (!piece.hasOwnProperty('type')) {
         return false;
     }
 
-    this.showMoves(piece.type, piece.col, piece.row);
+    this.showMoves(piece.type, piece.team, piece.col, piece.row);
 };
 
-Play.prototype.pressup = function() {
+Play.prototype.pressup = function(e) {
+    var piece = e.target;
+    var x, y;
+
+    if (!piece.hasOwnProperty('type')) {
+        return false;
+    }
+
+    this.highlightLayer.each(function(potentialSpace) {
+        if (SW.Common.Util.hitPoint(e.x, e.y, potentialSpace)) {
+            x = potentialSpace.position().x + this.piecePadding;
+            y = potentialSpace.position().y + this.piecePadding;
+        }
+    }, this);
+
+     if (x === undefined && y === undefined) {
+        x = this.originSpace.position().x + this.piecePadding;
+        y = this.originSpace.position().y + this.piecePadding;
+    }
+
+    piece.position(x, y);
+
     this.hideMoves();
 };
 
-Play.prototype.showMoves = function(type, col, row) {
-    
+Play.prototype.showMoves = function(type, team, pieceCol, pieceRow) {
+    var r, c;
+
+    switch(type) {
+        case 'sarbaz':
+            r = pieceRow + (team === 0 ? 1 : -1);
+            c = pieceCol;
+            if (this.map[r][c].type === 0) {
+                this.addHighlightSpace(r, c);
+            }
+        break;
+        case 'rukh':
+            for (c = pieceCol + 1, r = pieceRow; c < this.cols; c += 1) {
+                if (this.map[r][c].type !== 0) {
+                    break;
+                } else {
+                    this.addHighlightSpace(r, c);
+                }
+            }
+            for (c = pieceCol - 1, r = pieceRow; c > -1; c -= 1) {
+                if (this.map[r][c].type !== 0) {
+                    break;
+                } else {
+                    this.addHighlightSpace(r, c);
+                }
+            }
+            for (r = pieceRow + 1, c = pieceCol; r < this.rows; r += 1) {
+                if (this.map[r][c].type !== 0) {
+                    break;
+                } else {
+                    this.addHighlightSpace(r, c);
+                }
+            }
+            for (r = pieceRow - 1, c = pieceCol; r > -1; r -= 1) {
+                if (this.map[r][c].type !== 0) {
+                    break;
+                } else {
+                    this.addHighlightSpace(r, c);
+                }
+            }
+        break;
+    }
+};
+
+Play.prototype.addHighlightSpace = function(r, c) {
+    this.highlightLayer.addItem(
+        'row' + r + 'col' + c,
+        new SW.Display.Rectangle()
+            .opacity(0.5)
+            .fillColor(this.highlightColor)
+            .position(c * this.spaceSize, r * this.spaceSize)
+            .dimensions(this.spaceSize, this.spaceSize)
+    );
 };
 
 Play.prototype.hideMoves = function() {
@@ -92,14 +167,18 @@ Play.prototype.addPieces = function() {
 
     for(var r = 0; r < this.rows; r += 1) {
         for(var c = 0; c < this.cols; c += 1) {
-            if (this.map[r][c]) {
+            if (this.map[r][c].type !== 0) {
                 piece = new SW.Display.Rectangle()
                     .dimensions(this.pieceSize, this.pieceSize)
-                    .position(c * this.spaceSize + 8, r * this.spaceSize + 8)
+                    .position(c * this.spaceSize + this.piecePadding, r * this.spaceSize + this.piecePadding)
                     .draggable(true);
 
-                piece.type = this.legend[this.map[r][c]];
-                console.log(piece.type);
+                piece.type = this.legend[this.map[r][c].type];
+                piece.team = this.map[r][c].team;
+                piece.col = c;
+                piece.row = r;
+
+                console.log(piece.type, c, r);
 
                 if (r < 2) {
                     piece.fillColor('#000');
