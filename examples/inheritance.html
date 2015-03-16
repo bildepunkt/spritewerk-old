@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>inheritance</title>
+</head>
+<body>
+    <script src="../js/spritewerk.js"></script>
+    <script src="../js/common/util.js"></script>
+    <script>
+        var Base = function() {
+            this.x = 0;
+            this.y = 0;
+        };
+
+        Base.prototype.move = function(x, y) {
+            this.x = x;
+            this.y = y;
+        };
+
+        // below describes how prototypal inheritance is utilized within Spritewerk
+        var Sprite = function() {
+            // 1. Scoped Constructor Call
+            // we call the Base constructor with the scope of the Sprite object.
+            // this will run whenever an instance of Sprite is created
+            // we call this here before anything else so that:
+            //     - it runs whatever is needed in the Base constructor. eg. adds event listeners, gets a DOM element etc.
+            //     - it applies any properties assigned in the constructor to Sprite
+            Base.call(this);
+
+            this.image = null;
+        };
+
+        // 2. Prototype Clone
+        // here we make a deep copy of Base's prototype and assign it to Sprite's prototype.
+        // this is often accomplished via assigning an instance of Base to the Sprite's protoype.
+        // we are not using that method however, as we don't want to call the constructor while inheriting
+        // there are, of course, many other ways to do this, but I am not currently interested in those.
+        Sprite.prototype = SW.Common.Util.clone(Base.prototype);
+
+        // as the above line overwrites the entire prototype, run it first, then assign your methods below.
+        Sprite.prototype.assignImage = function(image) {
+            this.image = image;
+        };
+
+        // instantiate and play!
+        var sprite = new Sprite();
+        // image: null
+        // x: 0
+        // y: 0
+        // assignImage: function (image) {...
+        // move: function (x, y) {...
+    </script>
+</body>
+</html>
