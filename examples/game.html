@@ -34,7 +34,7 @@
         var MyScene = function() {
             SW.Game.Scene.call(this);
         };
-        MyScene.prototype = SW.Game.Scene.prototype;
+        MyScene.prototype = SW.Common.Util.clone(SW.Game.Scene.prototype);
         MyScene.prototype.init = function() {
             this.addItem('main', new SW.Game.Layer());
             this.getItem('main').addItem('foo', new SW.Display.Rectangle().dimensions(64, 64).draggable(true));
