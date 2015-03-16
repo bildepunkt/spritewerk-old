@@ -5,6 +5,7 @@ var Play = function() {
     this.pieceSize = 36;
     this.piecePadding = (this.spaceSize - this.pieceSize) / 2;
     this.highlightColor = '#C64';
+    this.holdingPiece = false;
 
     this.legend = ['', 'sarbaz', 'rukh', 'asb', 'pil', 'fers', 'shah'];
     this.map = [
@@ -26,7 +27,7 @@ var Play = function() {
     });*/
 };
 
-Play.prototype = SW.Game.Scene.prototype;
+Play.prototype = SW.Common.Util.clone(SW.Game.Scene.prototype);
 
 Play.prototype.init = function() {
     this.addItem('board', new SW.Game.Layer());
@@ -60,7 +61,8 @@ Play.prototype.createBoard = function() {
                 .fillColor(c % 2 === evenOdd ? lightColor : darkColor)
                 .position(c * this.spaceSize, r * this.spaceSize);
 
-            this.boardLayer.addItem('row' + r + 'col' + c, space);
+            space.name = 'row' + r + 'col' + c;
+            this.boardLayer.addItem(space.name, space);
         }
     }
 };
@@ -74,21 +76,64 @@ Play.prototype.pressdown = function(e) {
         return false;
     }
 
+    this.holdingPiece = true;
+
     this.showMoves(piece.type, piece.team, piece.col, piece.row);
 };
 
 Play.prototype.pressup = function(e) {
     var piece = e.target;
-    var x, y;
 
-    if (!piece.hasOwnProperty('type')) {
+    if (!piece.hasOwnProperty('type') || !this.holdingPiece) {
         return false;
     }
+
+    this.updatePiecePosition(e, piece);
+
+    this.hideMoves();
+};
+
+Play.prototype.getCoordinatesFromName = function(name) {
+    var coordinates = name.match(/\d/g);
+
+    return coordinates.length === 2 ? {
+        row: parseInt(coordinates[0], 10),
+        col: parseInt(coordinates[1], 10)
+    } : null;
+};
+
+Play.prototype.updatePiecePosition = function(e, piece) {
+    var newCoordinates;
+    var x, y;
 
     this.highlightLayer.each(function(potentialSpace) {
         if (SW.Common.Util.hitPoint(e.x, e.y, potentialSpace)) {
             x = potentialSpace.position().x + this.piecePadding;
             y = potentialSpace.position().y + this.piecePadding;
+
+            newCoordinates = this.getCoordinatesFromName(potentialSpace.name);
+
+            this.map[piece.row][piece.col] = {
+                type: 0
+            };
+
+            piece.row = newCoordinates.row;
+            piece.col = newCoordinates.col;
+
+            if (this.map[newCoordinates.row][newCoordinates.col].type !== 0) {
+                if (piece.team === 0) {
+                    this.lightPiecesLayer.removeItem('row' + newCoordinates.row + 'col' + newCoordinates.col);
+                } else {
+                    this.darkPiecesLayer.removeItem('row' + newCoordinates.row + 'col' + newCoordinates.col);
+                }
+            }
+
+            this.map[newCoordinates.row][newCoordinates.col] = {
+                type: piece.type,
+                team: piece.team
+            };
+
+            return false;
         }
     }, this);
 
@@ -98,48 +143,55 @@ Play.prototype.pressup = function(e) {
     }
 
     piece.position(x, y);
-
-    this.hideMoves();
 };
 
 Play.prototype.showMoves = function(type, team, pieceCol, pieceRow) {
     var r, c;
 
     switch(type) {
-        case 'sarbaz':
+        case 1: // sarbaz
             r = pieceRow + (team === 0 ? 1 : -1);
             c = pieceCol;
-            if (this.map[r][c].type === 0) {
+
+            if (this.map[r][c].team !== team) {
                 this.addHighlightSpace(r, c);
             }
         break;
-        case 'rukh':
+        case 2: // rukh
             for (c = pieceCol + 1, r = pieceRow; c < this.cols; c += 1) {
+                if (this.map[r][c].team !== team) {
+                    this.addHighlightSpace(r, c);
+                }
+                
                 if (this.map[r][c].type !== 0) {
                     break;
-                } else {
-                    this.addHighlightSpace(r, c);
                 }
             }
             for (c = pieceCol - 1, r = pieceRow; c > -1; c -= 1) {
+                if (this.map[r][c].team !== team) {
+                    this.addHighlightSpace(r, c);
+                }
+                
                 if (this.map[r][c].type !== 0) {
                     break;
-                } else {
-                    this.addHighlightSpace(r, c);
                 }
             }
             for (r = pieceRow + 1, c = pieceCol; r < this.rows; r += 1) {
+                if (this.map[r][c].team !== team) {
+                    this.addHighlightSpace(r, c);
+                }
+                
                 if (this.map[r][c].type !== 0) {
                     break;
-                } else {
-                    this.addHighlightSpace(r, c);
                 }
             }
             for (r = pieceRow - 1, c = pieceCol; r > -1; r -= 1) {
+                if (this.map[r][c].team !== team) {
+                    this.addHighlightSpace(r, c);
+                }
+                
                 if (this.map[r][c].type !== 0) {
                     break;
-                } else {
-                    this.addHighlightSpace(r, c);
                 }
             }
         break;
@@ -147,14 +199,15 @@ Play.prototype.showMoves = function(type, team, pieceCol, pieceRow) {
 };
 
 Play.prototype.addHighlightSpace = function(r, c) {
-    this.highlightLayer.addItem(
-        'row' + r + 'col' + c,
-        new SW.Display.Rectangle()
-            .opacity(0.5)
-            .fillColor(this.highlightColor)
-            .position(c * this.spaceSize, r * this.spaceSize)
-            .dimensions(this.spaceSize, this.spaceSize)
-    );
+    var highlightPiece = new SW.Display.Rectangle()
+        .opacity(0.5)
+        .fillColor(this.highlightColor)
+        .position(c * this.spaceSize, r * this.spaceSize)
+        .dimensions(this.spaceSize, this.spaceSize);
+
+    highlightPiece.name = 'row' + r + 'col' + c;
+
+    this.highlightLayer.addItem(highlightPiece.name, highlightPiece);
 };
 
 Play.prototype.hideMoves = function() {
@@ -173,7 +226,7 @@ Play.prototype.addPieces = function() {
                     .position(c * this.spaceSize + this.piecePadding, r * this.spaceSize + this.piecePadding)
                     .draggable(true);
 
-                piece.type = this.legend[this.map[r][c].type];
+                piece.type = this.map[r][c].type;
                 piece.team = this.map[r][c].team;
                 piece.col = c;
                 piece.row = r;
@@ -182,10 +235,10 @@ Play.prototype.addPieces = function() {
 
                 if (r < 2) {
                     piece.fillColor('#000');
-                    this.darkPiecesLayer.addItem('col' + c + 'row' + r, piece);
+                    this.darkPiecesLayer.addItem('row' + r + 'col' + c, piece);
                 } else {
                     piece.fillColor('#FFF');
-                    this.lightPiecesLayer.addItem('col' + c + 'row' + r, piece);
+                    this.lightPiecesLayer.addItem('row' + r + 'col' + c, piece);
                 }
             }
         }
