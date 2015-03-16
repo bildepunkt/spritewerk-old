@@ -34,15 +34,9 @@ SW.Game.Scene = (function() {
          * @private
          */
         this._assets = options.assets;
-
-        /**
-         * the collection of {@link SW.Game.Layer} objects
-         * @member {String} SW.Game.Scene.prototype._items
-         * @private
-         */
     };
 
-    Scene.prototype = SW.Common.Collection.prototype;
+    Scene.prototype = SW.Common.Util.clone(SW.Common.Collection.prototype);
 
     /**
      * @method SW.Game.Scene.prototype.bgColor

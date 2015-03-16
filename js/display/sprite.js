@@ -39,7 +39,7 @@ SW.Display.Sprite = (function() {
         this._displayType = 'sprite';
     };
 
-    Sprite.prototype = SW.Display.Renderable.prototype;
+    Sprite.prototype = SW.Common.Util.clone(SW.Display.Renderable.prototype);
 
     /**
      * @method SW.Display.Sprite.prototype.srcPosition

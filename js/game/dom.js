@@ -21,7 +21,7 @@ SW.Game.Dom = (function() {
         this._styleElements();
     };
 
-    Dom.prototype = SW.Common.Dom.prototype;
+    Dom.prototype = SW.Common.Util.clone(SW.Common.Dom.prototype);
 
     /**
      * @method SW.Game.Dom.prototype._styleElements

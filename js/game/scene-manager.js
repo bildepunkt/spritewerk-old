@@ -50,7 +50,7 @@ SW.Game.SceneManager = (function() {
         SW.Events.Signal.addListener('preload/complete', this._onPreloadComplete, this);
     };
 
-    SceneManager.prototype = SW.Common.Collection.prototype;
+    SceneManager.prototype = SW.Common.Util.clone(SW.Common.Collection.prototype);
 
     /**
      * SW input event handler to dispatch to current scene (with SW event data as event param)

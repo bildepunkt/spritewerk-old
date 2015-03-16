@@ -22,7 +22,7 @@ SW.Game.Layer = (function() {
         this._scrollFactor = 1;
     };
 
-    Layer.prototype = SW.Common.Collection.prototype;
+    Layer.prototype = SW.Common.Util.clone(SW.Common.Collection.prototype);
 
     return Layer;
 }());

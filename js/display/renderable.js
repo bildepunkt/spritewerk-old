@@ -104,7 +104,7 @@ SW.Display.Renderable = (function() {
         this._displayType = '';
     };
 
-    Renderable.prototype = SW.Common.Unique.prototype;
+    Renderable.prototype = SW.Common.Util.clone(SW.Common.Unique.prototype);
 
     /**
      * @method SW.Display.Renderable.prototype.getDisplayType

@@ -17,7 +17,7 @@ SW.Common.Collection = (function() {
         this._items = [];
     };
 
-    Collection.prototype = SW.Common.Unique.prototype;
+    Collection.prototype = SW.Common.Util.clone(SW.Common.Unique.prototype);
 
     /**
      * adds an object to the collection's items

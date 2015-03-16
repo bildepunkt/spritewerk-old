@@ -26,7 +26,7 @@ SW.Display.Rectangle = (function() {
         this._displayType = 'rectangle';
     };
 
-    Rectangle.prototype = SW.Display.Renderable.prototype;
+    Rectangle.prototype = SW.Common.Util.clone(SW.Display.Renderable.prototype);
 
     /**
      * @method SW.Display.Rectangle.prototype.gsFillColor

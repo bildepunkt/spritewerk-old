@@ -43,7 +43,7 @@ SW.Display.Line = (function() {
         this._displayType = 'line';
     };
 
-    Line.prototype = SW.Display.Renderable.prototype;
+    Line.prototype = SW.Common.Util.clone(SW.Display.Renderable.prototype);
 
     /**
      * @method SW.Display.Line.prototype.coordinates
