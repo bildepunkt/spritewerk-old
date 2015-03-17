@@ -1,6 +1,6 @@
 SW.Common.Dom = (function() {
     /**
-     * manipulates various dom elements
+     * manipulates, and listens to, various dom elements
      *
      * @class SW.Common.Dom
      * @belongsto SW.Common
@@ -20,7 +20,7 @@ SW.Common.Dom = (function() {
      */
     Dom.prototype._onWindowResize = function() {
         /**
-         * reports either a click, a tap or both
+         * reports a change in screen size
          * @event SW.Events.Signal#screen/resize
          */
         SW.Events.Signal.dispatch('screen/resize');

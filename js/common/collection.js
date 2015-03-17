@@ -205,8 +205,9 @@ SW.Common.Collection = (function() {
     /**
      * gets a raw item by name
      *
-     * @method SW.Common.Collection.prototype.getItem
+     * @method SW.Common.Collection.prototype._getRawItem
      * @return {any}
+     * @private
      */
     Collection.prototype._getRawItem = function(name) {
         var item;
