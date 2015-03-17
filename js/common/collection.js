@@ -5,6 +5,7 @@ SW.Common.Collection = (function() {
      * provides management of, and an interface for, a list of items
      *
      * @class SW.Common.Collection
+     * @extends SW.Common.Unique
      * @belongsto SW
      */
     var Collection = function() {
