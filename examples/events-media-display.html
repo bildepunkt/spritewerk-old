@@ -24,30 +24,30 @@
 
     <script>
         function init() {
-            SW.Events.Signal.removeListener(window, 'load', init);
-            SW.Events.Signal.addListener('preload/complete', onPreloadComplete);
+            SW.Signal.removeListener(window, 'load', init);
+            SW.Signal.addListener('preload/complete', onPreloadComplete);
 
-            SW.Display.Canvas = new SW.Display.Canvas({
+            SW.Canvas = new SW.Canvas({
                 id: 'spritewerk',
                 width: 600,
                 height: 400
             });
 
-            SW.Media.MediaManager.preload({
+            SW.MediaManager.preload({
                 ghost: 'img/Ghost.png'
             });
 
             function onPreloadComplete() {
-                SW.Events.Signal.removeListener('preload/complete', onPreloadComplete);
+                SW.Signal.removeListener('preload/complete', onPreloadComplete);
 
-                var sprite = new SW.Display.Sprite();
-                sprite.image(SW.Media.MediaManager.getImage('ghost'));
+                var sprite = new SW.Sprite();
+                sprite.image(SW.MediaManager.getImage('ghost'));
 
-                SW.Display.Canvas.render(sprite);
+                SW.Canvas.render(sprite);
             }
         }
 
-        SW.Events.Signal.addListener(window, 'load', init);
+        SW.Signal.addListener(window, 'load', init);
     </script>
 </head>
 <body>

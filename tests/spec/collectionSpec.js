@@ -1,13 +1,9 @@
-describe('SW.Common.Collection', function() {
+describe('SW.Collection', function() {
     var collection;
 
     beforeEach(function() {
-        collection = new SW.Common.Collection();
+        collection = new SW.Collection();
         collection.addItem('foo', 123).addItem('bar', 456).addItem('baz', {seven: 7});
-    });
-
-    it('inherits SW.Common.Unique <a href="#">asd</a>', function() {
-        expect(collection instanceof SW.Common.Unique).toBe(true);
     });
 
     it ('can be added to via #addItem', function() {
@@ -46,7 +42,7 @@ describe('SW.Common.Collection', function() {
         var match;
         var foo = {
             match: 9,
-            items: new SW.Common.Collection(),
+            items: new SW.Collection(),
             checkMatches: function() {
                 var match;
                 this.items.each(function(item) {

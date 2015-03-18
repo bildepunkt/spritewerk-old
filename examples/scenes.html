@@ -29,7 +29,7 @@
 
     <script>
         var MyScene = function() {
-            SW.Common.Util.inherit(this, SW.Game.Scene);
+            SW.Util.inherit(this, SW.Scene);
         };
 
         MyScene.prototype.pressdown = function(e) {
@@ -37,22 +37,22 @@
         };
 
         MyScene.prototype.init = function() {
-            var rect = new SW.Display.Rectangle().dimensions(64, 64);
+            var rect = new SW.Rectangle().dimensions(64, 64);
 
             this.addItem('main');
             this.getItem('main').addItem('rect', rect);
         };
 
         function init() {
-            SW.Events.Signal.removeListener(document, 'DOMContentLoaded', init);
+            SW.Signal.removeListener(document, 'DOMContentLoaded', init);
 
-            var canvas = new SW.Display.Canvas({
+            var canvas = new SW.Canvas({
                 id: 'spritewerk',
                 width: 600,
                 height: 400
             });
 
-            var input = new SW.Events.Input({
+            var input = new SW.Input({
                 eventEl: canvas.getCanvasEl(),
                 bindMouseInput: true
             });
@@ -61,7 +61,7 @@
 
             input.setScene(myScene);
             
-            SW.Game.SceneManager.addScene('myscene', myScene);
+            SW.SceneManager.addScene('myscene', myScene);
 
             myScene.each(function(layer) {
                 layer.each(function(entity) {
@@ -70,7 +70,7 @@
             });
         }
 
-        SW.Events.Signal.addListener(document, 'DOMContentLoaded', init);
+        SW.Signal.addListener(document, 'DOMContentLoaded', init);
     </script>
 </head>
 <body>

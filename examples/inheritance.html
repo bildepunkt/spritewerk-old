@@ -36,7 +36,7 @@
         // this is often accomplished via assigning an instance of Base to the Sprite's protoype.
         // we are not using that method however, as we don't want to call the constructor while inheriting
         // there are, of course, many other ways to do this, but I am not currently interested in those.
-        Sprite.prototype = SW.Common.Util.clone(Base.prototype);
+        Sprite.prototype = SW.Util.clone(Base.prototype);
 
         // as the above line overwrites the entire prototype, run it first, then assign your methods below.
         Sprite.prototype.assignImage = function(image) {

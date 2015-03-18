@@ -1,5 +1,5 @@
 var Play = function() {
-    SW.Game.Scene.call(this);
+    SW.Scene.call(this);
 
     this.spaceSize = 64;
     this.pieceSize = 36;
@@ -27,20 +27,20 @@ var Play = function() {
     });*/
 };
 
-Play.prototype = SW.Common.Util.clone(SW.Game.Scene.prototype);
+Play.prototype = SW.Util.clone(SW.Scene.prototype);
 
 Play.prototype.init = function() {
-    this.addItem('board', new SW.Game.Layer());
-    this.addItem('highlight', new SW.Game.Layer());
-    this.addItem('lightPieces', new SW.Game.Layer());
-    this.addItem('darkPieces', new SW.Game.Layer());
+    this.addItem('board', new SW.Layer());
+    this.addItem('highlight', new SW.Layer());
+    this.addItem('lightPieces', new SW.Layer());
+    this.addItem('darkPieces', new SW.Layer());
 
     this.boardLayer = this.getItem('board');
     this.highlightLayer = this.getItem('highlight');
     this.lightPiecesLayer = this.getItem('lightPieces');
     this.darkPiecesLayer = this.getItem('darkPieces');
 
-    this.piecesSprite = SW.Media.MediaManager.getImage('pieces');
+    this.piecesSprite = SW.MediaManager.getImage('pieces');
 
     this.createBoard();
 
@@ -56,7 +56,7 @@ Play.prototype.createBoard = function() {
     for(var r = 0; r < this.rows; r += 1) {
         evenOdd = evenOdd ? 0 : 1;
         for(var c = 0; c < this.cols; c += 1) {
-            space = new SW.Display.Rectangle()
+            space = new SW.Rectangle()
                 .dimensions(this.spaceSize, this.spaceSize)
                 .fillColor(c % 2 === evenOdd ? lightColor : darkColor)
                 .position(c * this.spaceSize, r * this.spaceSize);
@@ -107,7 +107,7 @@ Play.prototype.updatePiecePosition = function(e, piece) {
     var x, y;
 
     this.highlightLayer.each(function(potentialSpace) {
-        if (SW.Common.Util.hitPoint(e.x, e.y, potentialSpace)) {
+        if (SW.Util.hitPoint(e.x, e.y, potentialSpace)) {
             x = potentialSpace.position().x + this.piecePadding;
             y = potentialSpace.position().y + this.piecePadding;
 
@@ -199,7 +199,7 @@ Play.prototype.showMoves = function(type, team, pieceCol, pieceRow) {
 };
 
 Play.prototype.addHighlightSpace = function(r, c) {
-    var highlightPiece = new SW.Display.Rectangle()
+    var highlightPiece = new SW.Rectangle()
         .opacity(0.5)
         .fillColor(this.highlightColor)
         .position(c * this.spaceSize, r * this.spaceSize)
@@ -221,7 +221,7 @@ Play.prototype.addPieces = function() {
     for(var r = 0; r < this.rows; r += 1) {
         for(var c = 0; c < this.cols; c += 1) {
             if (this.map[r][c].type !== 0) {
-                piece = new SW.Display.Rectangle()
+                piece = new SW.Rectangle()
                     .dimensions(this.pieceSize, this.pieceSize)
                     .position(c * this.spaceSize + this.piecePadding, r * this.spaceSize + this.piecePadding)
                     .draggable(true);

@@ -20,28 +20,28 @@
         window.onload = function() {
             var w = 600;
             var h = 400;
-            var canvas = new SW.Display.Canvas({
+            var canvas = new SW.Canvas({
                 id: 'spritewerk',
                 width: w,
                 height: h
             });
 
-            var collection = new SW.Common.Collection();
+            var collection = new SW.Collection();
             var rectangle;
             var line;
 
             for(var i = 0; i < 2500; i += 1) {
-                rectangle = new SW.Display.Rectangle();
+                rectangle = new SW.Rectangle();
                 rectangle.position(Math.random()*w, Math.random()*h);
                 rectangle.dimensions(16, 16);
                 rectangle.opacity(0.2);
                 collection.addItem('recto' + i, rectangle);
 
-                line = new SW.Display.Line();
+                line = new SW.Line();
                 line.opacity(0.2);
                 line.coordinates(
-                    new SW.Display.Vector(Math.random()*w, Math.random()*h),
-                    new SW.Display.Vector(Math.random()*w, Math.random()*h)
+                    new SW.Vector(Math.random()*w, Math.random()*h),
+                    new SW.Vector(Math.random()*w, Math.random()*h)
                 );
                 collection.addItem('lino' + i, line);
             }

@@ -14,14 +14,14 @@
 
     <script>
         function loadHandler() {
-            SW.Events.Signal.removeListener(window, 'load', loadHandler);
+            SW.Signal.removeListener(window, 'load', loadHandler);
 
-            SW.Events.Signal.addListener(document, 'click', function(e) {
+            SW.Signal.addListener(document, 'click', function(e) {
                 console.log(e);
             });
         }
 
-        SW.Events.Signal.addListener(window, 'load', loadHandler);
+        SW.Signal.addListener(window, 'load', loadHandler);
     </script>
 </head>
 <body>

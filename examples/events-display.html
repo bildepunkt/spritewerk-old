@@ -26,54 +26,54 @@
             var input;
             var canvas;
 
-            SW.Events.Signal.removeListener(window, 'load', loadHandler);
+            SW.Signal.removeListener(window, 'load', loadHandler);
 
-            SW.Events.Signal.addListener('press', function(e) {
+            SW.Signal.addListener('press', function(e) {
                 console.log(e.type, e.detail.target);
             });
-            SW.Events.Signal.addListener('pressup', function(e) {
+            SW.Signal.addListener('pressup', function(e) {
                 console.log(e.type, e.detail.target);
             });
-            SW.Events.Signal.addListener('pressdown', function(e) {
+            SW.Signal.addListener('pressdown', function(e) {
                 console.log(e.type, e.detail.target);
             });
-            SW.Events.Signal.addListener('dblpress', function(e) {
+            SW.Signal.addListener('dblpress', function(e) {
                 console.log(e.type, e.detail.target);
             });
-            SW.Events.Signal.addListener('pressleave', function(e) {
+            SW.Signal.addListener('pressleave', function(e) {
                 console.log(e.type, e.detail.target);
             });
-            SW.Events.Signal.addListener('dragstart', function(e) {
+            SW.Signal.addListener('dragstart', function(e) {
                 console.log(e.type, e.detail.target);
             });
-            SW.Events.Signal.addListener('drag', function(e) {
+            SW.Signal.addListener('drag', function(e) {
                 console.log(e.type, e.detail.target);
             });
-            SW.Events.Signal.addListener('dragend', function(e) {
+            SW.Signal.addListener('dragend', function(e) {
                 console.log(e.type, e.detail.target);
             });
-            SW.Events.Signal.addListener('dragleave', function(e) {
+            SW.Signal.addListener('dragleave', function(e) {
                 console.log(e.type, e.detail.target);
             });
 
-            canvas = new SW.Display.Canvas({
+            canvas = new SW.Canvas({
                 id: 'spritewerk',
                 width: 600,
                 height: 400
             });
 
-            input = new SW.Events.Input({
+            input = new SW.Input({
                 eventEl: canvas.getCanvasEl(),
                 bindMouseInput: true,
                 bindTouchInput: true
             });
 
-            collection = new SW.Common.Collection();
+            collection = new SW.Collection();
 
-            rectangle = new SW.Display.Rectangle().dimensions(128, 128);
+            rectangle = new SW.Rectangle().dimensions(128, 128);
             collection.addItem('recto', rectangle);
 
-            rectangle = new SW.Display.Rectangle().position(null, 128).dimensions(128, 128).draggable(false).fillColor('#C4C');
+            rectangle = new SW.Rectangle().position(null, 128).dimensions(128, 128).draggable(false).fillColor('#C4C');
             collection.addItem('recto2', rectangle);
 
             // can be collection
@@ -91,7 +91,7 @@
             }, 33);
         }
 
-        SW.Events.Signal.addListener(window, 'load', loadHandler);
+        SW.Signal.addListener(window, 'load', loadHandler);
     </script>
 </head>
 <body>
