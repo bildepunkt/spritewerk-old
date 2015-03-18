@@ -1,19 +1,19 @@
-SW.Events.Input = (function() {
+SW.Input = (function() {
     /**
-     * @class SW.Events.Input
+     * @class SW.Input
      * @param {Object} options
-     * @param {SW.Display.Canvas} options.canvas
+     * @param {SW.Canvas} options.canvas
      * @param {Boolean} options.canvasStretch
      * @param {Boolean} options.bindMouseInput
      * @param {Boolean} options.bindTouchInput
-     * @requires SW.Display.Canvas
+     * @requires SW.Canvas
      * @belongsto SW
      */
     var Input = function(options) {
         var index;
 
         /**
-         * @member {Array} SW.Events.Input.prototype._mouseEvents
+         * @member {Array} SW.Input.prototype._mouseEvents
          * @private
          */
         this._mouseEvents = [
@@ -21,7 +21,7 @@ SW.Events.Input = (function() {
         ];
 
         /**
-         * @member {Array} SW.Events.Input.prototype._touchEvents
+         * @member {Array} SW.Input.prototype._touchEvents
          * @private
          */
         this._touchEvents = [
@@ -29,31 +29,31 @@ SW.Events.Input = (function() {
         ];
 
         /**
-         * @member {HTMLElement} SW.Events.Input.prototype._eventEl
+         * @member {HTMLElement} SW.Input.prototype._eventEl
          * @private
          */
         this._eventEl = options.eventEl;
 
         /**
-         * @member {Array} SW.Events.Input.prototype._canvasFit
+         * @member {Array} SW.Input.prototype._canvasFit
          * @private
          */
         this._canvasFit = options.canvasFit;
 
         /**
-         * @member {SW.Renderable} SW.Events.Input.prototype._pressCandidate
+         * @member {SW.Renderable} SW.Input.prototype._pressCandidate
          * @private
          */
         this._pressCandidate = null;
 
         /**
-         * @member {SW.Renderable} SW.Events.Input.prototype._mouseCanDrag
+         * @member {SW.Renderable} SW.Input.prototype._mouseCanDrag
          * @private
          */
         this._mouseCanDrag = false;
 
         /**
-         * @member {SW.Renderable} SW.Events.Input.prototype._isDragging
+         * @member {SW.Renderable} SW.Input.prototype._isDragging
          * @private
          */
         this._isDragging = false;
@@ -61,7 +61,7 @@ SW.Events.Input = (function() {
         /**
          * the collection of layers of entities to check against the interaction
          * 
-         * @member {SW.Scene.Scene} SW.Events.Input.prototype._scene
+         * @member {SW.Scene.Scene} SW.Input.prototype._scene
          * @private
          */
         this._scene = null;
@@ -69,24 +69,24 @@ SW.Events.Input = (function() {
         /**
          * the collection of entities to check against the interaction
          * 
-         * @member {SW.Common.Collection|SW.Display.Layer} SW.Events.Input.prototype._layer
+         * @member {SW.Collection|SW.Layer} SW.Input.prototype._layer
          * @private
          */
         this._layer = null;
 
         if (options.bindMouseInput) {
             for(index = 0; index < this._mouseEvents.length; index += 1) {
-                SW.Events.Signal.addListener(this._eventEl, this._mouseEvents[index], this._receiveEvent, this);
+                SW.Signal.addListener(this._eventEl, this._mouseEvents[index], this._receiveEvent, this);
             }
         }
 
         if (options.bindTouchInput) {
             for(index = 0; index < this._touchEvents.length; index += 1) {
-                SW.Events.Signal.addListener(this._eventEl, this._touchEvents[index], this._receiveEvent, this);
+                SW.Signal.addListener(this._eventEl, this._touchEvents[index], this._receiveEvent, this);
             }
         }
 
-        SW.Events.Signal.addListener('scene/activated', this.receiveScene, this);
+        SW.Signal.addListener('scene/activated', this.receiveScene, this);
     };
 
     Input.prototype.receiveScene = function(e) {
@@ -96,8 +96,8 @@ SW.Events.Input = (function() {
     /**
      * the scene => layers => entities to check input events against; if we have a scene we won't check for a layer
      *
-     * @method SW.Events.Input.prototype.setScene
-     * @param {SW.Common.Scene} scene
+     * @method SW.Input.prototype.setScene
+     * @param {SW.Scene} scene
      */
     Input.prototype.setScene = function(scene) {
         this._scene = scene;
@@ -106,8 +106,8 @@ SW.Events.Input = (function() {
     /**
      * the layer => entities to check input events against; a layer is for situations where the complexity of a scene is not warranted
      *
-     * @method SW.Events.Input.prototype.setLayer
-     * @param {SW.Common.Collection|SW.Scenes.Layer} layer
+     * @method SW.Input.prototype.setLayer
+     * @param {SW.Collection|SW.Scenes.Layer} layer
      */
     Input.prototype.setLayer = function(layer) {
         this._layer = layer;
@@ -115,7 +115,7 @@ SW.Events.Input = (function() {
 
     /**
      * @method SW.Input.prototype._receiveEvent
-     * @requires SW.Display.Vector
+     * @requires SW.Vector
      * @listens this.canvas#click
      * @listens this.canvas#dblclick
      * @listens this.canvas#mousedown
@@ -126,13 +126,13 @@ SW.Events.Input = (function() {
      * @listens this.canvas#touchstart
      * @listens this.canvas#touchend
      * @listens this.canvas#touchmove
-     * @fires SW.Events.Signal#press
-     * @fires SW.Events.Signal#dblpress
-     * @fires SW.Events.Signal#pressdown
-     * @fires SW.Events.Signal#pressup
-     * @fires SW.Events.Signal#dragstart
-     * @fires SW.Events.Signal#drag
-     * @fires SW.Events.Signal#dragend
+     * @fires SW.Signal#press
+     * @fires SW.Signal#dblpress
+     * @fires SW.Signal#pressdown
+     * @fires SW.Signal#pressup
+     * @fires SW.Signal#dragstart
+     * @fires SW.Signal#drag
+     * @fires SW.Signal#dragend
      * @private
      */
     Input.prototype._receiveEvent = function(inputEvent) {
@@ -229,75 +229,75 @@ SW.Events.Input = (function() {
 
         /**
          * reports either a click, a tap or both
-         * @event SW.Events.Signal#press
+         * @event SW.Signal#press
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Display.Renderable} target - a targeted entity
+         * @property {SW.Renderable} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
          * reports either a double click,  a double tap or both
-         * @event SW.Events.Signal#dblpress
+         * @event SW.Signal#dblpress
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Display.Renderable} target - a targeted entity
+         * @property {SW.Renderable} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
          * reports either a mousedown, a touchstart or both
-         * @event SW.Events.Signal#pressdown
+         * @event SW.Signal#pressdown
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Display.Renderable} target - a targeted entity
+         * @property {SW.Renderable} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
          * reports either a mouseup, a touchend or both
-         * @event SW.Events.Signal#pressup
+         * @event SW.Signal#pressup
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Display.Renderable} target - a targeted entity
+         * @property {SW.Renderable} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
          /**
          * reports a mousemove (if mousedown) and touchmove
-         * @event SW.Events.Signal#drag
+         * @event SW.Signal#drag
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Display.Renderable} target - a targeted entity
+         * @property {SW.Renderable} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
          * reports the start of dragging
-         * @event SW.Events.Signal#dragstart
+         * @event SW.Signal#dragstart
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Display.Renderable} target - a targeted entity
+         * @property {SW.Renderable} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
          * reports the end of dragging
-         * @event SW.Events.Signal#dragend
+         * @event SW.Signal#dragend
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Display.Renderable} target - a targeted entity
+         * @property {SW.Renderable} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         for(var i = 0, len = eventTypes.length; i < len; i += 1) {
             eventData.type = eventTypes[i];
-            SW.Events.Signal.dispatch(eventData.type, eventData);
+            SW.Signal.dispatch(eventData.type, eventData);
         }
     };
 
     /**
-     * @method SW.Events.Input.prototype._getScaleFactor
+     * @method SW.Input.prototype._getScaleFactor
      * @return {Float}
      * @private
      */
@@ -314,8 +314,8 @@ SW.Events.Input = (function() {
     };
 
     /**
-     * @method SW.Events.Input.prototype._getEventTarget
-     * @return {SW.Display.Renderable}
+     * @method SW.Input.prototype._getEventTarget
+     * @return {SW.Renderable}
      * @private
      */
     Input.prototype._getEventTarget = function(e) {
@@ -324,7 +324,7 @@ SW.Events.Input = (function() {
         if (this._scene) {
             this._scene.each(function(layer) {
                 layer.each(function(entity) {
-                    if (SW.Common.Util.hitPoint(e.x, e.y, entity)) {
+                    if (SW.Util.hitPoint(e.x, e.y, entity)) {
                         // continually assign higher sorted entity
                         topmostEntity = entity;
                     }
@@ -332,13 +332,13 @@ SW.Events.Input = (function() {
             });
         } else if (this._layer) {
             this._layer.each(function(entity) {
-                if (SW.Common.Util.hitPoint(e.x, e.y, entity)) {
+                if (SW.Util.hitPoint(e.x, e.y, entity)) {
                     // continually assign higher sorted entity
                     topmostEntity = entity;
                 }
             });
         } else {
-            throw new TypeError('SW.Events.Input requires one SW.Scenes.Scene or SW.Common.Collection for checking against entities');
+            throw new TypeError('SW.Input requires one SW.Scenes.Scene or SW.Collection for checking against entities');
         }
 
         return topmostEntity;

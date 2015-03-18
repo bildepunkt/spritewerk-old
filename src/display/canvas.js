@@ -1,10 +1,10 @@
-SW.Display.Canvas = (function() {
+SW.Canvas = (function() {
     'use strict';
 
     /**
      * displays entities
      *
-     * @class SW.Display.Canvas
+     * @class SW.Canvas
      * @param {Object} options
      * @param {String} options.id - the canvas element's id
      * @param {String} options.width - the canvas element's width
@@ -14,22 +14,22 @@ SW.Display.Canvas = (function() {
      */
     var Canvas = function(options) {
         /**
-         * @member {HTMLEntity} SW.Display.Canvas.prototype._canvasEl - the canvas element
+         * @member {HTMLEntity} SW.Canvas.prototype._canvasEl - the canvas element
          * @private
          */
         this._canvasEl = document.getElementById(options.id);
         /**
-         * @member {HTMLEntity} SW.Display.Canvas.prototype._context - the canvas element's context object
+         * @member {HTMLEntity} SW.Canvas.prototype._context - the canvas element's context object
          * @private
          */
         this._context = this._canvasEl.getContext('2d');
         /**
-         * @member {Integer} SW.Display.Canvas.prototype._width - the canvas element's width
+         * @member {Integer} SW.Canvas.prototype._width - the canvas element's width
          * @private
          */
         this._width = options.width;
         /**
-         * @member {Integer} SW.Display.Canvas.prototype._height - the canvas element's height
+         * @member {Integer} SW.Canvas.prototype._height - the canvas element's height
          * @private
          */
         this._height = options.height;
@@ -39,14 +39,14 @@ SW.Display.Canvas = (function() {
         this._canvasEl.style.position = 'absolute';
 
         if (options.canvasFit) {
-            SW.Events.Signal.addListener('screen/resize', this._onScreenResize, this);
+            SW.Signal.addListener('screen/resize', this._onScreenResize, this);
             this._onScreenResize();
         }
     };
 
     /**
-     * @method SW.Display.Canvas.prototype._onScreenResize
-     * @listens SW.Events.Signal#screen/resize
+     * @method SW.Canvas.prototype._onScreenResize
+     * @listens SW.Signal#screen/resize
      * @private
      */
     Canvas.prototype._onScreenResize = function() {
@@ -97,7 +97,7 @@ SW.Display.Canvas = (function() {
     };
 
     /**
-     * @method SW.Display.Canvas.prototype.clearAll
+     * @method SW.Canvas.prototype.clearAll
      * @chainable
      */
     Canvas.prototype.clearAll = function() {
@@ -109,7 +109,7 @@ SW.Display.Canvas = (function() {
     /**
      * fills the entire canvas
      *
-     * @method SW.Display.Canvas.prototype.fillAll
+     * @method SW.Canvas.prototype.fillAll
      * @param {String} color - supports color names, hex & rgb(a)
      * @chainable
      */
@@ -125,7 +125,7 @@ SW.Display.Canvas = (function() {
     /**
      * prepares context and decides how to render the entity
      *
-     * @method SW.Display.Canvas.prototype.render
+     * @method SW.Canvas.prototype.render
      * @param {SW.renderable} entity
      */
     Canvas.prototype.render = function(entity) {
@@ -224,7 +224,7 @@ SW.Display.Canvas = (function() {
     };
 
     /**
-     * @method SW.Display.Canvas.prototype.getCanvasEl
+     * @method SW.Canvas.prototype.getCanvasEl
      * @return {HTMLEntity}
      */
     Canvas.prototype.getCanvasEl = function() {

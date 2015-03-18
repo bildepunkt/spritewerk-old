@@ -1,37 +1,37 @@
-SW.Display.Sprite = (function() {
+SW.Sprite = (function() {
     'use strict';
 
     /**
      * a image display entity
      *
-     * @class SW.Display.Sprite
-     * @extends SW.Display.Renderable
-     * @requires SW.Display.Vector
+     * @class SW.Sprite
+     * @extends SW.Renderable
+     * @requires SW.Vector
      * @belongsto SW
      */
     var Sprite = function() {
-        SW.Display.Renderable.call(this);
+        SW.Renderable.call(this);
 
         /**
-         * @member {String} SW.Display.Sprite.prototype._image
+         * @member {String} SW.Sprite.prototype._image
          * @private
          */
         this._image = null;
 
         /**
-         * @member {SW.Display.Vector} SW.Display.Sprite.prototype._srcPosition
+         * @member {SW.Vector} SW.Sprite.prototype._srcPosition
          * @private
          */
-        this._srcPosition = new SW.Display.Vector();
+        this._srcPosition = new SW.Vector();
         
         /**
-         * @member {SW.Display.Vector} SW.Display.Sprite.prototype._srcSize
+         * @member {SW.Vector} SW.Sprite.prototype._srcSize
          * @private
          */
-        this._srcDimensions = new SW.Display.Vector();
+        this._srcDimensions = new SW.Vector();
 
         /**
-         * @member {String} SW.Display.Sprite.prototype._displayType
+         * @member {String} SW.Sprite.prototype._displayType
          * @default 'rectangle'
          * @private
          * @readonly
@@ -39,13 +39,13 @@ SW.Display.Sprite = (function() {
         this._displayType = 'sprite';
     };
 
-    Sprite.prototype = SW.Common.Util.clone(SW.Display.Renderable.prototype);
+    Sprite.prototype = SW.Util.clone(SW.Renderable.prototype);
 
     /**
-     * @method SW.Display.Sprite.prototype.srcPosition
+     * @method SW.Sprite.prototype.srcPosition
      * @param {Float} [x]
      * @param {Float} [y]
-     * @return {SW.Display.Vector|SW.Display.Sprite}
+     * @return {SW.Vector|SW.Sprite}
      * @chainable
      */
     Sprite.prototype.srcPosition = function(x, y) {
@@ -65,10 +65,10 @@ SW.Display.Sprite = (function() {
     };
 
     /**
-     * @method SW.Display.Sprite.prototype.srcDimensions
+     * @method SW.Sprite.prototype.srcDimensions
      * @param {Float} [x]
      * @param {Float} [y]
-     * @return {SW.Display.Vector|SW.Display.Sprite}
+     * @return {SW.Vector|SW.Sprite}
      * @chainable
      */
     Sprite.prototype.srcDimensions = function(x, y) {
@@ -90,9 +90,9 @@ SW.Display.Sprite = (function() {
     /**
      * get/set image property; if not already set, sets dimension/srcDimension to image size
      *
-     * @method SW.Display.Sprite.prototype.image
+     * @method SW.Sprite.prototype.image
      * @param {HTMLEntity} value
-     * @return {HTMLEntity|SW.Display.Sprite}
+     * @return {HTMLEntity|SW.Sprite}
      * @chainable
      */
     Sprite.prototype.image = function(value) {

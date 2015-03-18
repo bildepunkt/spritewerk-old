@@ -1,16 +1,16 @@
-SW.Game.Dom = (function() {
+SW.GameDom = (function() {
     /**
      * manipulates various dom elements
      *
-     * @class SW.Game.Dom
-     * @extends SW.Common.Dom
-     * @belongsto SW.Game
+     * @class SW.Dom
+     * @extends SW.Dom
+     * @belongsto SW
      */
-    var Dom = function(options) {
-        SW.Common.Dom.call(this, options);
+    var GameDom = function(options) {
+        SW.Dom.call(this, options);
 
         /**
-         * @member {String} SW.Game.Dom.prototype.title
+         * @member {String} SW.Dom.prototype.title
          */
         this.title = options.title;
 
@@ -21,13 +21,13 @@ SW.Game.Dom = (function() {
         this._styleElements();
     };
 
-    Dom.prototype = SW.Common.Util.clone(SW.Common.Dom.prototype);
+    GameDom.prototype = SW.Util.clone(SW.Dom.prototype);
 
     /**
-     * @method SW.Game.Dom.prototype._styleElements
+     * @method SW.Dom.prototype._styleElements
      * @private
      */
-    Dom.prototype._styleElements = function() {
+    GameDom.prototype._styleElements = function() {
         var body = document.getElementsByTagName('body')[0];
 
         body.style.backgroundColor = this.bgColor;
@@ -35,5 +35,5 @@ SW.Game.Dom = (function() {
         body.style.padding = 0;
     };
 
-    return Dom;
+    return GameDom;
 }());

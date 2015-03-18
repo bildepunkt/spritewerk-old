@@ -1,4 +1,4 @@
-SW.Common.Unique = (function() {
+SW.Unique = (function() {
     'use strict';
 
     var uidCounter = 0;
@@ -6,12 +6,12 @@ SW.Common.Unique = (function() {
     /**
      * provides a unique identifier to sub prototypes
      *
-     * @class SW.Common.Unique
+     * @class SW.Unique
      * @belongsto SW
      */
     var Unique = function() {
         /**
-         * @member {Integer} SW.Common.Unique.prototype._uid - the object's unique ID
+         * @member {Integer} SW.Unique.prototype._uid - the object's unique ID
          * @private
          * @readonly
          */

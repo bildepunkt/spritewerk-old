@@ -1,29 +1,29 @@
-SW.Common.Dom = (function() {
+SW.Dom = (function() {
     /**
      * manipulates, and listens to, various dom elements
      *
-     * @class SW.Common.Dom
-     * @belongsto SW.Common
+     * @class SW.Dom
+     * @belongsto SW
      */
     var Dom = function() {
-        SW.Events.Signal.addListener(window, 'resize', this._onWindowResize, this);
+        SW.Signal.addListener(window, 'resize', this._onWindowResize, this);
         // TODO is this needed?
-        SW.Events.Signal.addListener(window, 'orientationchange', this._onWindowResize, this);
+        SW.Signal.addListener(window, 'orientationchange', this._onWindowResize, this);
     };
 
     /**
-     * @method SW.Common.Dom.prototype._onWindowResize
+     * @method SW.Dom.prototype._onWindowResize
      * @listens window#resize
      * @listens window#orientationchange
-     * @fires SW.Events.Signal#screen/resize
+     * @fires SW.Signal#screen/resize
      * @private
      */
     Dom.prototype._onWindowResize = function() {
         /**
          * reports a change in screen size
-         * @event SW.Events.Signal#screen/resize
+         * @event SW.Signal#screen/resize
          */
-        SW.Events.Signal.dispatch('screen/resize');
+        SW.Signal.dispatch('screen/resize');
     };
 
     return Dom;

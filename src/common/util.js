@@ -1,8 +1,8 @@
-SW.Common.Util = (function() {
+SW.Util = (function() {
     /**
      * provides generic, useful functions
      *
-     * @class SW.Common.Util
+     * @class SW.Util
      * @belongsto SW
      * @singleton
      */
@@ -11,7 +11,7 @@ SW.Common.Util = (function() {
     /**
      * recursively deep copies an object
      *
-     * @method SW.Common.Util.prototype.clone
+     * @method SW.Util.prototype.clone
      * @param {Object} src
      * @return {Object}
      */
@@ -33,7 +33,7 @@ SW.Common.Util = (function() {
     /**
      * checks if an object contains members
      *
-     * @method SW.Common.Util.prototype.hasMemebers
+     * @method SW.Util.prototype.hasMemebers
      * @param {Object} obj
      * @return {Boolean}
      */
@@ -53,10 +53,10 @@ SW.Common.Util = (function() {
     /**
      * returns true if x/y is inside entity's bounding box
      *
-     * @method SW.Common.Util.prototype.hitPoint
+     * @method SW.Util.prototype.hitPoint
      * @param {Integer} x - mouse/touch position
      * @param {Integer} y - mouse/touch position
-     * @param {SW.Display.Renderable} entity
+     * @param {SW.Renderable} entity
      * @return {Boolean}
      */
     Util.prototype.hitPoint = function(x, y, entity) {

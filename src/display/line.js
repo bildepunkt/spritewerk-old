@@ -1,41 +1,41 @@
-SW.Display.Line = (function() {
+SW.Line = (function() {
     'use strict';
 
     /**
      * a line display entity
      *
-     * @class SW.Display.Line
-     * @extends SW.Display.Renderable
+     * @class SW.Line
+     * @extends SW.Renderable
      * @belongsto SW
      */
     var Line = function() {
-        SW.Display.Renderable.call(this);
+        SW.Renderable.call(this);
 
         /**
-         * @member {Array} SW.Display.Line.prototype._coordinates
+         * @member {Array} SW.Line.prototype._coordinates
          * @private
          */
         this._coordinates = [];
         /**
-         * @member {String} SW.Display.Line.prototype._color
+         * @member {String} SW.Line.prototype._color
          * @private
          */
         this._color = '#000';
         /**
-         * @member {Float} SW.Display.Line.prototype._width
+         * @member {Float} SW.Line.prototype._width
          * @default 1
          * @private
          */
         this._width = 1;
         /**
-         * @member {String} SW.Display.Line.prototype._cap
+         * @member {String} SW.Line.prototype._cap
          * @default 'butt'
          * @private
          */
         this._cap = 'butt';
 
         /**
-         * @member {String} SW.Display.Line.prototype._displayType
+         * @member {String} SW.Line.prototype._displayType
          * @default 'line'
          * @private
          * @readonly
@@ -43,12 +43,12 @@ SW.Display.Line = (function() {
         this._displayType = 'line';
     };
 
-    Line.prototype = SW.Common.Util.clone(SW.Display.Renderable.prototype);
+    Line.prototype = SW.Util.clone(SW.Renderable.prototype);
 
     /**
-     * @method SW.Display.Line.prototype.coordinates
-     * @param {SW.Display.Vector} [arguments] - n amount of coordinates
-     * @return {array|SW.Display.Line}
+     * @method SW.Line.prototype.coordinates
+     * @param {SW.Vector} [arguments] - n amount of coordinates
+     * @return {array|SW.Line}
      * @chainable
      */
     Line.prototype.coordinates = function() {
@@ -64,9 +64,9 @@ SW.Display.Line = (function() {
     };
 
     /**
-     * @method SW.Display.Line.prototype.color
+     * @method SW.Line.prototype.color
      * @param {String} value
-     * @return {string|SW.Display.Line}
+     * @return {string|SW.Line}
      * @chainable
      */
     Line.prototype.color = function(value) {

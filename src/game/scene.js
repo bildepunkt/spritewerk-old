@@ -1,45 +1,45 @@
-SW.Game.Scene = (function() {
+SW.Scene = (function() {
     'use strict';
 
     /**
      * manages layers and their entities
      *
-     * @class SW.Game.Scene
-     * @extends SW.Common.Collection
+     * @class SW.Scene
+     * @extends SW.Collection
      * @param {Object} [options]
      * @param {Object} options.assets - a hash of names and src paths for images and audio files
-     * @listens SW.Events.Signal#press
-     * @listens SW.Events.Signal#dblpress
-     * @listens SW.Events.Signal#pressdown
-     * @listens SW.Events.Signal#pressup
-     * @listens SW.Events.Signal#dragstart
-     * @listens SW.Events.Signal#drag
-     * @listens SW.Events.Signal#dragend
-     * @requires SW.Display.Layer
-     * @belongsto SW.Game
+     * @listens SW.Signal#press
+     * @listens SW.Signal#dblpress
+     * @listens SW.Signal#pressdown
+     * @listens SW.Signal#pressup
+     * @listens SW.Signal#dragstart
+     * @listens SW.Signal#drag
+     * @listens SW.Signal#dragend
+     * @requires SW.Layer
+     * @belongsto SW
      */
     var Scene = function(options) {
-        SW.Common.Collection.call(this, options);
+        SW.Collection.call(this, options);
 
         options = options || {};
 
         /**
-         * @member {String} SW.Game.Scene.prototype._bgColor
+         * @member {String} SW.Scene.prototype._bgColor
          * @private
          */
         this._bgColor = options.bgColor || '#ddd';
 
         /**
-         * @member {String} SW.Game.Scene.prototype._assets
+         * @member {String} SW.Scene.prototype._assets
          * @private
          */
         this._assets = options.assets;
     };
 
-    Scene.prototype = SW.Common.Util.clone(SW.Common.Collection.prototype);
+    Scene.prototype = SW.Util.clone(SW.Collection.prototype);
 
     /**
-     * @method SW.Game.Scene.prototype.bgColor
+     * @method SW.Scene.prototype.bgColor
      */
     Scene.prototype.bgColor = function(value) {
         if (value === undefined) {
@@ -54,87 +54,87 @@ SW.Game.Scene = (function() {
     };
 
     /**
-     * initialization method; for all setup work related to this scene; called when scene is first added to {@link SW.Game.SceneManager}
+     * initialization method; for all setup work related to this scene; called when scene is first added to {@link SW.SceneManager}
      *
-     * @method SW.Game.Scene.prototype.init
+     * @method SW.Scene.prototype.init
      */
     Scene.prototype.init = function() {};
 
     /**
      * called on every frame; for updating all entity properties
      *
-     * @method SW.Game.Scene.prototype.update
+     * @method SW.Scene.prototype.update
      */
     Scene.prototype.update = function() {};
 
     /**
-     * called when a scene is removed from {@link SW.Game.SceneManager}; for removal of event listeners
-     * @method SW.Game.Scene.prototype.destroy
+     * called when a scene is removed from {@link SW.SceneManager}; for removal of event listeners
+     * @method SW.Scene.prototype.destroy
      */
     Scene.prototype.destroy = function() {};
 
     /**
      * the scene's press event handler
      *
-     * @method SW.Game.Scene.prototype.press
-     * @param {object} event {@link SW.Events.Input#_receiveEvent}
+     * @method SW.Scene.prototype.press
+     * @param {object} event {@link SW.Input#_receiveEvent}
      */
     Scene.prototype.press = function() {};
 
     /**
      * the scene's dblpress event handler
      *
-     * @method SW.Game.Scene.prototype.dblpress
-     * @param {object} event {@link SW.Events.Input#_receiveEvent}
+     * @method SW.Scene.prototype.dblpress
+     * @param {object} event {@link SW.Input#_receiveEvent}
      */
     Scene.prototype.dblpress = function() {};
 
     /**
      * the scene's pressdown event handler
      *
-     * @method SW.Game.Scene.prototype.pressdown
-     * @param {object} event {@link SW.Events.Input#_receiveEvent}
+     * @method SW.Scene.prototype.pressdown
+     * @param {object} event {@link SW.Input#_receiveEvent}
      */
     Scene.prototype.pressdown = function() {};
 
     /**
      * the scene's pressup event handler
      *
-     * @method SW.Game.Scene.prototype.pressup
-     * @param {object} event {@link SW.Events.Input#_receiveEvent}
+     * @method SW.Scene.prototype.pressup
+     * @param {object} event {@link SW.Input#_receiveEvent}
      */
     Scene.prototype.pressup = function() {};
 
     /**
      * the scene's dragstart event handler
      *
-     * @method SW.Game.Scene.prototype.dragstart
-     * @param {object} event {@link SW.Events.Input#_receiveEvent}
+     * @method SW.Scene.prototype.dragstart
+     * @param {object} event {@link SW.Input#_receiveEvent}
      */
     Scene.prototype.dragstart = function() {};
 
     /**
      * the scene's drag event handler
      *
-     * @method SW.Game.Scene.prototype.drag
-     * @param {object} event {@link SW.Events.Input#_receiveEvent}
+     * @method SW.Scene.prototype.drag
+     * @param {object} event {@link SW.Input#_receiveEvent}
      */
     Scene.prototype.drag = function() {};
 
     /**
      * the scene's dragend event handler
      *
-     * @method SW.Game.Scene.prototype.dragend
-     * @param {object} event {@link SW.Events.Input#_receiveEvent}
+     * @method SW.Scene.prototype.dragend
+     * @param {object} event {@link SW.Input#_receiveEvent}
      */
     Scene.prototype.dragend = function() {};
 
     /**
      * gets/sets assets
      *
-     * @method SW.Game.Scene.prototype.assets
+     * @method SW.Scene.prototype.assets
      * @param {Object} [value]
-     * @return {Boolean|SW.Game.Scene}
+     * @return {Boolean|SW.Scene}
      * @chainable
      */
     Scene.prototype.assets = function(value) {

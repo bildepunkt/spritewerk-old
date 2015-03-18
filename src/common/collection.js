@@ -1,29 +1,29 @@
-SW.Common.Collection = (function() {
+SW.Collection = (function() {
     'use strict';
 
     /**
      * provides management of, and an interface for, a list of items
      *
-     * @class SW.Common.Collection
-     * @extends SW.Common.Unique
+     * @class SW.Collection
+     * @extends SW.Unique
      * @belongsto SW
      */
     var Collection = function() {
-        SW.Common.Unique.call(this);
+        SW.Unique.call(this);
 
         /**
-         * @member {Array} SW.Common.Collection.prototype._items - the sorted list
+         * @member {Array} SW.Collection.prototype._items - the sorted list
          * @private
          */
         this._items = [];
     };
 
-    Collection.prototype = SW.Common.Util.clone(SW.Common.Unique.prototype);
+    Collection.prototype = SW.Util.clone(SW.Unique.prototype);
 
     /**
      * adds an object to the collection's items
      *
-     * @method SW.Common.Collection.prototype.addItem
+     * @method SW.Collection.prototype.addItem
      * @param {String} name
      * @param {Object} value
      * @chainable
@@ -40,7 +40,7 @@ SW.Common.Collection = (function() {
     /**
      * adds an object to the collection's items at a specific index
      *
-     * @method SW.Common.Collection.prototype.addItemAt
+     * @method SW.Collection.prototype.addItemAt
      * @param {String} name
      * @param {any} value
      * @param {Integer} index
@@ -58,7 +58,7 @@ SW.Common.Collection = (function() {
     /**
      * removes -by name- an object from the collection's items
      *
-     * @method SW.Common.Collection.prototype.removeItem
+     * @method SW.Collection.prototype.removeItem
      * @param {String} name
      */
     Collection.prototype.removeItem = function(name) {
@@ -76,8 +76,8 @@ SW.Common.Collection = (function() {
     /**
      * removes all items from collection
      *
-     * @method SW.Common.Collection.prototype.removeAllItems
-     * @return {SW.Common.Collection}
+     * @method SW.Collection.prototype.removeAllItems
+     * @return {SW.Collection}
      * @chainable
      */
     Collection.prototype.removeAllItems = function() {
@@ -89,7 +89,7 @@ SW.Common.Collection = (function() {
     /**
      * iterates the collection's sortedItems. The item, index, and name are supplied to the provided function
      *
-     * @method SW.Common.Collection.prototype.each
+     * @method SW.Collection.prototype.each
      * @param {Function} fn
      * @param {Object} scope
      */
@@ -109,7 +109,7 @@ SW.Common.Collection = (function() {
     /**
      * iterates the collection's sortedItems. The raw item, index, name, and the list being iterated are supplied to the provided function
      *
-     * @method SW.Common.Collection.prototype._rawEach
+     * @method SW.Collection.prototype._rawEach
      * @param {function} fn
      * @private
      */
@@ -124,7 +124,7 @@ SW.Common.Collection = (function() {
     /**
      * iterates items and return the ones that meet criteria
      *
-     * @method SW.Common.Collection.prototype.filter
+     * @method SW.Collection.prototype.filter
      * @param {function} fn
      * @return {Array} filteredItems
      */
@@ -145,7 +145,7 @@ SW.Common.Collection = (function() {
     /**
      * gets the count of items in collection
      *
-     * @method SW.Common.Collection.prototype.getItemCount
+     * @method SW.Collection.prototype.getItemCount
      * @return {Integer}
      */
     Collection.prototype.getItemCount = function() {
@@ -155,7 +155,7 @@ SW.Common.Collection = (function() {
     /**
      * alters an existing item
      *
-     * @method SW.Common.Collection.prototype.setItem
+     * @method SW.Collection.prototype.setItem
      * @param {String} name
      * @param {any} value
      * @chainable
@@ -175,7 +175,7 @@ SW.Common.Collection = (function() {
     /**
      * gets an existing item by name
      *
-     * @method SW.Common.Collection.prototype.getItem
+     * @method SW.Collection.prototype.getItem
      * @return {any}
      */
     Collection.prototype.getItem = function(name) {
@@ -195,7 +195,7 @@ SW.Common.Collection = (function() {
     /**
      * gets an existing item by name index
      *
-     * @method SW.Common.Collection.prototype.getItem
+     * @method SW.Collection.prototype.getItem
      * @return {any}
      */
     Collection.prototype.getItemAt = function(index) {
@@ -205,7 +205,7 @@ SW.Common.Collection = (function() {
     /**
      * gets a raw item by name
      *
-     * @method SW.Common.Collection.prototype._getRawItem
+     * @method SW.Collection.prototype._getRawItem
      * @return {any}
      * @private
      */
@@ -226,7 +226,7 @@ SW.Common.Collection = (function() {
     /**
      * moves item to new index
      * 
-     * @method SW.Common.Collection.prototype.setItemIndex
+     * @method SW.Collection.prototype.setItemIndex
      * @param {String} name
      * @param {Integer} index
      */
@@ -246,7 +246,7 @@ SW.Common.Collection = (function() {
     /**
      * gets an item's current index
      *
-     * @method SW.Common.Collection.prototype.getItemIndex
+     * @method SW.Collection.prototype.getItemIndex
      * @param {String} name
      * @return {Integer}
      */

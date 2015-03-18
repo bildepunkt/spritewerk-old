@@ -1,24 +1,24 @@
-SW.Display.Rectangle = (function() {
+SW.Rectangle = (function() {
     'use strict';
 
     /**
      * a rectanglular display entity
      *
-     * @class SW.Display.Rectangle
-     * @extends SW.Display.Renderable
+     * @class SW.Rectangle
+     * @extends SW.Renderable
      * @belongsto SW
      */
     var Rectangle = function() {
-        SW.Display.Renderable.call(this);
+        SW.Renderable.call(this);
 
         /**
-         * @member {String} SW.Display.Rectangle.prototype._fillColor
+         * @member {String} SW.Rectangle.prototype._fillColor
          * @private
          */
         this._fillColor = '#000';
 
         /**
-         * @member {String} SW.Display.Rectangle.prototype._displayType
+         * @member {String} SW.Rectangle.prototype._displayType
          * @default 'rectangle'
          * @private
          * @readonly
@@ -26,12 +26,12 @@ SW.Display.Rectangle = (function() {
         this._displayType = 'rectangle';
     };
 
-    Rectangle.prototype = SW.Common.Util.clone(SW.Display.Renderable.prototype);
+    Rectangle.prototype = SW.Util.clone(SW.Renderable.prototype);
 
     /**
-     * @method SW.Display.Rectangle.prototype.gsFillColor
+     * @method SW.Rectangle.prototype.gsFillColor
      * @param {String} value
-     * @return {String|SW.Display.Rectangle}
+     * @return {String|SW.Rectangle}
      * @chainable
      */
     Rectangle.prototype.fillColor = function(value) {

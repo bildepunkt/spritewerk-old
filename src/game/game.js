@@ -1,20 +1,20 @@
-SW.Game.Game = (function() {
+SW.Game = (function() {
    'use strict';
 
    /**
-    * @class SW.Game.Game
+    * @class SW.Game
     * @listens window#load
-    * @listens SW.Events.Signal#scene/activated
-    * @belongsto SW.Game
+    * @listens SW.Signal#scene/activated
+    * @belongsto SW
     */
    var Game = function(initialSceneName, InitialScene, options) {
         /**
-         * @member {String} SW.Game.Game.prototype._initialSceneName
+         * @member {String} SW.Game.prototype._initialSceneName
          * @private
          */
         this._initialSceneName = initialSceneName;
         /**
-         * @member {SW.Game.Scene} SW.Game.Game.prototype._InitialScene
+         * @member {SW.Scene} SW.Game.prototype._InitialScene
          * @private
          */
         this._InitialScene = InitialScene;
@@ -22,62 +22,62 @@ SW.Game.Game = (function() {
         options = options || {};
 
         /**
-         * @member {String} SW.Game.Game.prototype._canvasId
+         * @member {String} SW.Game.prototype._canvasId
          * @private
          */
         this._canvasId = options.canvasId;
         /**
-         * @member {Integer} SW.Game.Game.prototype._width
+         * @member {Integer} SW.Game.prototype._width
          * @private
          */
         this._width = options.width || 600;
         /**new
-         * @member {Integer} SW.Game.Game.prototype._height
+         * @member {Integer} SW.Game.prototype._height
          * @private
          */
         this._height = options.height || 400;
         /**
-         * @member {Boolean} SW.Game.Game.prototype._bindMouseInput
+         * @member {Boolean} SW.Game.prototype._bindMouseInput
          * @private
          */
         this._bindMouseInput = options.bindMouseInput || true;
         /**
-         * @member {Boolean} SW.Game.Game.prototype._bindTouchInput
+         * @member {Boolean} SW.Game.prototype._bindTouchInput
          * @private
          */
         this._bindTouchInput = options.bindTouchInput || true;
         /**
-         * @member {Boolean} SW.Game.Game.prototype._title
+         * @member {Boolean} SW.Game.prototype._title
          * @private
          */
         this._title = options.title || 'spritewerk game';
         /**
-         * @member {Boolean} SW.Game.Game.prototype._fps
+         * @member {Boolean} SW.Game.prototype._fps
          * @private
          */
         this._fps = options.fps || 60;
         /**
-         * @member {Boolean} SW.Game.Game.prototype._canvasFit
+         * @member {Boolean} SW.Game.prototype._canvasFit
          * @private
          */
         this._canvasFit = options.canvasFit || false;
 
         /**
-         * @member {SW.Display.Canvas} SW.Game.Game.prototype.canvas
+         * @member {SW.Canvas} SW.Game.prototype.canvas
          */
         this.canvas = null;
         /**
-         * @member {SW.Events.Input} SW.Game.Game.prototype.input
+         * @member {SW.Input} SW.Game.prototype.input
          */
         this.input = null;
         /**
-         * @member {SW.Game.Engine} SW.Game.Game.prototype.engine
+         * @member {SW.Engine} SW.Game.prototype.engine
          */
         this.engine = null;
 
-        SW.Events.Signal.addListener(window, 'load', this._onReady, this);
-        SW.Events.Signal.addListener('scene/activated', this._onSceneActivated, this);
-        SW.Events.Signal.addListener('new/frame', this._onNewFrame, this);
+        SW.Signal.addListener(window, 'load', this._onReady, this);
+        SW.Signal.addListener('scene/activated', this._onSceneActivated, this);
+        SW.Signal.addListener('new/frame', this._onNewFrame, this);
     };
 
     /**
@@ -85,7 +85,7 @@ SW.Game.Game = (function() {
      */
     Game.prototype._onNewFrame = function() {
         var self = this;
-        var activeScene = SW.Game.SceneManager.activeScene();
+        var activeScene = SW.SceneManager.activeScene();
 
         this.canvas.clearAll().fillAll(activeScene.bgColor());
 
@@ -97,38 +97,38 @@ SW.Game.Game = (function() {
     };
 
     /**
-     * @method SW.Game.Game.prototype._onReady
-     * @fires SW.Events.Signal#spritewerk/ready
+     * @method SW.Game.prototype._onReady
+     * @fires SW.Signal#spritewerk/ready
      */
     Game.prototype._onReady = function() {
-        this.dom = new SW.Game.Dom({
+        this.dom = new SW.Dom({
             title: this._title
         });
 
-        this.canvas = new SW.Display.Canvas({
+        this.canvas = new SW.Canvas({
             id: this._canvasId,
             width: this._width,
             height: this._height,
             canvasFit: this._canvasFit
         });
 
-        this.input = new SW.Events.Input({
+        this.input = new SW.Input({
             eventEl: this.canvas.getCanvasEl(),
             bindMouseInput: this._bindMouseInput,
             bindTouchInput: this._bindTouchInput,
             canvasFit: this._canvasFit
         });
 
-        this.engine = new SW.Game.Engine({
+        this.engine = new SW.Engine({
             fps: this._fps
         });
 
-        SW.Game.SceneManager.addScene(this._initialSceneName, this._InitialScene);
+        SW.SceneManager.addScene(this._initialSceneName, this._InitialScene);
 
         /**
-         * @event SW.Events.Signal#spritewerk/ready
+         * @event SW.Signal#spritewerk/ready
          */
-        SW.Events.Signal.dispatch('spritewerk/ready');
+        SW.Signal.dispatch('spritewerk/ready');
     };
 
     Game.prototype._onSceneActivated = function(e) {

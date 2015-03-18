@@ -1,9 +1,9 @@
-SW.Events.Signal = (function() {
+SW.Signal = (function() {
 
     /**
      * event handler
      *
-     * @class SW.Events.Signal
+     * @class SW.Signal
      * @belongsto SW
      * @singleton
      */
@@ -16,7 +16,7 @@ SW.Events.Signal = (function() {
     /**
      * tune in to events from a dom element or built-in mediator
      *
-     * @method SW.Events.Signal.prototype.addListener
+     * @method SW.Signal.prototype.addListener
      * @param {HTMLElement} [el] - the element to listen to (if not present, will listen to built-in mediator)
      * @param {String} type - event type; can be custom or DOM
      * @param {function} handler - the event handler
@@ -52,7 +52,7 @@ SW.Events.Signal = (function() {
     /**
      * tune out events from a dom element or built-in mediator
      *
-     * @method SW.Events.Signal.prototype.removeListener
+     * @method SW.Signal.prototype.removeListener
      * @param {HTMLElement} [el] - the element to stop listening to (if not present, will tune out the built-in mediator)
      * @param {String} type - event type; can be custom or DOM
      * @param {function} handler - the event handler
@@ -82,7 +82,7 @@ SW.Events.Signal = (function() {
     /**
      * dispatches events from a dom element or built-in mediator
      *
-     * @method SW.Events.Signal.prototype.dispatch
+     * @method SW.Signal.prototype.dispatch
      * @param {HTMLElement} [el] - the element to broadcast from (if not present, will broadcast from built-in mediator)
      * @param {String} type - event type
      * @param {Object} data - the data to pass to the handler

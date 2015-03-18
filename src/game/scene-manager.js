@@ -1,26 +1,26 @@
-SW.Game.SceneManager = (function() {
+SW.SceneManager = (function() {
     'use strict';
 
     /**
      * manages scenes
      *
-     * @class SW.Game.SceneManager
-     * @extends SW.Common.Collection
-     * @requires SW.Common.Util
-     * @requires SW.Media.MediaManager
-     * @listens SW.Events.Signal#preload/complete
-     * @belongsto SW.Game
+     * @class SW.SceneManager
+     * @extends SW.Collection
+     * @requires SW.Util
+     * @requires SW.MediaManager
+     * @listens SW.Signal#preload/complete
+     * @belongsto SW
      * @singleton
      */
     var SceneManager = function() {
         var eventType;
 
-        SW.Common.Collection.call(this);
+        SW.Collection.call(this);
 
         /**
          * name of the scene currently being loaded
          *
-         * @member SW.Game.SceneManager.prototype._loadingName
+         * @member SW.SceneManager.prototype._loadingName
          * @private
          */
         this._loadingName = null;
@@ -28,7 +28,7 @@ SW.Game.SceneManager = (function() {
         /**
          * the scene currently being loaded
          *
-         * @member SW.Game.SceneManager.prototype._loadingScene
+         * @member SW.SceneManager.prototype._loadingScene
          * @private
          */
         this._loadingScene = null;
@@ -36,7 +36,7 @@ SW.Game.SceneManager = (function() {
         /**
          * the SW input event types
          *
-         * @member SW.Game.SceneManager.prototype._eventTypes
+         * @member SW.SceneManager.prototype._eventTypes
          * @private
          */
         this._eventTypes = ['press', 'dblpress', 'pressdown', 'pressup', 'dragstart', 'drag', 'dragend'];
@@ -44,18 +44,18 @@ SW.Game.SceneManager = (function() {
         // bind input events
         for(var i = 0, len = this._eventTypes.length; i < len; i += 1) {
             eventType = this._eventTypes[i];
-            SW.Events.Signal.addListener(eventType, this._handleEvents, this);
+            SW.Signal.addListener(eventType, this._handleEvents, this);
         }
 
-        SW.Events.Signal.addListener('preload/complete', this._onPreloadComplete, this);
+        SW.Signal.addListener('preload/complete', this._onPreloadComplete, this);
     };
 
-    SceneManager.prototype = SW.Common.Util.clone(SW.Common.Collection.prototype);
+    SceneManager.prototype = SW.Util.clone(SW.Collection.prototype);
 
     /**
      * SW input event handler to dispatch to current scene (with SW event data as event param)
      *
-     * @method SW.Game.SceneManager.prototype._handleEvents
+     * @method SW.SceneManager.prototype._handleEvents
      * @param {DOMEvent} event
      * @private
      */
@@ -69,9 +69,9 @@ SW.Game.SceneManager = (function() {
     /**
      * preloads scene's assets (if any), adds scene to stack, calls scene's init()
      *
-     * @method SW.Game.SceneManager.prototype.addScene
+     * @method SW.SceneManager.prototype.addScene
      * @param {String} name
-     * @param {SW.Game.Scene} Scene
+     * @param {SW.Scene} Scene
      * @private
      */
     SceneManager.prototype.addScene = function(name, Scene) {
@@ -81,8 +81,8 @@ SW.Game.SceneManager = (function() {
         this._loadingName = name;
         this._loadingScene = scene;
 
-        if (SW.Common.Util.hasMembers(assets)) {
-            SW.Media.MediaManager.preload(assets);
+        if (SW.Util.hasMembers(assets)) {
+            SW.MediaManager.preload(assets);
         } else {
             this._onPreloadComplete();
         }
@@ -91,10 +91,10 @@ SW.Game.SceneManager = (function() {
     /**
      * gets/sets the active scene
      *
-     * @method SW.Game.SceneManager.prototype.activeScene
+     * @method SW.SceneManager.prototype.activeScene
      * @param {String} [name]
-     * @fires SW.Events.Signal#scene/activated
-     * @return {SW.Game.Scene|SW.Game.SceneManager}
+     * @fires SW.Signal#scene/activated
+     * @return {SW.Scene|SW.SceneManager}
      * @private
      * @chainable
      */
@@ -109,9 +109,9 @@ SW.Game.SceneManager = (function() {
             this.setItemIndex(name, lastIndex);
 
             /**
-             * @event SW.Events.Signal#scene/activated
+             * @event SW.Signal#scene/activated
              */
-            SW.Events.Signal.dispatch('scene/activated', {
+            SW.Signal.dispatch('scene/activated', {
                 scene: this.getItemAt(lastIndex)
             });
         }
@@ -122,8 +122,8 @@ SW.Game.SceneManager = (function() {
     /**
      * finishes adding scene after preload
      *
-     * @method SW.Game.SceneManager.prototype._onPreloadComplete
-     * @fires SW.Events.Signal#scene/activated
+     * @method SW.SceneManager.prototype._onPreloadComplete
+     * @fires SW.Signal#scene/activated
      * @private
      */
     SceneManager.prototype._onPreloadComplete = function() {
@@ -133,7 +133,7 @@ SW.Game.SceneManager = (function() {
 
         this._loadingScene.init();
 
-        SW.Events.Signal.dispatch('scene/activated', {
+        SW.Signal.dispatch('scene/activated', {
             scene: this._loadingScene
         });
 

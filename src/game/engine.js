@@ -1,38 +1,38 @@
-SW.Game.Engine = (function() {
+SW.Engine = (function() {
     /**
      * runs the game loop
-     * @class SW.Game.Engine
-     * @belongsto SW.Game
+     * @class SW.Engine
+     * @belongsto SW
      */
     var Engine = function(options) {
         /**
          * the (desired) amount of times per second the game loop executes
          *
-         * @member {Integer} SW.Game.Engine.prototype._fps
+         * @member {Integer} SW.Engine.prototype._fps
          * @private
          */
         this._fps = options.fps;
 
         /**
-         * @member {Integer} SW.Game.Engine.prototype._now
+         * @member {Integer} SW.Engine.prototype._now
          * @private
          */
         this._now = null;
 
         /**
-         * @member {Integer} SW.Game.Engine.prototype._then
+         * @member {Integer} SW.Engine.prototype._then
          * @private
          */
         this._then = Date.now();
 
         /**
-         * @member {Integer} SW.Game.Engine.prototype._interval
+         * @member {Integer} SW.Engine.prototype._interval
          * @private
          */
         this._interval = 1000 / this._fps;
 
         /**
-         * @member {Integer} SW.Game.Engine.prototype._delta
+         * @member {Integer} SW.Engine.prototype._delta
          * @private
          */
         this._delta = null;
@@ -40,13 +40,13 @@ SW.Game.Engine = (function() {
         /**
          * the amount of frames that have elapsed
          *
-         * @member {Integer} SW.Game.Engine.prototype._counter
+         * @member {Integer} SW.Engine.prototype._counter
          * @private
          */
         this._counter = 0;
 
         /**
-         * @member {Boolean} SW.Game.Engine.prototype._paused
+         * @member {Boolean} SW.Engine.prototype._paused
          * @private
          */
         this._paused = false;
@@ -54,7 +54,7 @@ SW.Game.Engine = (function() {
         /**
          * the update method with the proper scope (for use with rAF)
          *
-         * @method SW.Game.Engine.prototype._boundUpdate
+         * @method SW.Engine.prototype._boundUpdate
          * @private
          */
         this._boundUpdate = this._update.bind(this);
@@ -63,7 +63,7 @@ SW.Game.Engine = (function() {
     /**
      * triggers the update function
      *
-     * @method SW.Game.Engine.prototype.start
+     * @method SW.Engine.prototype.start
      */
     Engine.prototype.start = function() {
         this._update();
@@ -73,8 +73,8 @@ SW.Game.Engine = (function() {
      * calculates the proper time - based on fps - to trigger the rAF and new frame
      *
      * @fires newframe - triggers on every frame
-     * @method SW.Game.Engine.prototype._update
-     * @fires SW.Game.Engine#new/frame
+     * @method SW.Engine.prototype._update
+     * @fires SW.Engine#new/frame
      * @private
      */
     Engine.prototype._update = function() {
@@ -91,10 +91,10 @@ SW.Game.Engine = (function() {
             this._counter += 1;
 
             /**
-             * @event SW.Events.Signal#new/frame
+             * @event SW.Signal#new/frame
              * @property {Integer} frame - the current frame count
              */
-            SW.Events.Signal.dispatch('new/frame', {
+            SW.Signal.dispatch('new/frame', {
                 frame: this._counter
             });
         }
@@ -103,7 +103,7 @@ SW.Game.Engine = (function() {
     /**
      * Pauses the game by stopping the engine
      *
-     * @method SW.Game.Engine.prototype.pause
+     * @method SW.Engine.prototype.pause
      */
     Engine.prototype.pause = function() {
         this._paused = true;
@@ -112,7 +112,7 @@ SW.Game.Engine = (function() {
     /**
      * Resumes the game engine
      *
-     * @method SW.Game.Engine.prototype.resume
+     * @method SW.Engine.prototype.resume
      */
     Engine.prototype.resume = function() {
         this._paused = false;
