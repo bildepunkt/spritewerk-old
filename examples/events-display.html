@@ -70,10 +70,10 @@
 
             collection = new SW.Collection();
 
-            rectangle = new SW.Rectangle().dimensions(128, 128);
+            rectangle = new SW.Rectangle().dimensions(128, 128).draggable(true);
             collection.addItem('recto', rectangle);
 
-            rectangle = new SW.Rectangle().position(null, 128).dimensions(128, 128).draggable(false).fillColor('#C4C');
+            rectangle = new SW.Rectangle().position(null, 128).dimensions(128, 128).fillColor('#C4C');
             collection.addItem('recto2', rectangle);
 
             // can be collection
