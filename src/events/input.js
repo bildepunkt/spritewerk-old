@@ -1,4 +1,6 @@
 SW.Input = (function() {
+    'use strict';
+
     /**
      * @class SW.Input
      * @param {Object} options

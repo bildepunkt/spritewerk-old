@@ -1,4 +1,6 @@
 SW.Dom = (function() {
+    'use strict';
+
     /**
      * manipulates, and listens to, various dom elements
      *

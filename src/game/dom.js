@@ -1,4 +1,6 @@
 SW.GameDom = (function() {
+    'use strict';
+
     /**
      * manipulates various dom elements
      *

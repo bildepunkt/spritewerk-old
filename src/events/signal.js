@@ -1,4 +1,5 @@
 SW.Signal = (function() {
+    'use strict';
 
     /**
      * event handler

@@ -1,4 +1,6 @@
 SW.Preloader = (function() {
+    'use strict';
+
     /**
      * @class SW.Preloader
      * @belongsto SW

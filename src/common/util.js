@@ -1,4 +1,6 @@
 SW.Util = (function() {
+    'use strict';
+
     /**
      * provides generic, useful functions
      *

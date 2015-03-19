@@ -1,4 +1,6 @@
 SW.Engine = (function() {
+    'use strict';
+
     /**
      * runs the game loop
      * @class SW.Engine
