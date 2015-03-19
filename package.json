@@ -4,7 +4,7 @@
   "description": "",
   "main": "js/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "docgen": "if [ -d \"docs\" ]; then rm -r docs; fi; node_modules/.bin/jsdoc --readme README.md -c node_modules/jsdoc/conf.json -p -r js/ -d docs"
   },
   "repository": {
     "type": "git",
@@ -18,12 +18,9 @@
   "homepage": "https://github.com/c-concat-p/spritewerk",
   "devDependencies": {
     "del": "^1.1.1",
-    "gulp": "^0.4.5",
+    "gulp": "^3.8.11",
     "gulp-uglify": "^1.1.0",
-    "gulp-concat": "^0.1.6",
+    "gulp-concat": "^2.5.2",
     "jsdoc": "^3.3.0-beta1"
-  },
-  "scripts": {
-    "docgen": "if [ -d \"docs\" ]; then rm -r docs; fi; node_modules/.bin/jsdoc --readme README.md -c node_modules/jsdoc/conf.json -p -r js/ -d docs"
   }
 }

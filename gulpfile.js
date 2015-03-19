@@ -5,50 +5,104 @@ var del = require('del');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 
-var core = {
-    dest: 'dist/js',
-    minDest: 'dist/js/min',
-    out: 'spritewerk-core.js',
-    files: [
-        './js/lib/radio.js',
-        './js/lib/protos.js',
+var packages = {
+    display: {
+        dest: 'dist',
+        out: 'spritewerk-display.js',
+        files: [
+            'src/spritewerk.js',
 
-        './js/src/spritewerk.js',
-        './js/src/collection.js',
-        './js/src/renderable.js',
-        './js/src/state.js',
+            'src/common/util.js',
+            'src/common/unique.js',
+            'src/common/collection.js',
+            'src/common/dom.js',
 
-        './js/src/config.js',
-        './js/src/dom.js',
-        './js/src/canvas.js',
-        './js/src/collision.js',
-        './js/src/input.js',
-        './js/src/draw.js',
-        './js/src/fsm.js',
-        './js/src/game.js',
-        './js/src/media-manager.js',
-        './js/src/preloader.js',
-        './js/src/rectangle.js',
-        './js/src/sprite.js',
-        './js/src/loading.js',
-        './js/src/ready.js'
-    ]
+            'src/display/canvas.js',
+            'src/display/vector.js',
+            'src/display/renderable.js',
+            'src/display/rectangle.js',
+            'src/display/line.js',
+            'src/display/sprite.js'
+        ]
+    },
+    events: {
+        dest: 'dist',
+        out: 'spritewerk-events.js',
+        files: [
+            'src/spritewerk.js',
+
+            'src/common/util.js',
+            'src/common/unique.js',
+            'src/common/collection.js',
+            'src/common/dom.js',
+
+            'src/events/signal.js',
+            'src/events/input.js'
+        ]
+    },
+    media: {
+        dest: 'dist',
+        out: 'spritewerk-media.js',
+        files: [
+            'src/spritewerk.js',
+
+            'src/common/util.js',
+            'src/common/unique.js',
+            'src/common/collection.js',
+            'src/common/dom.js',
+
+            'src/events/signal.js',
+            'src/events/input.js',
+
+            'src/media/preloader.js',
+            'src/media/media-manager.js'
+        ]
+    },
+    game: {
+        dest: 'dist',
+        out: 'spritewerk-game.js',
+        files: [
+            'src/spritewerk.js',
+
+            'src/common/util.js',
+            'src/common/unique.js',
+            'src/common/collection.js',
+            'src/common/dom.js',
+
+            'src/events/signal.js',
+            'src/events/input.js',
+
+            'src/media/preloader.js',
+            'src/media/media-manager.js',
+
+            'src/display/canvas.js',
+            'src/display/vector.js',
+            'src/display/renderable.js',
+            'src/display/rectangle.js',
+            'src/display/line.js',
+            'src/display/sprite.js',
+
+            'src/game/dom.js',
+            'src/game/layer.js',
+            'src/game/scene.js',
+            'src/game/scene-manager.js',
+            'src/game/engine.js',
+            'src/game/game.js'
+        ]
+    }
 };
 
 gulp.task('clean', function(cb) {
     del(['dist'], cb);
 });
 
-gulp.task('core-concat', ['clean'], function() {
-    return gulp.src(core.files)
-        .pipe(concat(core.out))
-        .pipe(gulp.dest(core.dest));
+gulp.task('build', ['clean'], function() {
+    for(var key in packages) {
+        gulp.src(packages[key].files)
+            .pipe(uglify())
+            .pipe(concat(packages[key].out))
+            .pipe(gulp.dest(packages[key].dest));
+    }
 });
 
-gulp.task('core-compress', ['core-concat'], function() {
-    return gulp.src(core.dest + '/' + core.out)
-        .pipe(uglify())
-        .pipe(gulp.dest(core.minDest));
-});
-
-gulp.task('default', ['core-concat', 'core-compress']);
+gulp.task('default', ['build']);
