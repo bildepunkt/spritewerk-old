@@ -4,14 +4,14 @@
   "description": "",
   "main": "js/main.js",
   "scripts": {
-    "docgen": "if [ -d \"docs\" ]; then rm -r docs; fi; node_modules/.bin/jsdoc --readme README.md -c node_modules/jsdoc/conf.json -p -r js/ -d docs"
+    "docgen": "if [ -d \"docs\" ]; then rm -r docs; fi; node_modules/.bin/jsdoc --readme README.md -c node_modules/jsdoc/conf.json -p -r src/ -d docs"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/c-concat-p/spritewerk"
   },
   "author": "Chris Peters",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/c-concat-p/spritewerk/issues"
   },
