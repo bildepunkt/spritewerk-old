@@ -27,10 +27,10 @@ SW.Renderable = (function() {
         this._velocity = new SW.Vector();
 
         /**
-         * @member {SW.Vector} SW.Renderable.prototype._dimension
+         * @member {SW.Vector} SW.Renderable.prototype._dimensions
          * @private
          */
-        this._dimension = new SW.Vector();
+        this._dimensions = new SW.Vector();
 
         /**
          * @member {SW.Vector} SW.Renderable.prototype._scale
@@ -146,15 +146,15 @@ SW.Renderable = (function() {
      */
     Renderable.prototype.dimensions = function(x, y) {
         if (x === undefined && y === undefined) {
-            return this._dimension;
+            return this._dimensions;
         }
 
         if (typeof x === 'number') {
-            this._dimension.x = x;
+            this._dimensions.x = x;
         }
 
         if (typeof y === 'number') {
-            this._dimension.y = y;
+            this._dimensions.y = y;
         }
 
         return this;
@@ -306,7 +306,7 @@ SW.Renderable = (function() {
      * @return {SW.Vector}
      */
     Renderable.prototype.getOuterPosition = function() {
-        return new SW.Vector(this._position.x + this._dimension.x, this._position.y + this._dimension.y);
+        return new SW.Vector(this._position.x + this._dimensions.x, this._position.y + this._dimensions.y);
     };
 
     /**
@@ -314,7 +314,7 @@ SW.Renderable = (function() {
      * @return {SW.Vector}
      */
     Renderable.prototype.getCenterPosition = function() {
-        return new SW.Vector(this._position.x - this._dimension.x / 2, this._position.y - this._dimension.y / 2);
+        return new SW.Vector(this._position.x - this._dimensions.x / 2, this._position.y - this._dimensions.y / 2);
     };
 
     /**
@@ -322,7 +322,7 @@ SW.Renderable = (function() {
      * @return {SW.Vector}
      */
     Renderable.prototype.getHalfDimension = function() {
-        return new SW.Vector(this._dimension.x / 2, this._dimension.y / 2);
+        return new SW.Vector(this._dimensions.x / 2, this._dimensions.y / 2);
     };
 
     return Renderable;

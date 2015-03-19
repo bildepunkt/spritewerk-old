@@ -208,15 +208,15 @@ SW.Canvas = (function() {
      */
     Canvas.prototype.renderSprite = function(entity) {
         var dimension = entity.dimensions();
-        var srcDimension = entity.srcDimensions();
+        var srcDimensions = entity.srcDimensions();
         var srcPosition = entity.srcPosition();
 
         this._context.drawImage(
             entity.image(),
             srcPosition.x,
             srcPosition.y,
-            srcDimension.x,
-            srcDimension.y,
+            srcDimensions.x,
+            srcDimensions.y,
             0, 0,
             dimension.x,
             dimension.y

@@ -77,18 +77,18 @@ SW.Sprite = (function() {
         }
 
         if (typeof x === 'number') {
-            this._srcDimension.x = x;
+            this._srcDimensions.x = x;
         }
 
         if (typeof y === 'number') {
-            this._srcDimension.y = y;
+            this._srcDimensions.y = y;
         }
 
         return this;
     };
 
     /**
-     * get/set image property; if not already set, sets dimension/srcDimension to image size
+     * get/set image property; if not already set, sets dimension/srcDimensions to image size
      *
      * @method SW.Sprite.prototype.image
      * @param {HTMLEntity} value
@@ -108,9 +108,9 @@ SW.Sprite = (function() {
                 this._srcDimensions.y = this._image.height;
             }
 
-            if (!this._dimension.x && !this._dimension.y) {
-                this._dimension.x = this._image.width;
-                this._dimension.y = this._image.height;
+            if (!this._dimensions.x && !this._dimensions.y) {
+                this._dimensions.x = this._image.width;
+                this._dimensions.y = this._image.height;
             }
         }
 
