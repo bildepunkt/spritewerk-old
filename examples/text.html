@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>spritewerk display</title>
+
+    <script src="../src/spritewerk.js"></script>
+
+    <script src="../src/common/util.js"></script>
+    <script src="../src/common/unique.js"></script>
+    <script src="../src/common/collection.js"></script>
+
+    <script src="../src/display/vector.js"></script>
+    <script src="../src/display/canvas.js"></script>
+    <script src="../src/display/renderable.js"></script>
+    <script src="../src/display/text.js"></script>
+    <script src="../src/display/sprite.js"></script>
+    <script src="../src/display/line.js"></script>
+    <script src="../src/display/rectangle.js"></script>
+
+    <script>
+        window.onload = function() {
+            var w = 600;
+            var h = 400;
+            var canvas = new SW.Canvas({
+                id: 'spritewerk',
+                width: w,
+                height: h
+            });
+
+            var text = new SW.Text({
+                contents: 'boo-far-ya!'
+            });
+
+            canvas.render(text);
+            canvas.render(text);
+            canvas.render(text);
+            canvas.render(text);
+        };
+    </script>
+</head>
+<body>
+    <canvas id="spritewerk"></canvas>
+</body>
+</html>
