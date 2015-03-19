@@ -11,7 +11,7 @@ var Title = function() {
 Title.prototype = SW.Util.clone(SW.Scene.prototype);
 
 Title.prototype.press = function(e) {
-    if (e.target._uid === this.playBtn._uid) {
-        alert('');
+    if (e.target && e.target._uid === this.playBtn._uid) {
+        SW.SceneManager.addScene('play', Play);
     }
 };
