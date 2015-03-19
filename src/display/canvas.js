@@ -163,6 +163,12 @@ SW.Canvas = (function() {
             case 'sprite':
                 this.renderSprite(entity);
             break;
+            case 'text':
+                this.renderText(entity);
+            break;
+            default:
+                throw new Error('SW.Canvas cannot render type: ' + entity.getDisplayType());
+            break;
         }
 
         this._context.restore();
@@ -176,20 +182,20 @@ SW.Canvas = (function() {
         var dimension = entity.dimensions();
 
         this._context.save();
-        this._context.fillStyle = entity.fillColor();
+        this._context.fillStyle = entity.fillStyle();
         this._context.fillRect(0, 0, dimension.x, dimension.y);
         this._context.restore();
     };
 
     /**
-     * @method Draw.prototype.renderRectangle
+     * @method Draw.prototype.renderLine
      * @private
      */
     Canvas.prototype.renderLine = function(entity) {
         var coordinates = entity.coordinates();
 
         this._context.save();
-        this._context.strokeStyle = entity.color();
+        this._context.strokeStyle = entity.strokeStyle();
         this._context.beginPath();
 
         this._context.moveTo(coordinates[0].x, coordinates[0].y);
@@ -199,6 +205,21 @@ SW.Canvas = (function() {
         }
 
         this._context.stroke();
+        this._context.restore();
+    };
+
+    /**
+     * @method Draw.prototype.renderText
+     * @private
+     */
+    Canvas.prototype.renderText = function(entity) {
+        this._context.save();
+        this._context.font = entity.font();
+        this._context.textBaseline = entity.baseline();
+        this._context.textAlign = entity.align();
+
+        this._context.fillText(entity.contents(), 0, 0);
+
         this._context.restore();
     };
 
@@ -229,6 +250,14 @@ SW.Canvas = (function() {
      */
     Canvas.prototype.getCanvasEl = function() {
         return this._canvasEl;
+    };
+
+    /**
+     * @method SW.Canvas.prototype.getContext
+     * @return {CanvasRenderingContext2D}
+     */
+    Canvas.prototype.getContext = function() {
+        return this._context;
     };
 
     return Canvas;

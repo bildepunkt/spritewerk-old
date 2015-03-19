@@ -17,11 +17,6 @@ SW.Line = (function() {
          */
         this._coordinates = [];
         /**
-         * @member {String} SW.Line.prototype._color
-         * @private
-         */
-        this._color = '#000';
-        /**
          * @member {Float} SW.Line.prototype._width
          * @default 1
          * @private
@@ -58,24 +53,6 @@ SW.Line = (function() {
 
         for(var i = 0, len = arguments.length; i < len; i += 1) {
             this._coordinates[i] = arguments[i];
-        }
-
-        return this;
-    };
-
-    /**
-     * @method SW.Line.prototype.color
-     * @param {String} value
-     * @return {string|SW.Line}
-     * @chainable
-     */
-    Line.prototype.color = function(value) {
-        if (value === undefined) {
-            return this._color;
-        }
-
-        if (typeof value === 'string') {
-            this._color = value;
         }
 
         return this;

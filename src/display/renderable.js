@@ -75,6 +75,24 @@ SW.Renderable = (function() {
         this._opacity = 1;
 
         /**
+         * the entity's fill
+         *
+         * @member {String} SW.Text.prototype._fillStyle
+         * @default '#000'
+         * @private
+         */
+        this._fillStyle = '#000';
+
+        /**
+         * the entity's fill
+         *
+         * @member {String} SW.Text.prototype._strokeStyle
+         * @default '#000'
+         * @private
+         */
+        this._strokeStyle = '#000';
+
+        /**
          * @member {Boolean} SW.Renderable.prototype._visible
          * @default true
          * @private
@@ -296,6 +314,42 @@ SW.Renderable = (function() {
 
         if (typeof value === 'number') {
             this._composite = value;
+        }
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.fillStyle
+     * @param {String} [value]
+     * @return {String|SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.fillStyle = function(value) {
+        if (value === undefined) {
+            return this._fillStyle;
+        }
+
+        if (typeof value === 'string') {
+            this._fillStyle = value;
+        }
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.strokeStyle
+     * @param {String} [value]
+     * @return {String|SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.strokeStyle = function(value) {
+        if (value === undefined) {
+            return this._strokeStyle;
+        }
+
+        if (typeof value === 'string') {
+            this._strokeStyle = value;
         }
 
         return this;
