@@ -101,7 +101,7 @@ SW.Game = (function() {
      * @fires SW.Signal#spritewerk/ready
      */
     Game.prototype._onReady = function() {
-        this.dom = new SW.Dom({
+        this.dom = new SW.GameDom({
             title: this._title
         });
 
