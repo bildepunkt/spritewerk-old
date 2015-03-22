@@ -68,11 +68,23 @@ SW.Engine = (function() {
      * @method SW.Engine.prototype.start
      */
     Engine.prototype.start = function() {
+        requestAnimationFrame =
+            requestAnimationFrame       ||
+            webkitRequestAnimationFrame ||
+            mozRequestAnimationFrame    ||
+            oRequestAnimationFrame      ||
+            msRequestAnimationFrame     ||
+            function(fn) {
+                setTimeout(function() {
+                    fn();
+                }, this._interval);
+            };
+
         this._update();
     };
 
     /**
-     * calculates the proper time - based on fps - to trigger the rAF and new frame
+     * calculates the proper time - based on fps - to rAF and dispatch new frame events
      *
      * @fires newframe - triggers on every frame
      * @method SW.Engine.prototype._update
