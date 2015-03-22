@@ -229,6 +229,13 @@ SW.Input = (function() {
             break;
         }
 
+        // assign an object so we don't need to check if target is defined
+        if (!eventData.target) {
+            eventData.target = {
+                _uid: this._eventEl.nodeName
+            };
+        }
+
         /**
          * reports either a click, a tap or both
          * @event SW.Signal#press
