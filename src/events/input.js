@@ -109,7 +109,7 @@ SW.Input = (function() {
      * the layer => entities to check input events against; a layer is for situations where the complexity of a scene is not warranted
      *
      * @method SW.Input.prototype.setLayer
-     * @param {SW.Collection|SW.Scenes.Layer} layer
+     * @param {SW.Collection|SW.Layer} layer
      */
     Input.prototype.setLayer = function(layer) {
         this._layer = layer;
@@ -347,7 +347,7 @@ SW.Input = (function() {
                 }
             });
         } else {
-            throw new TypeError('SW.Input requires one SW.Scenes.Scene or SW.Collection for checking against entities');
+            throw new TypeError('SW.Input requires one SW.Scene or SW.Collection for checking against entities');
         }
 
         return topmostEntity;
