@@ -33,6 +33,33 @@ SW.Util = (function() {
     };
 
     /**
+     * recursively appends (deep copies) an array of objects to the target. returns the new target
+     *
+     * @method SW.Util.prototype.mixin
+     * @param {Object} target - the object to append to
+     * @param {Object} ...sources - objects to mix into source
+     * @return {Object}
+     */
+    Util.prototype.mixin = function(target, sources) {
+        var len = arguments.length;
+        var subObj;
+        var key;
+
+        if (len < 2) {
+            throw new Error('Util.mixin requires two or more arguments');
+        }
+
+        for(var i = 1; i < len; i += 1) {
+            subObj = this.clone(arguments[i]);
+            for (key in subObj) {
+                target[key] = subObj[key];
+            }
+        }
+
+        return target;
+    };
+
+    /**
      * checks if an object contains members
      *
      * @method SW.Util.prototype.hasMemebers

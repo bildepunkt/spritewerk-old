@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mixin</title>
+</head>
+<body>
+    <script src="../src/spritewerk.js"></script>
+    <script src="../src/common/util.js"></script>
+    <script>
+        var Base = function() {
+            this.x = 0;
+            this.y = 0;
+        };
+
+        Base.prototype.move = function(x, y) {
+            this.x = x;
+            this.y = y;
+        };
+
+        var Renderable = function(options) {
+            Base.call(this);
+            this.image = options.image;
+        };
+
+        Renderable.prototype = SW.Util.clone(Base.prototype);
+
+        Renderable.prototype.getImage = function() {
+            return this.image;
+        };
+
+        // So now we have an object (Renderable) with positioning and display properties.
+        // But we want it to incorporate the Namer object as well, and maybe add a few extra members.
+        // If we were to assign the Namer prototype to Renderable it would remove all the existing methods,
+        // and we can't change the Namer object because other objects may depend on it as is.
+        // What to do? Enter the mixin.
+        var Namer = function() {
+            this.name = 'name';
+        };
+
+        Namer.prototype.getName = function() {
+            return this.name;
+        };
+
+        // here we create a new object that will have the members of both Renderable and Namer.
+        var RenderNameable = function(options) {
+            Renderable.call(this, options);
+            Namer.call(this, options);
+
+            this.customThing = {foo: 'bar'};
+        };
+
+        SW.Util.mixin(RenderNameable.prototype, Renderable.prototype, Namer.prototype);
+
+        console.log(
+            new RenderNameable({
+                image: 'some/img/path'
+            })
+        );
+    </script>
+</body>
+</html>
