@@ -68,7 +68,7 @@ SW.Engine = (function() {
      * @method SW.Engine.prototype.start
      */
     Engine.prototype.start = function() {
-        requestAnimationFrame =
+        window.requestAnimationFrame =
             requestAnimationFrame       ||
             webkitRequestAnimationFrame ||
             mozRequestAnimationFrame    ||
