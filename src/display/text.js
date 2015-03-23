@@ -2,13 +2,20 @@ SW.Text = (function() {
     'use strict';
 
     /**
+     * a text display entity
      *
+     * @class SW.Text
+     * @param {Object} [options]
+     * @param {Text} options.contents - the literal text
+     * @belongsto SW
      */
     var Text = function(options) {
         SW.Renderable.call(this, options);
 
+        options = options || {};
+
         /**
-         * the actual text
+         * the literal text
          *
          * @member {String} SW.Text.prototype._contents
          * @private

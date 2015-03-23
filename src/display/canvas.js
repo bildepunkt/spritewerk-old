@@ -9,7 +9,7 @@ SW.Canvas = (function() {
      * @param {String} options.id - the canvas element's id
      * @param {String} options.width - the canvas element's width
      * @param {String} options.height - the canvas element's height
-     * @param {Boolean} options.canvasFit
+     * @param {Boolean} [options.canvasFit] - if true, the canvas stretches to fill the viewport width/height
      * @belongsto SW
      */
     var Canvas = function(options) {
