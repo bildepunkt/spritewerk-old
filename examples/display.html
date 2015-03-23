@@ -15,6 +15,7 @@
     <script src="../src/display/sprite.js"></script>
     <script src="../src/display/line.js"></script>
     <script src="../src/display/rectangle.js"></script>
+    <script src="../src/display/text.js"></script>
 
     <script>
         window.onload = function() {
@@ -26,38 +27,21 @@
                 height: h
             });
 
-            var collection = new SW.Collection();
-            var rectangle;
-            var line;
+            var l = new SW.Line()
+                .position(108, 100)
+                .coordinates(new SW.Vector(0, 0), new SW.Vector(100, 100));
 
-            for(var i = 0; i < 2500; i += 1) {
-                rectangle = new SW.Rectangle();
-                rectangle.position(Math.random()*w, Math.random()*h);
-                rectangle.dimensions(16, 16);
-                rectangle.opacity(0.2);
-                collection.addItem('recto' + i, rectangle);
+            var r = new SW.Rectangle()
+                .position(2, 100)
+                .dimensions(100, 100);
 
-                line = new SW.Line();
-                line.opacity(0.2);
-                line.coordinates(
-                    new SW.Vector(Math.random()*w, Math.random()*h),
-                    new SW.Vector(Math.random()*w, Math.random()*h)
-                );
-                collection.addItem('lino' + i, line);
-            }
+            var t = new SW.Text({ contents: 'lorem ipsum' })
+                .font('72px sans-serif')
+                .strokeWidth(2);
 
-            function renderAll() {
-                canvas.clearAll();
-
-                collection.each(function(entity) {
-                    entity.position(Math.random()*w, Math.random()*h);
-                    canvas.render(entity);
-                });
-            }
-
-            setInterval(function() {
-                requestAnimationFrame(renderAll);
-            }, 33);
+            canvas.render(l);
+            canvas.render(r);
+            canvas.render(t);
         };
     </script>
 </head>

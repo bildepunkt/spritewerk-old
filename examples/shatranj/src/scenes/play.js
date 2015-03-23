@@ -58,7 +58,7 @@ Play.prototype.createBoard = function() {
         for(var c = 0; c < this.cols; c += 1) {
             space = new SW.Rectangle()
                 .dimensions(this.spaceSize, this.spaceSize)
-                .fillColor(c % 2 === evenOdd ? lightColor : darkColor)
+                .fillStyle(c % 2 === evenOdd ? lightColor : darkColor)
                 .position(c * this.spaceSize, r * this.spaceSize);
 
             space.name = 'row' + r + 'col' + c;
@@ -201,7 +201,7 @@ Play.prototype.showMoves = function(type, team, pieceCol, pieceRow) {
 Play.prototype.addHighlightSpace = function(r, c) {
     var highlightPiece = new SW.Rectangle()
         .opacity(0.5)
-        .fillColor(this.highlightColor)
+        .fillStyle(this.highlightColor)
         .position(c * this.spaceSize, r * this.spaceSize)
         .dimensions(this.spaceSize, this.spaceSize);
 
@@ -234,10 +234,10 @@ Play.prototype.addPieces = function() {
                 console.log(piece.type, c, r);
 
                 if (r < 2) {
-                    piece.fillColor('#000');
+                    piece.fillStyle('#000');
                     this.darkPiecesLayer.addItem('row' + r + 'col' + c, piece);
                 } else {
-                    piece.fillColor('#FFF');
+                    piece.fillStyle('#FFF');
                     this.lightPiecesLayer.addItem('row' + r + 'col' + c, piece);
                 }
             }

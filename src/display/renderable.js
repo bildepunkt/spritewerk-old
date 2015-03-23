@@ -75,22 +75,31 @@ SW.Renderable = (function() {
         this._opacity = 1;
 
         /**
-         * the entity's fill
+         * the entity's fill display
          *
          * @member {String} SW.Text.prototype._fillStyle
          * @default '#000'
          * @private
          */
-        this._fillStyle = '#000';
+        this._fillStyle = '#999';
 
         /**
-         * the entity's fill
+         * the entity's stroke display
          *
          * @member {String} SW.Text.prototype._strokeStyle
          * @default '#000'
          * @private
          */
         this._strokeStyle = '#000';
+
+        /**
+         * the entity's stroke width
+         *
+         * @member {String} SW.Text.prototype._strokeWidth
+         * @default 4
+         * @private
+         */
+        this._strokeWidth = 4;
 
         /**
          * @member {Boolean} SW.Renderable.prototype._visible
@@ -350,6 +359,24 @@ SW.Renderable = (function() {
 
         if (typeof value === 'string') {
             this._strokeStyle = value;
+        }
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.strokeWidth
+     * @param {String} [value]
+     * @return {String|SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.strokeWidth = function(value) {
+        if (value === undefined) {
+            return this._strokeWidth;
+        }
+
+        if (typeof value === 'number') {
+            this._strokeWidth = value;
         }
 
         return this;
