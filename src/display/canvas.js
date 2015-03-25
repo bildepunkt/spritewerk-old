@@ -155,16 +155,19 @@ SW.Canvas = (function() {
 
         switch(entity.getDisplayType()) {
             case 'rectangle':
-                this.renderRectangle(entity);
+                this._renderRectangle(entity);
             break;
             case 'line':
-                this.renderLine(entity);
+                this._renderLine(entity);
+            break;
+            case 'polygon':
+                this._renderPolygon(entity);
             break;
             case 'sprite':
-                this.renderSprite(entity);
+                this._renderSprite(entity);
             break;
             case 'text':
-                this.renderText(entity);
+                this._renderText(entity);
             break;
             default:
                 throw new Error('SW.Canvas cannot render type: ' + entity.getDisplayType());
@@ -175,24 +178,24 @@ SW.Canvas = (function() {
     };
 
     /**
-     * @method Draw.prototype.renderRectangle
+     * @method Draw.prototype._renderRectangle
      * @private
      */
-    Canvas.prototype.renderRectangle = function(entity) {
+    Canvas.prototype._renderRectangle = function(entity) {
         var dimension = entity.dimensions();
-        var fill = entity.fillStyle();
-        var stroke = entity.strokeStyle();
+        var fillStyle = entity.fillStyle();
+        var strokeStyle = entity.strokeStyle();
 
         this._context.save();
-        this._context.fillStyle = fill;
-        this._context.strokeStyle = stroke;
         this._context.lineWidth = entity.strokeWidth();
 
-        if (fill) {
+        if (fillStyle) {
+            this._context.fillStyle = fillStyle;
             this._context.fillRect(0, 0, dimension.x, dimension.y);
         }
 
-        if (stroke) {
+        if (strokeStyle) {
+            this._context.strokeStyle = strokeStyle;
             this._context.strokeRect(0, 0, dimension.x, dimension.y);
         }
 
@@ -200,10 +203,10 @@ SW.Canvas = (function() {
     };
 
     /**
-     * @method Draw.prototype.renderLine
+     * @method Draw.prototype._renderLine
      * @private
      */
-    Canvas.prototype.renderLine = function(entity) {
+    Canvas.prototype._renderLine = function(entity) {
         var coordinates = entity.coordinates();
 
         this._context.save();
@@ -222,26 +225,61 @@ SW.Canvas = (function() {
     };
 
     /**
-     * @method Draw.prototype.renderText
+     * @method Draw.prototype._renderPolygon
      * @private
      */
-    Canvas.prototype.renderText = function(entity) {
-        var fill = entity.fillStyle();
-        var stroke = entity.strokeStyle();
+    Canvas.prototype._renderPolygon = function(entity) {
+        var coordinates = entity.coordinates();
+        var fillStyle = entity.fillStyle();
+        var strokeStyle = entity.strokeStyle();
+
+        this._context.save();
+        this._context.lineWidth = entity.strokeWidth();
+        this._context.beginPath();
+
+        this._context.moveTo(coordinates[0].x, coordinates[0].y);
+
+        for(var i = 1, len = coordinates.length; i < len; i += 1) {
+            this._context.lineTo(coordinates[i].x, coordinates[i].y);
+        }
+
+        this._context.lineTo(coordinates[0].x, coordinates[0].y);
+        this._context.closePath();
+
+        if (fillStyle) {
+            this._context.fillStyle = fillStyle;
+            this._context.fill();
+        }
+
+        if (strokeStyle) {
+            this._context.strokeStyle = strokeStyle;
+            this._context.stroke();
+        }
+
+        this._context.restore();
+    };
+
+    /**
+     * @method Draw.prototype._renderText
+     * @private
+     */
+    Canvas.prototype._renderText = function(entity) {
+        var fillStyle = entity.fillStyle();
+        var strokeStyle = entity.strokeStyle();
 
         this._context.save();
         this._context.font = entity.font();
         this._context.textBaseline = entity.baseline();
         this._context.textAlign = entity.align();
         this._context.lineWidth = entity.strokeWidth();
-        this._context.fillStyle = fill;
-        this._context.strokeStyle = stroke;
 
-        if (fill) {
+        if (fillStyle) {
+            this._context.fillStyle = fillStyle;
             this._context.fillText(entity.contents(), 0, 0);
         }
 
-        if (stroke) {
+        if (strokeStyle) {
+            this._context.strokeStyle = strokeStyle;
             this._context.strokeText(entity.contents(), 0, 0);
         }
 
@@ -249,10 +287,10 @@ SW.Canvas = (function() {
     };
 
     /**
-     * @method Draw.prototype.renderSprite
+     * @method Draw.prototype._renderSprite
      * @private
      */
-    Canvas.prototype.renderSprite = function(entity) {
+    Canvas.prototype._renderSprite = function(entity) {
         var dimension = entity.dimensions();
         var srcDimensions = entity.srcDimensions();
         var srcPosition = entity.srcPosition();

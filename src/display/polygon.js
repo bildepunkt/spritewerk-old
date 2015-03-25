@@ -1,47 +1,40 @@
-SW.Line = (function() {
+SW.Polygon = (function() {
     'use strict';
 
     /**
      * a line display entity
      *
-     * @class SW.Line
+     * @class SW.Polygon
      * @extends SW.Renderable
      * @belongsto SW
      */
-    var Line = function() {
+    var Polygon = function() {
         SW.Renderable.call(this);
 
         /**
-         * @member {Array} SW.Line.prototype._coordinates
+         * @member {Array} SW.Polygon.prototype._coordinates
          * @private
          */
         this._coordinates = [];
-        
-        /**
-         * @member {String} SW.Line.prototype._cap
-         * @default 'butt'
-         * @private
-         */
-        this._cap = 'butt';
 
         /**
-         * @member {String} SW.Line.prototype._displayType
-         * @default 'line'
+         * @member {String} SW.Polygon.prototype._displayType
+         * @default 'polygon'
          * @private
          * @readonly
          */
-        this._displayType = 'line';
+        this._displayType = 'polygon';
     };
 
-    Line.prototype = SW.Util.clone(SW.Renderable.prototype);
+    Polygon.prototype = SW.Util.clone(SW.Renderable.prototype);
 
     /**
-     * @method SW.Line.prototype.coordinates
+     * @method SW.Polygon.prototype.coordinates
      * @param {SW.Vector} [arguments] - n amount of coordinates
-     * @return {array|SW.Line}
+     * @return {array|SW.Polygon}
      * @chainable
      */
-    Line.prototype.coordinates = function() {
+    Polygon.prototype.coordinates = function() {
         if (!arguments.length) {
             return this._coordinates;
         }
@@ -53,5 +46,5 @@ SW.Line = (function() {
         return this;
     };
 
-    return Line;
+    return Polygon;
 }());

@@ -15,33 +15,53 @@
     <script src="../src/display/sprite.js"></script>
     <script src="../src/display/line.js"></script>
     <script src="../src/display/rectangle.js"></script>
+    <script src="../src/display/polygon.js"></script>
     <script src="../src/display/text.js"></script>
 
     <script>
+        var canvas,
+            p;
+
         window.onload = function() {
             var w = 600;
             var h = 400;
-            var canvas = new SW.Canvas({
+            
+            canvas = new SW.Canvas({
                 id: 'spritewerk',
                 width: w,
                 height: h
             });
 
-            var l = new SW.Line()
-                .position(108, 100)
-                .coordinates(new SW.Vector(0, 0), new SW.Vector(100, 100));
-
-            var r = new SW.Rectangle()
-                .position(2, 100)
-                .dimensions(100, 100);
-
             var t = new SW.Text({ contents: 'lorem ipsum' })
                 .font('72px sans-serif')
                 .strokeWidth(2);
 
+            var r = new SW.Rectangle()
+                .position(8, 100)
+                .dimensions(100, 100);
+
+            var l = new SW.Line()
+                .position(108, 100)
+                .coordinates(new SW.Vector(0, 0), new SW.Vector(100, 100));
+
+            p = new SW.Polygon()
+                .position(100, 232)
+                .coordinates(
+                    new SW.Vector(0, 0),
+                    new SW.Vector(25, 50),
+                    new SW.Vector(75, 75),
+                    new SW.Vector(25, 100),
+                    new SW.Vector(0, 150),
+                    new SW.Vector(-25, 100),
+                    new SW.Vector(-75, 75),
+                    new SW.Vector(-25, 50)
+                )
+                .draggable(true);
+
             canvas.render(l);
             canvas.render(r);
             canvas.render(t);
+            canvas.render(p);
         };
     </script>
 </head>

@@ -22,6 +22,7 @@ var packages = {
             'src/display/renderable.js',
             'src/display/rectangle.js',
             'src/display/line.js',
+            'src/display/polygon.js',
             'src/display/sprite.js'
         ]
     },
