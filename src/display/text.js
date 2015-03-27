@@ -54,9 +54,34 @@ SW.Text = (function() {
          * @private
          */
         this._displayType = 'text';
+
+        /**
+         * @member {String} SW.Text.prototype._maxWidth
+         * @default
+         * @private
+         */
+        this._maxWidth = null;
     };
 
     Text.prototype = SW.Util.clone(SW.Renderable.prototype);
+
+    /**
+     * @method SW.Text.prototype.maxWidth
+     * @param {Integer} [value]
+     * @return {Integer|SW.Text}
+     * @chainable
+     */
+    Text.prototype.maxWidth = function(value) {
+        if (value === undefined) {
+            return this._maxWidth;
+        }
+
+        if (typeof value === 'number') {
+            this._maxWidth = value;
+        }
+
+        return this;
+    };
 
     /**
      * @method SW.Text.prototype.contents

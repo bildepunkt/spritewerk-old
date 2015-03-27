@@ -140,7 +140,7 @@ SW.Canvas = (function() {
 
         if (entity.rotation() !== 0) {
             this._context.translate(rotationOffset.x, rotationOffset.y);
-            this._context.rotate((Math.PI / 180) * entity.gsRotation());
+            this._context.rotate((Math.PI / 180) * entity.rotation());
             this._context.translate(-rotationOffset.x, -rotationOffset.y);
         }
 
@@ -266,6 +266,11 @@ SW.Canvas = (function() {
     Canvas.prototype._renderText = function(entity) {
         var fillStyle = entity.fillStyle();
         var strokeStyle = entity.strokeStyle();
+        var maxWidth = entity.maxWidth();
+        var contents = entity.contents();
+        var lineHeight;
+        var lines;
+        var textDimensions;
 
         this._context.save();
         this._context.font = entity.font();
@@ -273,17 +278,64 @@ SW.Canvas = (function() {
         this._context.textAlign = entity.align();
         this._context.lineWidth = entity.strokeWidth();
 
-        if (fillStyle) {
-            this._context.fillStyle = fillStyle;
-            this._context.fillText(entity.contents(), 0, 0);
+        if (typeof maxWidth === 'number') {
+            lines = this._getWrappedText(contents, maxWidth);
+            lineHeight = this._getLineHeight(entity);
+        } else {
+            lines[0] = contents;
         }
 
-        if (strokeStyle) {
-            this._context.strokeStyle = strokeStyle;
-            this._context.strokeText(entity.contents(), 0, 0);
+        for(var i = 0, len = lines.length; i < len; i += 1) {
+            if (fillStyle) {
+                this._context.fillStyle = fillStyle;
+                this._context.fillText(lines[i], 0, lineHeight * i);
+            }
+
+            if (strokeStyle) {
+                this._context.strokeStyle = strokeStyle;
+                this._context.strokeText(lines[i], 0, lineHeight * i);
+            }
         }
+
+        textDimensions = this._context.measureText(contents);
+
+        entity.dimensions(
+            maxWidth || textDimensions.width,
+            lineHeight * lines.length
+        );
 
         this._context.restore();
+    };
+
+    Canvas.prototype._getWrappedText = function(contents, maxWidth) {
+        var words = contents.split(' ');
+        var lines = [];
+        var line = '';
+        var testLine;
+        var testWidth;
+
+        for(var i = 0, len = words.length; i < len; i += 1) {
+            testLine = line + words[i] + ' ';
+            testWidth = this._context.measureText(testLine).width;
+
+            if (testWidth > maxWidth) {
+                lines.push(line);
+                line = words[i] + ' ';
+            } else {
+                line = testLine;
+            }
+        }
+
+        // and finally, add leftovers
+        lines.push(line);
+
+        return lines;
+    };
+
+    Canvas.prototype._getLineHeight = function(entity) {
+        var factor = 1.2;
+        var font = entity.font();
+        return parseInt(font.match(/[0-9]*px|pt|em/), 10) * factor;
     };
 
     /**

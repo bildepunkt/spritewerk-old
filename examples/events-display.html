@@ -18,6 +18,8 @@
     <script src="../src/display/sprite.js"></script>
     <script src="../src/display/line.js"></script>
     <script src="../src/display/rectangle.js"></script>
+    <script src="../src/display/polygon.js"></script>
+    <script src="../src/display/text.js"></script>
 
     <script>
         function loadHandler() {
@@ -25,6 +27,7 @@
             var rectangle;
             var input;
             var canvas;
+            var text;
 
             SW.Signal.removeListener(window, 'load', loadHandler);
 
@@ -70,10 +73,27 @@
 
             collection = new SW.Collection();
 
-            rectangle = new SW.Rectangle().dimensions(128, 128).draggable(true);
+            text = new SW.Text({
+                contents: 'lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet'
+            })
+                .draggable(true)
+                .font('24px sans-serif')
+                .strokeWidth(2)
+                .maxWidth(230)
+                .rotation(-15);
+            collection.addItem('text', text);
+
+            rectangle = new SW.Rectangle()
+                .dimensions(128, 128)
+                .draggable(true)
+                .composite('screen');
             collection.addItem('recto', rectangle);
 
-            rectangle = new SW.Rectangle().position(null, 128).dimensions(128, 128).fillStyle('#C4C');
+            rectangle = new SW.Rectangle()
+                .position(null, 128)
+                .dimensions(128, 128)
+                .fillStyle('#C4C')
+                .opacity(0.5);
             collection.addItem('recto2', rectangle);
 
             // can be collection
