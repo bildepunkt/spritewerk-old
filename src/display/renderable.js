@@ -87,10 +87,10 @@ SW.Renderable = (function() {
          * the entity's stroke display
          *
          * @member {String} SW.Text.prototype._strokeStyle
-         * @default '#000'
+         * @default null
          * @private
          */
-        this._strokeStyle = '#000';
+        this._strokeStyle = null;
 
         /**
          * the entity's stroke width
@@ -321,7 +321,7 @@ SW.Renderable = (function() {
             return this._composite;
         }
 
-        if (typeof value === 'number') {
+        if (typeof value === 'string') {
             this._composite = value;
         }
 
