@@ -8,6 +8,8 @@ SW.Game = (function() {
     * @belongsto SW
     */
    var Game = function(initialSceneName, InitialScene, options) {
+        options = options || {};
+
         /**
          * @member {String} SW.Game.prototype._initialSceneName
          * @private
@@ -18,8 +20,6 @@ SW.Game = (function() {
          * @private
          */
         this._InitialScene = InitialScene;
-
-        options = options || {};
 
         /**
          * @member {String} SW.Game.prototype._canvasId
@@ -98,28 +98,33 @@ SW.Game = (function() {
 
     /**
      * @method SW.Game.prototype._onReady
+     * @requires SW.Dom
+     * @requires SW.Canvas
+     * @requires SW.Input
+     * @requires SW.Engine
+
      * @fires SW.Signal#spritewerk/ready
      */
     Game.prototype._onReady = function() {
-        this.dom = new SW.GameDom({
+        SW.dom = new SW.Dom({
             title: this._title
         });
 
-        this.canvas = new SW.Canvas({
+        SW.canvas = new SW.Canvas({
             id: this._canvasId,
             width: this._width,
             height: this._height,
             canvasFit: this._canvasFit
         });
 
-        this.input = new SW.Input({
+        SW.input = new SW.Input({
             eventEl: this.canvas.getCanvasEl(),
             bindMouseInput: this._bindMouseInput,
             bindTouchInput: this._bindTouchInput,
             canvasFit: this._canvasFit
         });
 
-        this.engine = new SW.Engine({
+        SW.engine = new SW.Engine({
             fps: this._fps
         });
 

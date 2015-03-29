@@ -5,7 +5,6 @@ SW.Scene = (function() {
      * manages layers and their entities
      *
      * @class SW.Scene
-     * @extends SW.Collection
      * @param {Object} [options]
      * @param {Object} options.assets - a hash of names and src paths for images and audio files
      * @listens SW.Signal#press
@@ -19,9 +18,13 @@ SW.Scene = (function() {
      * @belongsto SW
      */
     var Scene = function(options) {
-        SW.Collection.call(this, options);
-
         options = options || {};
+
+        /**
+         * @member {String} SW.Scene.prototype.layers
+         * @private
+         */
+        this.layers = new SW.Layer();
 
         /**
          * @member {String} SW.Scene.prototype._bgColor
@@ -35,8 +38,6 @@ SW.Scene = (function() {
          */
         this._assets = options.assets;
     };
-
-    Scene.prototype = SW.Util.clone(SW.Collection.prototype);
 
     /**
      * @method SW.Scene.prototype.bgColor

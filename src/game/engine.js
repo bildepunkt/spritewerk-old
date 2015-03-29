@@ -7,6 +7,18 @@ SW.Engine = (function() {
      * @belongsto SW
      */
     var Engine = function(options) {
+        window.requestAnimationFrame =
+            requestAnimationFrame       ||
+            webkitRequestAnimationFrame ||
+            mozRequestAnimationFrame    ||
+            oRequestAnimationFrame      ||
+            msRequestAnimationFrame     ||
+            function(fn) {
+                setTimeout(function() {
+                    fn();
+                }, this._interval);
+            };
+
         /**
          * the (desired) amount of times per second the game loop executes
          *
@@ -68,18 +80,6 @@ SW.Engine = (function() {
      * @method SW.Engine.prototype.start
      */
     Engine.prototype.start = function() {
-        window.requestAnimationFrame =
-            requestAnimationFrame       ||
-            webkitRequestAnimationFrame ||
-            mozRequestAnimationFrame    ||
-            oRequestAnimationFrame      ||
-            msRequestAnimationFrame     ||
-            function(fn) {
-                setTimeout(function() {
-                    fn();
-                }, this._interval);
-            };
-
         this._update();
     };
 
@@ -92,8 +92,8 @@ SW.Engine = (function() {
      * @private
      */
     Engine.prototype._update = function() {
-        if (!this._paused) {
-            requestAnimationFrame(this._boundUpdate);
+        if (this._paused) {
+            return false;
         }
         
         this._now = Date.now();
@@ -112,6 +112,8 @@ SW.Engine = (function() {
                 frame: this._counter
             });
         }
+            
+        requestAnimationFrame(this._boundUpdate);
     };
 
     /**
