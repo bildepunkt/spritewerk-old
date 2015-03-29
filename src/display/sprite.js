@@ -32,7 +32,6 @@ SW.Sprite = (function() {
 
         /**
          * @member {String} SW.Sprite.prototype._displayType
-         * @default 'rectangle'
          * @private
          * @readonly
          */
@@ -42,17 +41,21 @@ SW.Sprite = (function() {
     Sprite.prototype = SW.Util.clone(SW.Renderable.prototype);
 
     /**
-     * @method SW.Sprite.prototype.srcPosition
+     * @method SW.Sprite.prototype.getSrcPosition
+     * @return {SW.Vector}
+     */
+    Sprite.prototype.getSrcPosition = function(x, y) {
+        return this._srcPosition;
+    };
+
+    /**
+     * @method SW.Sprite.prototype.setSrcPosition
      * @param {Float} [x]
      * @param {Float} [y]
-     * @return {SW.Vector|SW.Sprite}
+     * @return {SW.Sprite}
      * @chainable
      */
-    Sprite.prototype.srcPosition = function(x, y) {
-        if (x === undefined && y === undefined) {
-            return this._srcPosition;
-        }
-
+    Sprite.prototype.setSrcPosition = function(x, y) {
         if (typeof x === 'number') {
             this._srcPosition.x = x;
         }
@@ -65,17 +68,21 @@ SW.Sprite = (function() {
     };
 
     /**
-     * @method SW.Sprite.prototype.srcDimensions
+     * @method SW.Sprite.prototype.getSrcDimensions
+     * @return {SW.Vector}
+     */
+    Sprite.prototype.getSrcDimensions = function(x, y) {
+        return this._srcDimensions;
+    };
+
+    /**
+     * @method SW.Sprite.prototype.setSrcDimensions
      * @param {Float} [x]
      * @param {Float} [y]
-     * @return {SW.Vector|SW.Sprite}
+     * @return {SW.Sprite}
      * @chainable
      */
-    Sprite.prototype.srcDimensions = function(x, y) {
-        if (x === undefined && y === undefined) {
-            return this._srcDimensions;
-        }
-
+    Sprite.prototype.setSrcDimensions = function(x, y) {
         if (typeof x === 'number') {
             this._srcDimensions.x = x;
         }
@@ -88,18 +95,14 @@ SW.Sprite = (function() {
     };
 
     /**
-     * get/set image property; if not already set, sets dimension/srcDimensions to image size
+     * set image property; if not already set, sets dimension/srcDimensions to image size
      *
-     * @method SW.Sprite.prototype.image
+     * @method SW.Sprite.prototype.setImage
      * @param {HTMLEntity} value
-     * @return {HTMLEntity|SW.Sprite}
+     * @return {SW.Sprite}
      * @chainable
      */
-    Sprite.prototype.image = function(value) {
-        if (value === undefined) {
-            return this._image;
-        }
-
+    Sprite.prototype.setImage = function(value) {
         if (typeof value === 'object') {
             this._image = value;
 

@@ -29,16 +29,20 @@ SW.Polygon = (function() {
     Polygon.prototype = SW.Util.clone(SW.Renderable.prototype);
 
     /**
-     * @method SW.Polygon.prototype.coordinates
-     * @param {SW.Vector} [arguments] - n amount of coordinates
-     * @return {array|SW.Polygon}
+     * @method SW.Polygon.prototype.getCoordinates
+     * @return {Array}
+     */
+    Polygon.prototype.getCoordinates = function() {
+        return this._coordinates;
+    };
+
+    /**
+     * @method SW.Polygon.prototype.setCoordinates
+     * @param {Array} coordinates - n amount of coordinates
+     * @return {SW.Polygon}
      * @chainable
      */
-    Polygon.prototype.coordinates = function() {
-        if (!arguments.length) {
-            return this._coordinates;
-        }
-
+    Polygon.prototype.setCoordinates = function() {
         for(var i = 0, len = arguments.length; i < len; i += 1) {
             this._coordinates[i] = arguments[i];
         }

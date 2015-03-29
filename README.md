@@ -10,8 +10,7 @@ SPRITEWERK is a culmination of:
 
 #### Architecture
 * all object properties are private and thus, should only be accessed through methods
-* all packages/modules require SW.Common.* to work on their own, and SW.Media requires SW.Events.*
-* gettable properites will have getters, settable > setters, and get/settable will have an overloaded method (sans prefix)
+* all packages/modules require SW.Common to work on their own, and SW.Media requires SW.Events
 * currently the SPRITEWERK interaction paradigm is that game control is device-agnostic; therefore:
  * no mouse-move or hover events are emitted
  * touch/mouse events are normalized and merged into these singular events: press, dblpress, pressup, pressdown, dragstart, drag, dragstop

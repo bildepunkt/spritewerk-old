@@ -8,6 +8,7 @@ SW.Input = (function() {
      * @param {Boolean} options.canvasStretch
      * @param {Boolean} options.bindMouseInput
      * @param {Boolean} options.bindTouchInput
+     * @listens SW.Signal#scene/activated
      * @requires SW.Canvas
      * @belongsto SW
      */
@@ -71,7 +72,7 @@ SW.Input = (function() {
         /**
          * the collection of entities to check against the interaction
          * 
-         * @member {SW.Collection|SW.Layer} SW.Input.prototype._layer
+         * @member {SW.Collection} SW.Input.prototype._layer
          * @private
          */
         this._layer = null;
@@ -88,31 +89,24 @@ SW.Input = (function() {
             }
         }
 
-        SW.Signal.addListener('scene/activated', this.receiveScene, this);
-    };
-
-    Input.prototype.receiveScene = function(e) {
-        this.setScene(e.detail.scene);
+        SW.Signal.addListener('scene/activated', this._onSceneActivated, this);
     };
 
     /**
-     * the scene => layers => entities to check input events against; if we have a scene we won't check for a layer
-     *
-     * @method SW.Input.prototype.setScene
-     * @param {SW.Scene} scene
+     * @method SW.Input.prototype._onSceneActivated
      */
-    Input.prototype.setScene = function(scene) {
-        this._scene = scene;
+    Input.prototype._onSceneActivated = function(e) {
+        this.setLayers(e.detail.scene.layers);
     };
 
     /**
-     * the layer => entities to check input events against; a layer is for situations where the complexity of a scene is not warranted
+     * the layers => entities to check input events against
      *
-     * @method SW.Input.prototype.setLayer
-     * @param {SW.Collection|SW.Layer} layer
+     * @method SW.Input.prototype.setLayers
+     * @param {SW.Collection} layers
      */
-    Input.prototype.setLayer = function(layer) {
-        this._layer = layer;
+    Input.prototype.setLayers = function(layers) {
+        this._layers = layers;
     };
 
     /**
@@ -330,21 +324,14 @@ SW.Input = (function() {
     Input.prototype._getEventTarget = function(e) {
         var topmostEntity;
 
-        if (this._scene) {
-            this._scene.each(function(layer) {
+        if (this._layers) {
+            this._layers.each(function(layer) {
                 layer.each(function(entity) {
                     if (SW.Util.hitPoint(e.x, e.y, entity)) {
                         // continually assign higher sorted entity
                         topmostEntity = entity;
                     }
                 });
-            });
-        } else if (this._layer) {
-            this._layer.each(function(entity) {
-                if (SW.Util.hitPoint(e.x, e.y, entity)) {
-                    // continually assign higher sorted entity
-                    topmostEntity = entity;
-                }
             });
         } else {
             throw new TypeError('SW.Input requires one SW.Scene or SW.Collection for checking against entities');

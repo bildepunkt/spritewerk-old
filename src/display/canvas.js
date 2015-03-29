@@ -13,6 +13,8 @@ SW.Canvas = (function() {
      * @belongsto SW
      */
     var Canvas = function(options) {
+        options = options || {};
+
         /**
          * @member {HTMLEntity} SW.Canvas.prototype._canvasEl - the canvas element
          * @private
@@ -27,12 +29,12 @@ SW.Canvas = (function() {
          * @member {Integer} SW.Canvas.prototype._width - the canvas element's width
          * @private
          */
-        this._width = options.width;
+        this._width = options.width || 800;
         /**
          * @member {Integer} SW.Canvas.prototype._height - the canvas element's height
          * @private
          */
-        this._height = options.height;
+        this._height = options.height || 600;
 
         this._canvasEl.width = this._width;
         this._canvasEl.height = this._height;
@@ -129,29 +131,30 @@ SW.Canvas = (function() {
      * @param {SW.renderable} entity
      */
     Canvas.prototype.render = function(entity) {
-        var position = entity.position();
-        var scale = entity.scale();
-        var rotationOffset = entity.rotationOffset();
-        var scaleOffset = entity.scaleOffset();
+        var position = entity.getPosition();
+        var scale = entity.getScale();
+        var rotation = entity.getRotation();
+        var rotationOffset = entity.getRotationOffset();
+        var scaleOffset = entity.getScaleOffset();
 
         // remember: context transforms are cumulative :)
         this._context.save();
         this._context.translate(Math.floor(position.x), Math.floor(position.y));
 
-        if (entity.rotation() !== 0) {
+        if (rotation !== 0) {
             this._context.translate(rotationOffset.x, rotationOffset.y);
-            this._context.rotate((Math.PI / 180) * entity.rotation());
+            this._context.rotate((Math.PI / 180) * rotation);
             this._context.translate(-rotationOffset.x, -rotationOffset.y);
         }
 
-        if (entity.scaleX !== 1 || entity.scaleY !== 1) {
+        if (scale.x !== 1 || scale.y !== 1) {
             this._context.translate(scaleOffset.x, scaleOffset.y);
             this._context.scale(scale.x, scale.y);
             this._context.translate(-scaleOffset.x, -scaleOffset.y);
         }
 
-        this._context.globalAlpha = entity.opacity();
-        this._context.globalCompositeOperation = entity.composite();
+        this._context.globalAlpha = entity.getOpacity();
+        this._context.globalCompositeOperation = entity.getComposite();
 
         switch(entity.getDisplayType()) {
             case 'rectangle':
@@ -182,12 +185,12 @@ SW.Canvas = (function() {
      * @private
      */
     Canvas.prototype._renderRectangle = function(entity) {
-        var dimension = entity.dimensions();
-        var fillStyle = entity.fillStyle();
-        var strokeStyle = entity.strokeStyle();
+        var dimension = entity.getDimensions();
+        var fillStyle = entity.getFillStyle();
+        var strokeStyle = entity.getStrokeStyle();
 
         this._context.save();
-        this._context.lineWidth = entity.strokeWidth();
+        this._context.lineWidth = entity.getStrokeWidth();
 
         if (fillStyle) {
             this._context.fillStyle = fillStyle;
@@ -207,11 +210,11 @@ SW.Canvas = (function() {
      * @private
      */
     Canvas.prototype._renderLine = function(entity) {
-        var coordinates = entity.coordinates();
+        var coordinates = entity.getCoordinates();
 
         this._context.save();
-        this._context.strokeStyle = entity.strokeStyle();
-        this._context.lineWidth = entity.strokeWidth();
+        this._context.strokeStyle = entity.getStrokeStyle();
+        this._context.lineWidth = entity.getStrokeWidth();
         this._context.beginPath();
 
         this._context.moveTo(coordinates[0].x, coordinates[0].y);
@@ -229,12 +232,12 @@ SW.Canvas = (function() {
      * @private
      */
     Canvas.prototype._renderPolygon = function(entity) {
-        var coordinates = entity.coordinates();
-        var fillStyle = entity.fillStyle();
-        var strokeStyle = entity.strokeStyle();
+        var coordinates = entity.getCoordinates();
+        var fillStyle = entity.getDillStyle();
+        var strokeStyle = entity.getStrokeStyle();
 
         this._context.save();
-        this._context.lineWidth = entity.strokeWidth();
+        this._context.lineWidth = entity.getStrokeWidth();
         this._context.beginPath();
 
         this._context.moveTo(coordinates[0].x, coordinates[0].y);
@@ -264,19 +267,19 @@ SW.Canvas = (function() {
      * @private
      */
     Canvas.prototype._renderText = function(entity) {
-        var fillStyle = entity.fillStyle();
-        var strokeStyle = entity.strokeStyle();
-        var maxWidth = entity.maxWidth();
-        var contents = entity.contents();
+        var fillStyle = entity.getFillStyle();
+        var strokeStyle = entity.getStrokeStyle();
+        var maxWidth = entity.getMaxWidth();
+        var contents = entity.getContents();
         var lineHeight;
         var lines;
         var textDimensions;
 
         this._context.save();
-        this._context.font = entity.font();
-        this._context.textBaseline = entity.baseline();
-        this._context.textAlign = entity.align();
-        this._context.lineWidth = entity.strokeWidth();
+        this._context.font = entity.getFont();
+        this._context.textBaseline = entity.getBaseline();
+        this._context.textAlign = entity.getAlign();
+        this._context.lineWidth = entity.getStrokeWidth();
 
         if (typeof maxWidth === 'number') {
             lines = this._getWrappedText(contents, maxWidth);
@@ -299,7 +302,7 @@ SW.Canvas = (function() {
 
         textDimensions = this._context.measureText(contents);
 
-        entity.dimensions(
+        entity.setDimensions(
             maxWidth || textDimensions.width,
             lineHeight * lines.length
         );
@@ -334,7 +337,7 @@ SW.Canvas = (function() {
 
     Canvas.prototype._getLineHeight = function(entity) {
         var factor = 1.2;
-        var font = entity.font();
+        var font = entity.getFont();
         return parseInt(font.match(/[0-9]*px|pt|em/), 10) * factor;
     };
 
@@ -343,12 +346,12 @@ SW.Canvas = (function() {
      * @private
      */
     Canvas.prototype._renderSprite = function(entity) {
-        var dimension = entity.dimensions();
-        var srcDimensions = entity.srcDimensions();
-        var srcPosition = entity.srcPosition();
+        var dimension = entity.getDimensions();
+        var srcDimensions = entity.getSrcDimensions();
+        var srcPosition = entity.getSrcPosition();
 
         this._context.drawImage(
-            entity.image(),
+            entity.getImage(),
             srcPosition.x,
             srcPosition.y,
             srcDimensions.x,

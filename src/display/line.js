@@ -36,19 +36,44 @@ SW.Line = (function() {
     Line.prototype = SW.Util.clone(SW.Renderable.prototype);
 
     /**
-     * @method SW.Line.prototype.coordinates
-     * @param {SW.Vector} [arguments] - n amount of coordinates
-     * @return {array|SW.Line}
+     * @method SW.Line.prototype.getCoordinates
+     * @return {Array}
+     */
+    Line.prototype.getCoordinates = function() {
+        return this._coordinates;
+    };
+
+    /**
+     * @method SW.Line.prototype.setCoordinates
+     * @param {Array} coordinates - n amount of coordinates
+     * @return {SW.Line}
      * @chainable
      */
-    Line.prototype.coordinates = function() {
-        if (!arguments.length) {
-            return this._coordinates;
-        }
-
+    Line.prototype.setCoordinates = function() {
         for(var i = 0, len = arguments.length; i < len; i += 1) {
             this._coordinates[i] = arguments[i];
         }
+
+        return this;
+    };
+
+    /**
+     * @method SW.Line.prototype.getCap
+     * @return {String}
+     * @chainable
+     */
+    Line.prototype.getCap = function() {
+        return this._cap;
+    };
+
+    /**
+     * @method SW.Line.prototype.setCap
+     * @param {String} value - values can be 'butt', 'round', or 'square'
+     * @return {SW.Line}
+     * @chainable
+     */
+    Line.prototype.setCap = function(value) {
+        this._cap = value;
 
         return this;
     };

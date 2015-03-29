@@ -23,7 +23,8 @@ var packages = {
             'src/display/rectangle.js',
             'src/display/line.js',
             'src/display/polygon.js',
-            'src/display/sprite.js'
+            'src/display/sprite.js',
+            'src/display/text.js'
         ]
     },
     events: {
@@ -82,13 +83,10 @@ var packages = {
             'src/display/rectangle.js',
             'src/display/line.js',
             'src/display/sprite.js',
+            'src/display/text.js',
 
-            'src/game/dom.js',
-            'src/game/layer.js',
             'src/game/scene.js',
             'src/game/scene-manager.js',
-            'src/game/engine.js',
-            'src/game/game.js'
         ]
     }
 };

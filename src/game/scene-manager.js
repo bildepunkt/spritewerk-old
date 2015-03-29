@@ -5,17 +5,17 @@ SW.SceneManager = (function() {
      * manages scenes
      *
      * @class SW.SceneManager
-     * @extends SW.Collection
      * @requires SW.Util
      * @requires SW.MediaManager
      * @listens SW.Signal#preload/complete
      * @belongsto SW
+     * @extends SW.Layers
      * @singleton
      */
     var SceneManager = function() {
         var eventType;
 
-        SW.Collection.call(this);
+        this.layers = new SW.Collection();
 
         /**
          * name of the scene currently being loaded
@@ -72,7 +72,6 @@ SW.SceneManager = (function() {
      * @method SW.SceneManager.prototype.addScene
      * @param {String} name
      * @param {SW.Scene} Scene
-     * @private
      */
     SceneManager.prototype.addScene = function(name, Scene) {
         var scene = new Scene();
@@ -89,32 +88,38 @@ SW.SceneManager = (function() {
     };
 
     /**
-     * gets/sets the active scene
+     * gets the active scene
      *
-     * @method SW.SceneManager.prototype.activeScene
-     * @param {String} [name]
+     * @method SW.SceneManager.prototype.getActiveScene
+     * @return {SW.Scene}
+     */
+    SceneManager.prototype.getActiveScene = function() {
+        var lastIndex = this.getItemCount() - 1;
+
+        return this.getItemAt(lastIndex);
+    };
+
+    /**
+     * sets the active scene
+     *
+     * @method SW.SceneManager.prototype.setActiveScene
+     * @param {String} name
      * @fires SW.Signal#scene/activated
-     * @return {SW.Scene|SW.SceneManager}
+     * @return {SW.SceneManager}
      * @private
      * @chainable
      */
-    SceneManager.prototype.activeScene = function(name) {
+    SceneManager.prototype.setActiveScene = function(name) {
         var lastIndex = this.getItemCount() - 1;
 
-        if (name === undefined) {
-            return this.getItemAt(lastIndex);
-        }
+        this.setItemIndex(name, lastIndex);
 
-        if (typeof name === 'string') {
-            this.setItemIndex(name, lastIndex);
-
-            /**
-             * @event SW.Signal#scene/activated
-             */
-            SW.Signal.dispatch('scene/activated', {
-                scene: this.getItemAt(lastIndex)
-            });
-        }
+        /**
+         * @event SW.Signal#scene/activated
+         */
+        SW.Signal.dispatch('scene/activated', {
+            scene: this.getItemAt(lastIndex)
+        });
 
         return this;
     };

@@ -7,7 +7,8 @@ SW.Dom = (function() {
      * @class SW.Dom
      * @belongsto SW
      */
-    var Dom = function() {
+    var Dom = function(options) {
+        options = options || {};
 
         /**
          * @member {String} SW.Dom.prototype.title
@@ -20,11 +21,9 @@ SW.Dom = (function() {
         this.frameColor = options.frameColor || '#444';
 
         document.title = this.title || 'spritewerk game';
-
         this._styleElements();
 
         SW.Signal.addListener(window, 'resize', this._onWindowResize, this);
-        // TODO is this needed?
         SW.Signal.addListener(window, 'orientationchange', this._onWindowResize, this);
     };
 

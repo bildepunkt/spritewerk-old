@@ -143,17 +143,21 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.position
+     * @method SW.Renderable.prototype.getPosition
+     * @return {SW.Vector}
+     */
+    Renderable.prototype.getPosition = function() {
+        return this._position;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setPosition
      * @param {Float} [x]
      * @param {Float} [y]
-     * @return {SW.Vector|SW.Renderable}
+     * @return {SW.Renderable}
      * @chainable
      */
-    Renderable.prototype.position = function(x, y) {
-        if (x === undefined && y === undefined) {
-            return this._position;
-        }
-
+    Renderable.prototype.setPosition = function(x, y) {
         if (typeof x === 'number') {
             this._position.x = x;
         }
@@ -166,16 +170,21 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.dimensions
-     * @param {Float} [value]
-     * @return {float|SW.Renderable}
+     * @method SW.Renderable.prototype.getDimensions
+     * @return {SW.Vector}
+     */
+    Renderable.prototype.getDimensions = function() {
+        return this._dimensions;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setDimensions
+     * @param {Float} [x]
+     * @param {Float} [y]
+     * @return {SW.Renderable}
      * @chainable
      */
-    Renderable.prototype.dimensions = function(x, y) {
-        if (x === undefined && y === undefined) {
-            return this._dimensions;
-        }
-
+    Renderable.prototype.setDimensions = function(x, y) {
         if (typeof x === 'number') {
             this._dimensions.x = x;
         }
@@ -188,35 +197,39 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.rotation
-     * @param {Float} [value]
-     * @return {float|SW.Renderable}
-     * @chainable
+     * @method SW.Renderable.prototype.getRotation
+     * @return {Float}
      */
-    Renderable.prototype.rotation = function(value) {
-        if (value === undefined) {
-            return this._rotation;
-        }
-
-        if (typeof value === 'number') {
-            this._rotation = value;
-        }
-
-        return this;
+    Renderable.prototype.getRotation = function(value) {
+        return this._rotation;
     };
 
     /**
-     * @method SW.Renderable.prototype.rotationOffset
-     * @param {Float} [x]
-     * @param {Float} [y]
-     * @return {SW.Vector|SW.Renderable}
+     * @method SW.Renderable.prototype.setRotation
+     * @param {Float} value
+     * @return {SW.Renderable}
      * @chainable
      */
-    Renderable.prototype.rotationOffset = function(x, y) {
-        if (x === undefined && y === undefined) {
-            return this._rotationOffset;
-        }
+    Renderable.prototype.setRotation = function(value) {
+        this._rotation = value;
+    };
 
+    /**
+     * @method SW.Renderable.prototype.getRotationOffset
+     * @return {SW.Vector}
+     */
+    Renderable.prototype.getRotationOffset = function() {
+        return this._rotationOffset;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setRotationOffset
+     * @param {Float} [x]
+     * @param {Float} [y]
+     * @return {SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.setRotationOffset = function(x, y) {
         if (typeof x === 'number') {
             this._rotationOffset.x = x;
         }
@@ -229,17 +242,21 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.scale
+     * @method SW.Renderable.prototype.getScale
+     * @return {SW.Vector}
+     */
+    Renderable.prototype.getScale = function() {
+        return this._scale;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setScale
      * @param {Float} [x]
      * @param {Float} [y]
-     * @return {SW.Vector|SW.Renderable}
+     * @return {SW.Vector}
      * @chainable
      */
-    Renderable.prototype.scale = function(x, y) {
-        if (x === undefined && y === undefined) {
-            return this._scale;
-        }
-
+    Renderable.prototype.setScale = function(x, y) {
         if (typeof x === 'number') {
             this._scale.x = x;
         }
@@ -252,17 +269,21 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.scaleOffset
+     * @method SW.Renderable.prototype.getScaleOffset
+     * @return {SW.Vector}
+     */
+    Renderable.prototype.getScaleOffset = function() {
+        return this._scaleOffset;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setScaleOffset
      * @param {Float} [x]
      * @param {Float} [y]
-     * @return {SW.Vector|SW.Renderable}
+     * @return {SW.Renderable}
      * @chainable
      */
-    Renderable.prototype.scaleOffset = function(x, y) {
-        if (x === undefined && y === undefined) {
-            return this._scale;
-        }
-
+    Renderable.prototype.setScaleOffset = function(x, y) {
         if (typeof x === 'number') {
             this._scaleOffset.x = x;
         }
@@ -275,109 +296,121 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.draggable
-     * @param {Boolean} [value]
-     * @return {boolean|SW.Renderable}
+     * @method SW.Renderable.prototype.getDraggable
+     * @return {Boolean}
+     */
+    Renderable.prototype.getDraggable = function() {
+        return this._draggable;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setDraggable
+     * @param {Boolean} value
+     * @return {SW.Renderable}
      * @chainable
      */
-    Renderable.prototype.draggable = function(value) {
-        if (value === undefined) {
-            return this._draggable;
-        }
-
-        if (typeof value === 'boolean') {
-            this._draggable = value;
-        }
+    Renderable.prototype.setDraggable = function(value) {
+        this._draggable = value;
 
         return this;
     };
 
     /**
-     * @method SW.Renderable.prototype.opacity
-     * @param {Float} [value]
-     * @return {float|SW.Renderable}
+     * @method SW.Renderable.prototype.getOpacity
+     * @return {Float}
+     */
+    Renderable.prototype.getOpacity = function() {
+        return this._opacity;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setOpacity
+     * @param {Boolean} value
+     * @return {Float}
      * @chainable
      */
-    Renderable.prototype.opacity = function(value) {
-        if (value === undefined) {
-            return this._opacity;
-        }
-
-        if (typeof value === 'number') {
-            this._opacity = value;
-        }
+    Renderable.prototype.setOpacity = function(value) {
+        this._opacity = value;
 
         return this;
     };
 
     /**
-     * @method SW.Renderable.prototype.composite
-     * @param {String} [value]
-     * @return {string|SW.Renderable}
+     * @method SW.Renderable.prototype.getComposite
+     * @return {String}
+     */
+    Renderable.prototype.getComposite = function() {
+        return this._composite;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setComposite
+     * @param {String} value
+     * @return {SW.Renderable}
      * @chainable
      */
-    Renderable.prototype.composite = function(value) {
-        if (value === undefined) {
-            return this._composite;
-        }
-
-        if (typeof value === 'string') {
-            this._composite = value;
-        }
+    Renderable.prototype.setComposite = function(value) {
+        this._composite = value;
 
         return this;
     };
 
     /**
-     * @method SW.Renderable.prototype.fillStyle
-     * @param {String} [value]
-     * @return {String|SW.Renderable}
+     * @method SW.Renderable.prototype.getFillStyle
+     * @return {String}
+     */
+    Renderable.prototype.getFillStyle = function(value) {
+        return this._fillStyle;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setFillStyle
+     * @param {String} value
+     * @return {SW.Renderable}
      * @chainable
      */
-    Renderable.prototype.fillStyle = function(value) {
-        if (value === undefined) {
-            return this._fillStyle;
-        }
-
-        if (typeof value === 'string') {
-            this._fillStyle = value;
-        }
+    Renderable.prototype.setFillStyle = function(value) {
+        this._fillStyle = value;
 
         return this;
     };
 
     /**
-     * @method SW.Renderable.prototype.strokeStyle
-     * @param {String} [value]
-     * @return {String|SW.Renderable}
+     * @method SW.Renderable.prototype.getStrokeStyle
+     * @return {String}
+     */
+    Renderable.prototype.getStrokeStyle = function() {
+        return this._strokeStyle;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setStrokeStyle
+     * @param {String} value
+     * @return {SW.Renderable}
      * @chainable
      */
-    Renderable.prototype.strokeStyle = function(value) {
-        if (value === undefined) {
-            return this._strokeStyle;
-        }
-
-        if (typeof value === 'string') {
-            this._strokeStyle = value;
-        }
+    Renderable.prototype.setStrokeStyle = function(value) {
+        this._strokeStyle = value;
 
         return this;
     };
 
     /**
-     * @method SW.Renderable.prototype.strokeWidth
-     * @param {String} [value]
-     * @return {String|SW.Renderable}
+     * @method SW.Renderable.prototype.getStrokeWidth
+     * @return {String}
+     */
+    Renderable.prototype.getStrokeWidth = function() {
+        return this._strokeWidth;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setStrokeWidth
+     * @param {String} value
+     * @return {SW.Renderable}
      * @chainable
      */
-    Renderable.prototype.strokeWidth = function(value) {
-        if (value === undefined) {
-            return this._strokeWidth;
-        }
-
-        if (typeof value === 'number') {
-            this._strokeWidth = value;
-        }
+    Renderable.prototype.setStrokeWidth = function(value) {
+        this._strokeWidth = value;
 
         return this;
     };

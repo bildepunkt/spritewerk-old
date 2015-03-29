@@ -66,93 +66,97 @@ SW.Text = (function() {
     Text.prototype = SW.Util.clone(SW.Renderable.prototype);
 
     /**
-     * @method SW.Text.prototype.maxWidth
-     * @param {Integer} [value]
-     * @return {Integer|SW.Text}
+     * @method SW.Text.prototype.getMaxWidth
+     * @return {Integer}
+     */
+    Text.prototype.getMaxWidth = function() {
+        return this._maxWidth;
+    };
+
+    /**
+     * @method SW.Text.prototype.SetMaxWidth
+     * @param {Integer} value
+     * @return {SW.Text}
      * @chainable
      */
-    Text.prototype.maxWidth = function(value) {
-        if (value === undefined) {
-            return this._maxWidth;
-        }
-
-        if (typeof value === 'number') {
-            this._maxWidth = value;
-        }
+    Text.prototype.SetMaxWidth = function(value) {
+        this._maxWidth = value;
 
         return this;
     };
 
     /**
-     * @method SW.Text.prototype.contents
-     * @param {String} [value]
-     * @return {String|SW.Text}
+     * @method SW.Text.prototype.getContents
+     * @return {String}
      * @chainable
      */
-    Text.prototype.contents = function(value) {
-        if (value === undefined) {
-            return this._contents;
-        }
+    Text.prototype.getContents = function() {
+        return this._contents;
+    };
 
-        if (typeof value === 'string') {
-            this._contents = value;
-        }
+    /**
+     * @method SW.Text.prototype.setContents
+     * @param {String} value
+     * @return {SW.Text}
+     * @chainable
+     */
+    Text.prototype.setContents = function(value) {
+        this._contents = value;
 
         return this;
     };
 
     /**
-     * @method SW.Text.prototype.font
-     * @param {String} [value]
-     * @return {String|SW.Text}
+     * @method SW.Text.prototype.getFont
+     * @return {String}
+     */
+    Text.prototype.getFont = function() {
+        return this._font;
+    };
+
+    /**
+     * @method SW.Text.prototype.setFont
+     * @param {String} value
+     * @return {String}
+     */
+    Text.prototype.setFont = function(value) {
+        this._font = value;
+    };
+
+    /**
+     * @method SW.Text.prototype.getBaseline
+     * @return {String}
+     */
+    Text.prototype.getBaseline = function(value) {
+        return this._baseline;
+    };
+
+    /**
+     * @method SW.Text.prototype.setBaseline
+     * @param {String} value
+     * @return {SW.Text}
      * @chainable
      */
-    Text.prototype.font = function(value) {
-        if (value === undefined) {
-            return this._font;
-        }
-
-        if (typeof value === 'string') {
-            this._font = value;
-        }
+    Text.prototype.setBaseline = function(value) {
+        this._baseline = value;
 
         return this;
     };
 
     /**
-     * @method SW.Text.prototype.baseline
-     * @param {String} [value]
-     * @return {String|SW.Text}
-     * @chainable
+     * @method SW.Text.prototype.getAlign
+     * @return {String}
      */
-    Text.prototype.baseline = function(value) {
-        if (value === undefined) {
-            return this._baseline;
-        }
-
-        if (typeof value === 'string') {
-            this._baseline = value;
-        }
-
-        return this;
+    Text.prototype.getAlign = function() {
+        return this._align;
     };
 
     /**
-     * @method SW.Text.prototype.align
-     * @param {String} [value]
-     * @return {String|SW.Text}
-     * @chainable
+     * @method SW.Text.prototype.setAlign
+     * @return {String}
      */
-    Text.prototype.align = function(value) {
-        if (value === undefined) {
-            return this._align;
-        }
-
-        if (typeof value === 'string') {
-            this._align = value;
-        }
-
-        return this;
+    Text.prototype.setAlign = function(value) {
+        this._align = value;
     };
 
     return Text;

@@ -14,17 +14,17 @@ SW.Scene = (function() {
      * @listens SW.Signal#dragstart
      * @listens SW.Signal#drag
      * @listens SW.Signal#dragend
-     * @requires SW.Layer
+     * @requires SW.Collection
      * @belongsto SW
      */
     var Scene = function(options) {
         options = options || {};
 
         /**
-         * @member {String} SW.Scene.prototype.layers
+         * @member {SW.Collection} SW.Scene.prototype._layers
          * @private
          */
-        this.layers = new SW.Layer();
+        this._layers = new SW.Collection();
 
         /**
          * @member {String} SW.Scene.prototype._bgColor
@@ -40,16 +40,57 @@ SW.Scene = (function() {
     };
 
     /**
-     * @method SW.Scene.prototype.bgColor
+     * @method SW.Scene.prototype.getBgColor
      */
-    Scene.prototype.bgColor = function(value) {
+    Scene.prototype.getBgColor = function(value) {
+        return this._bgColor;
+    };
+
+    /**
+     * @method SW.Scene.prototype.setBgColor
+     */
+    Scene.prototype.setBgColor = function(value) {
+        this._bgColor = value;
+
+        return this;
+    };
+
+    /**
+     * @method SW.Scene.prototype.getLayers
+     * @return {SW.Collection}
+     */
+    Scene.prototype.getLayers = function(value) {
+        return this._layers;
+    };
+
+    /**
+     * gets assets
+     *
+     * @method SW.Scene.prototype.getAssets
+     * @return {Array}
+     */
+    Scene.prototype.getAssets = function() {
         if (value === undefined) {
-            return this._bgColor;
+            return this._assets;
         }
 
-        if (typeof value === 'string') {
-            this._bgColor = value;
+        if (typeof value === 'object') {
+            this._assets = value;
         }
+
+        return this;
+    };
+
+    /**
+     * sets assets
+     *
+     * @method SW.Scene.prototype.setAssets
+     * @param {Object} value
+     * @return {SW.Scene}
+     * @chainable
+     */
+    Scene.prototype.setAssets = function(value) {
+        this._assets = value;
 
         return this;
     };
@@ -129,26 +170,6 @@ SW.Scene = (function() {
      * @param {object} event {@link SW.Input#_receiveEvent}
      */
     Scene.prototype.dragend = function() {};
-
-    /**
-     * gets/sets assets
-     *
-     * @method SW.Scene.prototype.assets
-     * @param {Object} [value]
-     * @return {Boolean|SW.Scene}
-     * @chainable
-     */
-    Scene.prototype.assets = function(value) {
-        if (value === undefined) {
-            return this._assets;
-        }
-
-        if (typeof value === 'object') {
-            this._assets = value;
-        }
-
-        return this;
-    };
 
     return Scene;
 }());
