@@ -128,6 +128,7 @@ SW.Input = (function() {
         var offsetX = this._eventEl.offsetLeft;
         var offsetY = this._eventEl.offsetTop;
         var eventData = {
+            swEvent: true,
             domEvent: inputEvent
         };
         var eventTypes = [];

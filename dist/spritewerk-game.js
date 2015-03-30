@@ -694,6 +694,7 @@ SW.Input = (function() {
         var offsetX = this._eventEl.offsetLeft;
         var offsetY = this._eventEl.offsetTop;
         var eventData = {
+            swEvent: true,
             domEvent: inputEvent
         };
         var eventTypes = [];
@@ -2634,10 +2635,17 @@ SW.SceneManager = (function() {
      * @private
      */
     SceneManager.prototype._handleEvents = function(e) {
-        var swEvent = e.detail;
         var activeScene = this.getActiveScene();
 
-        activeScene[swEvent.type](swEvent);
+        // if a SW event
+        if (e.detail && e.detail.swEvent) {
+            activeScene[e.type](e.detail);
+        // or custom
+        } else {
+            activeScene[e.type](e);
+        }
+
+        
     };
 
     /**

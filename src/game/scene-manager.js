@@ -58,10 +58,13 @@ SW.SceneManager = (function() {
      * @private
      */
     SceneManager.prototype._handleEvents = function(e) {
-        var swEvent = e.detail;
         var activeScene = this.getActiveScene();
 
-        activeScene[swEvent.type](swEvent);
+        if (e.detail && !e.detail.hasOwnProperty('domEvent')) {
+            e.detail.domEvent = e;
+        }
+
+        activeScene[e.type](e.detail);
     };
 
     /**
