@@ -59,7 +59,7 @@ SW.Scene = (function() {
      * @method SW.Scene.prototype.getLayers
      * @return {SW.Collection}
      */
-    Scene.prototype.getLayers = function(value) {
+    Scene.prototype.getLayers = function() {
         return this._layers;
     };
 
@@ -70,15 +70,7 @@ SW.Scene = (function() {
      * @return {Array}
      */
     Scene.prototype.getAssets = function() {
-        if (value === undefined) {
-            return this._assets;
-        }
-
-        if (typeof value === 'object') {
-            this._assets = value;
-        }
-
-        return this;
+        return this._assets;
     };
 
     /**

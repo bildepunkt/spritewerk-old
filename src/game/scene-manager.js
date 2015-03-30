@@ -15,7 +15,7 @@ SW.SceneManager = (function() {
     var SceneManager = function() {
         var eventType;
 
-        this.layers = new SW.Collection();
+        this._scenes = new SW.Collection();
 
         /**
          * name of the scene currently being loaded
@@ -50,8 +50,6 @@ SW.SceneManager = (function() {
         SW.Signal.addListener('preload/complete', this._onPreloadComplete, this);
     };
 
-    SceneManager.prototype = SW.Util.clone(SW.Collection.prototype);
-
     /**
      * SW input event handler to dispatch to current scene (with SW event data as event param)
      *
@@ -61,7 +59,7 @@ SW.SceneManager = (function() {
      */
     SceneManager.prototype._handleEvents = function(e) {
         var swEvent = e.detail;
-        var activeScene = this.activeScene();
+        var activeScene = this.getActiveScene();
 
         activeScene[swEvent.type](swEvent);
     };
@@ -75,7 +73,7 @@ SW.SceneManager = (function() {
      */
     SceneManager.prototype.addScene = function(name, Scene) {
         var scene = new Scene();
-        var assets = scene.assets();
+        var assets = scene.getAssets();
 
         this._loadingName = name;
         this._loadingScene = scene;
@@ -94,9 +92,9 @@ SW.SceneManager = (function() {
      * @return {SW.Scene}
      */
     SceneManager.prototype.getActiveScene = function() {
-        var lastIndex = this.getItemCount() - 1;
+        var lastIndex = this._scenes.getItemCount() - 1;
 
-        return this.getItemAt(lastIndex);
+        return this._scenes.getItemAt(lastIndex);
     };
 
     /**
@@ -110,15 +108,15 @@ SW.SceneManager = (function() {
      * @chainable
      */
     SceneManager.prototype.setActiveScene = function(name) {
-        var lastIndex = this.getItemCount() - 1;
+        var lastIndex = this._scenes.getItemCount() - 1;
 
-        this.setItemIndex(name, lastIndex);
+        this._scenes.setItemIndex(name, lastIndex);
 
         /**
          * @event SW.Signal#scene/activated
          */
         SW.Signal.dispatch('scene/activated', {
-            scene: this.getItemAt(lastIndex)
+            scene: this._scenes.getItemAt(lastIndex)
         });
 
         return this;
@@ -134,7 +132,7 @@ SW.SceneManager = (function() {
     SceneManager.prototype._onPreloadComplete = function() {
         var eventType;
 
-        this.addItem(this._loadingName, this._loadingScene);
+        this._scenes.addItem(this._loadingName, this._loadingScene);
 
         this._loadingScene.init();
 

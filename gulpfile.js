@@ -104,4 +104,12 @@ gulp.task('build', ['clean'], function() {
     }
 });
 
-gulp.task('default', ['build']);
+gulp.task('buildDev', ['clean'], function() {
+    for(var key in packages) {
+        gulp.src(packages[key].files)
+            .pipe(concat(packages[key].out))
+            .pipe(gulp.dest(packages[key].dest));
+    }
+});
+
+gulp.task('default', ['buildDev']);

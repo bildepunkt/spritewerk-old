@@ -1,13 +1,1757 @@
-var SW={};
-SW.Util=function(){"use strict";var r=function(){};return r.prototype.clone=function(r){var t,n="object"==typeof r&&r.hasOwnProperty("length")?[]:{};for(t in r)n[t]="object"==typeof r[t]&&null!==r[t]?this.clone(r[t]):r[t];return n},r.prototype.mixin=function(r){var t,n,o=arguments.length;if(2>o)throw new Error("Util.mixin requires two or more arguments");for(var e=1;o>e;e+=1){t=this.clone(arguments[e]);for(n in t)r[n]=t[n]}return r},r.prototype.hasMembers=function(r){var t=0;for(var n in r)if(t++,t)break;return t?!0:!1},r.prototype.hitPoint=function(r,t,n){var o=n.position(),e=n.dimensions();return r>=o.x&&r<=o.x+e.x&&t>=o.y&&t<=o.y+e.y?!0:!1},new r}();
-SW.Unique=function(){"use strict";var i=0,n=function(){this._uid=++i};return n}();
-SW.Collection=function(){"use strict";var t=function(){SW.Unique.call(this),this._items=[]};return t.prototype=SW.Util.clone(SW.Unique.prototype),t.prototype.addItem=function(t,e){return this._items.push({name:t,value:e}),this},t.prototype.addItemAt=function(t,e,i){return this._items.splice(i,0,{name:t,value:e}),this},t.prototype.removeItem=function(t){this._rawEach(function(e,i,n,o){return t===n?(e=null,o.splice(i,1),!1):void 0})},t.prototype.removeAllItems=function(){return this._items=[],this},t.prototype.each=function(t,e){var i;t=e?t.bind(e):t;for(var n=0,o=this._items.length;o>n&&(i=this._items[n],t(i.value,n,i.name)!==!1);n+=1);},t.prototype._rawEach=function(t){for(var e=0,i=this._items.length;i>e&&t(this._items[e],e,this._items[e].name,this._items)!==!1;e+=1);},t.prototype.filter=function(t,e){var i,n=[];return this.each(function(e,o,r){i=t(e,o,r),i&&n.push(i)},e),n},t.prototype.getItemCount=function(){return this._items.length},t.prototype.setItem=function(t,e){return this._rawEach(function(i,n,o){return t===o?(i.value=e,!1):void 0}),this},t.prototype.getItem=function(t){var e;return this.each(function(i,n,o){return t===o?(e=i,!1):void 0}),e},t.prototype.getItemAt=function(t){return this._items[t].value},t.prototype._getRawItem=function(t){var e;return this._rawEach(function(i,n,o){return t===o?(e=i,!1):void 0}),e},t.prototype.setItemIndex=function(t,e){var i,n=this.getItemIndex(t);e!==n&&(i=this._getRawItem(t),this.removeItem(t),this._items.splice(e,0,i))},t.prototype.getItemIndex=function(t){var e;return this.each(function(i,n,o){return t===o?(e=n,!1):void 0}),e},t}();
-SW.Dom=function(){"use strict";var e=function(e){e=e||{},this.title=e.title,this.frameColor=e.frameColor||"#444",document.title=this.title||"spritewerk game",this._styleElements(),SW.Signal.addListener(window,"resize",this._onWindowResize,this),SW.Signal.addListener(window,"orientationchange",this._onWindowResize,this)};return e.prototype._onWindowResize=function(){SW.Signal.dispatch("screen/resize")},e.prototype._styleElements=function(){var e=document.getElementsByTagName("body")[0];e.style.backgroundColor=this.bgColor,e.style.margin=0,e.style.padding=0},e}();
-SW.Canvas=function(){"use strict";var t=function(t){t=t||{},this._canvasEl=document.getElementById(t.id),this._context=this._canvasEl.getContext("2d"),this._width=t.width||800,this._height=t.height||600,this._canvasEl.width=this._width,this._canvasEl.height=this._height,this._canvasEl.style.position="absolute",t.canvasFit&&(SW.Signal.addListener("screen/resize",this._onScreenResize,this),this._onScreenResize())};return t.prototype._onScreenResize=function(){var t,e,i=this._height/this._width,n=this._width/this._height,o=n>i?!0:!1,s=window.innerWidth,h=window.innerHeight,r=h/s,a=s/h,c=0,l=0;o?r>i?(t=s,e=t*i,l=(h-e)/2):(e=h,t=h*n,c=(s-t)/2):a>n?(e=h,t=h*n,c=(s-t)/2):(t=s,e=t*i,l=(h-e)/2),this._canvasEl.style.width=Math.round(t)+"px",this._canvasEl.style.height=Math.round(e)+"px",this._canvasEl.style.left=Math.round(c)+"px",this._canvasEl.style.top=Math.round(l)+"px"},t.prototype.clearAll=function(){return this._context.clearRect(0,0,this._width,this._height),this},t.prototype.fillAll=function(t){return this._context.save(),this._context.fillStyle=t,this._context.fillRect(0,0,this._width,this._height),this._context.restore(),this},t.prototype.render=function(t){var e=t.getPosition(),i=t.getScale(),n=t.getRotation(),o=t.getRotationOffset(),s=t.getScaleOffset();switch(this._context.save(),this._context.translate(Math.floor(e.x),Math.floor(e.y)),0!==n&&(this._context.translate(o.x,o.y),this._context.rotate(Math.PI/180*n),this._context.translate(-o.x,-o.y)),(1!==i.x||1!==i.y)&&(this._context.translate(s.x,s.y),this._context.scale(i.x,i.y),this._context.translate(-s.x,-s.y)),this._context.globalAlpha=t.getOpacity(),this._context.globalCompositeOperation=t.getComposite(),t.getDisplayType()){case"rectangle":this._renderRectangle(t);break;case"line":this._renderLine(t);break;case"polygon":this._renderPolygon(t);break;case"sprite":this._renderSprite(t);break;case"text":this._renderText(t);break;default:throw new Error("SW.Canvas cannot render type: "+t.getDisplayType())}this._context.restore()},t.prototype._renderRectangle=function(t){var e=t.getDimensions(),i=t.getFillStyle(),n=t.getStrokeStyle();this._context.save(),this._context.lineWidth=t.getStrokeWidth(),i&&(this._context.fillStyle=i,this._context.fillRect(0,0,e.x,e.y)),n&&(this._context.strokeStyle=n,this._context.strokeRect(0,0,e.x,e.y)),this._context.restore()},t.prototype._renderLine=function(t){var e=t.getCoordinates();this._context.save(),this._context.strokeStyle=t.getStrokeStyle(),this._context.lineWidth=t.getStrokeWidth(),this._context.beginPath(),this._context.moveTo(e[0].x,e[0].y);for(var i=1,n=e.length;n>i;i+=1)this._context.lineTo(e[i].x,e[i].y);this._context.stroke(),this._context.restore()},t.prototype._renderPolygon=function(t){var e=t.getCoordinates(),i=t.getDillStyle(),n=t.getStrokeStyle();this._context.save(),this._context.lineWidth=t.getStrokeWidth(),this._context.beginPath(),this._context.moveTo(e[0].x,e[0].y);for(var o=1,s=e.length;s>o;o+=1)this._context.lineTo(e[o].x,e[o].y);this._context.lineTo(e[0].x,e[0].y),this._context.closePath(),i&&(this._context.fillStyle=i,this._context.fill()),n&&(this._context.strokeStyle=n,this._context.stroke()),this._context.restore()},t.prototype._renderText=function(t){var e,i,n,o=t.getFillStyle(),s=t.getStrokeStyle(),h=t.getMaxWidth(),r=t.getContents();this._context.save(),this._context.font=t.getFont(),this._context.textBaseline=t.getBaseline(),this._context.textAlign=t.getAlign(),this._context.lineWidth=t.getStrokeWidth(),"number"==typeof h?(i=this._getWrappedText(r,h),e=this._getLineHeight(t)):i[0]=r;for(var a=0,c=i.length;c>a;a+=1)o&&(this._context.fillStyle=o,this._context.fillText(i[a],0,e*a)),s&&(this._context.strokeStyle=s,this._context.strokeText(i[a],0,e*a));n=this._context.measureText(r),t.setDimensions(h||n.width,e*i.length),this._context.restore()},t.prototype._getWrappedText=function(t,e){for(var i,n,o=t.split(" "),s=[],h="",r=0,a=o.length;a>r;r+=1)i=h+o[r]+" ",n=this._context.measureText(i).width,n>e?(s.push(h),h=o[r]+" "):h=i;return s.push(h),s},t.prototype._getLineHeight=function(t){var e=1.2,i=t.getFont();return parseInt(i.match(/[0-9]*px|pt|em/),10)*e},t.prototype._renderSprite=function(t){var e=t.getDimensions(),i=t.getSrcDimensions(),n=t.getSrcPosition();this._context.drawImage(t.getImage(),n.x,n.y,i.x,i.y,0,0,e.x,e.y)},t.prototype.getCanvasEl=function(){return this._canvasEl},t.prototype.getContext=function(){return this._context},t}();
-SW.Vector=function(){"use strict";var t=function(t,e){this.x="number"==typeof t?t:0,this.y="number"==typeof e?e:0};return t}();
-SW.Renderable=function(){"use strict";var t=function(){SW.Unique.call(this),this._position=new SW.Vector,this._velocity=new SW.Vector,this._dimensions=new SW.Vector,this._scale=new SW.Vector(1,1),this._rotationOffset=new SW.Vector,this._scaleOffset=new SW.Vector,this._draggable=!1,this._rotation=0,this._opacity=1,this._fillStyle="#999",this._strokeStyle=null,this._strokeWidth=4,this._visible=!0,this._hidden=!1,this._composite="source-over",this._displayType=""};return t.prototype=SW.Util.clone(SW.Unique.prototype),t.prototype.getDisplayType=function(){return this._displayType},t.prototype.getPosition=function(){return this._position},t.prototype.setPosition=function(t,e){return"number"==typeof t&&(this._position.x=t),"number"==typeof e&&(this._position.y=e),this},t.prototype.getDimensions=function(){return this._dimensions},t.prototype.setDimensions=function(t,e){return"number"==typeof t&&(this._dimensions.x=t),"number"==typeof e&&(this._dimensions.y=e),this},t.prototype.getRotation=function(){return this._rotation},t.prototype.setRotation=function(t){this._rotation=t},t.prototype.getRotationOffset=function(){return this._rotationOffset},t.prototype.setRotationOffset=function(t,e){return"number"==typeof t&&(this._rotationOffset.x=t),"number"==typeof e&&(this._rotationOffset.y=e),this},t.prototype.getScale=function(){return this._scale},t.prototype.setScale=function(t,e){return"number"==typeof t&&(this._scale.x=t),"number"==typeof e&&(this._scale.y=e),this},t.prototype.getScaleOffset=function(){return this._scaleOffset},t.prototype.setScaleOffset=function(t,e){return"number"==typeof t&&(this._scaleOffset.x=t),"number"==typeof e&&(this._scaleOffset.y=e),this},t.prototype.getDraggable=function(){return this._draggable},t.prototype.setDraggable=function(t){return this._draggable=t,this},t.prototype.getOpacity=function(){return this._opacity},t.prototype.setOpacity=function(t){return this._opacity=t,this},t.prototype.getComposite=function(){return this._composite},t.prototype.setComposite=function(t){return this._composite=t,this},t.prototype.getFillStyle=function(){return this._fillStyle},t.prototype.setFillStyle=function(t){return this._fillStyle=t,this},t.prototype.getStrokeStyle=function(){return this._strokeStyle},t.prototype.setStrokeStyle=function(t){return this._strokeStyle=t,this},t.prototype.getStrokeWidth=function(){return this._strokeWidth},t.prototype.setStrokeWidth=function(t){return this._strokeWidth=t,this},t.prototype.getOuterPosition=function(){return new SW.Vector(this._position.x+this._dimensions.x,this._position.y+this._dimensions.y)},t.prototype.getCenterPosition=function(){return new SW.Vector(this._position.x-this._dimensions.x/2,this._position.y-this._dimensions.y/2)},t.prototype.getHalfDimension=function(){return new SW.Vector(this._dimensions.x/2,this._dimensions.y/2)},t}();
-SW.Rectangle=function(){"use strict";var e=function(){SW.Renderable.call(this),this._displayType="rectangle"};return e.prototype=SW.Util.clone(SW.Renderable.prototype),e}();
-SW.Line=function(){"use strict";var t=function(){SW.Renderable.call(this),this._coordinates=[],this._cap="butt",this._displayType="line"};return t.prototype=SW.Util.clone(SW.Renderable.prototype),t.prototype.getCoordinates=function(){return this._coordinates},t.prototype.setCoordinates=function(){for(var t=0,e=arguments.length;e>t;t+=1)this._coordinates[t]=arguments[t];return this},t.prototype.getCap=function(){return this._cap},t.prototype.setCap=function(t){return this._cap=t,this},t}();
-SW.Polygon=function(){"use strict";var t=function(){SW.Renderable.call(this),this._coordinates=[],this._displayType="polygon"};return t.prototype=SW.Util.clone(SW.Renderable.prototype),t.prototype.getCoordinates=function(){return this._coordinates},t.prototype.setCoordinates=function(){for(var t=0,o=arguments.length;o>t;t+=1)this._coordinates[t]=arguments[t];return this},t}();
-SW.Sprite=function(){"use strict";var i=function(){SW.Renderable.call(this),this._image=null,this._srcPosition=new SW.Vector,this._srcDimensions=new SW.Vector,this._displayType="sprite"};return i.prototype=SW.Util.clone(SW.Renderable.prototype),i.prototype.getSrcPosition=function(){return this._srcPosition},i.prototype.setSrcPosition=function(i,t){return"number"==typeof i&&(this._srcPosition.x=i),"number"==typeof t&&(this._srcPosition.y=t),this},i.prototype.getSrcDimensions=function(){return this._srcDimensions},i.prototype.setSrcDimensions=function(i,t){return"number"==typeof i&&(this._srcDimensions.x=i),"number"==typeof t&&(this._srcDimensions.y=t),this},i.prototype.setImage=function(i){return"object"==typeof i&&(this._image=i,this._srcDimensions.x||this._srcDimensions.y||(this._srcDimensions.x=this._image.width,this._srcDimensions.y=this._image.height),this._dimensions.x||this._dimensions.y||(this._dimensions.x=this._image.width,this._dimensions.y=this._image.height)),this},i}();
-SW.Text=function(){"use strict";var t=function(t){SW.Renderable.call(this,t),t=t||{},this._contents=t.contents||"",this._font="12px sans-serif",this._align="start",this._baseline="top",this._displayType="text",this._maxWidth=null};return t.prototype=SW.Util.clone(SW.Renderable.prototype),t.prototype.getMaxWidth=function(){return this._maxWidth},t.prototype.SetMaxWidth=function(t){return this._maxWidth=t,this},t.prototype.getContents=function(){return this._contents},t.prototype.setContents=function(t){return this._contents=t,this},t.prototype.getFont=function(){return this._font},t.prototype.setFont=function(t){this._font=t},t.prototype.getBaseline=function(){return this._baseline},t.prototype.setBaseline=function(t){return this._baseline=t,this},t.prototype.getAlign=function(){return this._align},t.prototype.setAlign=function(t){this._align=t},t}();
+/**
+ * @namespace
+ */
+var SW = {};
+SW.Util = (function() {
+    'use strict';
+
+    /**
+     * provides generic, useful functions
+     *
+     * @class SW.Util
+     * @belongsto SW
+     * @singleton
+     */
+    var Util = function() {};
+
+    /**
+     * recursively deep copies an object
+     *
+     * @method SW.Util.prototype.clone
+     * @param {Object} src
+     * @return {Object}
+     */
+    Util.prototype.clone = function(src) {
+        // check for arrays too!
+        var obj = (typeof src === 'object' && src.hasOwnProperty('length')) ? [] : {},
+            prop;
+
+        for (prop in src) {
+            if (typeof src[prop] === 'object' && src[prop] !== null) {
+                obj[prop] = this.clone(src[prop]);
+            } else {
+                obj[prop] = src[prop];
+            }
+        }
+        return obj;
+    };
+
+    /**
+     * recursively appends (deep copies) an array of objects to the target. returns the new target
+     *
+     * @method SW.Util.prototype.mixin
+     * @param {Object} target - the object to append to
+     * @param {Object} ...sources - objects to mix into source
+     * @return {Object}
+     */
+    Util.prototype.mixin = function(target, sources) {
+        var len = arguments.length;
+        var subObj;
+        var key;
+
+        if (len < 2) {
+            throw new Error('Util.mixin requires two or more arguments');
+        }
+
+        for(var i = 1; i < len; i += 1) {
+            subObj = this.clone(arguments[i]);
+            for (key in subObj) {
+                target[key] = subObj[key];
+            }
+        }
+
+        return target;
+    };
+
+    /**
+     * checks if an object contains members
+     *
+     * @method SW.Util.prototype.hasMemebers
+     * @param {Object} obj
+     * @return {Boolean}
+     */
+    Util.prototype.hasMembers = function(obj) {
+        var count = 0;
+
+        for(var key in obj) {
+            count++;
+            if (count) {
+                break;
+            }
+        }
+
+        return count ? true : false;
+    };
+
+    /**
+     * returns true if x/y is inside entity's bounding box
+     *
+     * @method SW.Util.prototype.hitPoint
+     * @param {Integer} x - mouse/touch position
+     * @param {Integer} y - mouse/touch position
+     * @param {SW.Renderable} entity
+     * @return {Boolean}
+     */
+    Util.prototype.hitPoint = function(x, y, entity) {
+        var position = entity.position();
+        var dimension = entity.dimensions();
+
+        if (x >= position.x &&
+            x <= position.x + dimension.x &&
+            y >= position.y &&
+            y <= position.y + dimension.y) {
+            return true;
+        }
+        return false;
+    };
+
+    return new Util();
+}());
+SW.Unique = (function() {
+    'use strict';
+
+    var uidCounter = 0;
+
+    /**
+     * provides a unique identifier to sub prototypes
+     *
+     * @class SW.Unique
+     * @belongsto SW
+     */
+    var Unique = function() {
+        /**
+         * @member {Integer} SW.Unique.prototype._uid - the object's unique ID
+         * @private
+         * @readonly
+         */
+        this._uid = ++uidCounter;
+    };
+
+    return Unique;
+}());
+SW.Collection = (function() {
+    'use strict';
+
+    /**
+     * provides management of, and an interface for, a list of items
+     *
+     * @class SW.Collection
+     * @extends SW.Unique
+     * @belongsto SW
+     */
+    var Collection = function() {
+        SW.Unique.call(this);
+
+        /**
+         * @member {Array} SW.Collection.prototype._items - the sorted list
+         * @private
+         */
+        this._items = [];
+    };
+
+    Collection.prototype = SW.Util.clone(SW.Unique.prototype);
+
+    /**
+     * adds an object to the collection's items
+     *
+     * @method SW.Collection.prototype.addItem
+     * @param {String} name
+     * @param {Object} value
+     * @chainable
+     */
+    Collection.prototype.addItem = function(name, value) {
+        this._items.push({
+            name: name,
+            value: value
+        });
+
+        return this;
+    };
+
+    /**
+     * adds an object to the collection's items at a specific index
+     *
+     * @method SW.Collection.prototype.addItemAt
+     * @param {String} name
+     * @param {any} value
+     * @param {Integer} index
+     * @chainable
+     */
+    Collection.prototype.addItemAt = function(name, value, index) {
+        this._items.splice(index, 0, {
+            name: name,
+            value: value
+        });
+
+        return this;
+    };
+
+    /**
+     * removes -by name- an object from the collection's items
+     *
+     * @method SW.Collection.prototype.removeItem
+     * @param {String} name
+     */
+    Collection.prototype.removeItem = function(name) {
+        this._rawEach(function(iterItem, i, iterName, items) {
+            if (name === iterName) {
+                iterItem = null;
+                items.splice(i, 1);
+
+                // break out of loop
+                return false;
+            }
+        });
+    };
+
+    /**
+     * removes all items from collection
+     *
+     * @method SW.Collection.prototype.removeAllItems
+     * @return {SW.Collection}
+     * @chainable
+     */
+    Collection.prototype.removeAllItems = function() {
+        this._items = [];
+
+        return this;
+    };
+
+    /**
+     * iterates the collection's sortedItems. The item, index, and name are supplied to the provided function
+     *
+     * @method SW.Collection.prototype.each
+     * @param {Function} fn
+     * @param {Object} scope
+     */
+    Collection.prototype.each = function(fn, scope) {
+        var item;
+
+        fn = scope ? fn.bind(scope) : fn;
+
+        for(var i = 0, len = this._items.length; i < len; i += 1) {
+            item = this._items[i];
+            if (fn(item.value, i, item.name) === false) {
+                break;
+            }
+        }
+    };
+
+    /**
+     * iterates the collection's sortedItems. The raw item, index, name, and the list being iterated are supplied to the provided function
+     *
+     * @method SW.Collection.prototype._rawEach
+     * @param {function} fn
+     * @private
+     */
+    Collection.prototype._rawEach = function(fn) {
+        for(var i = 0, len = this._items.length; i < len; i += 1) {
+            if (fn(this._items[i], i, this._items[i].name, this._items) === false) {
+                break;
+            }
+        }
+    };
+
+    /**
+     * iterates items and return the ones that meet criteria
+     *
+     * @method SW.Collection.prototype.filter
+     * @param {function} fn
+     * @return {Array} filteredItems
+     */
+    Collection.prototype.filter = function(fn, scope) {
+        var filteredItems = [];
+        var filteredItem;
+
+        this.each(function(item, i, name) {
+            filteredItem = fn(item, i, name);
+            if (filteredItem) {
+                filteredItems.push(filteredItem);
+            }
+        }, scope);
+
+        return filteredItems;
+    };
+
+    /**
+     * gets the count of items in collection
+     *
+     * @method SW.Collection.prototype.getItemCount
+     * @return {Integer}
+     */
+    Collection.prototype.getItemCount = function() {
+        return this._items.length;
+    };
+
+    /**
+     * alters an existing item
+     *
+     * @method SW.Collection.prototype.setItem
+     * @param {String} name
+     * @param {any} value
+     * @chainable
+     */
+    Collection.prototype.setItem = function(name, value) {
+        this._rawEach(function(iterItem, i, iterName) {
+            if (name === iterName) {
+                iterItem.value = value;
+
+                return false;
+            }
+        });
+
+        return this;
+    };
+
+    /**
+     * gets an existing item by name
+     *
+     * @method SW.Collection.prototype.getItem
+     * @return {any}
+     */
+    Collection.prototype.getItem = function(name) {
+        var item;
+
+        this.each(function(iterItem, i, iterName) {
+            if (name === iterName) {
+                item = iterItem;
+
+                return false;
+            }
+        });
+
+        return item;
+    };
+
+    /**
+     * gets an existing item by name index
+     *
+     * @method SW.Collection.prototype.getItem
+     * @return {any}
+     */
+    Collection.prototype.getItemAt = function(index) {
+        return this._items[index].value;
+    };
+
+    /**
+     * gets a raw item by name
+     *
+     * @method SW.Collection.prototype._getRawItem
+     * @return {any}
+     * @private
+     */
+    Collection.prototype._getRawItem = function(name) {
+        var item;
+
+        this._rawEach(function(iterItem, i, iterName) {
+            if (name === iterName) {
+                item = iterItem;
+
+                return false;
+            }
+        });
+
+        return item;
+    };
+
+    /**
+     * moves item to new index
+     * 
+     * @method SW.Collection.prototype.setItemIndex
+     * @param {String} name
+     * @param {Integer} index
+     */
+    Collection.prototype.setItemIndex = function(name, index) {
+        var item;
+        var currentIndex = this.getItemIndex(name);
+
+        if (index === currentIndex) {
+            return;
+        }
+
+        item = this._getRawItem(name);
+        this.removeItem(name);
+        this._items.splice(index, 0, item);
+    };
+
+    /**
+     * gets an item's current index
+     *
+     * @method SW.Collection.prototype.getItemIndex
+     * @param {String} name
+     * @return {Integer}
+     */
+    Collection.prototype.getItemIndex = function(name) {
+        var index;
+
+        this.each(function(iterItem, i, iterName) {
+            if (name === iterName) {
+                index = i;
+
+                return false;
+            }
+        });
+
+        return index;
+    };
+
+    return Collection;
+}());
+SW.Dom = (function() {
+    'use strict';
+
+    /**
+     * manipulates, and listens to, various dom elements
+     *
+     * @class SW.Dom
+     * @belongsto SW
+     */
+    var Dom = function(options) {
+        options = options || {};
+
+        /**
+         * @member {String} SW.Dom.prototype.title
+         */
+        this.title = options.title;
+
+        /**
+         * @member {String} SW.Dom.prototype.frameColor
+         */
+        this.frameColor = options.frameColor || '#444';
+
+        document.title = this.title || 'spritewerk game';
+        this._styleElements();
+
+        SW.Signal.addListener(window, 'resize', this._onWindowResize, this);
+        SW.Signal.addListener(window, 'orientationchange', this._onWindowResize, this);
+    };
+
+    /**
+     * @method SW.Dom.prototype._onWindowResize
+     * @listens window#resize
+     * @listens window#orientationchange
+     * @fires SW.Signal#screen/resize
+     * @private
+     */
+    Dom.prototype._onWindowResize = function() {
+        /**
+         * reports a change in screen size
+         * @event SW.Signal#screen/resize
+         */
+        SW.Signal.dispatch('screen/resize');
+    };
+
+    /**
+     * @method SW.Dom.prototype._styleElements
+     * @private
+     */
+    Dom.prototype._styleElements = function() {
+        var body = document.getElementsByTagName('body')[0];
+
+        body.style.backgroundColor = this.bgColor;
+        body.style.margin = 0;
+        body.style.padding = 0;
+    };
+
+    return Dom;
+}());
+SW.Canvas = (function() {
+    'use strict';
+
+    /**
+     * displays entities
+     *
+     * @class SW.Canvas
+     * @param {Object} options
+     * @param {String} options.id - the canvas element's id
+     * @param {String} options.width - the canvas element's width
+     * @param {String} options.height - the canvas element's height
+     * @param {Boolean} [options.canvasFit] - if true, the canvas stretches to fill the viewport width/height
+     * @belongsto SW
+     */
+    var Canvas = function(options) {
+        options = options || {};
+
+        /**
+         * @member {HTMLEntity} SW.Canvas.prototype._canvasEl - the canvas element
+         * @private
+         */
+        this._canvasEl = document.getElementById(options.id);
+        /**
+         * @member {HTMLEntity} SW.Canvas.prototype._context - the canvas element's context object
+         * @private
+         */
+        this._context = this._canvasEl.getContext('2d');
+        /**
+         * @member {Integer} SW.Canvas.prototype._width - the canvas element's width
+         * @private
+         */
+        this._width = options.width || 800;
+        /**
+         * @member {Integer} SW.Canvas.prototype._height - the canvas element's height
+         * @private
+         */
+        this._height = options.height || 600;
+
+        this._canvasEl.width = this._width;
+        this._canvasEl.height = this._height;
+        this._canvasEl.style.position = 'absolute';
+
+        if (options.canvasFit) {
+            SW.Signal.addListener('screen/resize', this._onScreenResize, this);
+            this._onScreenResize();
+        }
+    };
+
+    /**
+     * @method SW.Canvas.prototype._onScreenResize
+     * @listens SW.Signal#screen/resize
+     * @private
+     */
+    Canvas.prototype._onScreenResize = function() {
+        var LANDSCAPE_RATIO = this._height / this._width;
+        var PORTRAIT_RATIO  = this._width / this._height;
+        var IS_LANDSCAPE    = LANDSCAPE_RATIO < PORTRAIT_RATIO ? true : false;
+        var winW = window.innerWidth;
+        var winH = window.innerHeight;
+        var winLandscapeRatio = winH / winW;
+        var winPortraitRatio  = winW / winH;
+        var left = 0;
+        var top  = 0;
+        var canW;
+        var canH;
+
+        if (IS_LANDSCAPE) {
+            if (LANDSCAPE_RATIO < winLandscapeRatio) {
+                canW = winW;
+                canH = canW * LANDSCAPE_RATIO;
+                top  = (winH - canH) / 2;
+            } else {
+                canH = winH;
+                canW = winH * PORTRAIT_RATIO;
+                left = (winW - canW) / 2;
+            }
+        } else {
+            if (PORTRAIT_RATIO < winPortraitRatio) {
+                canH = winH;
+                canW = winH * PORTRAIT_RATIO;
+                left = (winW - canW) / 2;
+            } else {
+                canW = winW;
+                canH = canW * LANDSCAPE_RATIO;
+                top  = (winH - canH) / 2;
+            }
+        }
+
+        this._canvasEl.style.width  = Math.round(canW) + 'px';
+        this._canvasEl.style.height = Math.round(canH) + 'px';
+        this._canvasEl.style.left   = Math.round(left) + 'px';
+        this._canvasEl.style.top    = Math.round(top)  + 'px';
+
+        // we use a timeout here because some mobile browsers
+        // don't fire if there is not a short delay
+        //setTimeout(function() {
+            //window.scrollTo(0,1);
+        //}, 1);
+    };
+
+    /**
+     * @method SW.Canvas.prototype.clearAll
+     * @chainable
+     */
+    Canvas.prototype.clearAll = function() {
+        this._context.clearRect(0, 0, this._width, this._height);
+
+        return this;
+    };
+
+    /**
+     * fills the entire canvas
+     *
+     * @method SW.Canvas.prototype.fillAll
+     * @param {String} color - supports color names, hex & rgb(a)
+     * @chainable
+     */
+    Canvas.prototype.fillAll = function(color) {
+        this._context.save();
+        this._context.fillStyle = color;
+        this._context.fillRect(0, 0, this._width, this._height);
+        this._context.restore();
+
+        return this;
+    };
+
+    /**
+     * prepares context and decides how to render the entity
+     *
+     * @method SW.Canvas.prototype.render
+     * @param {SW.renderable} entity
+     */
+    Canvas.prototype.render = function(entity) {
+        var position = entity.getPosition();
+        var scale = entity.getScale();
+        var rotation = entity.getRotation();
+        var rotationOffset = entity.getRotationOffset();
+        var scaleOffset = entity.getScaleOffset();
+
+        // remember: context transforms are cumulative :)
+        this._context.save();
+        this._context.translate(Math.floor(position.x), Math.floor(position.y));
+
+        if (rotation !== 0) {
+            this._context.translate(rotationOffset.x, rotationOffset.y);
+            this._context.rotate((Math.PI / 180) * rotation);
+            this._context.translate(-rotationOffset.x, -rotationOffset.y);
+        }
+
+        if (scale.x !== 1 || scale.y !== 1) {
+            this._context.translate(scaleOffset.x, scaleOffset.y);
+            this._context.scale(scale.x, scale.y);
+            this._context.translate(-scaleOffset.x, -scaleOffset.y);
+        }
+
+        this._context.globalAlpha = entity.getOpacity();
+        this._context.globalCompositeOperation = entity.getComposite();
+
+        switch(entity.getDisplayType()) {
+            case 'rectangle':
+                this._renderRectangle(entity);
+            break;
+            case 'line':
+                this._renderLine(entity);
+            break;
+            case 'polygon':
+                this._renderPolygon(entity);
+            break;
+            case 'sprite':
+                this._renderSprite(entity);
+            break;
+            case 'text':
+                this._renderText(entity);
+            break;
+            default:
+                throw new Error('SW.Canvas cannot render type: ' + entity.getDisplayType());
+            break;
+        }
+
+        this._context.restore();
+    };
+
+    /**
+     * @method Draw.prototype._renderRectangle
+     * @private
+     */
+    Canvas.prototype._renderRectangle = function(entity) {
+        var dimension = entity.getDimensions();
+        var fillStyle = entity.getFillStyle();
+        var strokeStyle = entity.getStrokeStyle();
+
+        this._context.save();
+        this._context.lineWidth = entity.getStrokeWidth();
+
+        if (fillStyle) {
+            this._context.fillStyle = fillStyle;
+            this._context.fillRect(0, 0, dimension.x, dimension.y);
+        }
+
+        if (strokeStyle) {
+            this._context.strokeStyle = strokeStyle;
+            this._context.strokeRect(0, 0, dimension.x, dimension.y);
+        }
+
+        this._context.restore();
+    };
+
+    /**
+     * @method Draw.prototype._renderLine
+     * @private
+     */
+    Canvas.prototype._renderLine = function(entity) {
+        var coordinates = entity.getCoordinates();
+
+        this._context.save();
+        this._context.strokeStyle = entity.getStrokeStyle();
+        this._context.lineWidth = entity.getStrokeWidth();
+        this._context.beginPath();
+
+        this._context.moveTo(coordinates[0].x, coordinates[0].y);
+
+        for(var i = 1, len = coordinates.length; i < len; i += 1) {
+            this._context.lineTo(coordinates[i].x, coordinates[i].y);
+        }
+
+        this._context.stroke();
+        this._context.restore();
+    };
+
+    /**
+     * @method Draw.prototype._renderPolygon
+     * @private
+     */
+    Canvas.prototype._renderPolygon = function(entity) {
+        var coordinates = entity.getCoordinates();
+        var fillStyle = entity.getDillStyle();
+        var strokeStyle = entity.getStrokeStyle();
+
+        this._context.save();
+        this._context.lineWidth = entity.getStrokeWidth();
+        this._context.beginPath();
+
+        this._context.moveTo(coordinates[0].x, coordinates[0].y);
+
+        for(var i = 1, len = coordinates.length; i < len; i += 1) {
+            this._context.lineTo(coordinates[i].x, coordinates[i].y);
+        }
+
+        this._context.lineTo(coordinates[0].x, coordinates[0].y);
+        this._context.closePath();
+
+        if (fillStyle) {
+            this._context.fillStyle = fillStyle;
+            this._context.fill();
+        }
+
+        if (strokeStyle) {
+            this._context.strokeStyle = strokeStyle;
+            this._context.stroke();
+        }
+
+        this._context.restore();
+    };
+
+    /**
+     * @method Draw.prototype._renderText
+     * @private
+     */
+    Canvas.prototype._renderText = function(entity) {
+        var fillStyle = entity.getFillStyle();
+        var strokeStyle = entity.getStrokeStyle();
+        var maxWidth = entity.getMaxWidth();
+        var contents = entity.getContents();
+        var lineHeight;
+        var lines;
+        var textDimensions;
+
+        this._context.save();
+        this._context.font = entity.getFont();
+        this._context.textBaseline = entity.getBaseline();
+        this._context.textAlign = entity.getAlign();
+        this._context.lineWidth = entity.getStrokeWidth();
+
+        if (typeof maxWidth === 'number') {
+            lines = this._getWrappedText(contents, maxWidth);
+            lineHeight = this._getLineHeight(entity);
+        } else {
+            lines[0] = contents;
+        }
+
+        for(var i = 0, len = lines.length; i < len; i += 1) {
+            if (fillStyle) {
+                this._context.fillStyle = fillStyle;
+                this._context.fillText(lines[i], 0, lineHeight * i);
+            }
+
+            if (strokeStyle) {
+                this._context.strokeStyle = strokeStyle;
+                this._context.strokeText(lines[i], 0, lineHeight * i);
+            }
+        }
+
+        textDimensions = this._context.measureText(contents);
+
+        entity.setDimensions(
+            maxWidth || textDimensions.width,
+            lineHeight * lines.length
+        );
+
+        this._context.restore();
+    };
+
+    Canvas.prototype._getWrappedText = function(contents, maxWidth) {
+        var words = contents.split(' ');
+        var lines = [];
+        var line = '';
+        var testLine;
+        var testWidth;
+
+        for(var i = 0, len = words.length; i < len; i += 1) {
+            testLine = line + words[i] + ' ';
+            testWidth = this._context.measureText(testLine).width;
+
+            if (testWidth > maxWidth) {
+                lines.push(line);
+                line = words[i] + ' ';
+            } else {
+                line = testLine;
+            }
+        }
+
+        // and finally, add leftovers
+        lines.push(line);
+
+        return lines;
+    };
+
+    Canvas.prototype._getLineHeight = function(entity) {
+        var factor = 1.2;
+        var font = entity.getFont();
+        return parseInt(font.match(/[0-9]*px|pt|em/), 10) * factor;
+    };
+
+    /**
+     * @method Draw.prototype._renderSprite
+     * @private
+     */
+    Canvas.prototype._renderSprite = function(entity) {
+        var dimension = entity.getDimensions();
+        var srcDimensions = entity.getSrcDimensions();
+        var srcPosition = entity.getSrcPosition();
+
+        this._context.drawImage(
+            entity.getImage(),
+            srcPosition.x,
+            srcPosition.y,
+            srcDimensions.x,
+            srcDimensions.y,
+            0, 0,
+            dimension.x,
+            dimension.y
+        );
+    };
+
+    /**
+     * @method SW.Canvas.prototype.getCanvasEl
+     * @return {HTMLEntity}
+     */
+    Canvas.prototype.getCanvasEl = function() {
+        return this._canvasEl;
+    };
+
+    /**
+     * @method SW.Canvas.prototype.getContext
+     * @return {CanvasRenderingContext2D}
+     */
+    Canvas.prototype.getContext = function() {
+        return this._context;
+    };
+
+    return Canvas;
+}());
+SW.Vector = (function() {
+    'use strict';
+    
+    /**
+     * a two-dimensional vector
+     *
+     * @class SW.Vector
+     * @param {Integer} [x]
+     * @param {Integer} [y]
+     * @belongsto SW
+     */
+    var Vector = function(x, y) {
+        /**
+         * @member {Float} SW.Vector.x - calculation along the x axis
+         * @default 0
+         */
+        this.x = (typeof x === 'number') ? x : 0;
+        /**
+         * @member {Float} SW.Vector.y - calculation along the y axis
+         * @default 0
+         */
+        this.y = (typeof y === 'number') ? y : 0;
+    };
+
+    return Vector; 
+}());
+SW.Renderable = (function() {
+    'use strict';
+
+    /**
+     * is the base prototype for all renderable entities
+     *
+     * @class SW.Renderable
+     * @extends SW.Unique
+     * @requires SW.Vector
+     * @belongsto SW
+     */
+    var Renderable = function() {
+        SW.Unique.call(this);
+ 
+        /**
+         * @member {SW.Vector} SW.Renderable.prototype._position
+         * @default 0
+         * @private
+         */
+        this._position = new SW.Vector();
+
+        /**
+         * @member {SW.Vector} SW.Renderable.prototype._velocity
+         * @default 0
+         * @private
+         */
+        this._velocity = new SW.Vector();
+
+        /**
+         * @member {SW.Vector} SW.Renderable.prototype._dimensions
+         * @private
+         */
+        this._dimensions = new SW.Vector();
+
+        /**
+         * @member {SW.Vector} SW.Renderable.prototype._scale
+         * @default 1
+         * @private
+         */
+        this._scale = new SW.Vector(1, 1);
+
+        /**
+         * @member {SW.Vector} SW.Renderable.prototype._rotationOffset
+         * @default 0
+         * @private
+         */
+        this._rotationOffset = new SW.Vector();
+
+        /**
+         * @member {SW.Vector} SW.Renderable.prototype._scaleOffset
+         * @default 0
+         * @private
+         */
+        this._scaleOffset = new SW.Vector();
+
+        /**
+         * @member {Boolean} SW.Renderable.prototype._draggable
+         * @default false
+         * @private
+         */
+        this._draggable = false;
+
+        /**
+         * @member {Integer} SW.Renderable.prototype._rotation
+         * @default 0
+         * @private
+         */
+        this._rotation = 0;
+
+        /**
+         * @member {Integer} SW.Renderable.prototype._opacity
+         * @default 1
+         * @private
+         */
+        this._opacity = 1;
+
+        /**
+         * the entity's fill display
+         *
+         * @member {String} SW.Text.prototype._fillStyle
+         * @default '#000'
+         * @private
+         */
+        this._fillStyle = '#999';
+
+        /**
+         * the entity's stroke display
+         *
+         * @member {String} SW.Text.prototype._strokeStyle
+         * @default null
+         * @private
+         */
+        this._strokeStyle = null;
+
+        /**
+         * the entity's stroke width
+         *
+         * @member {String} SW.Text.prototype._strokeWidth
+         * @default 4
+         * @private
+         */
+        this._strokeWidth = 4;
+
+        /**
+         * @member {Boolean} SW.Renderable.prototype._visible
+         * @default true
+         * @private
+         */
+        this._visible = true;
+
+        /**
+         * @member {Boolean} SW.Renderable.prototype._hidden
+         * @default false
+         * @private
+         */
+        this._hidden = false;
+
+        /**
+         * @member {String} SW.Renderable.prototype._composite
+         * @default 'source-over'
+         * @private
+         */
+        this._composite = 'source-over';
+
+        /**
+         * @member {String} SW.Renderable.prototype._displayType
+         * @default ''
+         * @private
+         * @readonly
+         */
+        this._displayType = '';
+    };
+
+    Renderable.prototype = SW.Util.clone(SW.Unique.prototype);
+
+    /**
+     * @method SW.Renderable.prototype.getDisplayType
+     * @return {String}
+     * @chainable
+     */
+    Renderable.prototype.getDisplayType = function() {
+        return this._displayType;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getPosition
+     * @return {SW.Vector}
+     */
+    Renderable.prototype.getPosition = function() {
+        return this._position;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setPosition
+     * @param {Float} [x]
+     * @param {Float} [y]
+     * @return {SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.setPosition = function(x, y) {
+        if (typeof x === 'number') {
+            this._position.x = x;
+        }
+
+        if (typeof y === 'number') {
+            this._position.y = y;
+        }
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getDimensions
+     * @return {SW.Vector}
+     */
+    Renderable.prototype.getDimensions = function() {
+        return this._dimensions;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setDimensions
+     * @param {Float} [x]
+     * @param {Float} [y]
+     * @return {SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.setDimensions = function(x, y) {
+        if (typeof x === 'number') {
+            this._dimensions.x = x;
+        }
+
+        if (typeof y === 'number') {
+            this._dimensions.y = y;
+        }
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getRotation
+     * @return {Float}
+     */
+    Renderable.prototype.getRotation = function(value) {
+        return this._rotation;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setRotation
+     * @param {Float} value
+     * @return {SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.setRotation = function(value) {
+        this._rotation = value;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getRotationOffset
+     * @return {SW.Vector}
+     */
+    Renderable.prototype.getRotationOffset = function() {
+        return this._rotationOffset;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setRotationOffset
+     * @param {Float} [x]
+     * @param {Float} [y]
+     * @return {SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.setRotationOffset = function(x, y) {
+        if (typeof x === 'number') {
+            this._rotationOffset.x = x;
+        }
+
+        if (typeof y === 'number') {
+            this._rotationOffset.y = y;
+        }
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getScale
+     * @return {SW.Vector}
+     */
+    Renderable.prototype.getScale = function() {
+        return this._scale;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setScale
+     * @param {Float} [x]
+     * @param {Float} [y]
+     * @return {SW.Vector}
+     * @chainable
+     */
+    Renderable.prototype.setScale = function(x, y) {
+        if (typeof x === 'number') {
+            this._scale.x = x;
+        }
+
+        if (typeof y === 'number') {
+            this._scale.y = y;
+        }
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getScaleOffset
+     * @return {SW.Vector}
+     */
+    Renderable.prototype.getScaleOffset = function() {
+        return this._scaleOffset;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setScaleOffset
+     * @param {Float} [x]
+     * @param {Float} [y]
+     * @return {SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.setScaleOffset = function(x, y) {
+        if (typeof x === 'number') {
+            this._scaleOffset.x = x;
+        }
+
+        if (typeof y === 'number') {
+            this._scaleOffset.y = y;
+        }
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getDraggable
+     * @return {Boolean}
+     */
+    Renderable.prototype.getDraggable = function() {
+        return this._draggable;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setDraggable
+     * @param {Boolean} value
+     * @return {SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.setDraggable = function(value) {
+        this._draggable = value;
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getOpacity
+     * @return {Float}
+     */
+    Renderable.prototype.getOpacity = function() {
+        return this._opacity;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setOpacity
+     * @param {Boolean} value
+     * @return {Float}
+     * @chainable
+     */
+    Renderable.prototype.setOpacity = function(value) {
+        this._opacity = value;
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getComposite
+     * @return {String}
+     */
+    Renderable.prototype.getComposite = function() {
+        return this._composite;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setComposite
+     * @param {String} value
+     * @return {SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.setComposite = function(value) {
+        this._composite = value;
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getFillStyle
+     * @return {String}
+     */
+    Renderable.prototype.getFillStyle = function(value) {
+        return this._fillStyle;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setFillStyle
+     * @param {String} value
+     * @return {SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.setFillStyle = function(value) {
+        this._fillStyle = value;
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getStrokeStyle
+     * @return {String}
+     */
+    Renderable.prototype.getStrokeStyle = function() {
+        return this._strokeStyle;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setStrokeStyle
+     * @param {String} value
+     * @return {SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.setStrokeStyle = function(value) {
+        this._strokeStyle = value;
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getStrokeWidth
+     * @return {String}
+     */
+    Renderable.prototype.getStrokeWidth = function() {
+        return this._strokeWidth;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.setStrokeWidth
+     * @param {String} value
+     * @return {SW.Renderable}
+     * @chainable
+     */
+    Renderable.prototype.setStrokeWidth = function(value) {
+        this._strokeWidth = value;
+
+        return this;
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getOuterPosition
+     * @return {SW.Vector}
+     */
+    Renderable.prototype.getOuterPosition = function() {
+        return new SW.Vector(this._position.x + this._dimensions.x, this._position.y + this._dimensions.y);
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getCenterPosition
+     * @return {SW.Vector}
+     */
+    Renderable.prototype.getCenterPosition = function() {
+        return new SW.Vector(this._position.x - this._dimensions.x / 2, this._position.y - this._dimensions.y / 2);
+    };
+
+    /**
+     * @method SW.Renderable.prototype.getHalfDimension
+     * @return {SW.Vector}
+     */
+    Renderable.prototype.getHalfDimension = function() {
+        return new SW.Vector(this._dimensions.x / 2, this._dimensions.y / 2);
+    };
+
+    return Renderable;
+}());
+SW.Rectangle = (function() {
+    'use strict';
+
+    /**
+     * a rectanglular display entity
+     *
+     * @class SW.Rectangle
+     * @extends SW.Renderable
+     * @belongsto SW
+     */
+    var Rectangle = function() {
+        SW.Renderable.call(this);
+
+        /**
+         * @member {String} SW.Rectangle.prototype._displayType
+         * @default 'rectangle'
+         * @private
+         * @readonly
+         */
+        this._displayType = 'rectangle';
+    };
+
+    Rectangle.prototype = SW.Util.clone(SW.Renderable.prototype);
+
+    return Rectangle;
+}());
+SW.Line = (function() {
+    'use strict';
+
+    /**
+     * a line display entity
+     *
+     * @class SW.Line
+     * @extends SW.Renderable
+     * @belongsto SW
+     */
+    var Line = function() {
+        SW.Renderable.call(this);
+
+        /**
+         * @member {Array} SW.Line.prototype._coordinates
+         * @private
+         */
+        this._coordinates = [];
+        
+        /**
+         * @member {String} SW.Line.prototype._cap
+         * @default 'butt'
+         * @private
+         */
+        this._cap = 'butt';
+
+        /**
+         * @member {String} SW.Line.prototype._displayType
+         * @default 'line'
+         * @private
+         * @readonly
+         */
+        this._displayType = 'line';
+    };
+
+    Line.prototype = SW.Util.clone(SW.Renderable.prototype);
+
+    /**
+     * @method SW.Line.prototype.getCoordinates
+     * @return {Array}
+     */
+    Line.prototype.getCoordinates = function() {
+        return this._coordinates;
+    };
+
+    /**
+     * @method SW.Line.prototype.setCoordinates
+     * @param {Array} coordinates - n amount of coordinates
+     * @return {SW.Line}
+     * @chainable
+     */
+    Line.prototype.setCoordinates = function() {
+        for(var i = 0, len = arguments.length; i < len; i += 1) {
+            this._coordinates[i] = arguments[i];
+        }
+
+        return this;
+    };
+
+    /**
+     * @method SW.Line.prototype.getCap
+     * @return {String}
+     * @chainable
+     */
+    Line.prototype.getCap = function() {
+        return this._cap;
+    };
+
+    /**
+     * @method SW.Line.prototype.setCap
+     * @param {String} value - values can be 'butt', 'round', or 'square'
+     * @return {SW.Line}
+     * @chainable
+     */
+    Line.prototype.setCap = function(value) {
+        this._cap = value;
+
+        return this;
+    };
+
+    return Line;
+}());
+SW.Polygon = (function() {
+    'use strict';
+
+    /**
+     * a line display entity
+     *
+     * @class SW.Polygon
+     * @extends SW.Renderable
+     * @belongsto SW
+     */
+    var Polygon = function() {
+        SW.Renderable.call(this);
+
+        /**
+         * @member {Array} SW.Polygon.prototype._coordinates
+         * @private
+         */
+        this._coordinates = [];
+
+        /**
+         * @member {String} SW.Polygon.prototype._displayType
+         * @default 'polygon'
+         * @private
+         * @readonly
+         */
+        this._displayType = 'polygon';
+    };
+
+    Polygon.prototype = SW.Util.clone(SW.Renderable.prototype);
+
+    /**
+     * @method SW.Polygon.prototype.getCoordinates
+     * @return {Array}
+     */
+    Polygon.prototype.getCoordinates = function() {
+        return this._coordinates;
+    };
+
+    /**
+     * @method SW.Polygon.prototype.setCoordinates
+     * @param {Array} coordinates - n amount of coordinates
+     * @return {SW.Polygon}
+     * @chainable
+     */
+    Polygon.prototype.setCoordinates = function() {
+        for(var i = 0, len = arguments.length; i < len; i += 1) {
+            this._coordinates[i] = arguments[i];
+        }
+
+        return this;
+    };
+
+    return Polygon;
+}());
+SW.Sprite = (function() {
+    'use strict';
+
+    /**
+     * a image display entity
+     *
+     * @class SW.Sprite
+     * @extends SW.Renderable
+     * @requires SW.Vector
+     * @belongsto SW
+     */
+    var Sprite = function() {
+        SW.Renderable.call(this);
+
+        /**
+         * @member {String} SW.Sprite.prototype._image
+         * @private
+         */
+        this._image = null;
+
+        /**
+         * @member {SW.Vector} SW.Sprite.prototype._srcPosition
+         * @private
+         */
+        this._srcPosition = new SW.Vector();
+        
+        /**
+         * @member {SW.Vector} SW.Sprite.prototype._srcSize
+         * @private
+         */
+        this._srcDimensions = new SW.Vector();
+
+        /**
+         * @member {String} SW.Sprite.prototype._displayType
+         * @private
+         * @readonly
+         */
+        this._displayType = 'sprite';
+    };
+
+    Sprite.prototype = SW.Util.clone(SW.Renderable.prototype);
+
+    /**
+     * @method SW.Sprite.prototype.getSrcPosition
+     * @return {SW.Vector}
+     */
+    Sprite.prototype.getSrcPosition = function(x, y) {
+        return this._srcPosition;
+    };
+
+    /**
+     * @method SW.Sprite.prototype.setSrcPosition
+     * @param {Float} [x]
+     * @param {Float} [y]
+     * @return {SW.Sprite}
+     * @chainable
+     */
+    Sprite.prototype.setSrcPosition = function(x, y) {
+        if (typeof x === 'number') {
+            this._srcPosition.x = x;
+        }
+
+        if (typeof y === 'number') {
+            this._srcPosition.y = y;
+        }
+
+        return this;
+    };
+
+    /**
+     * @method SW.Sprite.prototype.getSrcDimensions
+     * @return {SW.Vector}
+     */
+    Sprite.prototype.getSrcDimensions = function(x, y) {
+        return this._srcDimensions;
+    };
+
+    /**
+     * @method SW.Sprite.prototype.setSrcDimensions
+     * @param {Float} [x]
+     * @param {Float} [y]
+     * @return {SW.Sprite}
+     * @chainable
+     */
+    Sprite.prototype.setSrcDimensions = function(x, y) {
+        if (typeof x === 'number') {
+            this._srcDimensions.x = x;
+        }
+
+        if (typeof y === 'number') {
+            this._srcDimensions.y = y;
+        }
+
+        return this;
+    };
+
+    /**
+     * set image property; if not already set, sets dimension/srcDimensions to image size
+     *
+     * @method SW.Sprite.prototype.setImage
+     * @param {HTMLEntity} value
+     * @return {SW.Sprite}
+     * @chainable
+     */
+    Sprite.prototype.setImage = function(value) {
+        if (typeof value === 'object') {
+            this._image = value;
+
+            if (!this._srcDimensions.x && !this._srcDimensions.y) {
+                this._srcDimensions.x = this._image.width;
+                this._srcDimensions.y = this._image.height;
+            }
+
+            if (!this._dimensions.x && !this._dimensions.y) {
+                this._dimensions.x = this._image.width;
+                this._dimensions.y = this._image.height;
+            }
+        }
+
+        return this;
+    };
+
+    return Sprite;
+}());
+SW.Text = (function() {
+    'use strict';
+
+    /**
+     * a text display entity
+     *
+     * @class SW.Text
+     * @param {Object} [options]
+     * @param {Text} options.contents - the literal text
+     * @belongsto SW
+     */
+    var Text = function(options) {
+        SW.Renderable.call(this, options);
+
+        options = options || {};
+
+        /**
+         * the literal text
+         *
+         * @member {String} SW.Text.prototype._contents
+         * @private
+         */
+        this._contents = options.contents || '';
+
+        /**
+         * the text font
+         *
+         * @member {String} SW.Text.prototype._font
+         * @default '12px sans-serif'
+         * @private
+         */
+        this._font = '12px sans-serif';
+
+        /**
+         * the text's alignment
+         *
+         * @member {String} SW.Text.prototype._align
+         * @default 'start'
+         * @private
+         */
+        this._align = 'start';
+
+        /**
+         * the text's baseline
+         *
+         * @member {String} SW.Text.prototype._baseline
+         * @default 'top'
+         * @private
+         */
+        this._baseline = 'top';
+
+        /**
+         * @member {String} SW.Text.prototype._displayType
+         * @private
+         */
+        this._displayType = 'text';
+
+        /**
+         * @member {String} SW.Text.prototype._maxWidth
+         * @default
+         * @private
+         */
+        this._maxWidth = null;
+    };
+
+    Text.prototype = SW.Util.clone(SW.Renderable.prototype);
+
+    /**
+     * @method SW.Text.prototype.getMaxWidth
+     * @return {Integer}
+     */
+    Text.prototype.getMaxWidth = function() {
+        return this._maxWidth;
+    };
+
+    /**
+     * @method SW.Text.prototype.SetMaxWidth
+     * @param {Integer} value
+     * @return {SW.Text}
+     * @chainable
+     */
+    Text.prototype.SetMaxWidth = function(value) {
+        this._maxWidth = value;
+
+        return this;
+    };
+
+    /**
+     * @method SW.Text.prototype.getContents
+     * @return {String}
+     * @chainable
+     */
+    Text.prototype.getContents = function() {
+        return this._contents;
+    };
+
+    /**
+     * @method SW.Text.prototype.setContents
+     * @param {String} value
+     * @return {SW.Text}
+     * @chainable
+     */
+    Text.prototype.setContents = function(value) {
+        this._contents = value;
+
+        return this;
+    };
+
+    /**
+     * @method SW.Text.prototype.getFont
+     * @return {String}
+     */
+    Text.prototype.getFont = function() {
+        return this._font;
+    };
+
+    /**
+     * @method SW.Text.prototype.setFont
+     * @param {String} value
+     * @return {String}
+     */
+    Text.prototype.setFont = function(value) {
+        this._font = value;
+    };
+
+    /**
+     * @method SW.Text.prototype.getBaseline
+     * @return {String}
+     */
+    Text.prototype.getBaseline = function(value) {
+        return this._baseline;
+    };
+
+    /**
+     * @method SW.Text.prototype.setBaseline
+     * @param {String} value
+     * @return {SW.Text}
+     * @chainable
+     */
+    Text.prototype.setBaseline = function(value) {
+        this._baseline = value;
+
+        return this;
+    };
+
+    /**
+     * @method SW.Text.prototype.getAlign
+     * @return {String}
+     */
+    Text.prototype.getAlign = function() {
+        return this._align;
+    };
+
+    /**
+     * @method SW.Text.prototype.setAlign
+     * @return {String}
+     */
+    Text.prototype.setAlign = function(value) {
+        this._align = value;
+    };
+
+    return Text;
+}());

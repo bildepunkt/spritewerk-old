@@ -62,20 +62,12 @@ SW.Input = (function() {
         this._isDragging = false;
 
         /**
-         * the collection of layers of entities to check against the interaction
-         * 
-         * @member {SW.Scene.Scene} SW.Input.prototype._scene
-         * @private
-         */
-        this._scene = null;
-
-        /**
          * the collection of entities to check against the interaction
          * 
-         * @member {SW.Collection} SW.Input.prototype._layer
+         * @member {SW.Collection} SW.Input.prototype._layers
          * @private
          */
-        this._layer = null;
+        this._layers = null;
 
         if (options.bindMouseInput) {
             for(index = 0; index < this._mouseEvents.length; index += 1) {
@@ -96,7 +88,7 @@ SW.Input = (function() {
      * @method SW.Input.prototype._onSceneActivated
      */
     Input.prototype._onSceneActivated = function(e) {
-        this.setLayers(e.detail.scene.layers);
+        this.setLayers(e.detail.scene.getLayers());
     };
 
     /**
@@ -334,7 +326,7 @@ SW.Input = (function() {
                 });
             });
         } else {
-            throw new TypeError('SW.Input requires one SW.Scene or SW.Collection for checking against entities');
+            throw new TypeError('SW.Input requires a scene');
         }
 
         return topmostEntity;
