@@ -416,6 +416,7 @@ SW.Renderable = (function() {
     };
 
     /**
+     * returns entity's right-most x and bottom-most y positions
      * @method SW.Renderable.prototype.getOuterPosition
      * @return {SW.Vector}
      */
@@ -424,6 +425,7 @@ SW.Renderable = (function() {
     };
 
     /**
+     * returns the entity's coordinates at center
      * @method SW.Renderable.prototype.getCenterPosition
      * @return {SW.Vector}
      */
@@ -432,12 +434,47 @@ SW.Renderable = (function() {
     };
 
     /**
+     * returns entity's half dimensions
      * @method SW.Renderable.prototype.getHalfDimension
      * @return {SW.Vector}
      */
     Renderable.prototype.getHalfDimension = function() {
         return new SW.Vector(this._dimensions.x / 2, this._dimensions.y / 2);
     };
+
+    /**
+     * @method SW.Renderable.prototype.alignToCanvas
+     * @return {SW.Renderable}
+     */
+    /*Renderable.prototype.alignToCanvas = function(x, y) {
+        if (typeof x === 'string') {
+            switch(x) {
+                case 'top':
+                    //
+                break;
+                case 'center':
+                    //
+                break;
+                case 'bottom':
+                    //
+                break;
+            }
+        }
+
+        if (typeof y === 'string') {
+            switch(y) {
+                case 'top':
+                    this.setPosition(null, 0);
+                break;
+                case 'center':
+                    this.setPosition(null, 0);
+                break;
+                case 'bottom':
+                    //
+                break;
+            }
+        }
+    };*/
 
     return Renderable;
 }());
