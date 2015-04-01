@@ -5,11 +5,11 @@ SW.Rectangle = (function() {
      * a rectanglular display entity
      *
      * @class SW.Rectangle
-     * @extends SW.Renderable
+     * @extends SW.Sprite
      * @belongsto SW
      */
     var Rectangle = function() {
-        SW.Renderable.call(this);
+        SW.Sprite.call(this);
 
         /**
          * @member {String} SW.Rectangle.prototype._displayType
@@ -20,7 +20,7 @@ SW.Rectangle = (function() {
         this._displayType = 'rectangle';
     };
 
-    Rectangle.prototype = SW.Util.clone(SW.Renderable.prototype);
+    Rectangle.prototype = SW.Util.clone(SW.Sprite.prototype);
 
     return Rectangle;
 }());

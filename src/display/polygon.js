@@ -5,11 +5,11 @@ SW.Polygon = (function() {
      * a line display entity
      *
      * @class SW.Polygon
-     * @extends SW.Renderable
+     * @extends SW.Sprite
      * @belongsto SW
      */
     var Polygon = function() {
-        SW.Renderable.call(this);
+        SW.Sprite.call(this);
 
         /**
          * @member {Array} SW.Polygon.prototype._coordinates
@@ -26,7 +26,7 @@ SW.Polygon = (function() {
         this._displayType = 'polygon';
     };
 
-    Polygon.prototype = SW.Util.clone(SW.Renderable.prototype);
+    Polygon.prototype = SW.Util.clone(SW.Sprite.prototype);
 
     /**
      * @method SW.Polygon.prototype.getCoordinates

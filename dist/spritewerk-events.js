@@ -89,7 +89,7 @@ SW.Util = (function() {
      * @method SW.Util.prototype.hitPoint
      * @param {Integer} x - mouse/touch position
      * @param {Integer} y - mouse/touch position
-     * @param {SW.Renderable} entity
+     * @param {SW.Sprite} entity
      * @return {Boolean}
      */
     Util.prototype.hitPoint = function(x, y, entity) {
@@ -610,19 +610,19 @@ SW.Input = (function() {
         this._canvasFit = options.canvasFit;
 
         /**
-         * @member {SW.Renderable} SW.Input.prototype._pressCandidate
+         * @member {SW.Sprite} SW.Input.prototype._pressCandidate
          * @private
          */
         this._pressCandidate = null;
 
         /**
-         * @member {SW.Renderable} SW.Input.prototype._mouseCanDrag
+         * @member {Boolean} SW.Input.prototype._mouseCanDrag
          * @private
          */
         this._mouseCanDrag = false;
 
         /**
-         * @member {SW.Renderable} SW.Input.prototype._isDragging
+         * @member {Boolean} SW.Input.prototype._isDragging
          * @private
          */
         this._isDragging = false;
@@ -795,7 +795,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
@@ -804,7 +804,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
@@ -813,7 +813,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
@@ -822,7 +822,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
          /**
@@ -831,7 +831,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
@@ -840,7 +840,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
@@ -849,7 +849,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         for(var i = 0, len = eventTypes.length; i < len; i += 1) {
@@ -877,7 +877,7 @@ SW.Input = (function() {
 
     /**
      * @method SW.Input.prototype._getEventTarget
-     * @return {SW.Renderable}
+     * @return {SW.Sprite}
      * @private
      */
     Input.prototype._getEventTarget = function(e) {

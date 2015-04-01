@@ -85,7 +85,7 @@ SW.Util = (function() {
      * @method SW.Util.prototype.hitPoint
      * @param {Integer} x - mouse/touch position
      * @param {Integer} y - mouse/touch position
-     * @param {SW.Renderable} entity
+     * @param {SW.Sprite} entity
      * @return {Boolean}
      */
     Util.prototype.hitPoint = function(x, y, entity) {

@@ -5,11 +5,11 @@ SW.Line = (function() {
      * a line display entity
      *
      * @class SW.Line
-     * @extends SW.Renderable
+     * @extends SW.Sprite
      * @belongsto SW
      */
     var Line = function() {
-        SW.Renderable.call(this);
+        SW.Sprite.call(this);
 
         /**
          * @member {Array} SW.Line.prototype._coordinates
@@ -33,7 +33,7 @@ SW.Line = (function() {
         this._displayType = 'line';
     };
 
-    Line.prototype = SW.Util.clone(SW.Renderable.prototype);
+    Line.prototype = SW.Util.clone(SW.Sprite.prototype);
 
     /**
      * @method SW.Line.prototype.getCoordinates

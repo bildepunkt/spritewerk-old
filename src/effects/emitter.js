@@ -8,10 +8,14 @@ SW.Emitter = (function() {
         customUpdate: function() {}
     };
 
+    /**
+     * @class SW.Emitter
+     * @belongsto SW
+     */
     var Emitter = function(options) {
         var SpriteType;
 
-        SW.Renderable.call(this, options);
+        SW.Sprite.call(this, options);
 
         /**
          * @member {} SW.Emitter.prototype._amount - amount of particles 

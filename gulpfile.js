@@ -19,11 +19,11 @@ var packages = {
 
             'src/display/canvas.js',
             'src/display/vector.js',
-            'src/display/renderable.js',
+            'src/display/sprite.js',
             'src/display/rectangle.js',
             'src/display/line.js',
             'src/display/polygon.js',
-            'src/display/sprite.js',
+            'src/display/bitmap.js',
             'src/display/text.js'
         ]
     },
@@ -79,10 +79,11 @@ var packages = {
 
             'src/display/canvas.js',
             'src/display/vector.js',
-            'src/display/renderable.js',
+            'src/display/sprite.js',
             'src/display/rectangle.js',
             'src/display/line.js',
-            'src/display/sprite.js',
+            'src/display/polygon.js',
+            'src/display/bitmap.js',
             'src/display/text.js',
 
             'src/game/scene.js',

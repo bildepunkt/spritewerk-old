@@ -89,7 +89,7 @@ SW.Util = (function() {
      * @method SW.Util.prototype.hitPoint
      * @param {Integer} x - mouse/touch position
      * @param {Integer} y - mouse/touch position
-     * @param {SW.Renderable} entity
+     * @param {SW.Sprite} entity
      * @return {Boolean}
      */
     Util.prototype.hitPoint = function(x, y, entity) {
@@ -610,19 +610,19 @@ SW.Input = (function() {
         this._canvasFit = options.canvasFit;
 
         /**
-         * @member {SW.Renderable} SW.Input.prototype._pressCandidate
+         * @member {SW.Sprite} SW.Input.prototype._pressCandidate
          * @private
          */
         this._pressCandidate = null;
 
         /**
-         * @member {SW.Renderable} SW.Input.prototype._mouseCanDrag
+         * @member {Boolean} SW.Input.prototype._mouseCanDrag
          * @private
          */
         this._mouseCanDrag = false;
 
         /**
-         * @member {SW.Renderable} SW.Input.prototype._isDragging
+         * @member {Boolean} SW.Input.prototype._isDragging
          * @private
          */
         this._isDragging = false;
@@ -795,7 +795,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
@@ -804,7 +804,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
@@ -813,7 +813,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
@@ -822,7 +822,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
          /**
@@ -831,7 +831,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
@@ -840,7 +840,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         /**
@@ -849,7 +849,7 @@ SW.Input = (function() {
          * @property {String} type - the event type
          * @property {Integer} x - the input's x coordinate
          * @property {Integer} y - the input's x coordinate
-         * @property {SW.Renderable} target - a targeted entity
+         * @property {SW.Sprite} target - a targeted entity
          * @property {Object} domEvent - the original dom event object
          */
         for(var i = 0, len = eventTypes.length; i < len; i += 1) {
@@ -877,7 +877,7 @@ SW.Input = (function() {
 
     /**
      * @method SW.Input.prototype._getEventTarget
-     * @return {SW.Renderable}
+     * @return {SW.Sprite}
      * @private
      */
     Input.prototype._getEventTarget = function(e) {
@@ -1166,7 +1166,7 @@ SW.Canvas = (function() {
     'use strict';
 
     /**
-     * displays entities
+     * control for canvas element
      *
      * @class SW.Canvas
      * @param {Object} options
@@ -1263,283 +1263,11 @@ SW.Canvas = (function() {
     };
 
     /**
-     * @method SW.Canvas.prototype.clearAll
-     * @chainable
-     */
-    Canvas.prototype.clearAll = function() {
-        this._context.clearRect(0, 0, this._width, this._height);
-
-        return this;
-    };
-
-    /**
-     * fills the entire canvas
-     *
-     * @method SW.Canvas.prototype.fillAll
-     * @param {String} color - supports color names, hex & rgb(a)
-     * @chainable
-     */
-    Canvas.prototype.fillAll = function(color) {
-        this._context.save();
-        this._context.fillStyle = color;
-        this._context.fillRect(0, 0, this._width, this._height);
-        this._context.restore();
-
-        return this;
-    };
-
-    /**
-     * prepares context and decides how to render the entity
-     *
-     * @method SW.Canvas.prototype.render
-     * @param {SW.renderable} entity
-     */
-    Canvas.prototype.render = function(entity) {
-        var position = entity.getPosition();
-        var scale = entity.getScale();
-        var rotation = entity.getRotation();
-        var rotationOffset = entity.getRotationOffset();
-        var scaleOffset = entity.getScaleOffset();
-
-        // remember: context transforms are cumulative :)
-        this._context.save();
-        this._context.translate(Math.floor(position.x), Math.floor(position.y));
-
-        if (rotation !== 0) {
-            this._context.translate(rotationOffset.x, rotationOffset.y);
-            this._context.rotate((Math.PI / 180) * rotation);
-            this._context.translate(-rotationOffset.x, -rotationOffset.y);
-        }
-
-        if (scale.x !== 1 || scale.y !== 1) {
-            this._context.translate(scaleOffset.x, scaleOffset.y);
-            this._context.scale(scale.x, scale.y);
-            this._context.translate(-scaleOffset.x, -scaleOffset.y);
-        }
-
-        this._context.globalAlpha = entity.getOpacity();
-        this._context.globalCompositeOperation = entity.getComposite();
-
-        switch(entity.getDisplayType()) {
-            case 'rectangle':
-                this._renderRectangle(entity);
-            break;
-            case 'line':
-                this._renderLine(entity);
-            break;
-            case 'polygon':
-                this._renderPolygon(entity);
-            break;
-            case 'sprite':
-                this._renderSprite(entity);
-            break;
-            case 'text':
-                this._renderText(entity);
-            break;
-            default:
-                throw new Error('SW.Canvas cannot render type: ' + entity.getDisplayType());
-            break;
-        }
-
-        this._context.restore();
-    };
-
-    /**
-     * @method Draw.prototype._renderRectangle
-     * @private
-     */
-    Canvas.prototype._renderRectangle = function(entity) {
-        var dimension = entity.getDimensions();
-        var fillStyle = entity.getFillStyle();
-        var strokeStyle = entity.getStrokeStyle();
-
-        this._context.save();
-        this._context.lineWidth = entity.getStrokeWidth();
-
-        if (fillStyle) {
-            this._context.fillStyle = fillStyle;
-            this._context.fillRect(0, 0, dimension.x, dimension.y);
-        }
-
-        if (strokeStyle) {
-            this._context.strokeStyle = strokeStyle;
-            this._context.strokeRect(0, 0, dimension.x, dimension.y);
-        }
-
-        this._context.restore();
-    };
-
-    /**
-     * @method Draw.prototype._renderLine
-     * @private
-     */
-    Canvas.prototype._renderLine = function(entity) {
-        var coordinates = entity.getCoordinates();
-
-        this._context.save();
-        this._context.strokeStyle = entity.getStrokeStyle();
-        this._context.lineWidth = entity.getStrokeWidth();
-        this._context.beginPath();
-
-        this._context.moveTo(coordinates[0].x, coordinates[0].y);
-
-        for(var i = 1, len = coordinates.length; i < len; i += 1) {
-            this._context.lineTo(coordinates[i].x, coordinates[i].y);
-        }
-
-        this._context.stroke();
-        this._context.restore();
-    };
-
-    /**
-     * @method Draw.prototype._renderPolygon
-     * @private
-     */
-    Canvas.prototype._renderPolygon = function(entity) {
-        var coordinates = entity.getCoordinates();
-        var fillStyle = entity.getDillStyle();
-        var strokeStyle = entity.getStrokeStyle();
-
-        this._context.save();
-        this._context.lineWidth = entity.getStrokeWidth();
-        this._context.beginPath();
-
-        this._context.moveTo(coordinates[0].x, coordinates[0].y);
-
-        for(var i = 1, len = coordinates.length; i < len; i += 1) {
-            this._context.lineTo(coordinates[i].x, coordinates[i].y);
-        }
-
-        this._context.lineTo(coordinates[0].x, coordinates[0].y);
-        this._context.closePath();
-
-        if (fillStyle) {
-            this._context.fillStyle = fillStyle;
-            this._context.fill();
-        }
-
-        if (strokeStyle) {
-            this._context.strokeStyle = strokeStyle;
-            this._context.stroke();
-        }
-
-        this._context.restore();
-    };
-
-    /**
-     * @method Draw.prototype._renderText
-     * @private
-     */
-    Canvas.prototype._renderText = function(entity) {
-        var fillStyle = entity.getFillStyle();
-        var strokeStyle = entity.getStrokeStyle();
-        var maxWidth = entity.getMaxWidth();
-        var contents = entity.getContents();
-        var lineHeight;
-        var lines;
-        var textDimensions;
-
-        this._context.save();
-        this._context.font = entity.getFont();
-        this._context.textBaseline = entity.getBaseline();
-        this._context.textAlign = entity.getAlign();
-        this._context.lineWidth = entity.getStrokeWidth();
-
-        if (typeof maxWidth === 'number') {
-            lines = this._getWrappedText(contents, maxWidth);
-            lineHeight = this._getLineHeight(entity);
-        } else {
-            lines[0] = contents;
-        }
-
-        for(var i = 0, len = lines.length; i < len; i += 1) {
-            if (fillStyle) {
-                this._context.fillStyle = fillStyle;
-                this._context.fillText(lines[i], 0, lineHeight * i);
-            }
-
-            if (strokeStyle) {
-                this._context.strokeStyle = strokeStyle;
-                this._context.strokeText(lines[i], 0, lineHeight * i);
-            }
-        }
-
-        textDimensions = this._context.measureText(contents);
-
-        entity.setDimensions(
-            maxWidth || textDimensions.width,
-            lineHeight * lines.length
-        );
-
-        this._context.restore();
-    };
-
-    Canvas.prototype._getWrappedText = function(contents, maxWidth) {
-        var words = contents.split(' ');
-        var lines = [];
-        var line = '';
-        var testLine;
-        var testWidth;
-
-        for(var i = 0, len = words.length; i < len; i += 1) {
-            testLine = line + words[i] + ' ';
-            testWidth = this._context.measureText(testLine).width;
-
-            if (testWidth > maxWidth) {
-                lines.push(line);
-                line = words[i] + ' ';
-            } else {
-                line = testLine;
-            }
-        }
-
-        // and finally, add leftovers
-        lines.push(line);
-
-        return lines;
-    };
-
-    Canvas.prototype._getLineHeight = function(entity) {
-        var factor = 1.2;
-        var font = entity.getFont();
-        return parseInt(font.match(/[0-9]*px|pt|em/), 10) * factor;
-    };
-
-    /**
-     * @method Draw.prototype._renderSprite
-     * @private
-     */
-    Canvas.prototype._renderSprite = function(entity) {
-        var dimension = entity.getDimensions();
-        var srcDimensions = entity.getSrcDimensions();
-        var srcPosition = entity.getSrcPosition();
-
-        this._context.drawImage(
-            entity.getImage(),
-            srcPosition.x,
-            srcPosition.y,
-            srcDimensions.x,
-            srcDimensions.y,
-            0, 0,
-            dimension.x,
-            dimension.y
-        );
-    };
-
-    /**
      * @method SW.Canvas.prototype.getCanvasEl
      * @return {HTMLEntity}
      */
     Canvas.prototype.getCanvasEl = function() {
         return this._canvasEl;
-    };
-
-    /**
-     * @method SW.Canvas.prototype.getContext
-     * @return {CanvasRenderingContext2D}
-     */
-    Canvas.prototype.getContext = function() {
-        return this._context;
     };
 
     return Canvas;
@@ -1570,77 +1298,77 @@ SW.Vector = (function() {
 
     return Vector; 
 }());
-SW.Renderable = (function() {
+SW.Sprite = (function() {
     'use strict';
 
     /**
      * is the base prototype for all renderable entities
      *
-     * @class SW.Renderable
+     * @class SW.Sprite
      * @extends SW.Unique
      * @requires SW.Vector
      * @belongsto SW
      */
-    var Renderable = function() {
+    var Sprite = function() {
         SW.Unique.call(this);
  
         /**
-         * @member {SW.Vector} SW.Renderable.prototype._position
+         * @member {SW.Vector} SW.Sprite.prototype._position
          * @default 0
          * @private
          */
         this._position = new SW.Vector();
 
         /**
-         * @member {SW.Vector} SW.Renderable.prototype._velocity
+         * @member {SW.Vector} SW.Sprite.prototype._velocity
          * @default 0
          * @private
          */
         this._velocity = new SW.Vector();
 
         /**
-         * @member {SW.Vector} SW.Renderable.prototype._dimensions
+         * @member {SW.Vector} SW.Sprite.prototype._dimensions
          * @private
          */
         this._dimensions = new SW.Vector();
 
         /**
-         * @member {SW.Vector} SW.Renderable.prototype._scale
+         * @member {SW.Vector} SW.Sprite.prototype._scale
          * @default 1
          * @private
          */
         this._scale = new SW.Vector(1, 1);
 
         /**
-         * @member {SW.Vector} SW.Renderable.prototype._rotationOffset
+         * @member {SW.Vector} SW.Sprite.prototype._rotationOffset
          * @default 0
          * @private
          */
         this._rotationOffset = new SW.Vector();
 
         /**
-         * @member {SW.Vector} SW.Renderable.prototype._scaleOffset
+         * @member {SW.Vector} SW.Sprite.prototype._scaleOffset
          * @default 0
          * @private
          */
         this._scaleOffset = new SW.Vector();
 
         /**
-         * @member {Boolean} SW.Renderable.prototype._draggable
+         * @member {Boolean} SW.Sprite.prototype._draggable
          * @default false
          * @private
          */
         this._draggable = false;
 
         /**
-         * @member {Integer} SW.Renderable.prototype._rotation
+         * @member {Integer} SW.Sprite.prototype._rotation
          * @default 0
          * @private
          */
         this._rotation = 0;
 
         /**
-         * @member {Integer} SW.Renderable.prototype._opacity
+         * @member {Integer} SW.Sprite.prototype._opacity
          * @default 1
          * @private
          */
@@ -1649,7 +1377,7 @@ SW.Renderable = (function() {
         /**
          * the entity's fill display
          *
-         * @member {String} SW.Text.prototype._fillStyle
+         * @member {String} SW.Sprite.prototype._fillStyle
          * @default '#000'
          * @private
          */
@@ -1658,7 +1386,7 @@ SW.Renderable = (function() {
         /**
          * the entity's stroke display
          *
-         * @member {String} SW.Text.prototype._strokeStyle
+         * @member {String} SW.Sprite.prototype._strokeStyle
          * @default null
          * @private
          */
@@ -1667,35 +1395,35 @@ SW.Renderable = (function() {
         /**
          * the entity's stroke width
          *
-         * @member {String} SW.Text.prototype._strokeWidth
+         * @member {String} SW.Sprite.prototype._strokeWidth
          * @default 4
          * @private
          */
         this._strokeWidth = 4;
 
         /**
-         * @member {Boolean} SW.Renderable.prototype._visible
+         * @member {Boolean} SW.Sprite.prototype._visible
          * @default true
          * @private
          */
         this._visible = true;
 
         /**
-         * @member {Boolean} SW.Renderable.prototype._hidden
+         * @member {Boolean} SW.Sprite.prototype._hidden
          * @default false
          * @private
          */
         this._hidden = false;
 
         /**
-         * @member {String} SW.Renderable.prototype._composite
+         * @member {String} SW.Sprite.prototype._composite
          * @default 'source-over'
          * @private
          */
         this._composite = 'source-over';
 
         /**
-         * @member {String} SW.Renderable.prototype._displayType
+         * @member {String} SW.Sprite.prototype._displayType
          * @default ''
          * @private
          * @readonly
@@ -1703,33 +1431,33 @@ SW.Renderable = (function() {
         this._displayType = '';
     };
 
-    Renderable.prototype = SW.Util.clone(SW.Unique.prototype);
+    Sprite.prototype = SW.Util.clone(SW.Unique.prototype);
 
     /**
-     * @method SW.Renderable.prototype.getDisplayType
+     * @method SW.Sprite.prototype.getDisplayType
      * @return {String}
      * @chainable
      */
-    Renderable.prototype.getDisplayType = function() {
+    Sprite.prototype.getDisplayType = function() {
         return this._displayType;
     };
 
     /**
-     * @method SW.Renderable.prototype.getPosition
+     * @method SW.Sprite.prototype.getPosition
      * @return {SW.Vector}
      */
-    Renderable.prototype.getPosition = function() {
+    Sprite.prototype.getPosition = function() {
         return this._position;
     };
 
     /**
-     * @method SW.Renderable.prototype.setPosition
+     * @method SW.Sprite.prototype.setPosition
      * @param {Float} [x]
      * @param {Float} [y]
-     * @return {SW.Renderable}
+     * @return {SW.Sprite}
      * @chainable
      */
-    Renderable.prototype.setPosition = function(x, y) {
+    Sprite.prototype.setPosition = function(x, y) {
         if (typeof x === 'number') {
             this._position.x = x;
         }
@@ -1742,21 +1470,21 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.getDimensions
+     * @method SW.Sprite.prototype.getDimensions
      * @return {SW.Vector}
      */
-    Renderable.prototype.getDimensions = function() {
+    Sprite.prototype.getDimensions = function() {
         return this._dimensions;
     };
 
     /**
-     * @method SW.Renderable.prototype.setDimensions
+     * @method SW.Sprite.prototype.setDimensions
      * @param {Float} [x]
      * @param {Float} [y]
-     * @return {SW.Renderable}
+     * @return {SW.Sprite}
      * @chainable
      */
-    Renderable.prototype.setDimensions = function(x, y) {
+    Sprite.prototype.setDimensions = function(x, y) {
         if (typeof x === 'number') {
             this._dimensions.x = x;
         }
@@ -1769,39 +1497,39 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.getRotation
+     * @method SW.Sprite.prototype.getRotation
      * @return {Float}
      */
-    Renderable.prototype.getRotation = function(value) {
+    Sprite.prototype.getRotation = function(value) {
         return this._rotation;
     };
 
     /**
-     * @method SW.Renderable.prototype.setRotation
+     * @method SW.Sprite.prototype.setRotation
      * @param {Float} value
-     * @return {SW.Renderable}
+     * @return {SW.Sprite}
      * @chainable
      */
-    Renderable.prototype.setRotation = function(value) {
+    Sprite.prototype.setRotation = function(value) {
         this._rotation = value;
     };
 
     /**
-     * @method SW.Renderable.prototype.getRotationOffset
+     * @method SW.Sprite.prototype.getRotationOffset
      * @return {SW.Vector}
      */
-    Renderable.prototype.getRotationOffset = function() {
+    Sprite.prototype.getRotationOffset = function() {
         return this._rotationOffset;
     };
 
     /**
-     * @method SW.Renderable.prototype.setRotationOffset
+     * @method SW.Sprite.prototype.setRotationOffset
      * @param {Float} [x]
      * @param {Float} [y]
-     * @return {SW.Renderable}
+     * @return {SW.Sprite}
      * @chainable
      */
-    Renderable.prototype.setRotationOffset = function(x, y) {
+    Sprite.prototype.setRotationOffset = function(x, y) {
         if (typeof x === 'number') {
             this._rotationOffset.x = x;
         }
@@ -1814,21 +1542,21 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.getScale
+     * @method SW.Sprite.prototype.getScale
      * @return {SW.Vector}
      */
-    Renderable.prototype.getScale = function() {
+    Sprite.prototype.getScale = function() {
         return this._scale;
     };
 
     /**
-     * @method SW.Renderable.prototype.setScale
+     * @method SW.Sprite.prototype.setScale
      * @param {Float} [x]
      * @param {Float} [y]
      * @return {SW.Vector}
      * @chainable
      */
-    Renderable.prototype.setScale = function(x, y) {
+    Sprite.prototype.setScale = function(x, y) {
         if (typeof x === 'number') {
             this._scale.x = x;
         }
@@ -1841,21 +1569,21 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.getScaleOffset
+     * @method SW.Sprite.prototype.getScaleOffset
      * @return {SW.Vector}
      */
-    Renderable.prototype.getScaleOffset = function() {
+    Sprite.prototype.getScaleOffset = function() {
         return this._scaleOffset;
     };
 
     /**
-     * @method SW.Renderable.prototype.setScaleOffset
+     * @method SW.Sprite.prototype.setScaleOffset
      * @param {Float} [x]
      * @param {Float} [y]
-     * @return {SW.Renderable}
+     * @return {SW.Sprite}
      * @chainable
      */
-    Renderable.prototype.setScaleOffset = function(x, y) {
+    Sprite.prototype.setScaleOffset = function(x, y) {
         if (typeof x === 'number') {
             this._scaleOffset.x = x;
         }
@@ -1868,150 +1596,187 @@ SW.Renderable = (function() {
     };
 
     /**
-     * @method SW.Renderable.prototype.getDraggable
+     * @method SW.Sprite.prototype.getDraggable
      * @return {Boolean}
      */
-    Renderable.prototype.getDraggable = function() {
+    Sprite.prototype.getDraggable = function() {
         return this._draggable;
     };
 
     /**
-     * @method SW.Renderable.prototype.setDraggable
+     * @method SW.Sprite.prototype.setDraggable
      * @param {Boolean} value
-     * @return {SW.Renderable}
+     * @return {SW.Sprite}
      * @chainable
      */
-    Renderable.prototype.setDraggable = function(value) {
+    Sprite.prototype.setDraggable = function(value) {
         this._draggable = value;
 
         return this;
     };
 
     /**
-     * @method SW.Renderable.prototype.getOpacity
+     * @method SW.Sprite.prototype.getOpacity
      * @return {Float}
      */
-    Renderable.prototype.getOpacity = function() {
+    Sprite.prototype.getOpacity = function() {
         return this._opacity;
     };
 
     /**
-     * @method SW.Renderable.prototype.setOpacity
+     * @method SW.Sprite.prototype.setOpacity
      * @param {Boolean} value
      * @return {Float}
      * @chainable
      */
-    Renderable.prototype.setOpacity = function(value) {
+    Sprite.prototype.setOpacity = function(value) {
         this._opacity = value;
 
         return this;
     };
 
     /**
-     * @method SW.Renderable.prototype.getComposite
+     * @method SW.Sprite.prototype.getComposite
      * @return {String}
      */
-    Renderable.prototype.getComposite = function() {
+    Sprite.prototype.getComposite = function() {
         return this._composite;
     };
 
     /**
-     * @method SW.Renderable.prototype.setComposite
+     * @method SW.Sprite.prototype.setComposite
      * @param {String} value
-     * @return {SW.Renderable}
+     * @return {SW.Sprite}
      * @chainable
      */
-    Renderable.prototype.setComposite = function(value) {
+    Sprite.prototype.setComposite = function(value) {
         this._composite = value;
 
         return this;
     };
 
     /**
-     * @method SW.Renderable.prototype.getFillStyle
+     * @method SW.Sprite.prototype.getFillStyle
      * @return {String}
      */
-    Renderable.prototype.getFillStyle = function(value) {
+    Sprite.prototype.getFillStyle = function(value) {
         return this._fillStyle;
     };
 
     /**
-     * @method SW.Renderable.prototype.setFillStyle
+     * @method SW.Sprite.prototype.setFillStyle
      * @param {String} value
-     * @return {SW.Renderable}
+     * @return {SW.Sprite}
      * @chainable
      */
-    Renderable.prototype.setFillStyle = function(value) {
+    Sprite.prototype.setFillStyle = function(value) {
         this._fillStyle = value;
 
         return this;
     };
 
     /**
-     * @method SW.Renderable.prototype.getStrokeStyle
+     * @method SW.Sprite.prototype.getStrokeStyle
      * @return {String}
      */
-    Renderable.prototype.getStrokeStyle = function() {
+    Sprite.prototype.getStrokeStyle = function() {
         return this._strokeStyle;
     };
 
     /**
-     * @method SW.Renderable.prototype.setStrokeStyle
+     * @method SW.Sprite.prototype.setStrokeStyle
      * @param {String} value
-     * @return {SW.Renderable}
+     * @return {SW.Sprite}
      * @chainable
      */
-    Renderable.prototype.setStrokeStyle = function(value) {
+    Sprite.prototype.setStrokeStyle = function(value) {
         this._strokeStyle = value;
 
         return this;
     };
 
     /**
-     * @method SW.Renderable.prototype.getStrokeWidth
+     * @method SW.Sprite.prototype.getStrokeWidth
      * @return {String}
      */
-    Renderable.prototype.getStrokeWidth = function() {
+    Sprite.prototype.getStrokeWidth = function() {
         return this._strokeWidth;
     };
 
     /**
-     * @method SW.Renderable.prototype.setStrokeWidth
+     * @method SW.Sprite.prototype.setStrokeWidth
      * @param {String} value
-     * @return {SW.Renderable}
+     * @return {SW.Sprite}
      * @chainable
      */
-    Renderable.prototype.setStrokeWidth = function(value) {
+    Sprite.prototype.setStrokeWidth = function(value) {
         this._strokeWidth = value;
 
         return this;
     };
 
     /**
-     * @method SW.Renderable.prototype.getOuterPosition
+     * returns entity's right-most x and bottom-most y positions
+     * @method SW.Sprite.prototype.getOuterPosition
      * @return {SW.Vector}
      */
-    Renderable.prototype.getOuterPosition = function() {
+    Sprite.prototype.getOuterPosition = function() {
         return new SW.Vector(this._position.x + this._dimensions.x, this._position.y + this._dimensions.y);
     };
 
     /**
-     * @method SW.Renderable.prototype.getCenterPosition
+     * returns the entity's coordinates at center
+     * @method SW.Sprite.prototype.getCenterPosition
      * @return {SW.Vector}
      */
-    Renderable.prototype.getCenterPosition = function() {
+    Sprite.prototype.getCenterPosition = function() {
         return new SW.Vector(this._position.x - this._dimensions.x / 2, this._position.y - this._dimensions.y / 2);
     };
 
     /**
-     * @method SW.Renderable.prototype.getHalfDimension
+     * returns entity's half dimensions
+     * @method SW.Sprite.prototype.getHalfDimension
      * @return {SW.Vector}
      */
-    Renderable.prototype.getHalfDimension = function() {
+    Sprite.prototype.getHalfDimension = function() {
         return new SW.Vector(this._dimensions.x / 2, this._dimensions.y / 2);
     };
 
-    return Renderable;
+    /**
+     * @method SW.Sprite.prototype.alignToCanvas
+     * @return {SW.Sprite}
+     */
+    /*Sprite.prototype.alignToCanvas = function(x, y) {
+        if (typeof x === 'string') {
+            switch(x) {
+                case 'top':
+                    //
+                break;
+                case 'center':
+                    //
+                break;
+                case 'bottom':
+                    //
+                break;
+            }
+        }
+
+        if (typeof y === 'string') {
+            switch(y) {
+                case 'top':
+                    this.setPosition(null, 0);
+                break;
+                case 'center':
+                    this.setPosition(null, 0);
+                break;
+                case 'bottom':
+                    //
+                break;
+            }
+        }
+    };*/
+
+    return Sprite;
 }());
 SW.Rectangle = (function() {
     'use strict';
@@ -2020,11 +1785,11 @@ SW.Rectangle = (function() {
      * a rectanglular display entity
      *
      * @class SW.Rectangle
-     * @extends SW.Renderable
+     * @extends SW.Sprite
      * @belongsto SW
      */
     var Rectangle = function() {
-        SW.Renderable.call(this);
+        SW.Sprite.call(this);
 
         /**
          * @member {String} SW.Rectangle.prototype._displayType
@@ -2035,7 +1800,7 @@ SW.Rectangle = (function() {
         this._displayType = 'rectangle';
     };
 
-    Rectangle.prototype = SW.Util.clone(SW.Renderable.prototype);
+    Rectangle.prototype = SW.Util.clone(SW.Sprite.prototype);
 
     return Rectangle;
 }());
@@ -2046,11 +1811,11 @@ SW.Line = (function() {
      * a line display entity
      *
      * @class SW.Line
-     * @extends SW.Renderable
+     * @extends SW.Sprite
      * @belongsto SW
      */
     var Line = function() {
-        SW.Renderable.call(this);
+        SW.Sprite.call(this);
 
         /**
          * @member {Array} SW.Line.prototype._coordinates
@@ -2074,7 +1839,7 @@ SW.Line = (function() {
         this._displayType = 'line';
     };
 
-    Line.prototype = SW.Util.clone(SW.Renderable.prototype);
+    Line.prototype = SW.Util.clone(SW.Sprite.prototype);
 
     /**
      * @method SW.Line.prototype.getCoordinates
@@ -2121,64 +1886,118 @@ SW.Line = (function() {
 
     return Line;
 }());
-SW.Sprite = (function() {
+SW.Polygon = (function() {
+    'use strict';
+
+    /**
+     * a line display entity
+     *
+     * @class SW.Polygon
+     * @extends SW.Sprite
+     * @belongsto SW
+     */
+    var Polygon = function() {
+        SW.Sprite.call(this);
+
+        /**
+         * @member {Array} SW.Polygon.prototype._coordinates
+         * @private
+         */
+        this._coordinates = [];
+
+        /**
+         * @member {String} SW.Polygon.prototype._displayType
+         * @default 'polygon'
+         * @private
+         * @readonly
+         */
+        this._displayType = 'polygon';
+    };
+
+    Polygon.prototype = SW.Util.clone(SW.Sprite.prototype);
+
+    /**
+     * @method SW.Polygon.prototype.getCoordinates
+     * @return {Array}
+     */
+    Polygon.prototype.getCoordinates = function() {
+        return this._coordinates;
+    };
+
+    /**
+     * @method SW.Polygon.prototype.setCoordinates
+     * @param {Array} coordinates - n amount of coordinates
+     * @return {SW.Polygon}
+     * @chainable
+     */
+    Polygon.prototype.setCoordinates = function() {
+        for(var i = 0, len = arguments.length; i < len; i += 1) {
+            this._coordinates[i] = arguments[i];
+        }
+
+        return this;
+    };
+
+    return Polygon;
+}());
+SW.Bitmap = (function() {
     'use strict';
 
     /**
      * a image display entity
      *
-     * @class SW.Sprite
-     * @extends SW.Renderable
+     * @class SW.Bitmap
+     * @extends SW.Sprite
      * @requires SW.Vector
      * @belongsto SW
      */
-    var Sprite = function() {
-        SW.Renderable.call(this);
+    var Bitmap = function() {
+        SW.Sprite.call(this);
 
         /**
-         * @member {String} SW.Sprite.prototype._image
+         * @member {String} SW.Bitmap.prototype._image
          * @private
          */
         this._image = null;
 
         /**
-         * @member {SW.Vector} SW.Sprite.prototype._srcPosition
+         * @member {SW.Vector} SW.Bitmap.prototype._srcPosition
          * @private
          */
         this._srcPosition = new SW.Vector();
         
         /**
-         * @member {SW.Vector} SW.Sprite.prototype._srcSize
+         * @member {SW.Vector} SW.Bitmap.prototype._srcSize
          * @private
          */
         this._srcDimensions = new SW.Vector();
 
         /**
-         * @member {String} SW.Sprite.prototype._displayType
+         * @member {String} SW.Bitmap.prototype._displayType
          * @private
          * @readonly
          */
-        this._displayType = 'sprite';
+        this._displayType = 'bitmap';
     };
 
-    Sprite.prototype = SW.Util.clone(SW.Renderable.prototype);
+    Bitmap.prototype = SW.Util.clone(SW.Sprite.prototype);
 
     /**
-     * @method SW.Sprite.prototype.getSrcPosition
+     * @method SW.Bitmap.prototype.getSrcPosition
      * @return {SW.Vector}
      */
-    Sprite.prototype.getSrcPosition = function(x, y) {
+    Bitmap.prototype.getSrcPosition = function(x, y) {
         return this._srcPosition;
     };
 
     /**
-     * @method SW.Sprite.prototype.setSrcPosition
+     * @method SW.Bitmap.prototype.setSrcPosition
      * @param {Float} [x]
      * @param {Float} [y]
-     * @return {SW.Sprite}
+     * @return {SW.Bitmap}
      * @chainable
      */
-    Sprite.prototype.setSrcPosition = function(x, y) {
+    Bitmap.prototype.setSrcPosition = function(x, y) {
         if (typeof x === 'number') {
             this._srcPosition.x = x;
         }
@@ -2191,21 +2010,21 @@ SW.Sprite = (function() {
     };
 
     /**
-     * @method SW.Sprite.prototype.getSrcDimensions
+     * @method SW.Bitmap.prototype.getSrcDimensions
      * @return {SW.Vector}
      */
-    Sprite.prototype.getSrcDimensions = function(x, y) {
+    Bitmap.prototype.getSrcDimensions = function(x, y) {
         return this._srcDimensions;
     };
 
     /**
-     * @method SW.Sprite.prototype.setSrcDimensions
+     * @method SW.Bitmap.prototype.setSrcDimensions
      * @param {Float} [x]
      * @param {Float} [y]
-     * @return {SW.Sprite}
+     * @return {SW.Bitmap}
      * @chainable
      */
-    Sprite.prototype.setSrcDimensions = function(x, y) {
+    Bitmap.prototype.setSrcDimensions = function(x, y) {
         if (typeof x === 'number') {
             this._srcDimensions.x = x;
         }
@@ -2220,12 +2039,12 @@ SW.Sprite = (function() {
     /**
      * set image property; if not already set, sets dimension/srcDimensions to image size
      *
-     * @method SW.Sprite.prototype.setImage
+     * @method SW.Bitmap.prototype.setImage
      * @param {HTMLEntity} value
-     * @return {SW.Sprite}
+     * @return {SW.Bitmap}
      * @chainable
      */
-    Sprite.prototype.setImage = function(value) {
+    Bitmap.prototype.setImage = function(value) {
         if (typeof value === 'object') {
             this._image = value;
 
@@ -2243,7 +2062,7 @@ SW.Sprite = (function() {
         return this;
     };
 
-    return Sprite;
+    return Bitmap;
 }());
 SW.Text = (function() {
     'use strict';
@@ -2257,7 +2076,7 @@ SW.Text = (function() {
      * @belongsto SW
      */
     var Text = function(options) {
-        SW.Renderable.call(this, options);
+        SW.Sprite.call(this, options);
 
         options = options || {};
 
@@ -2310,7 +2129,7 @@ SW.Text = (function() {
         this._maxWidth = null;
     };
 
-    Text.prototype = SW.Util.clone(SW.Renderable.prototype);
+    Text.prototype = SW.Util.clone(SW.Sprite.prototype);
 
     /**
      * @method SW.Text.prototype.getMaxWidth
@@ -2637,15 +2456,11 @@ SW.SceneManager = (function() {
     SceneManager.prototype._handleEvents = function(e) {
         var activeScene = this.getActiveScene();
 
-        // if a SW event
-        if (e.detail && e.detail.swEvent) {
-            activeScene[e.type](e.detail);
-        // or custom
-        } else {
-            activeScene[e.type](e);
+        if (e.detail && !e.detail.hasOwnProperty('domEvent')) {
+            e.detail.domEvent = e;
         }
 
-        
+        activeScene[e.type](e.detail);
     };
 
     /**

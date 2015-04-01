@@ -10,7 +10,7 @@ SW.Text = (function() {
      * @belongsto SW
      */
     var Text = function(options) {
-        SW.Renderable.call(this, options);
+        SW.Sprite.call(this, options);
 
         options = options || {};
 
@@ -63,7 +63,7 @@ SW.Text = (function() {
         this._maxWidth = null;
     };
 
-    Text.prototype = SW.Util.clone(SW.Renderable.prototype);
+    Text.prototype = SW.Util.clone(SW.Sprite.prototype);
 
     /**
      * @method SW.Text.prototype.getMaxWidth

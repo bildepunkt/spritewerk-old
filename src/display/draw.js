@@ -77,8 +77,8 @@ SW.Draw = (function() {
             case 'polygon':
                 this._renderPolygon(entity);
             break;
-            case 'sprite':
-                this._renderSprite(entity);
+            case 'bitmap':
+                this._renderBitmap(entity);
             break;
             case 'text':
                 this._renderText(entity);
@@ -253,10 +253,10 @@ SW.Draw = (function() {
     };
 
     /**
-     * @method Draw.prototype._renderSprite
+     * @method Draw.prototype._renderBitmap
      * @private
      */
-    Draw.prototype._renderSprite = function(entity) {
+    Draw.prototype._renderBitmap = function(entity) {
         var dimension = entity.getDimensions();
         var srcDimensions = entity.getSrcDimensions();
         var srcPosition = entity.getSrcPosition();
@@ -272,4 +272,6 @@ SW.Draw = (function() {
             dimension.y
         );
     };
+
+    return Draw;
 }());
