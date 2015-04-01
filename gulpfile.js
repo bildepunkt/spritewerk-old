@@ -18,6 +18,7 @@ var packages = {
             'src/common/dom.js',
 
             'src/display/canvas.js',
+            'src/display/draw.js',
             'src/display/vector.js',
             'src/display/sprite.js',
             'src/display/rectangle.js',
@@ -78,6 +79,7 @@ var packages = {
             'src/media/media-manager.js',
 
             'src/display/canvas.js',
+            'src/display/draw.js',
             'src/display/vector.js',
             'src/display/sprite.js',
             'src/display/rectangle.js',

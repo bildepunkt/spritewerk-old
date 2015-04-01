@@ -9,29 +9,32 @@
 	<script>
 		var GameScene = function(options) {
 			SW.Scene.call(this, options);
+
+			this.getLayers().addItem('mainLayer', new SW.Collection());
+
+			this.mainLayer = this.getLayers().getItem('mainLayer');
+			this.mainLayer.addItem(
+				'rect', new SW.Rectangle().setDimensions(100, 100).setDraggable(true)
+			);
 		};
 		GameScene.prototype = SW.Util.clone(SW.Scene.prototype);
 		GameScene.prototype.press = function(e) {
-			console.log(e);
+			console.log(e.target);
 		};
 
-		var scene = new GameScene();
-		var mainLayer;
 		var canvas;
+		var draw;
 		var input;
 
 		function onWindowLoad() {
 			SW.Signal.removeListener(window, 'load', onWindowLoad);
 
-			scene.getLayers().addItem('mainLayer', new SW.Collection());
-
-			mainLayer = scene.getLayers().getItem('mainLayer');
-			mainLayer.addItem(
-				'rect', new SW.Rectangle().setDimensions(100, 100)
-			);
-
 			canvas = new SW.Canvas({
 				id: 'spritewerk'
+			});
+
+			draw = new SW.Draw({
+				canvas: canvas.getCanvasEl()
 			});
 
 			input = new SW.Input({
@@ -41,11 +44,19 @@
 
 			SW.SceneManager.addScene('gameScene', GameScene);
 
-			scene.getLayers().each(function(layer) {
-				layer.each(function(entity) {
-					canvas.render(entity);
+			function render() {
+				draw.clearAll();
+				
+				SW.SceneManager.getActiveScene().getLayers().each(function(layer) {
+					layer.each(function(entity) {
+						draw.render(entity);
+					});
 				});
-			});
+
+				requestAnimationFrame(render);
+			}
+
+			requestAnimationFrame(render);
 		}
 
 		SW.Signal.addListener(window, 'load', onWindowLoad);

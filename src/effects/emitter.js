@@ -99,11 +99,11 @@ SW.Emitter = (function() {
 
         for(var i = 0, len = this._amount; i < len; i++) {
             var sprite = new SpriteType()
-                .position(
+                .setPosition(
                     this._position.x + ( (Math.random() * 2 - 1) * this._jitter.position ),
                     this._position.y + ( (Math.random() * 2 - 1) * this._jitter.position )
                 )
-                .dimensions(
+                .setDimensions(
                     this._dimensions.x + ( (Math.random() * 2 - 1) * this._jitter.dimensions ),
                     this._dimensions.y + ( (Math.random() * 2 - 1) * this._jitter.dimensions )
                 );

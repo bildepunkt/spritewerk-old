@@ -62,12 +62,12 @@ SW.Input = (function() {
         this._isDragging = false;
 
         /**
-         * the collection of entities to check against the interaction
+         * the scene with a collection of entities to check against the interaction
          * 
-         * @member {SW.Collection} SW.Input.prototype._layers
+         * @member {SW.Collection} SW.Input.prototype._activeScene
          * @private
          */
-        this._layers = null;
+        this._activeScene = null;
 
         if (options.bindMouseInput) {
             for(index = 0; index < this._mouseEvents.length; index += 1) {
@@ -88,17 +88,17 @@ SW.Input = (function() {
      * @method SW.Input.prototype._onSceneActivated
      */
     Input.prototype._onSceneActivated = function(e) {
-        this.setLayers(e.detail.scene.getLayers());
+        this.setActiveScene(e.detail.scene);
     };
 
     /**
-     * the layers => entities to check input events against
+     * the scene => layers => entities to check input events against
      *
-     * @method SW.Input.prototype.setLayers
-     * @param {SW.Collection} layers
+     * @method SW.Input.prototype.setActiveScene
+     * @param {SW.Collection} scene
      */
-    Input.prototype.setLayers = function(layers) {
-        this._layers = layers;
+    Input.prototype.setActiveScene = function(scene) {
+        this._activeScene = scene;
     };
 
     /**
@@ -165,9 +165,9 @@ SW.Input = (function() {
             case 'mousedown':
             case 'touchstart':
                 this._pressCandidate = eventData.target;
-                this._dragCandidate = eventData.target && eventData.target.draggable() ? eventData.target : undefined;
+                this._dragCandidate = eventData.target && eventData.target.getDraggable() ? eventData.target : undefined;
                 if (this._dragCandidate) {
-                    dragCandidatePosition = this._dragCandidate.position();
+                    dragCandidatePosition = this._dragCandidate.getPosition();
                     this._dragCandidateOffsetX = eventData.x - dragCandidatePosition.x;
                     this._dragCandidateOffsetY = eventData.y - dragCandidatePosition.y;
                 }
@@ -197,11 +197,11 @@ SW.Input = (function() {
             break;*/
             case 'mousemove':
             case 'touchmove':
-                if (this._mouseCanDrag && this._dragCandidate && this._dragCandidate.draggable()) {
+                if (this._mouseCanDrag && this._dragCandidate && this._dragCandidate.getDraggable()) {
 
-                    dragCandidatePosition = this._dragCandidate.position();
+                    dragCandidatePosition = this._dragCandidate.getPosition();
 
-                    this._dragCandidate.position(
+                    this._dragCandidate.setPosition(
                         eventData.x - this._dragCandidateOffsetX,
                         eventData.y - this._dragCandidateOffsetY
                     );
@@ -317,8 +317,8 @@ SW.Input = (function() {
     Input.prototype._getEventTarget = function(e) {
         var topmostEntity;
 
-        if (this._layers) {
-            this._layers.each(function(layer) {
+        if (this._activeScene) {
+            this._activeScene.getLayers().each(function(layer) {
                 layer.each(function(entity) {
                     if (SW.Util.hitPoint(e.x, e.y, entity)) {
                         // continually assign higher sorted entity

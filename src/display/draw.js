@@ -14,7 +14,7 @@ SW.Draw = (function() {
      * @chainable
      */
     Draw.prototype.clearAll = function() {
-        this._context.clearRect(0, 0, this._width, this._height);
+        this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
 
         return this;
     };
@@ -29,7 +29,7 @@ SW.Draw = (function() {
     Draw.prototype.fillAll = function(color) {
         this._context.save();
         this._context.fillStyle = color;
-        this._context.fillRect(0, 0, this._width, this._height);
+        this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
         this._context.restore();
 
         return this;

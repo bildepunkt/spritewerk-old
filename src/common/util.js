@@ -89,13 +89,13 @@ SW.Util = (function() {
      * @return {Boolean}
      */
     Util.prototype.hitPoint = function(x, y, entity) {
-        var position = entity.position();
-        var dimension = entity.dimensions();
+        var position = entity.getPosition();
+        var dimensions = entity.getDimensions();
 
         if (x >= position.x &&
-            x <= position.x + dimension.x &&
+            x <= position.x + dimensions.x &&
             y >= position.y &&
-            y <= position.y + dimension.y) {
+            y <= position.y + dimensions.y) {
             return true;
         }
         return false;
