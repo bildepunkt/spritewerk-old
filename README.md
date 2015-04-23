@@ -15,3 +15,6 @@ SPRITEWERK is a culmination of:
 * currently the SPRITEWERK interaction paradigm is that game control is device-agnostic; therefore:
  * no mouse-move or hover events are emitted
  * touch/mouse events are normalized and merged into these singular events: press, dblpress, pressup, pressdown, dragstart, drag, dragstop
+
+#### Issues
+* as of now hit-detection is not properly calculated on rotated objects
