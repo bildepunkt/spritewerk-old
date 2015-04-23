@@ -68,7 +68,7 @@ SW.SceneManager = (function() {
     };
 
     /**
-     * preloads scene's assets (if any), adds scene to stack, calls scene's init()
+     * adds a new scene: preloads scene's assets (if any), adds scene to stack, calls scene's init()
      *
      * @method SW.SceneManager.prototype.addScene
      * @param {String} name
@@ -101,7 +101,7 @@ SW.SceneManager = (function() {
     };
 
     /**
-     * sets the active scene
+     * sets an already added scene to active
      *
      * @method SW.SceneManager.prototype.setActiveScene
      * @param {String} name

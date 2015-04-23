@@ -420,6 +420,7 @@ SW.Dom = (function() {
         this.frameColor = options.frameColor || '#444';
 
         document.title = this.title || 'spritewerk game';
+        
         this._styleElements();
 
         SW.Signal.addListener(window, 'resize', this._onWindowResize, this);

@@ -90,6 +90,7 @@ var packages = {
 
             'src/game/scene.js',
             'src/game/scene-manager.js',
+            'src/game/game.js',
         ]
     }
 };

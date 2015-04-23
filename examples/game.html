@@ -22,44 +22,15 @@
 			console.log(e.target);
 		};
 
-		var canvas;
-		var draw;
-		var input;
+		var game;
 
-		function onWindowLoad() {
-			SW.Signal.removeListener(window, 'load', onWindowLoad);
-
-			canvas = new SW.Canvas({
-				id: 'spritewerk'
+		window.onload = function() {
+			game = new SW.Game({
+				initialSceneName: 'gameScene',
+				initialScene: GameScene,
+				canvasFit: true
 			});
-
-			draw = new SW.Draw({
-				canvas: canvas.getCanvasEl()
-			});
-
-			input = new SW.Input({
-				eventEl: canvas.getCanvasEl(),
-				bindMouseInput: true
-			});
-
-			SW.SceneManager.addScene('gameScene', GameScene);
-
-			function render() {
-				draw.clearAll();
-				
-				SW.SceneManager.getActiveScene().getLayers().each(function(layer) {
-					layer.each(function(entity) {
-						draw.render(entity);
-					});
-				});
-
-				requestAnimationFrame(render);
-			}
-
-			requestAnimationFrame(render);
-		}
-
-		SW.Signal.addListener(window, 'load', onWindowLoad);
+		};
 	</script>
 </body>
 </html>
