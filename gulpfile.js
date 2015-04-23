@@ -116,4 +116,8 @@ gulp.task('buildDev', ['clean'], function() {
     }
 });
 
+gulp.task('watch', function() {
+    gulp.watch('./src/**/*.js', ['buildDev']);
+});
+
 gulp.task('default', ['buildDev']);
