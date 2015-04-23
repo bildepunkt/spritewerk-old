@@ -75,7 +75,7 @@ SW.Game = (function() {
 
         this._dom = new SW.Dom({
             title: options.title,
-            frameColor: options.frameColor
+            barsColor: options.barsColor
         });
 
         this._canvas = new SW.Canvas({
@@ -129,6 +129,7 @@ SW.Game = (function() {
      */
     Game.prototype._update = function() {
         var self;
+        var activeScene;
         var activeLayers;
 
         if (this._paused) {
@@ -152,7 +153,10 @@ SW.Game = (function() {
             });
 
             self = this;
-            activeLayers = SW.SceneManager.getActiveScene().getLayers();
+            activeScene = SW.SceneManager.getActiveScene();
+            activeLayers = activeScene.getLayers();
+            this._draw.clearAll();
+            this._draw.fillAll(activeScene.getBgColor());
             activeLayers.each(function(layer) {
                 layer.each(function(entity) {
                     self._draw.render(entity);

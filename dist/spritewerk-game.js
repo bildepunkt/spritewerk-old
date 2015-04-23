@@ -410,17 +410,19 @@ SW.Dom = (function() {
         options = options || {};
 
         /**
-         * @member {String} SW.Dom.prototype.title
+         * @member {String} SW.Dom.prototype._title
+         * @private
          */
-        this.title = options.title;
+        this._title = options.title;
 
         /**
-         * @member {String} SW.Dom.prototype.frameColor
+         * @member {String} SW.Dom.prototype._barsColor
+         * @private
          */
-        this.frameColor = options.frameColor || '#444';
+        this._barsColor = options.barsColor || '#444';
 
-        document.title = this.title || 'spritewerk game';
-        
+        document.title = this._title || 'spritewerk game';
+
         this._styleElements();
 
         SW.Signal.addListener(window, 'resize', this._onWindowResize, this);
@@ -449,7 +451,7 @@ SW.Dom = (function() {
     Dom.prototype._styleElements = function() {
         var body = document.getElementsByTagName('body')[0];
 
-        body.style.backgroundColor = this.bgColor;
+        body.style.backgroundColor = this._barsColor;
         body.style.margin = 0;
         body.style.padding = 0;
     };
@@ -1204,6 +1206,11 @@ SW.Canvas = (function() {
         this._canvasEl.width = this._width;
         this._canvasEl.height = this._height;
         this._canvasEl.style.position = 'absolute';
+        this._canvasEl.style.userSelect = 'none'; 
+        this._canvasEl.style.oUserSelect = 'none'; 
+        this._canvasEl.style.mozUserSelect = 'none'; 
+        this._canvasEl.style.khtmlUserSelect = 'none'; 
+        this._canvasEl.style.webkitUserSelect = 'none'; 
 
         if (options.canvasFit) {
             SW.Signal.addListener('screen/resize', this._onScreenResize, this);
@@ -2901,7 +2908,7 @@ SW.Game = (function() {
 
         this._dom = new SW.Dom({
             title: options.title,
-            frameColor: options.frameColor
+            barsColor: options.barsColor
         });
 
         this._canvas = new SW.Canvas({
@@ -2955,6 +2962,7 @@ SW.Game = (function() {
      */
     Game.prototype._update = function() {
         var self;
+        var activeScene;
         var activeLayers;
 
         if (this._paused) {
@@ -2978,7 +2986,10 @@ SW.Game = (function() {
             });
 
             self = this;
-            activeLayers = SW.SceneManager.getActiveScene().getLayers();
+            activeScene = SW.SceneManager.getActiveScene();
+            activeLayers = activeScene.getLayers();
+            this._draw.clearAll();
+            this._draw.fillAll(activeScene.getBgColor());
             activeLayers.each(function(layer) {
                 layer.each(function(entity) {
                     self._draw.render(entity);

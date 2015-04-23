@@ -39,6 +39,11 @@ SW.Canvas = (function() {
         this._canvasEl.width = this._width;
         this._canvasEl.height = this._height;
         this._canvasEl.style.position = 'absolute';
+        this._canvasEl.style.userSelect = 'none'; 
+        this._canvasEl.style.oUserSelect = 'none'; 
+        this._canvasEl.style.mozUserSelect = 'none'; 
+        this._canvasEl.style.khtmlUserSelect = 'none'; 
+        this._canvasEl.style.webkitUserSelect = 'none'; 
 
         if (options.canvasFit) {
             SW.Signal.addListener('screen/resize', this._onScreenResize, this);
