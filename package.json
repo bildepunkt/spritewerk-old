@@ -1,0 +1,30 @@
+{
+  "name": "spritewerk",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "watch": "node_modules/.bin/babel src --watch --out-dir dist",
+    "test": "node_modules/.bin/jasmine --verbose --junitreport",
+    "serve": "open -a \"Google Chrome\" \"http://localhost:3000/\"; node server.js",
+    "build-examples": "for d in examples/*/; do node_modules/.bin/babel $d/main.js --out-file $d/build.js && node_modules/.bin/browserify $d/build.js -o  $d/bundle.js && rm $d/build.js; done"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c-concat-p/spritewerk.git"
+  },
+  "author": "Chris Peters",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/c-concat-p/spritewerk/issues"
+  },
+  "homepage": "https://github.com/c-concat-p/spritewerk#readme",
+  "devDependencies": {
+    "babel": "5.8.23",
+    "browserify": "^11.0.1",
+    "finalhandler": "^0.4.0",
+    "httpdispatcher": "^0.4.0",
+    "jasmine": "^2.3.2",
+    "serve-static": "^1.10.0"
+  }
+}
