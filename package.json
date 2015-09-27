@@ -1,7 +1,7 @@
 {
   "name": "spritewerk",
   "version": "0.0.1",
-  "description": "",
+  "description": "A Javascript library for making games with the canvas",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rm -rf dist/*",
