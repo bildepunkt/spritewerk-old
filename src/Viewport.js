@@ -19,8 +19,16 @@ export default class Viewport {
 
         this._canvas.width = this._deps.config.gameWidth;
         this._canvas.height = this._deps.config.gameHeight;
+        this._canvas.style.position = 'absolute';
 
         this._deps.document.body.appendChild(this._canvas);
+    }
+
+    fit(left, top, width, height) {
+        this._canvas.style.top = `${Math.round(top)}px`;
+        this._canvas.style.left = `${Math.round(left)}px`;
+        this._canvas.style.width = `${Math.round(width)}px`;
+        this._canvas.style.height = `${Math.round(height)}px`;
     }
 
     getContext() {

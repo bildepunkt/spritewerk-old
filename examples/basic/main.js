@@ -3,6 +3,7 @@ import Viewport from '../../dist/Viewport';
 import Canvas from '../../dist/Canvas';
 import Group from '../../dist/Group';
 import Sprite from '../../dist/Sprite';
+import Cinemize from '../../dist/lib/Cinemize';
 
 class Main {
     constructor() {
@@ -11,6 +12,10 @@ class Main {
             config: config,
             document: document
         });
+
+        let ltwh = Cinemize.fit(config.gameWidth, config.gameHeight);
+        viewport.fit(ltwh.left, ltwh.top, ltwh.width, ltwh.height);
+
         let canvas = new Canvas({
             viewport: viewport
         });
