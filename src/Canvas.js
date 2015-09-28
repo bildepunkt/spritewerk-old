@@ -15,19 +15,17 @@ export default class Canvas {
     }
 
     /**
-     * [translateContext description]
+     * [clear description]
      * @return {[type]} [description]
      */
-    translateContext(x, y) {
-        this._context.translate(x, y);
+    clear() {
+        let width = this._deps.config.width;
+        let height = this._deps.config.height;
+        this._context.clearRect(0, 0, width, height);
     }
 
-    /**
-     * [saveContext description]
-     * @return {[type]} [description]
-     */
-    saveContext() {
-        this._context.save();
+    drawRect(x, y, w, h) {
+        this._context.fillRect(x, y, w, h);
     }
 
     /**
@@ -39,12 +37,18 @@ export default class Canvas {
     }
 
     /**
-     * [clear description]
+     * [saveContext description]
      * @return {[type]} [description]
      */
-    clear() {
-        let width = this._deps.config.width;
-        let height = this._deps.config.height;
-        this._context.clearRect(0, 0, width, height);
+    saveContext() {
+        this._context.save();
+    }
+
+    /**
+     * [translateContext description]
+     * @return {[type]} [description]
+     */
+    translateContext(x, y) {
+        this._context.translate(x, y);
     }
 }

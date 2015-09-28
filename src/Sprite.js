@@ -9,17 +9,11 @@ export default class Sprite extends Point {
      * @return {[type]} [description]
      */
     constructor() {
+        super();
+
         this._width = 0;
         this._height = 0;
         this._rotation = 0;
-    }
-
-    /**
-     * [getWidth description]
-     * @return {[type]} [description]
-     */
-    getWidth() {
-        return this._width;
     }
 
     /**
@@ -28,6 +22,14 @@ export default class Sprite extends Point {
      */
     getHeight() {
         return this._height;
+    }
+
+    /**
+     * [getWidth description]
+     * @return {[type]} [description]
+     */
+    getWidth() {
+        return this._width;
     }
 
     /**
@@ -43,7 +45,6 @@ export default class Sprite extends Point {
      * @param {[type]} val [description]
      */
     setWidth(val) {
-        this._dirty = true;
         this._width = val;
 
         return this;
@@ -54,7 +55,6 @@ export default class Sprite extends Point {
      * @param {[type]} val [description]
      */
     setHeight(val) {
-        this._dirty = true;
         this._height = val;
 
         return this;
@@ -65,19 +65,8 @@ export default class Sprite extends Point {
      * @param {[type]} val [description]
      */
     setRotation(val) {
-        this._dirty = true;
         this._rotation = val;
 
         return this;
-    }
-
-    /**
-     * [render description]
-     * @return {[type]} [description]
-     */
-    render() {
-        if (!this._dirty) {
-            return;
-        }
     }
 }

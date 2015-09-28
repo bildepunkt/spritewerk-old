@@ -4,36 +4,91 @@
  * @class Group
  */
 import Point from './Point';
+import Sprite from './Sprite';
 
 export default class Group extends Point {
     constructor() {
         super();
 
-        this._children = [];
+        this._renderable = [];
+        this._groups = [];
     }
 
-    addChild(item) {
-        this._children.push(item);
+    addChild(child) {
+        child.setParentX(this.getGlobalX()).setParentY(this.getGlobalY());
+
+        if (child instanceof Sprite) {
+            this._renderable.push(child);
+        } else if (child instanceof Group) {
+            this._groups.push(child);
+        }
     }
 
     getChildren() {
-        return this._children;
+        return this._renderable.concat(this._groups);
     }
 
-    render(parentX, parentY, children) {
-        if (children === undefined) {
-            children = [];
+    setParentX(val) {
+        this._parentX = val;
+
+        var globalX = this.getGlobalX();
+
+        for(let child of this._renderable) {
+            child.setParentX(globalX);
         }
 
-        let globalX = this._x + (parentX || 0);
-        let globalY = this._y + (parentY || 0);
-
-        children.push(this);
-
-        for(let item of this._children) {
-            item.render(globalX, globalY, children);
+        for(let child of this._groups) {
+            child.setParentX(globalX);
         }
 
-        return children;
+        return this;
+    }
+
+    setParentY(val) {
+        this._parentY = val;
+
+        var globalY = this.getGlobalY();
+
+        for(let child of this._renderable) {
+            child.setParentY(globalY);
+        }
+
+        for(let child of this._groups) {
+            child.setParentY(globalY);
+        }
+
+        return this;
+    }
+
+    setX(val) {
+        this._x = val;
+
+        var globalX = this.getGlobalX();
+
+        for(let child of this._renderable) {
+            child.setParentX(globalX);
+        }
+
+        for(let child of this._groups) {
+            child.setParentX(globalX);
+        }
+
+        return this;
+    }
+
+    setY(val) {
+        this._y = val;
+
+        var globalY = this.getGlobalY();
+
+        for(let child of this._renderable) {
+            child.setParentY(globalY);
+        }
+
+        for(let child of this._groups) {
+            child.setParentY(globalY);
+        }
+
+        return this;
     }
 }

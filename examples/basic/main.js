@@ -1,8 +1,8 @@
-var Viewport = require('../../dist/Viewport');
-var Config = require('../../dist/Config');
-var Line = require('../../dist/geometry/Line');
-var Point = require('../../dist/geometry/Point');
-var Vector = require('../../dist/Vector');
+import Config from '../../dist/Config';
+import Viewport from '../../dist/Viewport';
+import Canvas from '../../dist/Canvas';
+import Group from '../../dist/Group';
+import Sprite from '../../dist/Sprite';
 
 class Main {
     constructor() {
@@ -11,17 +11,24 @@ class Main {
             config: config,
             document: document
         });
-
-        let pt = new Point({
+        let canvas = new Canvas({
             viewport: viewport
         });
-        pt.render();
 
-        let line = new Line({
-            viewport: viewport
-        });
-        line.setPoints(new Vector(4, 4), new Vector(6, 6));
-        line.render();
+        let sprite = new Sprite()
+            .setWidth(32)
+            .setHeight(32);
+        let groupA = new Group();
+        let groupB = new Group().setX(64).setY(64);
+
+
+        groupB.addChild(sprite);
+        groupA.addChild(groupB);
+
+        groupB.setX(-64);
+        sprite.setX(64);
+
+        canvas.drawRect(sprite.getGlobalX(), sprite.getGlobalY(), sprite.getWidth(), sprite.getHeight());
     }
 }
 

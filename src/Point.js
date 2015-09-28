@@ -11,7 +11,24 @@ export default class Point {
     constructor() {
         this._x = 0;
         this._y = 0;
-        this._dirty = true;
+        this._parentX = 0;
+        this._parentY = 0;
+    }
+
+    /**
+     * [getGlobalX description]
+     * @return {[type]} [description]
+     */
+    getGlobalX() {
+        return this._x + this._parentX;
+    }
+
+    /**
+     * [getGlobalY description]
+     * @return {[type]} [description]
+     */
+    getGlobalY() {
+        return this._y + this._parentY;
     }
 
     /**
@@ -31,11 +48,46 @@ export default class Point {
     }
 
     /**
+     * [getParentX description]
+     * @return {[type]} [description]
+     */
+    getParentX() {
+        return this._parentX;
+    }
+
+    /**
+     * [getParentY description]
+     * @return {[type]} [description]
+     */
+    getParentY() {
+        return this._parentY;
+    }
+
+    /**
+     * [getParentX description]
+     * @return {[type]} [description]
+     */
+    setParentX(val) {
+        this._parentX = val;
+
+        return this;
+    }
+
+    /**
+     * [getParentY description]
+     * @return {[type]} [description]
+     */
+    setParentY(val) {
+        this._parentY = val;
+
+        return this;
+    }
+
+    /**
      * [setX description]
      * @param {[type]} val [description]
      */
     setX(val) {
-        this._dirty = true;
         this._x = val;
 
         return this;
@@ -46,7 +98,6 @@ export default class Point {
      * @param {[type]} val [description]
      */
     setY(val) {
-        this._dirty = true;
         this._y = val;
 
         return this;
