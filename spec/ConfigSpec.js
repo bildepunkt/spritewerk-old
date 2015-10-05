@@ -11,7 +11,7 @@ describe('Config', function() {
         });
     });
 
-    it('should update defaults', function () {
+    it('updates defaults', function () {
         expect(config.width).toEqual(1337);
     });
 });

@@ -37,23 +37,48 @@ var Group = (function (_Point) {
 
         this._renderable = [];
         this._groups = [];
+        this._unnamedCount = 0;
     }
 
     _createClass(Group, [{
         key: 'addChild',
-        value: function addChild(child) {
+        value: function addChild(child, name) {
+            name = name || 'child' + this._unnamedCount++;
+
             child.setParentX(this.getGlobalX()).setParentY(this.getGlobalY());
 
             if (child instanceof _Sprite2['default']) {
-                this._renderable.push(child);
+                this._renderable.push({
+                    key: name,
+                    val: child
+                });
             } else if (child instanceof Group) {
-                this._groups.push(child);
+                this._groups.push({
+                    key: name,
+                    val: child
+                });
             }
+        }
+    }, {
+        key: 'getChild',
+        value: function getChild(name) {
+            return this._renderable.filter(function (child) {
+                return child.key === name;
+            }) || this._groups.filter(function (child) {
+                return child.key === name;
+            });
         }
     }, {
         key: 'getChildren',
         value: function getChildren() {
-            return this._renderable.concat(this._groups);
+            var renderable = this._renderable.map(function (child) {
+                return child.val;
+            });
+            var groups = this._groups.map(function (child) {
+                return child.val;
+            });
+
+            return renderable.concat(groups);
         }
     }, {
         key: 'setParentX',
@@ -70,7 +95,7 @@ var Group = (function (_Point) {
                 for (var _iterator = this._renderable[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                     var child = _step.value;
 
-                    child.setParentX(globalX);
+                    child.val.setParentX(globalX);
                 }
             } catch (err) {
                 _didIteratorError = true;
@@ -95,7 +120,7 @@ var Group = (function (_Point) {
                 for (var _iterator2 = this._groups[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
                     var child = _step2.value;
 
-                    child.setParentX(globalX);
+                    child.val.setParentX(globalX);
                 }
             } catch (err) {
                 _didIteratorError2 = true;
@@ -129,7 +154,7 @@ var Group = (function (_Point) {
                 for (var _iterator3 = this._renderable[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
                     var child = _step3.value;
 
-                    child.setParentY(globalY);
+                    child.val.setParentY(globalY);
                 }
             } catch (err) {
                 _didIteratorError3 = true;
@@ -154,7 +179,7 @@ var Group = (function (_Point) {
                 for (var _iterator4 = this._groups[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
                     var child = _step4.value;
 
-                    child.setParentY(globalY);
+                    child.val.setParentY(globalY);
                 }
             } catch (err) {
                 _didIteratorError4 = true;
@@ -188,7 +213,7 @@ var Group = (function (_Point) {
                 for (var _iterator5 = this._renderable[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
                     var child = _step5.value;
 
-                    child.setParentX(globalX);
+                    child.val.setParentX(globalX);
                 }
             } catch (err) {
                 _didIteratorError5 = true;
@@ -213,7 +238,7 @@ var Group = (function (_Point) {
                 for (var _iterator6 = this._groups[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
                     var child = _step6.value;
 
-                    child.setParentX(globalX);
+                    child.val.setParentX(globalX);
                 }
             } catch (err) {
                 _didIteratorError6 = true;
@@ -247,7 +272,7 @@ var Group = (function (_Point) {
                 for (var _iterator7 = this._renderable[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
                     var child = _step7.value;
 
-                    child.setParentY(globalY);
+                    child.val.setParentY(globalY);
                 }
             } catch (err) {
                 _didIteratorError7 = true;
@@ -272,7 +297,7 @@ var Group = (function (_Point) {
                 for (var _iterator8 = this._groups[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
                     var child = _step8.value;
 
-                    child.setParentY(globalY);
+                    child.val.setParentY(globalY);
                 }
             } catch (err) {
                 _didIteratorError8 = true;

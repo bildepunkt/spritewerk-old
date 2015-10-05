@@ -29,7 +29,7 @@ describe('Ticker', function() {
         spyOn(targets, 'onTick');
     });
 
-    it('should call "onTick"', function () {
+    it('calls "onTick"', function () {
         console.log(targets.onTick.calls.count());
         expect(targets.onTick).toHaveBeenCalled();
     });

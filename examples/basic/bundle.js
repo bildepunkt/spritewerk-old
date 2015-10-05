@@ -680,6 +680,106 @@ exports['default'] = Sprite;
 module.exports = exports['default'];
 },{"./Point":4}],6:[function(require,module,exports){
 /**
+ * Executes a given function at specified intervals
+ *
+ * @class Ticker
+ * @requires {Config} config
+ * @requires {object} window
+ */
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Ticker = (function () {
+    /**
+     * [constructor description]
+     * @param  {[type]} deps [description]
+     * @return {[type]}      [description]
+     */
+
+    function Ticker(deps) {
+        _classCallCheck(this, Ticker);
+
+        this._deps = deps || {};
+
+        this._paused = false;
+        this._update = this._update.bind(this);
+
+        this.raf = this._deps.window ? this._deps.window.requestAnimationFrame.bind(this._deps.window) : window.requestAnimationFrame.bind(window);
+    }
+
+    /**
+     * [_update description]
+     * @return {[type]} [description]
+     */
+
+    _createClass(Ticker, [{
+        key: "_update",
+        value: function _update() {
+            if (this._paused) {
+                return;
+            }
+
+            this.onTick();
+
+            this.raf(this._update);
+        }
+
+        /**
+         * [onTick description]
+         * @return {[type]} [description]
+         */
+    }, {
+        key: "onTick",
+        value: function onTick() {}
+        // do awesome stuff!
+
+        /**
+         * [pause description]
+         * @return {[type]} [description]
+         */
+
+    }, {
+        key: "pause",
+        value: function pause() {
+            this._paused = true;
+        }
+
+        /**
+         * [resume description]
+         * @return {[type]} [description]
+         */
+    }, {
+        key: "resume",
+        value: function resume() {
+            this._paused = false;
+            this._update();
+        }
+
+        /**
+         * [start description]
+         * @return {[type]} [description]
+         */
+    }, {
+        key: "start",
+        value: function start() {
+            this._update();
+        }
+    }]);
+
+    return Ticker;
+})();
+
+exports["default"] = Ticker;
+module.exports = exports["default"];
+},{}],7:[function(require,module,exports){
+/**
  * Creates and handles the canvas DOM element
  *
  * @class Viewport
@@ -738,7 +838,7 @@ var Viewport = (function () {
 
 exports['default'] = Viewport;
 module.exports = exports['default'];
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * Keeps canvas element centered and (with aspect ratio intact) in the viewport
  *
@@ -816,7 +916,7 @@ var Cinemize = (function () {
 
 exports["default"] = Cinemize;
 module.exports = exports["default"];
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -847,6 +947,10 @@ var _distLibCinemize = require('../../dist/lib/Cinemize');
 
 var _distLibCinemize2 = _interopRequireDefault(_distLibCinemize);
 
+var _distTicker = require('../../dist/Ticker');
+
+var _distTicker2 = _interopRequireDefault(_distTicker);
+
 var Main = function Main() {
     _classCallCheck(this, Main);
 
@@ -855,15 +959,17 @@ var Main = function Main() {
         config: config,
         document: document
     });
-
-    var ltwh = _distLibCinemize2['default'].fit(config.gameWidth, config.gameHeight);
-    viewport.fit(ltwh.left, ltwh.top, ltwh.width, ltwh.height);
-
     var canvas = new _distCanvas2['default']({
         viewport: viewport
     });
+    var ticker = new _distTicker2['default']();
+
+    // fit viewport to browser window
+    var ltwh = _distLibCinemize2['default'].fit(config.gameWidth, config.gameHeight);
+    viewport.fit(ltwh.left, ltwh.top, ltwh.width, ltwh.height);
 
     var sprite = new _distSprite2['default']().setWidth(32).setHeight(32);
+
     var groupA = new _distGroup2['default']();
     var groupB = new _distGroup2['default']().setX(64).setY(64);
 
@@ -873,9 +979,13 @@ var Main = function Main() {
     groupB.setX(-64);
     sprite.setX(64);
 
-    canvas.drawRect(sprite.getGlobalX(), sprite.getGlobalY(), sprite.getWidth(), sprite.getHeight());
+    ticker.onTick = function () {
+        canvas.drawRect(sprite.getGlobalX(), sprite.getGlobalY(), sprite.getWidth(), sprite.getHeight());
+    };
+
+    ticker.start();
 };
 
 new Main();
 
-},{"../../dist/Canvas":1,"../../dist/Config":2,"../../dist/Group":3,"../../dist/Sprite":5,"../../dist/Viewport":6,"../../dist/lib/Cinemize":7}]},{},[8]);
+},{"../../dist/Canvas":1,"../../dist/Config":2,"../../dist/Group":3,"../../dist/Sprite":5,"../../dist/Ticker":6,"../../dist/Viewport":7,"../../dist/lib/Cinemize":8}]},{},[9]);

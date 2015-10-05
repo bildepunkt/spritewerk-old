@@ -12,10 +12,14 @@ export default class Ticker {
      * @return {[type]}      [description]
      */
     constructor(deps) {
-        this._deps = deps;
+        this._deps = deps || {};
 
         this._paused = false;
         this._update = this._update.bind(this);
+
+        this.raf = this._deps.window ?
+            this._deps.window.requestAnimationFrame.bind(this._deps.window) :
+            window.requestAnimationFrame.bind(window);
     }
 
     /**
@@ -29,7 +33,15 @@ export default class Ticker {
 
         this.onTick();
 
-        this._deps.window.requestAnimationFrame(this._update);
+        this.raf(this._update);
+    }
+
+    /**
+     * [onTick description]
+     * @return {[type]} [description]
+     */
+    onTick() {
+        // do awesome stuff!
     }
 
     /**

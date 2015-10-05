@@ -25,10 +25,12 @@ var Ticker = (function () {
     function Ticker(deps) {
         _classCallCheck(this, Ticker);
 
-        this._deps = deps;
+        this._deps = deps || {};
 
         this._paused = false;
         this._update = this._update.bind(this);
+
+        this.raf = this._deps.window ? this._deps.window.requestAnimationFrame.bind(this._deps.window) : window.requestAnimationFrame.bind(window);
     }
 
     /**
@@ -45,13 +47,23 @@ var Ticker = (function () {
 
             this.onTick();
 
-            this._deps.window.requestAnimationFrame(this._update);
+            this.raf(this._update);
         }
+
+        /**
+         * [onTick description]
+         * @return {[type]} [description]
+         */
+    }, {
+        key: "onTick",
+        value: function onTick() {}
+        // do awesome stuff!
 
         /**
          * [pause description]
          * @return {[type]} [description]
          */
+
     }, {
         key: "pause",
         value: function pause() {
