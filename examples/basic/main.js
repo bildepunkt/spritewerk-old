@@ -14,6 +14,7 @@ class Main {
             document: document
         });
         let canvas = new Canvas({
+            config: config,
             viewport: viewport
         });
         let ticker = new Ticker();
@@ -24,18 +25,20 @@ class Main {
 
         let sprite = new Sprite()
             .setWidth(32)
-            .setHeight(32);
+            .setHeight(32)
+            .setX(64);
 
-        let groupA = new Group();
-        let groupB = new Group().setX(64).setY(64);
+        let groupA = new Group().setX(128).setY(128);
+        let rot = 0;
 
-        groupB.addChild(sprite);
-        groupA.addChild(groupB);
-
-        groupB.setX(-64);
-        sprite.setX(64);
+        groupA.addChild(sprite);
 
         ticker.onTick = function () {
+            canvas.clear();
+
+            groupA.setRotation(rot);
+            rot += 4;
+
             canvas.drawRect(sprite.getGlobalX(), sprite.getGlobalY(), sprite.getWidth(), sprite.getHeight());
         };
 

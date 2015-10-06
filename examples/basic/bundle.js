@@ -36,8 +36,8 @@ var Canvas = (function () {
     _createClass(Canvas, [{
         key: "clear",
         value: function clear() {
-            var width = this._deps.config.width;
-            var height = this._deps.config.height;
+            var width = this._deps.config.gameWidth;
+            var height = this._deps.config.gameHeight;
             this._context.clearRect(0, 0, width, height);
         }
     }, {
@@ -146,6 +146,10 @@ var _Sprite = require('./Sprite');
 
 var _Sprite2 = _interopRequireDefault(_Sprite);
 
+var _libTrig = require('./lib/Trig');
+
+var _libTrig2 = _interopRequireDefault(_libTrig);
+
 var Group = (function (_Point) {
     _inherits(Group, _Point);
 
@@ -156,31 +160,12 @@ var Group = (function (_Point) {
 
         this._renderable = [];
         this._groups = [];
+        this._unnamedCount = 0;
     }
 
     _createClass(Group, [{
-        key: 'addChild',
-        value: function addChild(child) {
-            child.setParentX(this.getGlobalX()).setParentY(this.getGlobalY());
-
-            if (child instanceof _Sprite2['default']) {
-                this._renderable.push(child);
-            } else if (child instanceof Group) {
-                this._groups.push(child);
-            }
-        }
-    }, {
-        key: 'getChildren',
-        value: function getChildren() {
-            return this._renderable.concat(this._groups);
-        }
-    }, {
-        key: 'setParentX',
-        value: function setParentX(val) {
-            this._parentX = val;
-
-            var globalX = this.getGlobalX();
-
+        key: '_setChildsParentX',
+        value: function _setChildsParentX(globalX) {
             var _iteratorNormalCompletion = true;
             var _didIteratorError = false;
             var _iteratorError = undefined;
@@ -189,7 +174,7 @@ var Group = (function (_Point) {
                 for (var _iterator = this._renderable[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                     var child = _step.value;
 
-                    child.setParentX(globalX);
+                    child.val.setParentX(globalX);
                 }
             } catch (err) {
                 _didIteratorError = true;
@@ -214,7 +199,7 @@ var Group = (function (_Point) {
                 for (var _iterator2 = this._groups[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
                     var child = _step2.value;
 
-                    child.setParentX(globalX);
+                    child.val.setParentX(globalX);
                 }
             } catch (err) {
                 _didIteratorError2 = true;
@@ -230,16 +215,10 @@ var Group = (function (_Point) {
                     }
                 }
             }
-
-            return this;
         }
     }, {
-        key: 'setParentY',
-        value: function setParentY(val) {
-            this._parentY = val;
-
-            var globalY = this.getGlobalY();
-
+        key: '_setChildsParentY',
+        value: function _setChildsParentY(globalY) {
             var _iteratorNormalCompletion3 = true;
             var _didIteratorError3 = false;
             var _iteratorError3 = undefined;
@@ -248,7 +227,7 @@ var Group = (function (_Point) {
                 for (var _iterator3 = this._renderable[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
                     var child = _step3.value;
 
-                    child.setParentY(globalY);
+                    child.val.setParentY(globalY);
                 }
             } catch (err) {
                 _didIteratorError3 = true;
@@ -273,7 +252,7 @@ var Group = (function (_Point) {
                 for (var _iterator4 = this._groups[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
                     var child = _step4.value;
 
-                    child.setParentY(globalY);
+                    child.val.setParentY(globalY);
                 }
             } catch (err) {
                 _didIteratorError4 = true;
@@ -289,15 +268,79 @@ var Group = (function (_Point) {
                     }
                 }
             }
+        }
+    }, {
+        key: '_rotateChild',
+        value: function _rotateChild(child, angle) {
+            var newPt = _libTrig2['default'].rotatePoint(this._x, this._y, child.getX(), child.getY(), angle);
+            child.setParentX(newPt.x).setParentY(newPt.y);
+
+            if (typeof child.setRotation === 'function') {
+                child.setRotation(angle);
+            }
+        }
+    }, {
+        key: 'addChild',
+        value: function addChild(child, name) {
+            name = name || 'child' + this._unnamedCount++;
+
+            child.setParentX(this.getGlobalX()).setParentY(this.getGlobalY());
+
+            if (child instanceof _Sprite2['default']) {
+                this._renderable.push({
+                    key: name,
+                    val: child
+                });
+            } else if (child instanceof Group) {
+                this._groups.push({
+                    key: name,
+                    val: child
+                });
+            }
+        }
+    }, {
+        key: 'getChild',
+        value: function getChild(name) {
+            return this._renderable.filter(function (child) {
+                return child.key === name;
+            }) || this._groups.filter(function (child) {
+                return child.key === name;
+            });
+        }
+    }, {
+        key: 'getChildren',
+        value: function getChildren() {
+            var renderable = this._renderable.map(function (child) {
+                return child.val;
+            });
+            var groups = this._groups.map(function (child) {
+                return child.val;
+            });
+
+            return renderable.concat(groups);
+        }
+    }, {
+        key: 'setParentX',
+        value: function setParentX(val) {
+            this._parentX = val;
+
+            this._setChildsParentX(this.getGlobalX());
 
             return this;
         }
     }, {
-        key: 'setX',
-        value: function setX(val) {
-            this._x = val;
+        key: 'setParentY',
+        value: function setParentY(val) {
+            this._parentY = val;
 
-            var globalX = this.getGlobalX();
+            this._setChildsParentY(this.getGlobalY());
+
+            return this;
+        }
+    }, {
+        key: 'setRotation',
+        value: function setRotation(angle) {
+            this._rotation = angle;
 
             var _iteratorNormalCompletion5 = true;
             var _didIteratorError5 = false;
@@ -307,7 +350,7 @@ var Group = (function (_Point) {
                 for (var _iterator5 = this._renderable[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
                     var child = _step5.value;
 
-                    child.setParentX(globalX);
+                    this._rotateChild(child.val, angle);
                 }
             } catch (err) {
                 _didIteratorError5 = true;
@@ -332,7 +375,7 @@ var Group = (function (_Point) {
                 for (var _iterator6 = this._groups[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
                     var child = _step6.value;
 
-                    child.setParentX(globalX);
+                    this._rotateChild(child.val, angle);
                 }
             } catch (err) {
                 _didIteratorError6 = true;
@@ -348,6 +391,13 @@ var Group = (function (_Point) {
                     }
                 }
             }
+        }
+    }, {
+        key: 'setX',
+        value: function setX(val) {
+            this._x = val;
+
+            this._setChildsParentX(this.getGlobalX());
 
             return this;
         }
@@ -356,57 +406,7 @@ var Group = (function (_Point) {
         value: function setY(val) {
             this._y = val;
 
-            var globalY = this.getGlobalY();
-
-            var _iteratorNormalCompletion7 = true;
-            var _didIteratorError7 = false;
-            var _iteratorError7 = undefined;
-
-            try {
-                for (var _iterator7 = this._renderable[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-                    var child = _step7.value;
-
-                    child.setParentY(globalY);
-                }
-            } catch (err) {
-                _didIteratorError7 = true;
-                _iteratorError7 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion7 && _iterator7['return']) {
-                        _iterator7['return']();
-                    }
-                } finally {
-                    if (_didIteratorError7) {
-                        throw _iteratorError7;
-                    }
-                }
-            }
-
-            var _iteratorNormalCompletion8 = true;
-            var _didIteratorError8 = false;
-            var _iteratorError8 = undefined;
-
-            try {
-                for (var _iterator8 = this._groups[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-                    var child = _step8.value;
-
-                    child.setParentY(globalY);
-                }
-            } catch (err) {
-                _didIteratorError8 = true;
-                _iteratorError8 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion8 && _iterator8['return']) {
-                        _iterator8['return']();
-                    }
-                } finally {
-                    if (_didIteratorError8) {
-                        throw _iteratorError8;
-                    }
-                }
-            }
+            this._setChildsParentY(this.getGlobalY());
 
             return this;
         }
@@ -417,7 +417,7 @@ var Group = (function (_Point) {
 
 exports['default'] = Group;
 module.exports = exports['default'];
-},{"./Point":4,"./Sprite":5}],4:[function(require,module,exports){
+},{"./Point":4,"./Sprite":5,"./lib/Trig":9}],4:[function(require,module,exports){
 /**
  * a 2d transform
  *
@@ -917,6 +917,65 @@ var Cinemize = (function () {
 exports["default"] = Cinemize;
 module.exports = exports["default"];
 },{}],9:[function(require,module,exports){
+/**
+ * A util for calculating trigonometric equations
+ *
+ * @class Trig
+ */
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Trig = (function () {
+    function Trig() {
+        _classCallCheck(this, Trig);
+    }
+
+    _createClass(Trig, null, [{
+        key: "rotatePoint",
+
+        /**
+         * [rotatePoint description]
+         * @param  {[type]} originX [description]
+         * @param  {[type]} originY [description]
+         * @param  {[type]} pointX  [description]
+         * @param  {[type]} pointY  [description]
+         * @param  {[type]} angle   [description]
+         * @return {[type]}         [description]
+         */
+        value: function rotatePoint(originX, originY, pointX, pointY, angle) {
+            angle = this.getRadiansFromDegrees(angle);
+
+            return {
+                x: Math.cos(angle) * (pointX - originX) - Math.sin(angle) * (pointY - originY) + originX,
+                y: Math.sin(angle) * (pointX - originX) + Math.cos(angle) * (pointY - originY) + originY
+            };
+        }
+
+        /**
+         * [getRadiansFromDegrees description]
+         * @param  {[type]} deg [description]
+         * @return {[type]}     [description]
+         */
+    }, {
+        key: "getRadiansFromDegrees",
+        value: function getRadiansFromDegrees(deg) {
+            return deg * Math.PI / 180;
+        }
+    }]);
+
+    return Trig;
+})();
+
+exports["default"] = Trig;
+module.exports = exports["default"];
+},{}],10:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -960,6 +1019,7 @@ var Main = function Main() {
         document: document
     });
     var canvas = new _distCanvas2['default']({
+        config: config,
         viewport: viewport
     });
     var ticker = new _distTicker2['default']();
@@ -968,18 +1028,19 @@ var Main = function Main() {
     var ltwh = _distLibCinemize2['default'].fit(config.gameWidth, config.gameHeight);
     viewport.fit(ltwh.left, ltwh.top, ltwh.width, ltwh.height);
 
-    var sprite = new _distSprite2['default']().setWidth(32).setHeight(32);
+    var sprite = new _distSprite2['default']().setWidth(32).setHeight(32).setX(64);
 
-    var groupA = new _distGroup2['default']();
-    var groupB = new _distGroup2['default']().setX(64).setY(64);
+    var groupA = new _distGroup2['default']().setX(128).setY(128);
+    var rot = 0;
 
-    groupB.addChild(sprite);
-    groupA.addChild(groupB);
-
-    groupB.setX(-64);
-    sprite.setX(64);
+    groupA.addChild(sprite);
 
     ticker.onTick = function () {
+        canvas.clear();
+
+        groupA.setRotation(rot);
+        rot += 4;
+
         canvas.drawRect(sprite.getGlobalX(), sprite.getGlobalY(), sprite.getWidth(), sprite.getHeight());
     };
 
@@ -988,4 +1049,4 @@ var Main = function Main() {
 
 new Main();
 
-},{"../../dist/Canvas":1,"../../dist/Config":2,"../../dist/Group":3,"../../dist/Sprite":5,"../../dist/Ticker":6,"../../dist/Viewport":7,"../../dist/lib/Cinemize":8}]},{},[9]);
+},{"../../dist/Canvas":1,"../../dist/Config":2,"../../dist/Group":3,"../../dist/Sprite":5,"../../dist/Ticker":6,"../../dist/Viewport":7,"../../dist/lib/Cinemize":8}]},{},[10]);

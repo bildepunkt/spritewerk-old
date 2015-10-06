@@ -5,6 +5,7 @@
  */
 import Point from './Point';
 import Sprite from './Sprite';
+import Trig from './lib/Trig';
 
 export default class Group extends Point {
     constructor() {
@@ -13,6 +14,35 @@ export default class Group extends Point {
         this._renderable = [];
         this._groups = [];
         this._unnamedCount = 0;
+    }
+
+    _setChildsParentX(globalX) {
+        for(let child of this._renderable) {
+            child.val.setParentX(globalX);
+        }
+
+        for(let child of this._groups) {
+            child.val.setParentX(globalX);
+        }
+    }
+
+    _setChildsParentY(globalY) {
+        for(let child of this._renderable) {
+            child.val.setParentY(globalY);
+        }
+
+        for(let child of this._groups) {
+            child.val.setParentY(globalY);
+        }
+    }
+
+    _rotateChild(child, angle) {
+        let newPt = Trig.rotatePoint(this._x, this._y, child.getX(), child.getY(), angle);
+        child.setParentX(newPt.x).setParentY(newPt.y);
+
+        if (typeof child.setRotation === 'function') {
+            child.setRotation(angle);
+        }
     }
 
     addChild(child, name) {
@@ -56,15 +86,7 @@ export default class Group extends Point {
     setParentX(val) {
         this._parentX = val;
 
-        var globalX = this.getGlobalX();
-
-        for(let child of this._renderable) {
-            child.val.setParentX(globalX);
-        }
-
-        for(let child of this._groups) {
-            child.val.setParentX(globalX);
-        }
+        this._setChildsParentX(this.getGlobalX());
 
         return this;
     }
@@ -72,31 +94,27 @@ export default class Group extends Point {
     setParentY(val) {
         this._parentY = val;
 
-        var globalY = this.getGlobalY();
+        this._setChildsParentY(this.getGlobalY());
+
+        return this;
+    }
+
+    setRotation(angle) {
+        this._rotation = angle;
 
         for(let child of this._renderable) {
-            child.val.setParentY(globalY);
+            this._rotateChild(child.val, angle);
         }
 
         for(let child of this._groups) {
-            child.val.setParentY(globalY);
+            this._rotateChild(child.val, angle);
         }
-
-        return this;
     }
 
     setX(val) {
         this._x = val;
 
-        var globalX = this.getGlobalX();
-
-        for(let child of this._renderable) {
-            child.val.setParentX(globalX);
-        }
-
-        for(let child of this._groups) {
-            child.val.setParentX(globalX);
-        }
+        this._setChildsParentX(this.getGlobalX());
 
         return this;
     }
@@ -104,15 +122,7 @@ export default class Group extends Point {
     setY(val) {
         this._y = val;
 
-        var globalY = this.getGlobalY();
-
-        for(let child of this._renderable) {
-            child.val.setParentY(globalY);
-        }
-
-        for(let child of this._groups) {
-            child.val.setParentY(globalY);
-        }
+        this._setChildsParentY(this.getGlobalY());
 
         return this;
     }

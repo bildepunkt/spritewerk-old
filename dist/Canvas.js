@@ -35,8 +35,8 @@ var Canvas = (function () {
     _createClass(Canvas, [{
         key: "clear",
         value: function clear() {
-            var width = this._deps.config.width;
-            var height = this._deps.config.height;
+            var width = this._deps.config.gameWidth;
+            var height = this._deps.config.gameHeight;
             this._context.clearRect(0, 0, width, height);
         }
     }, {

@@ -27,6 +27,10 @@ var _Sprite = require('./Sprite');
 
 var _Sprite2 = _interopRequireDefault(_Sprite);
 
+var _libTrig = require('./lib/Trig');
+
+var _libTrig2 = _interopRequireDefault(_libTrig);
+
 var Group = (function (_Point) {
     _inherits(Group, _Point);
 
@@ -41,52 +45,8 @@ var Group = (function (_Point) {
     }
 
     _createClass(Group, [{
-        key: 'addChild',
-        value: function addChild(child, name) {
-            name = name || 'child' + this._unnamedCount++;
-
-            child.setParentX(this.getGlobalX()).setParentY(this.getGlobalY());
-
-            if (child instanceof _Sprite2['default']) {
-                this._renderable.push({
-                    key: name,
-                    val: child
-                });
-            } else if (child instanceof Group) {
-                this._groups.push({
-                    key: name,
-                    val: child
-                });
-            }
-        }
-    }, {
-        key: 'getChild',
-        value: function getChild(name) {
-            return this._renderable.filter(function (child) {
-                return child.key === name;
-            }) || this._groups.filter(function (child) {
-                return child.key === name;
-            });
-        }
-    }, {
-        key: 'getChildren',
-        value: function getChildren() {
-            var renderable = this._renderable.map(function (child) {
-                return child.val;
-            });
-            var groups = this._groups.map(function (child) {
-                return child.val;
-            });
-
-            return renderable.concat(groups);
-        }
-    }, {
-        key: 'setParentX',
-        value: function setParentX(val) {
-            this._parentX = val;
-
-            var globalX = this.getGlobalX();
-
+        key: '_setChildsParentX',
+        value: function _setChildsParentX(globalX) {
             var _iteratorNormalCompletion = true;
             var _didIteratorError = false;
             var _iteratorError = undefined;
@@ -136,16 +96,10 @@ var Group = (function (_Point) {
                     }
                 }
             }
-
-            return this;
         }
     }, {
-        key: 'setParentY',
-        value: function setParentY(val) {
-            this._parentY = val;
-
-            var globalY = this.getGlobalY();
-
+        key: '_setChildsParentY',
+        value: function _setChildsParentY(globalY) {
             var _iteratorNormalCompletion3 = true;
             var _didIteratorError3 = false;
             var _iteratorError3 = undefined;
@@ -195,15 +149,79 @@ var Group = (function (_Point) {
                     }
                 }
             }
+        }
+    }, {
+        key: '_rotateChild',
+        value: function _rotateChild(child, angle) {
+            var newPt = _libTrig2['default'].rotatePoint(this._x, this._y, child.getX(), child.getY(), angle);
+            child.setParentX(newPt.x).setParentY(newPt.y);
+
+            if (typeof child.setRotation === 'function') {
+                child.setRotation(angle);
+            }
+        }
+    }, {
+        key: 'addChild',
+        value: function addChild(child, name) {
+            name = name || 'child' + this._unnamedCount++;
+
+            child.setParentX(this.getGlobalX()).setParentY(this.getGlobalY());
+
+            if (child instanceof _Sprite2['default']) {
+                this._renderable.push({
+                    key: name,
+                    val: child
+                });
+            } else if (child instanceof Group) {
+                this._groups.push({
+                    key: name,
+                    val: child
+                });
+            }
+        }
+    }, {
+        key: 'getChild',
+        value: function getChild(name) {
+            return this._renderable.filter(function (child) {
+                return child.key === name;
+            }) || this._groups.filter(function (child) {
+                return child.key === name;
+            });
+        }
+    }, {
+        key: 'getChildren',
+        value: function getChildren() {
+            var renderable = this._renderable.map(function (child) {
+                return child.val;
+            });
+            var groups = this._groups.map(function (child) {
+                return child.val;
+            });
+
+            return renderable.concat(groups);
+        }
+    }, {
+        key: 'setParentX',
+        value: function setParentX(val) {
+            this._parentX = val;
+
+            this._setChildsParentX(this.getGlobalX());
 
             return this;
         }
     }, {
-        key: 'setX',
-        value: function setX(val) {
-            this._x = val;
+        key: 'setParentY',
+        value: function setParentY(val) {
+            this._parentY = val;
 
-            var globalX = this.getGlobalX();
+            this._setChildsParentY(this.getGlobalY());
+
+            return this;
+        }
+    }, {
+        key: 'setRotation',
+        value: function setRotation(angle) {
+            this._rotation = angle;
 
             var _iteratorNormalCompletion5 = true;
             var _didIteratorError5 = false;
@@ -213,7 +231,7 @@ var Group = (function (_Point) {
                 for (var _iterator5 = this._renderable[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
                     var child = _step5.value;
 
-                    child.val.setParentX(globalX);
+                    this._rotateChild(child.val, angle);
                 }
             } catch (err) {
                 _didIteratorError5 = true;
@@ -238,7 +256,7 @@ var Group = (function (_Point) {
                 for (var _iterator6 = this._groups[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
                     var child = _step6.value;
 
-                    child.val.setParentX(globalX);
+                    this._rotateChild(child.val, angle);
                 }
             } catch (err) {
                 _didIteratorError6 = true;
@@ -254,6 +272,13 @@ var Group = (function (_Point) {
                     }
                 }
             }
+        }
+    }, {
+        key: 'setX',
+        value: function setX(val) {
+            this._x = val;
+
+            this._setChildsParentX(this.getGlobalX());
 
             return this;
         }
@@ -262,57 +287,7 @@ var Group = (function (_Point) {
         value: function setY(val) {
             this._y = val;
 
-            var globalY = this.getGlobalY();
-
-            var _iteratorNormalCompletion7 = true;
-            var _didIteratorError7 = false;
-            var _iteratorError7 = undefined;
-
-            try {
-                for (var _iterator7 = this._renderable[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-                    var child = _step7.value;
-
-                    child.val.setParentY(globalY);
-                }
-            } catch (err) {
-                _didIteratorError7 = true;
-                _iteratorError7 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion7 && _iterator7['return']) {
-                        _iterator7['return']();
-                    }
-                } finally {
-                    if (_didIteratorError7) {
-                        throw _iteratorError7;
-                    }
-                }
-            }
-
-            var _iteratorNormalCompletion8 = true;
-            var _didIteratorError8 = false;
-            var _iteratorError8 = undefined;
-
-            try {
-                for (var _iterator8 = this._groups[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-                    var child = _step8.value;
-
-                    child.val.setParentY(globalY);
-                }
-            } catch (err) {
-                _didIteratorError8 = true;
-                _iteratorError8 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion8 && _iterator8['return']) {
-                        _iterator8['return']();
-                    }
-                } finally {
-                    if (_didIteratorError8) {
-                        throw _iteratorError8;
-                    }
-                }
-            }
+            this._setChildsParentY(this.getGlobalY());
 
             return this;
         }

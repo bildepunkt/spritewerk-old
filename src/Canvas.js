@@ -19,8 +19,8 @@ export default class Canvas {
      * @return {[type]} [description]
      */
     clear() {
-        let width = this._deps.config.width;
-        let height = this._deps.config.height;
+        let width = this._deps.config.gameWidth;
+        let height = this._deps.config.gameHeight;
         this._context.clearRect(0, 0, width, height);
     }
 
