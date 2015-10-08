@@ -146,10 +146,6 @@ var _Sprite = require('./Sprite');
 
 var _Sprite2 = _interopRequireDefault(_Sprite);
 
-var _libTrig = require('./lib/Trig');
-
-var _libTrig2 = _interopRequireDefault(_libTrig);
-
 var Group = (function (_Point) {
     _inherits(Group, _Point);
 
@@ -270,13 +266,56 @@ var Group = (function (_Point) {
             }
         }
     }, {
-        key: '_rotateChild',
-        value: function _rotateChild(child, angle) {
-            var newPt = _libTrig2['default'].rotatePoint(this._x, this._y, child.getX(), child.getY(), angle);
-            child.setParentX(newPt.x).setParentY(newPt.y);
+        key: '_setChildsRotation',
+        value: function _setChildsRotation(angle) {
+            var _iteratorNormalCompletion5 = true;
+            var _didIteratorError5 = false;
+            var _iteratorError5 = undefined;
 
-            if (typeof child.setRotation === 'function') {
-                child.setRotation(angle);
+            try {
+                for (var _iterator5 = this._renderable[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                    var child = _step5.value;
+
+                    child.val.setRotation(angle);
+                }
+            } catch (err) {
+                _didIteratorError5 = true;
+                _iteratorError5 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion5 && _iterator5['return']) {
+                        _iterator5['return']();
+                    }
+                } finally {
+                    if (_didIteratorError5) {
+                        throw _iteratorError5;
+                    }
+                }
+            }
+
+            var _iteratorNormalCompletion6 = true;
+            var _didIteratorError6 = false;
+            var _iteratorError6 = undefined;
+
+            try {
+                for (var _iterator6 = this._groups[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                    var child = _step6.value;
+
+                    child.val.setRotation(angle);
+                }
+            } catch (err) {
+                _didIteratorError6 = true;
+                _iteratorError6 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion6 && _iterator6['return']) {
+                        _iterator6['return']();
+                    }
+                } finally {
+                    if (_didIteratorError6) {
+                        throw _iteratorError6;
+                    }
+                }
             }
         }
     }, {
@@ -320,6 +359,11 @@ var Group = (function (_Point) {
             return renderable.concat(groups);
         }
     }, {
+        key: 'getRotation',
+        value: function getRotation() {
+            return this._rotation;
+        }
+    }, {
         key: 'setParentX',
         value: function setParentX(val) {
             this._parentX = val;
@@ -342,55 +386,9 @@ var Group = (function (_Point) {
         value: function setRotation(angle) {
             this._rotation = angle;
 
-            var _iteratorNormalCompletion5 = true;
-            var _didIteratorError5 = false;
-            var _iteratorError5 = undefined;
+            this._setChildsRotation(this._rotation);
 
-            try {
-                for (var _iterator5 = this._renderable[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-                    var child = _step5.value;
-
-                    this._rotateChild(child.val, angle);
-                }
-            } catch (err) {
-                _didIteratorError5 = true;
-                _iteratorError5 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion5 && _iterator5['return']) {
-                        _iterator5['return']();
-                    }
-                } finally {
-                    if (_didIteratorError5) {
-                        throw _iteratorError5;
-                    }
-                }
-            }
-
-            var _iteratorNormalCompletion6 = true;
-            var _didIteratorError6 = false;
-            var _iteratorError6 = undefined;
-
-            try {
-                for (var _iterator6 = this._groups[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                    var child = _step6.value;
-
-                    this._rotateChild(child.val, angle);
-                }
-            } catch (err) {
-                _didIteratorError6 = true;
-                _iteratorError6 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion6 && _iterator6['return']) {
-                        _iterator6['return']();
-                    }
-                } finally {
-                    if (_didIteratorError6) {
-                        throw _iteratorError6;
-                    }
-                }
-            }
+            return this;
         }
     }, {
         key: 'setX',
@@ -417,21 +415,27 @@ var Group = (function (_Point) {
 
 exports['default'] = Group;
 module.exports = exports['default'];
-},{"./Point":4,"./Sprite":5,"./lib/Trig":9}],4:[function(require,module,exports){
+},{"./Point":4,"./Sprite":5}],4:[function(require,module,exports){
 /**
  * a 2d transform
  *
  * @class Point
  */
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _libTrig = require('./lib/Trig');
+
+var _libTrig2 = _interopRequireDefault(_libTrig);
 
 var Point = (function () {
   /**
@@ -446,6 +450,9 @@ var Point = (function () {
     this._y = 0;
     this._parentX = 0;
     this._parentY = 0;
+    this._rotation = 0;
+    this._rotatedX = 0;
+    this._rotatedY = 0;
   }
 
   /**
@@ -454,9 +461,9 @@ var Point = (function () {
    */
 
   _createClass(Point, [{
-    key: "getGlobalX",
+    key: 'getGlobalX',
     value: function getGlobalX() {
-      return this._x + this._parentX;
+      return this._x + this._parentX + this._rotatedX;
     }
 
     /**
@@ -464,9 +471,9 @@ var Point = (function () {
      * @return {[type]} [description]
      */
   }, {
-    key: "getGlobalY",
+    key: 'getGlobalY',
     value: function getGlobalY() {
-      return this._y + this._parentY;
+      return this._y + this._parentY + this._rotatedY;
     }
 
     /**
@@ -474,7 +481,7 @@ var Point = (function () {
      * @return {[type]} [description]
      */
   }, {
-    key: "getX",
+    key: 'getX',
     value: function getX() {
       return this._x;
     }
@@ -484,37 +491,17 @@ var Point = (function () {
      * @return {[type]} [description]
      */
   }, {
-    key: "getY",
+    key: 'getY',
     value: function getY() {
       return this._y;
     }
 
     /**
-     * [getParentX description]
+     * [setParentX description]
      * @return {[type]} [description]
      */
   }, {
-    key: "getParentX",
-    value: function getParentX() {
-      return this._parentX;
-    }
-
-    /**
-     * [getParentY description]
-     * @return {[type]} [description]
-     */
-  }, {
-    key: "getParentY",
-    value: function getParentY() {
-      return this._parentY;
-    }
-
-    /**
-     * [getParentX description]
-     * @return {[type]} [description]
-     */
-  }, {
-    key: "setParentX",
+    key: 'setParentX',
     value: function setParentX(val) {
       this._parentX = val;
 
@@ -526,9 +513,26 @@ var Point = (function () {
      * @return {[type]} [description]
      */
   }, {
-    key: "setParentY",
+    key: 'setParentY',
     value: function setParentY(val) {
       this._parentY = val;
+
+      return this;
+    }
+
+    /**
+     * [ description]
+     * @return {[type]} [description]
+     */
+  }, {
+    key: 'setRotation',
+    value: function setRotation(val) {
+      this._rotationY = val;
+
+      var rotatedPt = _libTrig2['default'].rotatePoint(0, 0, this._x, this._y, val);
+
+      this._rotatedX = rotatedPt.x - this._x;
+      this._rotatedY = rotatedPt.y - this._y;
 
       return this;
     }
@@ -538,7 +542,7 @@ var Point = (function () {
      * @param {[type]} val [description]
      */
   }, {
-    key: "setX",
+    key: 'setX',
     value: function setX(val) {
       this._x = val;
 
@@ -550,7 +554,7 @@ var Point = (function () {
      * @param {[type]} val [description]
      */
   }, {
-    key: "setY",
+    key: 'setY',
     value: function setY(val) {
       this._y = val;
 
@@ -561,9 +565,9 @@ var Point = (function () {
   return Point;
 })();
 
-exports["default"] = Point;
-module.exports = exports["default"];
-},{}],5:[function(require,module,exports){
+exports['default'] = Point;
+module.exports = exports['default'];
+},{"./lib/Trig":9}],5:[function(require,module,exports){
 /**
  * @class Sprite
  */
@@ -602,7 +606,6 @@ var Sprite = (function (_Point) {
 
     this._width = 0;
     this._height = 0;
-    this._rotation = 0;
   }
 
   /**
@@ -656,18 +659,6 @@ var Sprite = (function (_Point) {
     key: 'setHeight',
     value: function setHeight(val) {
       this._height = val;
-
-      return this;
-    }
-
-    /**
-     * [setRotation description]
-     * @param {[type]} val [description]
-     */
-  }, {
-    key: 'setRotation',
-    value: function setRotation(val) {
-      this._rotation = val;
 
       return this;
     }
@@ -976,6 +967,175 @@ var Trig = (function () {
 exports["default"] = Trig;
 module.exports = exports["default"];
 },{}],10:[function(require,module,exports){
+/**
+ * @class
+ */
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _MathPlus = require('./MathPlus');
+
+var _MathPlus2 = _interopRequireDefault(_MathPlus);
+
+var DebugRenderer = (function () {
+    function DebugRenderer(deps) {
+        _classCallCheck(this, DebugRenderer);
+
+        this._deps = deps;
+
+        this._context = this._deps.viewport.getContext();
+
+        this._displaySize = 12;
+        this._items = [];
+    }
+
+    _createClass(DebugRenderer, [{
+        key: '_getRandRGB',
+        value: function _getRandRGB() {
+            return {
+                r: _MathPlus2['default'].clamp(Math.round(Math.random() * 255), 64, 191),
+                g: _MathPlus2['default'].clamp(Math.round(Math.random() * 255), 64, 191),
+                b: _MathPlus2['default'].clamp(Math.round(Math.random() * 255), 64, 191)
+            };
+        }
+    }, {
+        key: 'watch',
+        value: function watch(list) {
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = list[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var item = _step.value;
+
+                    var rgb = this._getRandRGB();
+
+                    this._items.push({
+                        name: item.name,
+                        entity: item.entity,
+                        rgb: 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')'
+                    });
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator['return']) {
+                        _iterator['return']();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var size = this._displaySize;
+
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = this._items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var item = _step2.value;
+
+                    var x = item.entity.getGlobalX();
+                    var y = item.entity.getGlobalY();
+                    var rotation = item.entity.getRotation();
+
+                    this._context.save();
+
+                    if (rotation) {
+                        this._context.translate(x, y);
+                        this._context.rotate(rotation * Math.PI / 180);
+
+                        x = 0;
+                        y = 0;
+                    }
+
+                    this._context.strokeStyle = item.rgb;
+                    this._context.fillStyle = item.rgb;
+
+                    var crosshair = new Path2D();
+                    crosshair.moveTo(x, y - size / 2);
+                    crosshair.lineTo(x, y + size / 2);
+                    crosshair.moveTo(x - size / 2, y);
+                    crosshair.lineTo(x + size / 2, y);
+                    crosshair.closePath();
+                    this._context.stroke(crosshair);
+
+                    this._context.fillText(item.name, x + size, y + size);
+                    this._context.restore();
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2['return']) {
+                        _iterator2['return']();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+        }
+    }]);
+
+    return DebugRenderer;
+})();
+
+exports['default'] = DebugRenderer;
+module.exports = exports['default'];
+},{"./MathPlus":11}],11:[function(require,module,exports){
+/**
+ * @class Sprite
+ */
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MathPlus = (function () {
+    function MathPlus() {
+        _classCallCheck(this, MathPlus);
+    }
+
+    _createClass(MathPlus, null, [{
+        key: "clamp",
+        value: function clamp(target, min, max) {
+            return target > max ? max : target < min ? min : target;
+        }
+    }]);
+
+    return MathPlus;
+})();
+
+exports["default"] = MathPlus;
+module.exports = exports["default"];
+},{}],12:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1010,6 +1170,10 @@ var _distTicker = require('../../dist/Ticker');
 
 var _distTicker2 = _interopRequireDefault(_distTicker);
 
+var _distUtilDebugRenderer = require('../../dist/util/DebugRenderer');
+
+var _distUtilDebugRenderer2 = _interopRequireDefault(_distUtilDebugRenderer);
+
 var Main = function Main() {
     _classCallCheck(this, Main);
 
@@ -1022,6 +1186,9 @@ var Main = function Main() {
         config: config,
         viewport: viewport
     });
+    var debugRenderer = new _distUtilDebugRenderer2['default']({
+        viewport: viewport
+    });
     var ticker = new _distTicker2['default']();
 
     // fit viewport to browser window
@@ -1030,18 +1197,35 @@ var Main = function Main() {
 
     var sprite = new _distSprite2['default']().setWidth(32).setHeight(32).setX(64);
 
-    var groupA = new _distGroup2['default']().setX(128).setY(128);
-    var rot = 0;
+    var groupA = new _distGroup2['default']().setX(64).setY(64);
+    var groupB = new _distGroup2['default']().setX(64).setY(64);
+    var rot = 1;
 
-    groupA.addChild(sprite);
+    groupA.addChild(groupB);
+    groupB.addChild(sprite);
+
+    debugRenderer.watch([{
+        name: 'groupA',
+        entity: groupA
+    }, {
+        name: 'groupB',
+        entity: groupB
+    }]);
 
     ticker.onTick = function () {
         canvas.clear();
 
-        groupA.setRotation(rot);
-        rot += 4;
+        groupB.setRotation(rot);
+        rot += 1;
 
-        canvas.drawRect(sprite.getGlobalX(), sprite.getGlobalY(), sprite.getWidth(), sprite.getHeight());
+        var x = sprite.getGlobalX();
+        var y = sprite.getGlobalY();
+        var w = sprite.getWidth();
+        var h = sprite.getHeight();
+
+        canvas.drawRect(x - w / 2, y - h / 2, w, h);
+
+        debugRenderer.render();
     };
 
     ticker.start();
@@ -1049,4 +1233,4 @@ var Main = function Main() {
 
 new Main();
 
-},{"../../dist/Canvas":1,"../../dist/Config":2,"../../dist/Group":3,"../../dist/Sprite":5,"../../dist/Ticker":6,"../../dist/Viewport":7,"../../dist/lib/Cinemize":8}]},{},[10]);
+},{"../../dist/Canvas":1,"../../dist/Config":2,"../../dist/Group":3,"../../dist/Sprite":5,"../../dist/Ticker":6,"../../dist/Viewport":7,"../../dist/lib/Cinemize":8,"../../dist/util/DebugRenderer":10}]},{},[12]);

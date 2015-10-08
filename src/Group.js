@@ -5,7 +5,6 @@
  */
 import Point from './Point';
 import Sprite from './Sprite';
-import Trig from './lib/Trig';
 
 export default class Group extends Point {
     constructor() {
@@ -36,19 +35,22 @@ export default class Group extends Point {
         }
     }
 
-    _rotateChild(child, angle) {
-        let newPt = Trig.rotatePoint(this._x, this._y, child.getX(), child.getY(), angle);
-        child.setParentX(newPt.x).setParentY(newPt.y);
+    _setChildsRotation(angle) {
+        for(let child of this._renderable) {
+            child.val.setRotation(angle);
+        }
 
-        if (typeof child.setRotation === 'function') {
-            child.setRotation(angle);
+        for(let child of this._groups) {
+            child.val.setRotation(angle);
         }
     }
 
     addChild(child, name) {
         name = name || 'child' + this._unnamedCount++;
 
-        child.setParentX(this.getGlobalX()).setParentY(this.getGlobalY());
+        child
+            .setParentX(this.getGlobalX())
+            .setParentY(this.getGlobalY());
 
         if (child instanceof Sprite) {
             this._renderable.push({
@@ -69,7 +71,7 @@ export default class Group extends Point {
         }) ||
         this._groups.filter(function (child) {
             return child.key === name;
-        })
+        });
     }
 
     getChildren() {
@@ -81,6 +83,10 @@ export default class Group extends Point {
         });
 
         return renderable.concat(groups);
+    }
+
+    getRotation() {
+        return this._rotation;
     }
 
     setParentX(val) {
@@ -102,13 +108,9 @@ export default class Group extends Point {
     setRotation(angle) {
         this._rotation = angle;
 
-        for(let child of this._renderable) {
-            this._rotateChild(child.val, angle);
-        }
+        this._setChildsRotation(this._rotation);
 
-        for(let child of this._groups) {
-            this._rotateChild(child.val, angle);
-        }
+        return this;
     }
 
     setX(val) {

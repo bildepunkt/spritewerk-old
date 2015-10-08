@@ -5,6 +5,7 @@ import Group from '../../dist/Group';
 import Sprite from '../../dist/Sprite';
 import Cinemize from '../../dist/lib/Cinemize';
 import Ticker from '../../dist/Ticker';
+import DebugRenderer from '../../dist/util/DebugRenderer';
 
 class Main {
     constructor() {
@@ -15,6 +16,9 @@ class Main {
         });
         let canvas = new Canvas({
             config: config,
+            viewport: viewport
+        });
+        let debugRenderer = new DebugRenderer({
             viewport: viewport
         });
         let ticker = new Ticker();
@@ -28,18 +32,37 @@ class Main {
             .setHeight(32)
             .setX(64);
 
-        let groupA = new Group().setX(128).setY(128);
-        let rot = 0;
+        let groupA = new Group().setX(64).setY(64);
+        let groupB = new Group().setX(64).setY(64);
+        let rot = 1;
 
-        groupA.addChild(sprite);
+        groupA.addChild(groupB);
+        groupB.addChild(sprite);
+
+        debugRenderer.watch([
+            {
+                name: 'groupA',
+                entity: groupA
+            }, {
+                name: 'groupB',
+                entity: groupB
+            }
+        ]);
 
         ticker.onTick = function () {
             canvas.clear();
 
-            groupA.setRotation(rot);
-            rot += 4;
+            groupB.setRotation(rot);
+            rot += 1;
 
-            canvas.drawRect(sprite.getGlobalX(), sprite.getGlobalY(), sprite.getWidth(), sprite.getHeight());
+            let x = sprite.getGlobalX();
+            let y = sprite.getGlobalY();
+            let w = sprite.getWidth();
+            let h = sprite.getHeight();
+
+            canvas.drawRect(x - w / 2, y - h / 2, w, h);
+
+            debugRenderer.render();
         };
 
         ticker.start();

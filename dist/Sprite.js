@@ -36,7 +36,6 @@ var Sprite = (function (_Point) {
 
     this._width = 0;
     this._height = 0;
-    this._rotation = 0;
   }
 
   /**
@@ -90,18 +89,6 @@ var Sprite = (function (_Point) {
     key: 'setHeight',
     value: function setHeight(val) {
       this._height = val;
-
-      return this;
-    }
-
-    /**
-     * [setRotation description]
-     * @param {[type]} val [description]
-     */
-  }, {
-    key: 'setRotation',
-    value: function setRotation(val) {
-      this._rotation = val;
 
       return this;
     }

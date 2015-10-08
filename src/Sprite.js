@@ -13,7 +13,6 @@ export default class Sprite extends Point {
 
         this._width = 0;
         this._height = 0;
-        this._rotation = 0;
     }
 
     /**
@@ -56,16 +55,6 @@ export default class Sprite extends Point {
      */
     setHeight(val) {
         this._height = val;
-
-        return this;
-    }
-
-    /**
-     * [setRotation description]
-     * @param {[type]} val [description]
-     */
-    setRotation(val) {
-        this._rotation = val;
 
         return this;
     }

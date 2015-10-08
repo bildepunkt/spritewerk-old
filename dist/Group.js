@@ -27,10 +27,6 @@ var _Sprite = require('./Sprite');
 
 var _Sprite2 = _interopRequireDefault(_Sprite);
 
-var _libTrig = require('./lib/Trig');
-
-var _libTrig2 = _interopRequireDefault(_libTrig);
-
 var Group = (function (_Point) {
     _inherits(Group, _Point);
 
@@ -151,13 +147,56 @@ var Group = (function (_Point) {
             }
         }
     }, {
-        key: '_rotateChild',
-        value: function _rotateChild(child, angle) {
-            var newPt = _libTrig2['default'].rotatePoint(this._x, this._y, child.getX(), child.getY(), angle);
-            child.setParentX(newPt.x).setParentY(newPt.y);
+        key: '_setChildsRotation',
+        value: function _setChildsRotation(angle) {
+            var _iteratorNormalCompletion5 = true;
+            var _didIteratorError5 = false;
+            var _iteratorError5 = undefined;
 
-            if (typeof child.setRotation === 'function') {
-                child.setRotation(angle);
+            try {
+                for (var _iterator5 = this._renderable[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                    var child = _step5.value;
+
+                    child.val.setRotation(angle);
+                }
+            } catch (err) {
+                _didIteratorError5 = true;
+                _iteratorError5 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion5 && _iterator5['return']) {
+                        _iterator5['return']();
+                    }
+                } finally {
+                    if (_didIteratorError5) {
+                        throw _iteratorError5;
+                    }
+                }
+            }
+
+            var _iteratorNormalCompletion6 = true;
+            var _didIteratorError6 = false;
+            var _iteratorError6 = undefined;
+
+            try {
+                for (var _iterator6 = this._groups[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                    var child = _step6.value;
+
+                    child.val.setRotation(angle);
+                }
+            } catch (err) {
+                _didIteratorError6 = true;
+                _iteratorError6 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion6 && _iterator6['return']) {
+                        _iterator6['return']();
+                    }
+                } finally {
+                    if (_didIteratorError6) {
+                        throw _iteratorError6;
+                    }
+                }
             }
         }
     }, {
@@ -201,6 +240,11 @@ var Group = (function (_Point) {
             return renderable.concat(groups);
         }
     }, {
+        key: 'getRotation',
+        value: function getRotation() {
+            return this._rotation;
+        }
+    }, {
         key: 'setParentX',
         value: function setParentX(val) {
             this._parentX = val;
@@ -223,55 +267,9 @@ var Group = (function (_Point) {
         value: function setRotation(angle) {
             this._rotation = angle;
 
-            var _iteratorNormalCompletion5 = true;
-            var _didIteratorError5 = false;
-            var _iteratorError5 = undefined;
+            this._setChildsRotation(this._rotation);
 
-            try {
-                for (var _iterator5 = this._renderable[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-                    var child = _step5.value;
-
-                    this._rotateChild(child.val, angle);
-                }
-            } catch (err) {
-                _didIteratorError5 = true;
-                _iteratorError5 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion5 && _iterator5['return']) {
-                        _iterator5['return']();
-                    }
-                } finally {
-                    if (_didIteratorError5) {
-                        throw _iteratorError5;
-                    }
-                }
-            }
-
-            var _iteratorNormalCompletion6 = true;
-            var _didIteratorError6 = false;
-            var _iteratorError6 = undefined;
-
-            try {
-                for (var _iterator6 = this._groups[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                    var child = _step6.value;
-
-                    this._rotateChild(child.val, angle);
-                }
-            } catch (err) {
-                _didIteratorError6 = true;
-                _iteratorError6 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion6 && _iterator6['return']) {
-                        _iterator6['return']();
-                    }
-                } finally {
-                    if (_didIteratorError6) {
-                        throw _iteratorError6;
-                    }
-                }
-            }
+            return this;
         }
     }, {
         key: 'setX',

@@ -3,6 +3,8 @@
  *
  * @class Point
  */
+import Trig from './lib/Trig';
+
 export default class Point {
     /**
      * [constructor description]
@@ -13,6 +15,9 @@ export default class Point {
         this._y = 0;
         this._parentX = 0;
         this._parentY = 0;
+        this._rotation = 0;
+        this._rotatedX = 0;
+        this._rotatedY = 0;
     }
 
     /**
@@ -20,7 +25,7 @@ export default class Point {
      * @return {[type]} [description]
      */
     getGlobalX() {
-        return this._x + this._parentX;
+        return this._x + this._parentX + this._rotatedX;
     }
 
     /**
@@ -28,7 +33,7 @@ export default class Point {
      * @return {[type]} [description]
      */
     getGlobalY() {
-        return this._y + this._parentY;
+        return this._y + this._parentY + this._rotatedY;
     }
 
     /**
@@ -48,23 +53,7 @@ export default class Point {
     }
 
     /**
-     * [getParentX description]
-     * @return {[type]} [description]
-     */
-    getParentX() {
-        return this._parentX;
-    }
-
-    /**
-     * [getParentY description]
-     * @return {[type]} [description]
-     */
-    getParentY() {
-        return this._parentY;
-    }
-
-    /**
-     * [getParentX description]
+     * [setParentX description]
      * @return {[type]} [description]
      */
     setParentX(val) {
@@ -79,6 +68,21 @@ export default class Point {
      */
     setParentY(val) {
         this._parentY = val;
+
+        return this;
+    }
+
+    /**
+     * [ description]
+     * @return {[type]} [description]
+     */
+    setRotation(val) {
+        this._rotationY = val;
+
+        let rotatedPt = Trig.rotatePoint(0, 0, this._x, this._y, val);
+
+        this._rotatedX = rotatedPt.x - this._x;
+        this._rotatedY = rotatedPt.y - this._y;
 
         return this;
     }
