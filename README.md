@@ -1,5 +1,5 @@
-nBit
-====
+Spritewerk
+==========
 
 ### A Javascript library for making games with the canvas.
 
