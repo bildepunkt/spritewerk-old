@@ -1,0 +1,24 @@
+{
+  "name": "active-canvas",
+  "version": "0.1.0",
+  "description": "A set of generic classes with which to build a game development project",
+  "main": "src/index.js",
+  "watch": {
+    "copy": "src/*.js"
+  },
+  "scripts": {
+    "copy": "cp -r ./src ./playground",
+    "watch": "npm-watch"
+  },
+  "keywords": [
+    "canvas",
+    "html5",
+    "javascript",
+    "game"
+  ],
+  "author": "Chris Peters",
+  "license": "ISC",
+  "dependencies": {
+    "npm-watch": "0.1.1"
+  }
+}
