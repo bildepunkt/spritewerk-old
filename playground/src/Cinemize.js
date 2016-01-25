@@ -9,15 +9,18 @@ export default class Cinemize {
      *
      * @param  {Integer} width  The element's original width attribute
      * @param  {Integer} height The element's original height attribute
+     * @param  {OBject}  [opts] The window object
      * @return {Object}         The new top, left, width, & height
      */
-    static fit(width, height) {
+    static fit(width, height, opts) {
+        this._window = opts.window || window;
+
         const LANDSCAPE_RATIO = height / width;
         const PORTRAIT_RATIO  = width / height;
         const IS_LANDSCAPE    = LANDSCAPE_RATIO < PORTRAIT_RATIO ? true : false;
 
-        let winWidth = window.innerWidth;
-        let winHeight = window.innerHeight;
+        let winWidth = this._window.innerWidth;
+        let winHeight = this._window.innerHeight;
         let winLandscapeRatio = winHeight / winWidth;
         let winPortraitRatio  = winWidth / winHeight;
         let offsetLeft = 0;

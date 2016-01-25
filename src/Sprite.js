@@ -4,9 +4,6 @@
  * @author      Chris Peters
  */
 class Sprite {
-    /**
-     *
-     */
     constructor(x = 0, y = 0) {
         this._x = x;
         this._y = y;

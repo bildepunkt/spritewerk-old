@@ -1,4 +1,4 @@
-import keycodes from './keycodes';
+import keycodes from './lib/keycodes';
 
 /**
  * @class       Input
@@ -7,20 +7,20 @@ import keycodes from './keycodes';
  */
 export default class CanvasInput {
     /**
-     * @param {Object}     options
-     * @param {HTMLEntity} options.canvas              The canvas element to interact with
-     * @param {Boolean}    [options.canvasFit]         Set to true if using css to fit the canvas in the viewport
-     * @param {Boolean}    [options.listenForMouse]    Whether or not to listen for mouse events
-     * @param {Boolean}    [options.listenForTouch]    Whether or not to listen for touch events
-     * @param {Boolean}    [options.listenForKeyboard] Whether or not to listen for keyboard events
+     * @param {HTMLEntity} canvas                   The canvas element to interact with
+     * @param {Object}     [options]
+     * @param {Boolean}    [opts.canvasFit]         Set to true if using css to fit the canvas in the viewport
+     * @param {Boolean}    [opts.listenForMouse]    Whether or not to listen for mouse events
+     * @param {Boolean}    [opts.listenForTouch]    Whether or not to listen for touch events
+     * @param {Boolean}    [opts.listenForKeyboard] Whether or not to listen for keyboard events
      */
-    constructor(options) {
+    constructor(canvas, opts) {
         // options
-        this._canvas = options.canvas;
-        this._canvasFit = options.canvasFit || true;
-        this._listenForMouse = options.listenForMouse || true;
-        this._listenForTouch = options.listenForTouch || false;
-        this._listenForKeyboard = options.listenForKeyboard || true;
+        this._canvas = opts.canvas;
+        this._canvasFit = opts.canvasFit || true;
+        this._listenForMouse = opts.listenForMouse || true;
+        this._listenForTouch = opts.listenForTouch || false;
+        this._listenForKeyboard = opts.listenForKeyboard || true;
 
         this._uiEvents = {
             DBL_CLICK: 'dblclick',

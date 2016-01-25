@@ -5,7 +5,7 @@ active-canvas
 
 #### To install
 
-    git clone https://github.com/c-concat-p/active-canvas
+    git clone https://github.com/c-concat-p/active-canvas.git
 
 
 ### The playground is an environment for developing and evaluating active-canvas

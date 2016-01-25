@@ -1,5 +1,9 @@
 # system
 .DS_Store
 
-# node
+# node/npm
 node_modules
+npm-debug.log
+
+# project
+build

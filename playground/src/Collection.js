@@ -14,10 +14,10 @@ export default class Collection {
     }
 
     /**
-     * Returns a raw item by name
+     * Returns the item { name, item } object
      *
      * @param  {String} name
-     * @return {Any}
+     * @return {Object}
      * @private
      */
     _getRawItem(name) {
@@ -88,10 +88,11 @@ export default class Collection {
     }
 
     /**
-     * Iterates the collection's sorted items. The item, index, and name are supplied to the provided function
+     * Iterates the collection's sorted items. The item, index, and name are supplied
+     * to the provided function
      *
-     * @param {Function} fn      Truth predicate
-     * @param {Object}   [scope] Scope
+     * @param {Function} fn      The function to execute on the iterable
+     * @param {Object}   [scope] The scope with which to execute the function
      */
     each(fn, scope) {
         fn = scope ? fn.bind(scope) : fn;
@@ -109,7 +110,7 @@ export default class Collection {
      * iterates items and return the ones that meet criteria
      *
      * @param  {Function} fn      Truth predicate
-     * @param  {Object}   [scope] Scope
+     * @param  {Object}   [scope] The scope with which to execute the function
      * @return {Array}
      */
     filter(fn, scope) {
@@ -138,7 +139,7 @@ export default class Collection {
     }
 
     /**
-     * Returns an existing item by name
+     * Returns an existing item by name, or undefined if the name is not found
      *
      * @param  {String} name The name of the item
      * @return {Any}
@@ -158,7 +159,7 @@ export default class Collection {
     }
 
     /**
-     * Returns an existing item by name index
+     * Returns an existing item by index
      *
      * @param  {Integer} index
      * @return {Any}
@@ -207,25 +208,31 @@ export default class Collection {
      * Removes an object by name
      *
      * @method SW.Collection.prototype.removeItem
-     * @param {String} name
+     * @param  {String}  name
+     * @return {Boolean} Returns true if item removed, false if not
      */
     removeItem(name) {
+        var removed = false;
+
         this._rawEach((iterItem, i, iterName, items)=> {
             if (name === iterName) {
                 iterItem = null;
                 items.splice(i, 1);
+                removed = true;
 
                 // break out of loop
                 return false;
             }
         });
+
+        return removed;
     }
 
     /**
      * Assigns a new value to an existing item
      *
-     * @param {String} name
-     * @param {Any}    value
+     * @param {String} name  The name of the object to modify
+     * @param {Any}    value The
      */
     setItem(name, value) {
         this._each((iterItem, i, iterName)=> {
@@ -241,8 +248,8 @@ export default class Collection {
     /**
      * Moves item to new index
      *
-     * @param  {String} name
-     * @param  {Integer} index
+     * @param {String}  name  The name of the object being moved
+     * @param {Integer} index The item's new index
      */
     setItemIndex(name, index) {
         let item;

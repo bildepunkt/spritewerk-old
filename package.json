@@ -3,12 +3,19 @@
   "version": "0.1.0",
   "description": "A set of generic classes with which to build a game development project",
   "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/c-concat-p/active-canvas.git"
+  },
   "watch": {
     "copy": "src/*.js"
   },
   "scripts": {
+    "build": "./node_modules/.bin/babel ./src --out-dir ./build",
+    "clean": "rm -rf ./playground/src ./build && mkdir ./playground/src ./build",
     "copy": "cp -r ./src ./playground",
-    "watch": "npm-watch"
+    "test": "./node_modules/.bin/jasmine-node --verbose --color ./spec",
+    "watch": "./node_modules/.bin/npm-watch"
   },
   "keywords": [
     "canvas",
@@ -20,5 +27,11 @@
   "license": "ISC",
   "dependencies": {
     "npm-watch": "0.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.4.5",
+    "babel-preset-es2015": "^6.3.13",
+    "jasmine-node": "^1.14.5",
+    "jsdom": "^7.2.2"
   }
 }

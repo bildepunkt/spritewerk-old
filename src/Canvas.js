@@ -46,7 +46,7 @@ export default class Canvas {
      */
     _handleResize() {
         let { top, left, width, height } = Cinemize.fit(
-            this._width, this._height
+            this._width, this._height, this._window
         );
 
         this._canvas.style.top = `${Math.round(top)}px`;
