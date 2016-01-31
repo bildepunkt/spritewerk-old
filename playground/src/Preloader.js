@@ -1,28 +1,84 @@
 /**
- *
+ * @class  Preloader
+ * @desc   Preloads a list of image, video, and audio files
+ * @author Chris Peters
  */
 class Preloader {
+    /**
+     * Parses file types and preloads them via element tags
+     * @method Preloader.load
+     * @param {Object[]} paths An array of file paths
+     */
     static load(paths) {
         Preloader.loaded = 0;
         Preloader.total = paths.length;
 
         for (let path of paths) {
-            if (path.indexOf('.png') > 0 || path.indexOf('.jpg') > 0) {
+            if (Preloader._isImage(path)) {
                 var img = new Image();
                 img.src = path;
 
                 img.addEventListener('load', Preloader.handleLoad, false);
                 img.addEventListener('error', Preloader.error, false);
-            } else if (path.indexOf('.mp3') > 0 || path.indexOf('.wav') > 0 || path.indexOf('.ogg') > 0) {
+            } else if (Preloader._isAudio(path)) {
                 var audio = new Audio();
                 audio.src = path;
 
                 audio.addEventListener('canplaythrough', Preloader.handleLoad, false);
                 audio.addEventListener('error', Preloader.error, false);
+            } else if (Preloader._isVideo(path)) {
+                var video = new Video();
+                video.src = path;
+
+                video.addEventListener('canplaythrough', Preloader.handleLoad, false);
+                video.addEventListener('error', Preloader.error, false);
             }
         }
     }
 
+    /**
+     * [_isImage description]
+     * @method Preloader._isImage
+     * @param  {?}  path [description]
+     * @return {Boolean}      [description]
+     */
+    static _isImage(path) {
+        return path.indexOf('.png') > 0 ||
+            path.indexOf('.jpg')    > 0 ||
+            path.indexOf('.jpeg')   > 0 ||
+            path.indexOf('.gif')    > 0 ||
+            path.indexOf('.bmp')    > 0;
+    }
+
+    /**
+     * [_isAudioOrVideo description]
+     * @method Preloader._isAudioOrVideo
+     * @param  {?}        path [description]
+     * @return {Boolean}            [description]
+     */
+    static _isAudioOrVideo(path) {
+        return path.indexOf('.mp3') > 0 ||
+            path.indexOf('.wav')    > 0 ||
+            path.indexOf('.ogg')    > 0;
+    }
+
+    /**
+     * [_isVideo description]
+     * @method Preloader._isVideo
+     * @param  {?}  path [description]
+     * @return {Boolean}      [description]
+     */
+    static _isVideo(path) {
+        return path.indexOf('.webm') > 0 ||
+            path.indexOf('.mp4')     > 0 ||
+            path.indexOf('.ogv')     > 0;
+    }
+
+    /**
+     * Removes event listener when loaded or errored
+     * @method Preloader.removeListener
+     * @param  {HTMLEntity} el The html element
+     */
     static removeListener(el) {
         var type = el.tagName.toLowerCase();
 
@@ -40,6 +96,11 @@ class Preloader {
         }
     }
 
+    /**
+     * Increments loaded count and calls complete or update based on count
+     * @method Preloader.handleLoad
+     * @param  {Object} e The event object
+     */
     static handleLoad(e) {
         Preloader.removeListener(e.currentTarget);
 
@@ -48,12 +109,40 @@ class Preloader {
         if (Preloader.loaded === Preloader.total) {
             Preloader.complete();
         } else {
-            Preloader.update(Preloader.Preloader.loaded, Preloader.total);
+            Preloader.update(Preloader.loaded, Preloader.total);
         }
     }
 
+    /**
+     * A noop callback for updates. Is passed loaded/total;
+     * useful for displaying percentage feedback
+     *
+     * @method Preloader.update
+     * @param {Integer} loaded
+     * @param {Integer} total
+     * @method Preloader.update
+     */
+    static update() {}
+
+    /**
+     * [complete description]
+     *
+     * @method Preload.complete
+     * @return {?} [description]
+     */
+    static complete() {
+
+    }
+
+    /**
+     * Handles errors
+     *
+     * @method Preloader.error
+     * @param  {?} e [description]
+     * @return {?}   [description]
+     */
     static error(e) {
-        console.log(e.status);
+        console.warn(e.status);
     }
 }
 

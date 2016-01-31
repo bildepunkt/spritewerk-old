@@ -2,12 +2,11 @@
  * @class       Ticker
  * @description Executes callback based on given fps and requestAnimationFrame
  * @author      Chris Peters
+ *
+ * @param {Number}  [fps]   The desired frames per second. Default is 30
+ * @param {Boolean} [start] Whether to start on instantiate. Default is true
  */
 export default class Ticker {
-    /**
-     * @param {Number}  [fps]   The desired frames per second
-     * @param {Boolean} [start] Whether to start on instantiate
-     */
     constructor(fps = 30, start = true) {
         this._fps = fps;
         this._paused = false;
@@ -23,13 +22,11 @@ export default class Ticker {
     }
 
     /**
+     * Calculates whether or not to call {@link Ticker#onTick} based on _fps
      *
+     * @method Ticker#_update
      */
     _update() {
-        if (this._paused) {
-            return;
-        }
-
         let now = Date.now();
         let delta = now - this._then;
 
@@ -45,26 +42,20 @@ export default class Ticker {
     }
 
     /**
+     * A callback executed on each tick.
      *
+     * @method Ticker#onTick
+     * @param {Integer} factor The time elapsed between ticks.
+     *                         Multiply against gameplay elements for consistent
+     *                         movement.
+     * @param {Integer} ticks The amount of ticks that have accumulated
      */
     onTick() {}
 
     /**
+     * Starts the ticker
      *
-     */
-    pause() {
-        this._paused = true;
-    }
-
-    /**
-     *
-     */
-    resume() {
-        this.paused = false;
-    }
-
-    /**
-     *
+     * @method Ticker#start
      */
     start() {
         requestAnimationFrame(this._update);

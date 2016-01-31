@@ -1,15 +1,15 @@
-active-canvas
-=============
+Canvas Entertainment System
+===========================
 
-### A set of generic classes with which to build a game development project
+### The Canvas Entertainment System is a set of flexible, generic classes on top of which to build a game development project. It was built with the mantra "develop for an interface not an implementation" in mind.
 
 #### To install
 
     git clone https://github.com/c-concat-p/active-canvas.git
 
 
-### The playground is an environment for developing and evaluating active-canvas
+### The playground is an environment for developing and evaluating the Canvas Entertainment System. Develop in the ```main.js``` file with the watch script running and view your changes in the ```index.html``` file.
 
-#### To muck around with active-canvas in the playground first ```cd playground```, then run
+#### First ```cd playground```, then run:
 
     npm run watch

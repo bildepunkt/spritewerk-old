@@ -7,12 +7,13 @@ export default class Cinemize {
     /**
      * Keeps canvas element centered and (with aspect ratio intact) in the viewport
      *
-     * @param  {Integer} width  The element's original width attribute
-     * @param  {Integer} height The element's original height attribute
-     * @param  {OBject}  [opts] The window object
-     * @return {Object}         The new top, left, width, & height
+     * @param  {Integer} width         The element's original width attribute
+     * @param  {Integer} height        The element's original height attribute
+     * @param  {OBject}  [opts]        Optional parameters
+     * @param  {Object}  [opts.window] The DOM window object for testing
+     * @return {Object}                The new top, left, width, & height
      */
-    static fit(width, height, opts) {
+    static fit(width, height, opts = {}) {
         this._window = opts.window || window;
 
         const LANDSCAPE_RATIO = height / width;

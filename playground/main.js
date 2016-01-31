@@ -14,8 +14,16 @@ let canvas = new Canvas(800, 600, {
 });
 let draw = new Draw(canvas.getEl());
 let input = new Input(canvas.getEl());
-let ticker = new Ticker(4);
+let ticker = new Ticker();
 
 ticker.onTick = (delta, ticks)=> {
     console.log(delta, ticks);
 };
+
+input.addListener('click', ()=> {
+    if (ticker.isPaused()) {
+        ticker.resume();
+    } else {
+        ticker.pause();
+    }
+});

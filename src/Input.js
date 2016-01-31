@@ -4,19 +4,18 @@ import keycodes from './lib/keycodes';
  * @class       Input
  * @description A module for handling keyboard, mouse, and touch events on the canvas
  * @author      Chris Peters
+ *
+ * @param {HTMLEntity} canvas                   The canvas element to interact with
+ * @param {Object}     [options]
+ * @param {Boolean}    [opts.canvasFit]         Set to true if using css to fit the canvas in the viewport
+ * @param {Boolean}    [opts.listenForMouse]    Whether or not to listen for mouse events
+ * @param {Boolean}    [opts.listenForTouch]    Whether or not to listen for touch events
+ * @param {Boolean}    [opts.listenForKeyboard] Whether or not to listen for keyboard events
  */
-export default class CanvasInput {
-    /**
-     * @param {HTMLEntity} canvas                   The canvas element to interact with
-     * @param {Object}     [options]
-     * @param {Boolean}    [opts.canvasFit]         Set to true if using css to fit the canvas in the viewport
-     * @param {Boolean}    [opts.listenForMouse]    Whether or not to listen for mouse events
-     * @param {Boolean}    [opts.listenForTouch]    Whether or not to listen for touch events
-     * @param {Boolean}    [opts.listenForKeyboard] Whether or not to listen for keyboard events
-     */
-    constructor(canvas, opts) {
+export default class Input {
+    constructor(canvas, opts = {}) {
         // options
-        this._canvas = opts.canvas;
+        this._canvas = canvas;
         this._canvasFit = opts.canvasFit || true;
         this._listenForMouse = opts.listenForMouse || true;
         this._listenForTouch = opts.listenForTouch || false;
@@ -81,6 +80,7 @@ export default class CanvasInput {
     /**
      * Adds keyboard listeners
      *
+     * @method Input#_addKeyboardListeners
      * @private
      */
     _addKeyboardListeners() {
@@ -94,6 +94,7 @@ export default class CanvasInput {
     /**
      * Adds mouse listeners
      *
+     * @method Input#_addMouseListeners
      * @private
      */
     _addMouseListeners() {
@@ -107,6 +108,7 @@ export default class CanvasInput {
     /**
      * Adds touch listeners
      *
+     * @method Input#_addTouchListeners
      * @private
      */
     _addTouchListeners() {
@@ -120,7 +122,7 @@ export default class CanvasInput {
     /**
      * get the scale ratio of the canvas based on with/heght attrs and css width/height
      *
-     * @private
+     * @method Input#_getScaleFactor
      * @return {Float}
      */
     _getScaleFactor() {
@@ -147,8 +149,9 @@ export default class CanvasInput {
     /**
      * Handler for DOM events. Creates custom event object with helpful properties
      *
-     * @private
+     * @method Input#_handleKeyboard
      * @param {object} inputEvent the DOM input event object
+     * @private
      */
     _handleKeyboard(inputEvent) {
         inputEvent.preventDefault();
@@ -182,6 +185,7 @@ export default class CanvasInput {
      * absolute x/y regardless of scale offset
      * Only uses first touch event, thus not currently supporting multi-touch
      *
+     * @method Input#
      * @param {object} inputEvent The DOM input event object
      */
     _handleMouseAndTouch(inputEvent) {
@@ -259,10 +263,11 @@ export default class CanvasInput {
     /**
      * Checks for duplicate handler in the listener tyoe being added
      *
-     * @private
+     * @method Input#_isDuplicateHandler
      * @param  {Function} handler  The handler to check
      * @param  {Array}    handlers The handlers of the listener type being added
      * @return {Boolean}
+     * @private
      */
     _isDuplicateHandler(handler, handlerObjects) {
         let dup = false;
@@ -280,8 +285,9 @@ export default class CanvasInput {
     /**
      * executes handlers of the given event's type
      *
-     * @private
+     * @method Input#_triggerHandlers
      * @param {object} event
+     * @private
      */
     _triggerHandlers(event) {
         for (let handlerObject of this._listeners[event.type]) {
@@ -305,6 +311,7 @@ export default class CanvasInput {
     /**
      * Adds a handler for a certain event type
      *
+     * @method Input#addListener
      * @param  {string}   type     The event type
      * @param  {function} handler  The function to execute when event triggered
      * @param  {object}   [target] The target to check event trigger against
@@ -336,6 +343,7 @@ export default class CanvasInput {
     /**
      * Removes matching handler if found
      *
+     * @method Input#removeListener
      * @param  {string}   type    the event type
      * @param  {function} handler the handler to remove
      * @return {boolean}  removed Returns true if removed and otherwise false
@@ -364,6 +372,7 @@ export default class CanvasInput {
      * returns an object of the keys currently being pressed
      * eg: { LEFT_ARROW: 37, UP_ARROW: 38 }
      *
+     * @method Input#getKeysDown
      * @return {object}
      */
     getKeysDown() {
@@ -373,6 +382,7 @@ export default class CanvasInput {
     /**
      * Allows user to set a custom hit test method
      *
+     * @method Input#setHitTestMethod
      * @param {Function} fn The user's hit test method
      */
     setHitTestMethod(fn) {
@@ -387,6 +397,7 @@ export default class CanvasInput {
      * ALlows user to set their target's get bounding box name.
      * This method must return  minX maxX minY & maxY
      *
+     * @method Input#setBoundingBoxMethodName
      * @param {string} name The get bounding box method name
      */
     setBoundingBoxMethodName(name) {

@@ -28,14 +28,28 @@ describe('Canvas', function () {
     });
 
     it('creates a <canvas> tag in the DOM', function () {
-        var canvas = new Canvas(800, 600, {
+        var canvas = new Canvas(640, 480, {
             window: $,
             document: $.document
         });
         var canvasEl = $.document.querySelector('canvas');
 
         expect(canvasEl).toEqual(canvas.getEl());
-        expect(canvasEl.width).toEqual(800);
-        expect(canvasEl.height).toEqual(600);
+        expect(canvasEl.width).toEqual(640);
+        expect(canvasEl.height).toEqual(480);
+    });
+
+    it('handles window resizing', function () {
+        var canvas = new Canvas(800, 600, {
+            window: $,
+            document: $.document
+        });
+
+        canvas._handleResize = jasmine.createSpy('handleResize');
+
+        var resize = new Event('resize');
+        $.dispatchEvent(resize);
+
+        expect(canvas._handleResize).toHaveBeenCalled();
     });
 });

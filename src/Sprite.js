@@ -2,6 +2,9 @@
  * @class       Sprite
  * @description Base class for position based objects
  * @author      Chris Peters
+ *
+ * @param {Integer} [x] The initial x position. Default is 0
+ * @param {Integer} [y] The initial y position. Default is 0
  */
 class Sprite {
     constructor(x = 0, y = 0) {
