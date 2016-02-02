@@ -1,12 +1,8 @@
 import Canvas from './src/Canvas';
 import Draw from './src/Draw';
 import Input from './src/Input';
+import Rectangle from './src/Rectangle';
 import Ticker from './src/Ticker';
-
-
-function log(e) {
-    console.log(e);
-}
 
 let canvas = new Canvas(800, 600, {
     canvasBgColor: '#EEE',
@@ -15,15 +11,11 @@ let canvas = new Canvas(800, 600, {
 let draw = new Draw(canvas.getEl());
 let input = new Input(canvas.getEl());
 let ticker = new Ticker();
+let rect = new Rectangle();
 
-ticker.onTick = (delta, ticks)=> {
-    console.log(delta, ticks);
-};
+rect.setFill('#48C');
+draw.render(rect);
 
-input.addListener('click', ()=> {
-    if (ticker.isPaused()) {
-        ticker.resume();
-    } else {
-        ticker.pause();
-    }
-});
+input.addListener('click', function (e) {
+    console.log(e);
+}, rect);

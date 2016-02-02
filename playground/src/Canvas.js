@@ -62,7 +62,7 @@ export default class Canvas {
     }
 
     /**
-     * []
+     * Returns the canvas element
      *
      * @method Canvas#getEl
      * @return {HTMLElement} canvas

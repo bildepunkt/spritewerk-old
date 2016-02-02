@@ -37,10 +37,24 @@ class Preloader {
     }
 
     /**
-     * [_isImage description]
+     * Returns if file has audio extension
+     *
+     * @method Preloader._isAudio
+     * @param  {String}  path The file path
+     * @return {Boolean}
+     */
+    static _isAudio(path) {
+        return path.indexOf('.mp3') > 0 ||
+            path.indexOf('.wav')    > 0 ||
+            path.indexOf('.ogg')    > 0;
+    }
+
+    /**
+     * Returns if file has image extension
+     *
      * @method Preloader._isImage
-     * @param  {?}  path [description]
-     * @return {Boolean}      [description]
+     * @param  {String}  path The file path
+     * @return {Boolean}
      */
     static _isImage(path) {
         return path.indexOf('.png') > 0 ||
@@ -51,22 +65,11 @@ class Preloader {
     }
 
     /**
-     * [_isAudioOrVideo description]
-     * @method Preloader._isAudioOrVideo
-     * @param  {?}        path [description]
-     * @return {Boolean}            [description]
-     */
-    static _isAudioOrVideo(path) {
-        return path.indexOf('.mp3') > 0 ||
-            path.indexOf('.wav')    > 0 ||
-            path.indexOf('.ogg')    > 0;
-    }
-
-    /**
-     * [_isVideo description]
+     * Returns if file has video extension
+     *
      * @method Preloader._isVideo
-     * @param  {?}  path [description]
-     * @return {Boolean}      [description]
+     * @param  {String}  path The file path
+     * @return {Boolean}
      */
     static _isVideo(path) {
         return path.indexOf('.webm') > 0 ||
@@ -76,6 +79,7 @@ class Preloader {
 
     /**
      * Removes event listener when loaded or errored
+     *
      * @method Preloader.removeListener
      * @param  {HTMLEntity} el The html element
      */
@@ -98,6 +102,7 @@ class Preloader {
 
     /**
      * Increments loaded count and calls complete or update based on count
+     *
      * @method Preloader.handleLoad
      * @param  {Object} e The event object
      */
@@ -120,7 +125,6 @@ class Preloader {
      * @method Preloader.update
      * @param {Integer} loaded
      * @param {Integer} total
-     * @method Preloader.update
      */
     static update() {}
 
@@ -128,18 +132,14 @@ class Preloader {
      * [complete description]
      *
      * @method Preload.complete
-     * @return {?} [description]
      */
-    static complete() {
-
-    }
+    static complete() {}
 
     /**
      * Handles errors
      *
      * @method Preloader.error
-     * @param  {?} e [description]
-     * @return {?}   [description]
+     * @param {Object} e The event object
      */
     static error(e) {
         console.warn(e.status);

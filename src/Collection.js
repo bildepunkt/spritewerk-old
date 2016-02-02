@@ -38,7 +38,7 @@ export default class Collection {
      * Iterates the collection's sorted items. The raw item, index, name, and the
      * list being iterated are supplied to the provided function
      *
-     * @param {function} fn
+     * @param {Function} fn
      * @private
      */
     _rawEach(fn) {
