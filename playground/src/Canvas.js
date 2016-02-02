@@ -17,9 +17,12 @@ import Cinemize from './Cinemize';
  * @param {String}      [opts.parentElBgColor] The parent element's bg color
  * @param {Object}      [opts.document]        For testing
  * @param {Object}      [opts.window]          For testing
+ * @param {Boolean}     [fit]                  Set to false to not maximally fill viewport.
+ *                                             Default is true.
  */
 export default class Canvas {
     constructor(width = 800, height = 600, opts = {}) {
+        this._fit = opts.fit === undefined ? true : opts.fit;
         this._width = width;
         this._height = height;
         this._document = opts.document || document;
@@ -49,14 +52,29 @@ export default class Canvas {
      * @private
      */
     _handleResize() {
-        let { top, left, width, height } = Cinemize.fit(
-            this._width, this._height, this._window
-        );
+        if (this._fit) {
+            let { top, left, width, height } = Cinemize.fit(
+                this._width,
+                this._height,
+                this._window.innerWidth,
+                this._window.innerHeight
+            );
 
-        this._canvas.style.top = `${Math.round(top)}px`;
-        this._canvas.style.left = `${Math.round(left)}px`;
-        this._canvas.style.width = `${Math.round(width)}px`;
-        this._canvas.style.height = `${Math.round(height)}px`;
+            this._canvas.style.top = `${Math.round(top)}px`;
+            this._canvas.style.left = `${Math.round(left)}px`;
+            this._canvas.style.width = `${Math.round(width)}px`;
+            this._canvas.style.height = `${Math.round(height)}px`;
+        } else {
+            let { top, left } = Cinemize.center(
+                this._width,
+                this._height,
+                this._window.innerWidth,
+                this._window.innerHeight
+            );
+
+            this._canvas.style.top = `${Math.round(top)}px`;
+            this._canvas.style.left = `${Math.round(left)}px`;
+        }
 
         this.onResize();
     }

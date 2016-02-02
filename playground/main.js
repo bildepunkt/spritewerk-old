@@ -6,7 +6,8 @@ import Ticker from './src/Ticker';
 
 let canvas = new Canvas(800, 600, {
     canvasBgColor: '#EEE',
-    parentElBgColor: '#222'
+    parentElBgColor: '#222',
+    fit: false
 });
 let draw = new Draw(canvas.getEl());
 let input = new Input(canvas.getEl());
