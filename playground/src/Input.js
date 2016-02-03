@@ -301,10 +301,13 @@ export default class Input {
                     handlerObject.target[getBoundingBoxMethodName]())) {
 
                     event.target = handlerObject.target;
-                }
-            }
 
-            handlerObject.handler(event);
+                    // if event was bound with a target trigger handler ONLY if target hit
+                    handlerObject.handler(event);
+                }
+            } else {
+                handlerObject.handler(event);
+            }
         }
     }
 

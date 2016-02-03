@@ -11,7 +11,8 @@ import CanvasTransform from './lib/CanvasTransform';
  */
 export default class Draw {
     constructor(canvas) {
-        this._originalContext = canvas.getContext('2d');
+        this._canvas = canvas;
+        this._originalContext = this._canvas.getContext('2d');
         this._canvasXform = new CanvasTransform(this._originalContext);
 
         this._context = this._originalContext;
@@ -19,6 +20,10 @@ export default class Draw {
         for (let method in this._canvasXform) {
             this._context[method] = this._canvasXform[method];
         }
+    }
+
+    clear() {
+        this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
     }
 
     /**

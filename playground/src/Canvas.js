@@ -1,7 +1,7 @@
 import Cinemize from './Cinemize';
 
 /**
- * @class       Canvas
+ * @class       Stage
  * @description Creates and handles the canvas element. included in the options
  *              parameter is optional dependency injection used for testing against
  *              a virtual dom.
@@ -17,12 +17,12 @@ import Cinemize from './Cinemize';
  * @param {String}      [opts.parentElBgColor] The parent element's bg color
  * @param {Object}      [opts.document]        For testing
  * @param {Object}      [opts.window]          For testing
- * @param {Boolean}     [fit]                  Set to false to not maximally fill viewport.
+ * @param {Boolean}     [fill]                 Set to false to not maximally fill viewport.
  *                                             Default is true.
  */
 export default class Canvas {
     constructor(width = 800, height = 600, opts = {}) {
-        this._fit = opts.fit === undefined ? true : opts.fit;
+        this._fit = opts.fill === undefined ? true : opts.fill;
         this._width = width;
         this._height = height;
         this._document = opts.document || document;
@@ -46,14 +46,14 @@ export default class Canvas {
     }
 
     /**
-     * Adjust canvas Cinemize to fit canvas to resized window
+     * Adjust canvas Cinemize to fill canvas to resized window
      *
      * @method Canvas#_handleResize
      * @private
      */
     _handleResize() {
         if (this._fit) {
-            let { top, left, width, height } = Cinemize.fit(
+            let { top, left, width, height } = Cinemize.fill(
                 this._width,
                 this._height,
                 this._window.innerWidth,
@@ -76,7 +76,7 @@ export default class Canvas {
             this._canvas.style.left = `${Math.round(left)}px`;
         }
 
-        this.onResize();
+        this.onResize(this._canvas);
     }
 
     /**
