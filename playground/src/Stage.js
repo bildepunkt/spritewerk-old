@@ -1,31 +1,38 @@
+import Mobile from './Mobile';
+
 /**
  * @class       Stage
  * @description Creates and handles the canvas element. included in the options
  *              parameter is optional dependency injection used for testing against
  *              a virtual dom.
- * @requires    Stage
+ * @requires    {@link Mobile}
  * @author      Chris Peters
  *
- * @param {Integer}     width                  The width of the canvas
- * @param {Integer}     height                 The height of the canvas
+ * @param {Integer}     [width]                The width of the canvas
+ * @param {Integer}     [height]               The height of the canvas
  * @param {Object}      [opts]                 Stage options
  * @param {HTMLElement} [opts.parentEl]        The element with which to attach the canvas.
  *                                             If none given the body is used.
- * @param {String}      [opts.canvasBgColor]   The canvas element's bg color
  * @param {String}      [opts.parentElBgColor] The parent element's bg color
  * @param {Object}      [opts.document]        For testing
  * @param {Object}      [opts.window]          For testing
- * @param {Boolean}     [fill]                 Set to false to not maximally fill viewport.
+ * @param {Boolean}     [opts.fill]                 Set to false to not maximally fill viewport.
  *                                             Default is true.
+ * @param {Boolean}     [opts.noMobile]        If true, will not add viewport meta tags
  */
 export default class Stage {
     constructor(width = 800, height = 600, opts = {}) {
-        this._fit = opts.fill === undefined ? true : opts.fill;
+        this._fill = opts.fill === undefined ? true : opts.fill;
         this._width = width;
         this._height = height;
         this._document = opts.document || document;
         this._window = opts.window || window;
         this._parentEl = opts.parentEl || this._document.body;
+        this._parentEl.style.backgroundColor = opts.parentElBgColor;
+
+        if (!opts.noMobile) {
+            new Mobile();
+        }
 
         this._createStageElements();
 
@@ -36,24 +43,39 @@ export default class Stage {
     }
 
     _createStageElements() {
+        this._stage = this._document.createElement('div');
+        this._parentEl.appendChild(this._stage);
+
+        this._video = this._document.createElement('video');
+        this._video.style.position = 'absolute';
+        this._stage.appendChild(this._video);
+
         this._canvas = this._document.createElement('canvas');
         this._canvas.width = this._width;
         this._canvas.height = this._height;
         this._canvas.style.position = 'absolute';
-        this._canvas.style.backgroundColor = opts.canvasBgColor;
-
-        this._parentEl.style.backgroundColor = opts.parentElBgColor;
-        this._parentEl.appendChild(this._canvas);
+        this._stage.appendChild(this._canvas);
     }
 
     /**
-     * Decides how to handle resize based on options
+     * Calls _resizeElement for stage elements
      *
      * @method Stage#_handleResize
      * @private
      */
     _handleResize() {
-        if (this._fit) {
+        this._resizeElement(this._canvas);
+        this._resizeElement(this._video);
+    }
+
+    /**
+     * Decides how to handle resize based on options
+     *
+     * @method Stage#_resizeElement
+     * @param  {HTMLEntity} el The element to resize
+     */
+    _resizeElement(el) {
+        if (this._fill) {
             let { top, left, width, height } = Stage.fill(
                 this._width,
                 this._height,
@@ -61,10 +83,10 @@ export default class Stage {
                 this._window.innerHeight
             );
 
-            this._canvas.style.top = `${Math.round(top)}px`;
-            this._canvas.style.left = `${Math.round(left)}px`;
-            this._canvas.style.width = `${Math.round(width)}px`;
-            this._canvas.style.height = `${Math.round(height)}px`;
+            el.style.top = `${Math.round(top)}px`;
+            el.style.left = `${Math.round(left)}px`;
+            el.style.width = `${Math.round(width)}px`;
+            el.style.height = `${Math.round(height)}px`;
         } else {
             let { top, left } = Stage.center(
                 this._width,
@@ -73,11 +95,9 @@ export default class Stage {
                 this._window.innerHeight
             );
 
-            this._canvas.style.top = `${Math.round(top)}px`;
-            this._canvas.style.left = `${Math.round(left)}px`;
+            el.style.top = `${Math.round(top)}px`;
+            el.style.left = `${Math.round(left)}px`;
         }
-
-        this.onResize(this._canvas);
     }
 
     /**

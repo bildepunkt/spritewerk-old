@@ -5,8 +5,8 @@ import Rectangle from './src/Rectangle';
 import Ticker from './src/Ticker';
 
 let stage = new Stage(800, 600, {
-    canvasBgColor: '#EEE',
-    parentElBgColor: '#222'
+    parentElBgColor: '#222',
+    fill: true
 });
 let draw = new Draw(stage.getCanvas());
 let input = new Input(stage.getCanvas());
@@ -15,7 +15,7 @@ let rect = new Rectangle();
 
 rect.setFill('#48C');
 ticker.onTick = function () {
-    draw.clear();
+    draw.clear('#EEE');
     draw.render(rect);
 };
 

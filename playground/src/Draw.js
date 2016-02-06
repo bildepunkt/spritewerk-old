@@ -22,8 +22,15 @@ export default class Draw {
         }
     }
 
-    clear() {
+    clear(color) {
         this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+
+        if (color) {
+            this._context.save();
+            this._context.fillStyle = color;
+            this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
+            this._context.restore();
+        }
     }
 
     /**
