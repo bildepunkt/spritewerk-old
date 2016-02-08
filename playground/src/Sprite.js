@@ -12,6 +12,8 @@ class Sprite {
         this._y = y;
         this._srcX = 0;
         this._srcY = 0;
+        this._srcWidth = 32;
+        this._srcHeight = 32;
         this._width = 32;
         this._height = 32;
         this._scaleX = 1;
@@ -26,9 +28,9 @@ class Sprite {
     }
 
     /**
-     * @return {Object}
+     * @return {Object} The bounding area
      */
-    getBoundingBox() {
+    getBoundingArea() {
         return {
             maxX: this._x + this._width,
             maxY: this._y + this._height,

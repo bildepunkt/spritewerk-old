@@ -1,12 +1,12 @@
-import Canvas from 'Canvas';
-import Cinemize from 'Cinemize';
-import Collection from 'Collection';
-import Draw from 'Draw';
-import Input from 'Input';
-import Preloader from 'Preloader';
-import Sprite from 'Sprite';
-import Ticker from 'Ticker';
+import Collection from './Collection';
+import Draw from './Draw';
+import Input from './Input';
+import Mobile from './Mobile'
+import Preloader from './Preloader';
+import Sprite from './Sprite';
+import Stage from './Stage';
+import Ticker from './Ticker';
 
 export default {
-    Canvas, Cinemize, Collection, Draw, Input, Preloader, Sprite, Ticker
+    Collection, Draw, Input, Mobile, Preloader, Sprite, Stage, Ticker
 };

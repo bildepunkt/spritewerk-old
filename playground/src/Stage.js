@@ -1,24 +1,20 @@
-import Mobile from './Mobile';
-
 /**
  * @class       Stage
  * @description Creates and handles the canvas element. included in the options
  *              parameter is optional dependency injection used for testing against
  *              a virtual dom.
- * @requires    {@link Mobile}
  * @author      Chris Peters
  *
- * @param {Integer}     [width]                The width of the canvas
- * @param {Integer}     [height]               The height of the canvas
- * @param {Object}      [opts]                 Stage options
- * @param {HTMLElement} [opts.parentEl]        The element with which to attach the canvas.
- *                                             If none given the body is used.
- * @param {String}      [opts.parentElBgColor] The parent element's bg color
- * @param {Object}      [opts.document]        For testing
- * @param {Object}      [opts.window]          For testing
- * @param {Boolean}     [opts.fill]                 Set to false to not maximally fill viewport.
- *                                             Default is true.
- * @param {Boolean}     [opts.noMobile]        If true, will not add viewport meta tags
+ * @param {Integer}     [width]         The width of the canvas
+ * @param {Integer}     [height]        The height of the canvas
+ * @param {Object}      [opts]          Stage options
+ * @param {HTMLElement} [opts.parentEl] The element with which to attach the canvas.
+ *                                      If none given the body is used.
+ * @param {String}      [opts.bgColor]  The parent element's bg color
+ * @param {Object}      [opts.document] For testing
+ * @param {Object}      [opts.window]   For testing
+ * @param {Boolean}     [opts.fill]     Set to false to not maximally fill viewport.
+ *                                      Default is true.
  */
 export default class Stage {
     constructor(width = 800, height = 600, opts = {}) {
@@ -28,11 +24,8 @@ export default class Stage {
         this._document = opts.document || document;
         this._window = opts.window || window;
         this._parentEl = opts.parentEl || this._document.body;
-        this._parentEl.style.backgroundColor = opts.parentElBgColor;
 
-        if (!opts.noMobile) {
-            new Mobile();
-        }
+        this._document.documentElement.style.backgroundColor = opts.bgColor;
 
         this._createStageElements();
 

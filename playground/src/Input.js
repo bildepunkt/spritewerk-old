@@ -6,7 +6,7 @@ import keycodes from './lib/keycodes';
  * @author      Chris Peters
  *
  * @param {HTMLEntity} canvas                   The canvas element to interact with
- * @param {Object}     [options]
+ * @param {Object}     [opts]
  * @param {Boolean}    [opts.canvasFit]         Set to true if using css to fit the canvas in the viewport
  * @param {Boolean}    [opts.listenForMouse]    Whether or not to listen for mouse events
  * @param {Boolean}    [opts.listenForTouch]    Whether or not to listen for touch events
@@ -62,7 +62,6 @@ export default class Input {
         this._keysDown = {};
 
         this._userHitTestMethod = null;
-        this._userGetBoundingBoxMethodName = null;
 
         if (this._listenForKeyboard) {
             this._addKeyboardListeners();
@@ -75,6 +74,9 @@ export default class Input {
         if (this._listenForTouch) {
             this._addTouchListeners();
         }
+
+        this._onTick = this._onTick.bind(this);
+        this._document.addEventListener('tick', this._onTick, false);
     }
 
     /**
@@ -160,7 +162,6 @@ export default class Input {
         let event = {
             domEvent: inputEvent,
             type: inputEvent.type,
-            keysDown: this.getKeysDown(),
             keyCode: inputEvent.keyCode,
             keyName: typeof keyName === 'object' && keyName.length ?
                 keyName[0] :
@@ -176,7 +177,9 @@ export default class Input {
                 break;
         }
 
-        this._triggerHandlers(event);
+        event.keysDown = this.getKeysDown();
+
+        this._queuedEvents.push(event);
     }
 
     /**
@@ -196,9 +199,8 @@ export default class Input {
             domEvent: inputEvent,
             type: inputEvent.type
         };
-        let events = [];
 
-        events.push(event);
+        this._queuedEvents.push(event);
 
         if (inputEvent.hasOwnProperty('touches')) {
             event.absX = inputEvent.touches[0].pageX - this._canvas.offsetLeft;
@@ -228,7 +230,7 @@ export default class Input {
                 if (this._isDragging) {
                     this._isDragging = false;
 
-                    events.push(this._extendEvent(event, {
+                    this._queuedEvents.push(this._extendEvent(event, {
                         type: this._uiEvents.DRAG_END
                     }));
                 }
@@ -242,21 +244,17 @@ export default class Input {
                     if (!this._isDragging) {
                         this._isDragging = true;
 
-                        events.push(this._extendEvent(event, {
+                        this._queuedEvents.push(this._extendEvent(event, {
                             type: this._uiEvents.DRAG_START
                         }));
                     }
 
-                    events.push(this._extendEvent(event, {
+                    this._queuedEvents.push(this._extendEvent(event, {
                         type: this._uiEvents.DRAG
                     }));
                 }
 
                 break;
-        }
-
-        for (let event of events) {
-            this._triggerHandlers(event);
         }
     }
 
@@ -283,6 +281,20 @@ export default class Input {
     }
 
     /**
+     * Triggers all queued events. Passes the factor and ticks from {@link Ticker}
+     *
+     * @method Input#_onTick
+     * @param  {Object} e The event object
+     */
+    _onTick(e) {
+        for (let event of this._queuedEvents) {
+            this._triggerHandlers(event);
+        }
+
+        this._queuedEvents = [];
+    }
+
+    /**
      * executes handlers of the given event's type
      *
      * @method Input#_triggerHandlers
@@ -294,11 +306,9 @@ export default class Input {
 
             if (handlerObject.target) {
                 let hitTest = this._userHitTestMethod || this._hitTest;
-                let getBoundingBoxMethodName = this._userGetBoundingBoxMethodName ||
-                    'getBoundingBox';
 
                 if (hitTest(event.x, event.y,
-                    handlerObject.target[getBoundingBoxMethodName]())) {
+                    handlerObject.target.getBoundingArea())) {
 
                     event.target = handlerObject.target;
 
@@ -394,16 +404,5 @@ export default class Input {
         }
 
         this._userHitTestMethod = fn;
-    }
-
-    /**
-     * ALlows user to set their target's get bounding box name.
-     * This method must return  minX maxX minY & maxY
-     *
-     * @method Input#setBoundingBoxMethodName
-     * @param {string} name The get bounding box method name
-     */
-    setBoundingBoxMethodName(name) {
-        this._userGetBoundingBoxMethodName = name;
     }
 }

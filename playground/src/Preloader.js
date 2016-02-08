@@ -7,9 +7,9 @@ class Preloader {
     /**
      * Parses file types and preloads them via element tags
      * @method Preloader.load
-     * @param {Object[]} paths An array of file paths
+     * @param {...String} paths File paths to preload
      */
-    static load(paths) {
+    static load(...paths) {
         Preloader.loaded = 0;
         Preloader.total = paths.length;
 
@@ -119,8 +119,8 @@ class Preloader {
     }
 
     /**
-     * A noop callback for updates. Is passed loaded/total;
-     * useful for displaying percentage feedback
+     * Callback executed every time an asset has loaded. It gets passed loaded & total
+     * which is useful for displaying percentage feedback.
      *
      * @method Preloader.update
      * @param {Integer} loaded
@@ -129,7 +129,7 @@ class Preloader {
     static update() {}
 
     /**
-     * [complete description]
+     * Callback executed when loading complete
      *
      * @method Preload.complete
      */

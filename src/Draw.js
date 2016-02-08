@@ -14,6 +14,7 @@ export default class Draw {
         this._canvas = canvas;
         this._originalContext = this._canvas.getContext('2d');
         this._canvasXform = new CanvasTransform(this._originalContext);
+        this._imageSmoothingEnabled = true;
 
         this._context = this._originalContext;
 
@@ -22,6 +23,12 @@ export default class Draw {
         }
     }
 
+    /**
+     * Clears the entire canvas and optionally fills with a color
+     *
+     * @method Draw#clear
+     * @param  {String} [color] If passed, will fill the canvas with the color value
+     */
     clear(color) {
         this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
 
@@ -34,22 +41,34 @@ export default class Draw {
     }
 
     /**
-     * []
+     * Returns the context object
      *
      * @method Draw#getContext
-     * @return {Object} The context object
+     * @return {Object} The 2D context object
      */
     getContext() {
         return this._context;
     }
 
     /**
-     * [render description]
+     * Calls an entity's render method passing the context
      *
      * @method Draw#render
      * @param  {Object} entity [description]
      */
     render(entity) {
         entity.render(this._context);
+    }
+
+    /**
+     * Set the context image smoothing
+     *
+     * @method Draw#setImageSmoothing
+     * @param  {Boolean} val The image smoothing value
+     */
+    setImageSmoothing(val) {
+        this._imageSmoothingEnabled = val;
+
+        return this;
     }
 }

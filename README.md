@@ -1,7 +1,7 @@
 Canvas Entertainment System
 ===========================
 
-### The Canvas Entertainment System is a set of flexible, generic classes on top of which to build a game development project. It was built with the mantra "develop for an interface not an implementation" in mind.
+### The Canvas Entertainment System is a set of flexible, generic classes on top of which to build a game development project for the Canvas. It was built with the mantra "develop for an interface not an implementation" in mind.
 
 #### To install
 

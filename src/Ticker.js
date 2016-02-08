@@ -22,13 +22,15 @@ export default class Ticker {
     }
 
     /**
-     * Calculates whether or not to call {@link Ticker#onTick} based on _fps
+     * Calculates whether or not to call {@link Ticker#onTick} based on {@link Ticker#_fps}.
+     * If the correct amount of time has passed the {@link Ticker#onTick} callback will fire and
+     * the <code>tick</code> event will be dispatched via the <code>document</code> object.
      *
      * @method Ticker#_update
      */
     _update() {
-        let now = Date.now();
-        let delta = now - this._then;
+        const now = Date.now();
+        const delta = now - this._then;
 
         if (delta > this._interval) {
             // trim @then if it's more than @interval
@@ -36,6 +38,16 @@ export default class Ticker {
             this._ticks += 1;
 
             this.onTick(delta / this._interval, this._ticks);
+
+            // create and fire tick events
+            const tickEvent = new CustomEvent('tick', {
+                detail: {
+                    factor: delta / this._interval,
+                    ticks: this._ticks
+                }
+            });
+
+            document.dispatchEvent(tickEvent);
         }
 
         requestAnimationFrame(this._update);
@@ -48,7 +60,7 @@ export default class Ticker {
      * @param {Integer} factor The time elapsed between ticks.
      *                         Multiply against gameplay elements for consistent
      *                         movement.
-     * @param {Integer} ticks The amount of ticks that have accumulated
+     * @param {Integer} ticks  The amount of ticks that have accumulated
      */
     onTick() {}
 
