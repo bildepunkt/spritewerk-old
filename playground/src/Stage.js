@@ -54,7 +54,6 @@ export default class Stage {
      * Calls _resizeElement for stage elements
      *
      * @method Stage#_handleResize
-     * @private
      */
     _handleResize() {
         this._resizeElement(this._canvas);

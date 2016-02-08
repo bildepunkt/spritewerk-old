@@ -56,12 +56,11 @@ export default class Input {
         }
 
         this._keycodes = keycodes;
-
         this._canDrag = false;
         this._isDragging = false;
         this._keysDown = {};
-
         this._userHitTestMethod = null;
+        this._queuedEvents = [];
 
         if (this._listenForKeyboard) {
             this._addKeyboardListeners();
@@ -76,7 +75,7 @@ export default class Input {
         }
 
         this._onTick = this._onTick.bind(this);
-        this._document.addEventListener('tick', this._onTick, false);
+        document.addEventListener('tick', this._onTick, false);
     }
 
     /**

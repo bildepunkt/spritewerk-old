@@ -7,12 +7,18 @@ import Sprite from './Sprite';
  * @author  Chris Peters
  */
 export default class Bitmap extends Sprite {
-    constructor() {
-        super();
+    constructor(x = 0, y = 0) {
+        super(x, y);
 
         this._image = null;
     }
 
+    /**
+     * Render the entity via context's drawImage
+     *
+     * @method Bitmap#render
+     * @param  {Object} context The context object
+     */
     render(context) {
         context.drawImage(
             this._image,
@@ -23,18 +29,30 @@ export default class Bitmap extends Sprite {
             this._x,
             this._y,
             this._width,
-            this._height,
+            this._height
         );
     }
 
     /**
-     * [setImage description]
+     * Set the iamge to render and sets dimensions if not set
      *
-     * @method Bitmap#setFill
-     * @param  {String} val The fill color hex, rgb, rgba, etc.
+     * @method Bitmap#setImage
+     * @param  {String} path The image path
      */
-    setImage(val) {
-        this._image = val;
+    setImage(path) {
+        let img = new Image();
+        img.src = path;
+        this._image = img;
+
+        if (!this._srcWidth && !this._srcWidth) {
+            this._srcWidth = this._image.width;
+            this._srcHeight = this._image.height;
+        }
+
+        if (!this._width && !this._height) {
+            this._width = this._image.width;
+            this._height = this._image.height;
+        }
 
         return this
     }

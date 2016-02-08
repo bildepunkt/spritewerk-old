@@ -23,6 +23,10 @@ class Sprite {
         this._opacity = 1;
     }
 
+    /**
+     * @method Sprite.getCompositeDefault
+     * @return {String}
+     */
     static getCompositeDefault() {
         return Sprite._compositeDefault;
     }
@@ -40,6 +44,7 @@ class Sprite {
     }
 
     /**
+     * @method Sprite#getComposite
      * @return {String}
      */
     getComposite() {
@@ -47,13 +52,15 @@ class Sprite {
     }
 
     /**
-     * @return {String}
+     * @method Sprite#getHeight
+     * @return {Integer}
      */
     getHeight() {
         return this._height;
     }
 
     /**
+     * @method Sprite#getOpacity
      * @return {Float}
      */
     getOpacity() {
@@ -61,6 +68,7 @@ class Sprite {
     }
 
     /**
+     * @method Sprite#getRotation
      * @return {Float}
      */
     getRotation() {
@@ -68,6 +76,7 @@ class Sprite {
     }
 
     /**
+     * @method Sprite#getScaleX
      * @return {Integer}
      */
     getScaleX() {
@@ -75,6 +84,7 @@ class Sprite {
     }
 
     /**
+     * @method Sprite#getScaleY
      * @return {Integer}
      */
     getScaleY() {
@@ -82,6 +92,7 @@ class Sprite {
     }
 
     /**
+     * @method Sprite#getSrcX
      * @return {Integer}
      */
     getSrcX() {
@@ -89,6 +100,7 @@ class Sprite {
     }
 
     /**
+     * @method Sprite#getSrcY
      * @return {Integer}
      */
     getSrcY() {
@@ -96,6 +108,7 @@ class Sprite {
     }
 
     /**
+     * @method Sprite#getWidth
      * @return {Integer}
      */
     getWidth() {
@@ -103,6 +116,7 @@ class Sprite {
     }
 
     /**
+     * @method Sprite#getX
      * @return {Integer}
      */
     getX() {
@@ -110,72 +124,139 @@ class Sprite {
     }
 
     /**
+     * @method Sprite#getY
      * @return {Integer}
      */
     getY() {
         return this._y;
     }
 
+    /**
+     *
+     * @method Sprite#setComposite
+     * @param  {Integer} val The composite value
+     * @return {Sprite}
+     */
     setComposite(val) {
         this._composite = val;
 
         return this;
     }
 
+    /**
+     *
+     * @method Sprite#setHeight
+     * @param  {Integer} val The height value
+     * @return {Sprite}
+     */
     setHeight(val) {
         this._height = val;
 
         return this;
     }
 
+    /**
+     *
+     * @method Sprite#setOpacity
+     * @param  {Float} val The opacity value
+     * @return {Sprite}
+     */
     setOpacity(val) {
         this._opacity = val;
 
         return this;
     }
 
+    /**
+     *
+     * @method Sprite#setRotation
+     * @param  {Integer} val The rotation value
+     * @return {Sprite}
+     */
     setRotation(val) {
         this._rotation = val;
 
         return this;
     }
 
+    /**
+     *
+     * @method Sprite#setScaleX
+     * @param  {Integer} val The scaleX value
+     * @return {Sprite}
+     */
     setScaleX(val) {
         this._scaleX = val;
 
         return this;
     }
 
+    /**
+     *
+     * @method Sprite#setScaleY
+     * @param  {Integer} val The scaleY value
+     * @return {Sprite}
+     */
     setScaleY(val) {
         this._scaleY = val;
 
         return this;
     }
 
+    /**
+     *
+     * @method Sprite#setSrcX
+     * @param  {Integer} val The srcX value
+     * @return {Sprite}
+     */
     setSrcX(val) {
         this._srcX = val;
 
         return this;
     }
 
+    /**
+     *
+     * @method Sprite#setSrcY
+     * @param  {Integer} val The srcY value
+     * @return {Sprite}
+     */
     setSrcY(val) {
         this._srcY = val;
 
         return this;
     }
 
+    /**
+     *
+     * @method Sprite#setWidth
+     * @param  {Integer} val The width value
+     * @return {Sprite}
+     */
     setWidth(val) {
         this._width = val;
 
         return this;
     }
 
+    /**
+     *
+     * @method Sprite#setComposite
+     * @param  {Integer} val The x value
+     * @return {Sprite}
+     */
     setX(val) {
         this._x = val;
 
         return this;
     }
 
+    /**
+     *
+     * @method Sprite#setY
+     * @param  {Integer} val The y value
+     * @return {Sprite}
+     */
     setY(val) {
         this._y = val;
 
@@ -184,8 +265,8 @@ class Sprite {
 }
 
 /**
+ * @member Sprite._compositeDefault
  * @type {String}
- * @static
  */
 Sprite._compositeDefault = 'source-over';
 
