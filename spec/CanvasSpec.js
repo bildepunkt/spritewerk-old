@@ -1,9 +1,9 @@
 'use strict';
 
 var jsdom = require('jsdom');
-var Canvas = require('../build/Canvas').default;
+var Stage = require('../build/Stage').default;
 
-describe('Canvas', function () {
+describe('Stage', function () {
     var $;
 
     beforeEach(function (done) {
@@ -18,38 +18,91 @@ describe('Canvas', function () {
         );
     });
 
-    it('instantiates a Canvas object', function () {
-        var canvas = new Canvas(800, 600, {
+    it('instantiates a Stage object', function () {
+        var stage = new Stage(800, 600, {
             window: $,
             document: $.document
         });
 
-        expect(canvas).toBeTruthy();
+        expect(stage).toBeTruthy();
     });
 
     it('creates a <canvas> tag in the DOM', function () {
-        var canvas = new Canvas(640, 480, {
+        var stage = new Stage(640, 480, {
             window: $,
             document: $.document
         });
-        var canvasEl = $.document.querySelector('canvas');
+        var canvas = $.document.querySelector('canvas');
 
-        expect(canvasEl).toEqual(canvas.getEl());
-        expect(canvasEl.width).toEqual(640);
-        expect(canvasEl.height).toEqual(480);
+        expect(canvas).toEqual(stage.getCanvas());
+        expect(canvas.width).toEqual(640);
+        expect(canvas.height).toEqual(480);
     });
 
-    it('handles window resizing', function () {
-        var canvas = new Canvas(800, 600, {
+    it('creates a <video> tag in the DOM', function () {
+        var stage = new Stage(640, 480, {
             window: $,
             document: $.document
         });
 
-        canvas._handleResize = jasmine.createSpy('handleResize');
+        var video = $.document.querySelector('video');
 
-        var resize = new Event('resize');
-        $.dispatchEvent(resize);
+        expect(video).toEqual(stage.getVideo());
+    });
 
-        expect(canvas._handleResize).toHaveBeenCalled();
+    it('resizes DOM elements', function () {
+        var stage = new Stage(640, 480, {
+            window: $,
+            document: $.document
+        });
+
+        $.innerHeight = 640;
+        $.innerWidth = 640;
+
+        stage._handleResize();
+
+        var video = $.document.querySelector('video');
+        var canvas = $.document.querySelector('canvas');
+
+        expect(video.style.width).toEqual('640px');
+        expect(video.style.height).toEqual('480px');
+        expect(canvas.style.width).toEqual('640px');
+        expect(canvas.style.height).toEqual('480px');
+    });
+
+    it('fills the stage into the viewport', function () {
+        var stage = new Stage(800, 600, {
+            window: $,
+            document: $.document
+        });
+
+        $.innerHeight = 640;
+        $.innerWidth = 640;
+
+        expect(
+            Stage.fill(800, 600, $.innerWidth, $.innerHeight)
+        ).toEqual({
+            top: 80,
+            left: 0,
+            width: 640,
+            height: 480
+        });
+    });
+
+    it('centers the stage into the viewport', function () {
+        var stage = new Stage(640, 480, {
+            window: $,
+            document: $.document
+        });
+
+        $.innerHeight = 600;
+        $.innerWidth = 800;
+
+        expect(
+            Stage.center(640, 480, $.innerWidth, $.innerHeight)
+        ).toEqual({
+            left: 80,
+            top: 60
+        });
     });
 });

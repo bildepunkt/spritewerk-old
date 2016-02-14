@@ -103,6 +103,16 @@ export default class Stage {
     }
 
     /**
+     * Returns the video element
+     *
+     * @method Stage#getVideo
+     * @return {HTMLElement}
+     */
+    getVideo() {
+        return this._video;
+    }
+
+    /**
      * Maximizes an element (with aspect ratio intact) in the viewport via CSS.
      *
      * @method Stage.fill

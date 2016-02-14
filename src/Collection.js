@@ -117,10 +117,10 @@ export default class Collection {
         let filteredItems = [];
 
         this.each((item, i, name)=> {
-            let filteredItem = fn(item, i, name);
+            let predicate = fn(item, i, name);
 
-            if (filteredItem) {
-                filteredItems.push(filteredItem);
+            if (predicate) {
+                filteredItems.push(item);
             }
         }, scope);
 
@@ -165,7 +165,7 @@ export default class Collection {
      * @return {Any}
      */
     getItemAt(index) {
-        return this._items[index].value;
+        return this._items[index].item;
     }
 
     /**
@@ -232,12 +232,12 @@ export default class Collection {
      * Assigns a new value to an existing item
      *
      * @param {String} name  The name of the object to modify
-     * @param {Any}    value The
+     * @param {Any}    value The new value
      */
     setItem(name, value) {
-        this._each((iterItem, i, iterName)=> {
+        this._rawEach((iterItem, i, iterName)=> {
             if (name === iterName) {
-                iterItem.value = value;
+                iterItem.item = value;
 
                 // break out of loop
                 return false;
