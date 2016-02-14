@@ -6,7 +6,8 @@ Canvas Entertainment System
 #### To install
 
     git clone https://github.com/c-concat-p/active-canvas.git
-
+    
+or download archive [here](https://github.com/c-concat-p/spritewerk/archive/canvas-entertainment-system.zip).
 
 #### To Use
 
