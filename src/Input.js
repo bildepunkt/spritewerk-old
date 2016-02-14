@@ -139,12 +139,13 @@ export default class Input {
     }
 
     /**
-     * [_hitTest description]
-     * @method _hitTest
-     * @param  {[type]} x           [description]
-     * @param  {[type]} y           [description]
-     * @param  {[type]} boundingBox [description]
-     * @return {[type]}             [description]
+     * Checks if point is inside rectangle
+     *
+     * @method Input#_hitTest
+     * @param  {Integer} x          [description]
+     * @param  {Integer} y          [description]
+     * @param  {Object} boundingBox [description]
+     * @return {Boolean}
      */
     _hitTest(x, y, boundingBox) {
         return x >= boundingBox.minX && x <= boundingBox.maxX &&
@@ -386,7 +387,7 @@ export default class Input {
 
     /**
      * returns an object of the keys currently being pressed
-     * eg: { LEFT_ARROW: 37, UP_ARROW: 38 }
+     * eg: <code>{ LEFT_ARROW: 37, UP_ARROW: 38 }</code>
      *
      * @method Input#getKeysDown
      * @return {Object}

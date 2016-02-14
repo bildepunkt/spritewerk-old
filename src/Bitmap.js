@@ -2,7 +2,7 @@ import Sprite from './Sprite';
 
 /**
  * @class   Bitmap
- * @extends {@link Sprite}
+ * @extends Sprite
  * @desc    A sprite that renders an image asset
  * @author  Chris Peters
  */

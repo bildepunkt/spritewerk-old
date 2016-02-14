@@ -70,7 +70,7 @@ export default class Collection {
      * Add multiple items
      *
      * @param {...Object} items Can be the object itself or an object containing the entity and it's name
-     *                          eg: { item: Entity, name: 'entityName' }
+     *                          eg: <code>{ item: Entity, name: 'entityName' }</code>
      * @return {Collection}
      */
     addItems(...items) {
