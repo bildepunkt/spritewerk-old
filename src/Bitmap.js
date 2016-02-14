@@ -11,6 +11,7 @@ export default class Bitmap extends Sprite {
         super(x, y);
 
         this._image = null;
+        this._tiling = 'no-repeat';
     }
 
     /**
@@ -20,17 +21,26 @@ export default class Bitmap extends Sprite {
      * @param  {Object} context The context object
      */
     render(context) {
-        context.drawImage(
-            this._image,
-            this._srcX,
-            this._srcY,
-            this._srcWidth,
-            this._srcHeight,
-            this._x,
-            this._y,
-            this._width,
-            this._height
-        );
+        if (this._tiling != 'no-repeat') {
+            context.save();
+            const pattern = context.createPattern(this._image, this._tiling);
+            context.rect(this._x, this._y, this._width, this._height);
+            context.fillStyle = 'pattern';
+            context.fill();
+            context.restore();
+        } else {
+            context.drawImage(
+                this._image,
+                this._srcX,
+                this._srcY,
+                this._srcWidth,
+                this._srcHeight,
+                this._x,
+                this._y,
+                this._width,
+                this._height
+            );
+        }
     }
 
     /**
@@ -38,6 +48,7 @@ export default class Bitmap extends Sprite {
      *
      * @method Bitmap#setImage
      * @param  {String} path The image path
+     * @return {Bitmap}
      */
     setImage(path) {
         let img = new Image();
@@ -55,5 +66,19 @@ export default class Bitmap extends Sprite {
         }
 
         return this
+    }
+
+    /**
+     * Choose how to tile the image. Can be <code>repeat</code>, <code>repeat-x</code>
+     * <code>repeat-y</code> or <code>no-repeat</code>. Default is <code>no-repeat</code>.
+     *
+     * @method Bitmap#setTiling
+     * @param  {String} val The tiling value
+     * @return {Bitmap}
+     */
+    setTiling(val) {
+        this._tiling = val;
+
+        return this;
     }
 }

@@ -138,13 +138,17 @@ export default class Input {
         return 100 / factor / 100;
     }
 
+    /**
+     * [_hitTest description]
+     * @method _hitTest
+     * @param  {[type]} x           [description]
+     * @param  {[type]} y           [description]
+     * @param  {[type]} boundingBox [description]
+     * @return {[type]}             [description]
+     */
     _hitTest(x, y, boundingBox) {
         return x >= boundingBox.minX && x <= boundingBox.maxX &&
             y >= boundingBox.minY && y <= boundingBox.maxY;
-    }
-
-    _extendEvent(event, options) {
-        return Object.assign({}, event, options);
     }
 
     /**
@@ -229,7 +233,7 @@ export default class Input {
                 if (this._isDragging) {
                     this._isDragging = false;
 
-                    this._queuedEvents.push(this._extendEvent(event, {
+                    this._queuedEvents.push(Object.assign({}, event, {
                         type: this._uiEvents.DRAG_END
                     }));
                 }
@@ -243,12 +247,12 @@ export default class Input {
                     if (!this._isDragging) {
                         this._isDragging = true;
 
-                        this._queuedEvents.push(this._extendEvent(event, {
+                        this._queuedEvents.push(Object.assign({}, event, {
                             type: this._uiEvents.DRAG_START
                         }));
                     }
 
-                    this._queuedEvents.push(this._extendEvent(event, {
+                    this._queuedEvents.push(Object.assign({}, event, {
                         type: this._uiEvents.DRAG
                     }));
                 }
@@ -385,7 +389,7 @@ export default class Input {
      * eg: { LEFT_ARROW: 37, UP_ARROW: 38 }
      *
      * @method Input#getKeysDown
-     * @return {object}
+     * @return {Object}
      */
     getKeysDown() {
         return this._keysDown;

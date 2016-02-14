@@ -19,6 +19,13 @@ class Sprite {
         this._scaleX = 1;
         this._scaleY = 1;
         this._rotation = 0;
+        /**
+         * The composite operation type. Can be source-atop|source-in|source-out|source-over|destination-atop|destination-in|destination-out|destination-over|lighter|xor|copy
+         * Default is 'source-over'
+         *
+         * @member Sprite#_composite
+         * @type {String}
+         */
         this._composite = Sprite._compositeDefault;
         this._opacity = 1;
     }

@@ -15,6 +15,7 @@ export default class Rectangle extends Sprite {
     }
 
     render(context) {
+        context.save();
         context.fillStyle = this._fill;
         context.fillRect(this._x, this._y, this._width, this._height);
 
@@ -22,6 +23,8 @@ export default class Rectangle extends Sprite {
             context.strokeStyle = this._stroke;
             context.strokeRect(this._x, this._y, this._width, this._height);
         }
+
+        context.restore();
     }
 
     /**

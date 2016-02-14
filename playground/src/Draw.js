@@ -23,6 +23,11 @@ export default class Draw {
         for (let method in this._canvasXform) {
             this._context[method] = this._canvasXform[method];
         }
+
+        this._context.imageSmoothingEnabled = this._imageSmoothingEnabled;
+        this._context.mozImageSmoothingEnabled = this._imageSmoothingEnabled;
+        this._context.webkitImageSmoothingEnabled = this._imageSmoothingEnabled;
+        this._context.msImageSmoothingEnabled = this._imageSmoothingEnabled;
     }
 
     /**
@@ -76,6 +81,10 @@ export default class Draw {
      */
     setImageSmoothing(val) {
         this._imageSmoothingEnabled = val;
+        this._context.imageSmoothingEnabled = this._imageSmoothingEnabled;
+        this._context.mozImageSmoothingEnabled = this._imageSmoothingEnabled;
+        this._context.webkitImageSmoothingEnabled = this._imageSmoothingEnabled;
+        this._context.msImageSmoothingEnabled = this._imageSmoothingEnabled;
 
         return this;
     }
