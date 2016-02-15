@@ -6,13 +6,14 @@ Canvas Entertainment System
 #### To install
 
     git clone https://github.com/c-concat-p/active-canvas.git
-
+    
+or download archive [here](https://github.com/c-concat-p/spritewerk/archive/canvas-entertainment-system.zip).
 
 #### To Use
 
 The playground is an environment for developing and evaluating the Canvas Entertainment System. Develop in the ```main.js``` file with the watch script running and view your changes in the ```index.html``` file.
 
-#### First ```cd playground```, then run:
+First ```cd playground```, then run:
 
     npm run watch
 
