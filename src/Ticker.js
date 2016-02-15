@@ -3,10 +3,15 @@
  * @description Executes callback based on given fps and requestAnimationFrame
  * @author      Chris Peters
  *
- * @param {Boolean} [start] Whether to start on instantiate. Default is true
+ * @param {Boolean} [start]         Whether to start on instantiate. Default is true
+ * @param {Object}  [opts]          Options
+ * @param {Object}  [opts.window]   window object for testing
+ * @param {Object}  [opts.document] document object for testing
  */
 export default class Ticker {
-    constructor(start = true) {
+    constructor(start = true, opts = {}) {
+        this._window = opts.window || window;
+        this._document = opts.document || document;
         this._then = Date.now();
         this._ticks = 0;
 

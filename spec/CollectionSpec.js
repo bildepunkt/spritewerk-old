@@ -1,6 +1,5 @@
 'use strict';
 
-var jsdom = require('jsdom');
 var Collection = require('../build/Collection').default;
 
 describe('Collection', function () {

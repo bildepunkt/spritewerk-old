@@ -11,6 +11,8 @@ import keycodes from './lib/keycodes';
  * @param {Boolean}    [opts.listenForMouse]    Whether or not to listen for mouse events
  * @param {Boolean}    [opts.listenForTouch]    Whether or not to listen for touch events
  * @param {Boolean}    [opts.listenForKeyboard] Whether or not to listen for keyboard events
+ * @param {Object}     [opts.window]            window object for testing
+ * @param {Object}     [opts.document]          document object for testing
  */
 export default class Input {
     constructor(canvas, opts = {}) {
@@ -20,6 +22,8 @@ export default class Input {
         this._listenForMouse = opts.listenForMouse || true;
         this._listenForTouch = opts.listenForTouch || false;
         this._listenForKeyboard = opts.listenForKeyboard || true;
+        this._window = opts.window || window;
+        this._document = opts.document || document;
 
         this._uiEvents = {
             DBL_CLICK: 'dblclick',
@@ -75,7 +79,7 @@ export default class Input {
         }
 
         this._onTick = this._onTick.bind(this);
-        document.addEventListener('tick', this._onTick, false);
+        this._document.addEventListener('tick', this._onTick, false);
     }
 
     /**
