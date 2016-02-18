@@ -1,5 +1,5 @@
-Canvas Entertainment System
-===========================
+Spritewerk
+==========
 
 ### Spritewerk is a set of flexible, generic classes on top of which to build a game development project for the Canvas. It was built with the mantra "develop for an interface not an implementation" in mind.
 
