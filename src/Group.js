@@ -79,19 +79,22 @@ export default class Group extends Collection {
      * @param  {[type]} context [description]
      * @return {[type]}         [description]
      */
-    render(context) {
+    render(context, xform) {
+        xform.save();
         context.save();
 
-        context.translate(this._x, this._y);
-        context.scale(this._scaleX, this._scaleY);
+        xform.translate(this._x, this._y);
+        xform.scale(this._scaleX, this._scaleY);
+
         context.globalAlpha *= this._opacity;
         context.globalCompositeOperation = this._composite;
 
         this.each((item)=> {
-            item.render(context);
+            item.render(context, xform);
         }, this);
 
         context.restore();
+        xform.restore();
     }
 
     /**
