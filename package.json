@@ -1,5 +1,5 @@
 {
-  "name": "active-canvas",
+  "name": "spritewerk",
   "version": "0.1.0",
   "description": "A set of generic classes with which to build a game development project",
   "main": "src/index.js",

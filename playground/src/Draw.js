@@ -14,15 +14,10 @@ export default class Draw {
     constructor(canvas, camera) {
         this._canvas = canvas;
         this._camera = camera;
-        this._originalContext = this._canvas.getContext('2d');
-        this._canvasXform = new CanvasTransform(this._originalContext);
+        this._context = this._canvas.getContext('2d');
+        this._xform = new CanvasTransform(this._context);
         this._imageSmoothingEnabled = true;
 
-        this._context = this._originalContext;
-
-        for (let method in this._canvasXform) {
-            this._context[method] = this._canvasXform[method];
-        }
 
         this._context.imageSmoothingEnabled = this._imageSmoothingEnabled;
         this._context.mozImageSmoothingEnabled = this._imageSmoothingEnabled;
@@ -58,6 +53,16 @@ export default class Draw {
     }
 
     /**
+     * Returns the context xform object
+     *
+     * @method Draw#getXform
+     * @return {Object} The context xform object
+     */
+    getXform() {
+        return this._xform;
+    }
+
+    /**
      * Offsets canvas based on camera and calls an entity's render method passing the context.
      * Saves and restores context and beginning and end of operation.
      *
@@ -65,12 +70,12 @@ export default class Draw {
      * @param  {Object} entity [description]
      */
     render(entity) {
-        this._context.save();
-        this._context.translate(-this._camera.getX(), -this._camera.getY());
+        this._xform.save();
+        this._xform.translate(-this._camera.getX(), -this._camera.getY());
 
-        entity.render(this._context);
+        entity.render(this._context, this._xform);
 
-        this._context.restore();
+        this._xform.restore();
     }
 
     /**

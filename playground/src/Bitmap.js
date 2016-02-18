@@ -20,14 +20,17 @@ export default class Bitmap extends Sprite {
      * @method Bitmap#render
      * @param  {Object} context The context object
      */
-    render(context) {
+    render(context, xform) {
+        xform.save();
+        context.save();
+
+        xform.translate(this._x, this._y);
+
         if (this._tiling != 'no-repeat') {
-            context.save();
             const pattern = context.createPattern(this._image, this._tiling);
-            context.rect(this._x, this._y, this._width, this._height);
-            context.fillStyle = 'pattern';
+            context.rect(0, 0, this._width, this._height);
+            context.fillStyle = pattern;
             context.fill();
-            context.restore();
         } else {
             context.drawImage(
                 this._image,
@@ -35,12 +38,14 @@ export default class Bitmap extends Sprite {
                 this._srcY,
                 this._srcWidth,
                 this._srcHeight,
-                this._x,
-                this._y,
+                0, 0,
                 this._width,
                 this._height
             );
         }
+
+        context.restore();
+        xform.restore();
     }
 
     /**
