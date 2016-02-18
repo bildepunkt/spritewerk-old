@@ -14,17 +14,22 @@ export default class Rectangle extends Sprite {
         this._stroke = '';
     }
 
-    render(context) {
+    render(context, xform) {
+        xform.save();
         context.save();
+
+        xform.translate(this._x, this._y);
+
         context.fillStyle = this._fill;
-        context.fillRect(this._x, this._y, this._width, this._height);
+        context.fillRect(0, 0, this._width, this._height);
 
         if (this._stroke) {
             context.strokeStyle = this._stroke;
-            context.strokeRect(this._x, this._y, this._width, this._height);
+            context.strokeRect(0, 0, this._width, this._height);
         }
 
         context.restore();
+        xform.restore();
     }
 
     /**
