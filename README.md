@@ -5,9 +5,9 @@ Spritewerk
 
 #### To install
 
-    git clone https://github.com/c-concat-p/active-canvas.git
+    git clone https://github.com/c-concat-p/spritewerk.git
 
-or download archive [here](https://github.com/c-concat-p/spritewerk/archive/canvas-entertainment-system.zip).
+or download archive [here](https://github.com/c-concat-p/spritewerk/archive/master.zip).
 
 #### To Use
 
@@ -19,7 +19,7 @@ First ```cd playground```, then run:
 
 ### Development
 
-Want to hack on the *Canvas Entertainment System*? Run ```npm install``` to download the dev dependencies and give 'er.
+Want to hack on *Spritewerk*? Run ```npm install``` to download the dev dependencies and give 'er.
 
 #### Test
 
