@@ -10,6 +10,8 @@ class Sprite {
     constructor(x = 0, y = 0) {
         this._x = x;
         this._y = y;
+        this._globalX = this._x;
+        this._globalY = this._y;
         this._srcX = 0;
         this._srcY = 0;
         this._srcWidth = 32;
@@ -18,6 +20,8 @@ class Sprite {
         this._height = 32;
         this._scaleX = 1;
         this._scaleY = 1;
+        this._globalScaleX = this._scaleX;
+        this._globalScaleY = this._scaleY;
         this._rotation = 0;
         /**
          * The composite operation type. Can be source-atop|source-in|source-out|source-over|destination-atop|destination-in|destination-out|destination-over|lighter|xor|copy
@@ -43,10 +47,10 @@ class Sprite {
      */
     getBoundingArea() {
         return {
-            maxX: this._scaleX * (this._x + this._width),
-            maxY: this._scaleY * (this._y + this._height),
-            minX: this._scaleX * this._x,
-            minY: this._scaleY * this._y
+            maxX: this._globalScaleX * (this._globalX + this._width),
+            maxY: this._globalScaleY * (this._globalY + this._height),
+            minX: this._globalScaleX * this._globalX,
+            minY: this._globalScaleY * this._globalY
         };
     }
 

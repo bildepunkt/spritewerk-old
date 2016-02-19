@@ -17,10 +17,10 @@ export default class Rectangle extends Sprite {
     update(xform) {
         const matrix = xform.getMatrix();
 
-        this._x = matrix[4];
-        this._y = matrix[5];
-        this._scaleX = matrix[0];
-        this._scaleY = matrix[3];
+        this._globalX = matrix[4];
+        this._globalY = matrix[5];
+        this._globalScaleX = matrix[0];
+        this._globalScaleY = matrix[3];
     }
 
     render(context) {
@@ -28,14 +28,18 @@ export default class Rectangle extends Sprite {
 
         context.fillStyle = this._fill;
         context.fillRect(
-            this._x, this._y,
-            this._width * this._scaleX,
-            this._height * this._scaleY
+            this._globalX, this._globalY,
+            this._width  * this._globalScaleX,
+            this._height * this._globalScaleY
         );
 
         if (this._stroke) {
             context.strokeStyle = this._stroke;
-            context.strokeRect(this._x, this._y, this._width, this._height);
+            context.strokeRect(
+                this._globalX, this._globalY,
+                this._width  * this._globalScaleX,
+                this._height * this._globalScaleY
+            );
         }
 
         context.restore();

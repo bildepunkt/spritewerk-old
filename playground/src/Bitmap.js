@@ -17,10 +17,10 @@ export default class Bitmap extends Sprite {
     update(xform) {
         const matrix = xform.getMatrix();
 
-        this._x = matrix[4];
-        this._y = matrix[5];
-        this._scaleX = matrix[0];
-        this._scaleY = matrix[3];
+        this._globalX = matrix[4];
+        this._globalY = matrix[5];
+        this._globalScaleX = matrix[0];
+        this._globalScaleY = matrix[3];
     }
 
     /**
@@ -32,11 +32,13 @@ export default class Bitmap extends Sprite {
     render(context) {
         context.save();
 
-        xform.translate(this._x, this._y);
-
         if (this._tiling != 'no-repeat') {
             const pattern = context.createPattern(this._image, this._tiling);
-            context.rect(this._x, this._y, this._width, this._height);
+            context.rect(
+                this._globalX, this._globalY,
+                this._width  * this._globalScaleX,
+                this._height * this._globalScaleY
+            );
             context.fillStyle = pattern;
             context.fill();
         } else {
@@ -46,10 +48,10 @@ export default class Bitmap extends Sprite {
                 this._srcY,
                 this._srcWidth,
                 this._srcHeight,
-                this._x,
-                this._y,
-                this._width * this._scaleX,
-                this._height * this._scaleY
+                this._globalX,
+                this._globalY,
+                this._width * this._globalScaleX,
+                this._height * this._globalScaleY
             );
         }
 
