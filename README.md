@@ -1,6 +1,8 @@
 Spritewerk
 ==========
 
+[![Coverage Status](https://coveralls.io/repos/github/c-concat-p/spritewerk/badge.svg?branch=master)](https://coveralls.io/github/c-concat-p/spritewerk?branch=master)
+
 ### Spritewerk is a set of flexible, generic classes on top of which to build a game development project for the Canvas. It was built with the mantra "develop for an interface not an implementation" in mind.
 
 #### To install
