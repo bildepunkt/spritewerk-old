@@ -43,10 +43,10 @@ class Sprite {
      */
     getBoundingArea() {
         return {
-            maxX: this._x + this._width,
-            maxY: this._y + this._height,
-            minX: this._x,
-            minY: this._y
+            maxX: this._scaleX * (this._x + this._width),
+            maxY: this._scaleY * (this._y + this._height),
+            minX: this._scaleX * this._x,
+            minY: this._scaleY * this._y
         };
     }
 

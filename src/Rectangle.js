@@ -14,22 +14,31 @@ export default class Rectangle extends Sprite {
         this._stroke = '';
     }
 
-    render(context, xform) {
-        xform.save();
+    update(xform) {
+        const matrix = xform.getMatrix();
+
+        this._x = matrix[4];
+        this._y = matrix[5];
+        this._scaleX = matrix[0];
+        this._scaleY = matrix[3];
+    }
+
+    render(context) {
         context.save();
 
-        xform.translate(this._x, this._y);
-
         context.fillStyle = this._fill;
-        context.fillRect(0, 0, this._width, this._height);
+        context.fillRect(
+            this._x, this._y,
+            this._width * this._scaleX,
+            this._height * this._scaleY
+        );
 
         if (this._stroke) {
             context.strokeStyle = this._stroke;
-            context.strokeRect(0, 0, this._width, this._height);
+            context.strokeRect(this._x, this._y, this._width, this._height);
         }
 
         context.restore();
-        xform.restore();
     }
 
     /**

@@ -33,24 +33,43 @@ export default class Ticker {
     _update() {
         const now = Date.now();
         const delta = (now - this._then) / 1000;
-        this._then = now;
 
+        this._then = now;
         this._ticks += 1;
 
-        this.onTick(delta, this._ticks);
-
-        // create and fire tick events
-        const tickEvent = new CustomEvent('tick', {
+        const evtObject = {
             detail: {
                 delta: delta,
                 ticks: this._ticks
             }
-        });
+        };
 
-        document.dispatchEvent(tickEvent);
+        // create and fire tick events and execute callbacks
+        let tickEvent = new CustomEvent('pretick', evtObject);
+        this.onPreTick(delta, this._ticks);
+        this._document.dispatchEvent(tickEvent);
+
+        this.onTick(delta, this._ticks);
+        tickEvent = new CustomEvent('tick', evtObject);
+        this._document.dispatchEvent(tickEvent);
+
+        this.onPostTick(delta, this._ticks);
+        tickEvent = new CustomEvent('posttick', evtObject);
+        this._document.dispatchEvent(tickEvent);
 
         requestAnimationFrame(this._update);
     }
+
+    /**
+     * A callback executed pre each tick.
+     *
+     * @method Ticker#onPreTick
+     * @param {Integer} delta The time elapsed between ticks.
+     *                        Multiply against gameplay elements for consistent
+     *                        movement.
+     * @param {Integer} ticks The amount of ticks that have accumulated
+     */
+    onPreTick() {}
 
     /**
      * A callback executed on each tick.
@@ -62,6 +81,17 @@ export default class Ticker {
      * @param {Integer} ticks The amount of ticks that have accumulated
      */
     onTick() {}
+
+    /**
+     * A callback executed post tick.
+     *
+     * @method Ticker#onPostTick
+     * @param {Integer} delta The time elapsed between ticks.
+     *                        Multiply against gameplay elements for consistent
+     *                        movement.
+     * @param {Integer} ticks The amount of ticks that have accumulated
+     */
+    onPostTick() {}
 
     /**
      * Starts the ticker

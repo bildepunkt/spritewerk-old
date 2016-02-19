@@ -73,28 +73,41 @@ export default class Group extends Collection {
     }
 
     /**
-     * Renders all children recursively on top of own transformation stack
+     * Updates all children recursively on top of own transformation stack
      *
-     * @method Group#render
-     * @param  {[type]} context [description]
-     * @return {[type]}         [description]
+     * @method Group#update
+     * @return {CanvasTransform} xform The CanvasTransform instance
      */
-    render(context, xform) {
+    update(xform) {
         xform.save();
-        context.save();
 
         xform.translate(this._x, this._y);
         xform.scale(this._scaleX, this._scaleY);
+
+        this.each((item)=> {
+            item.update(xform);
+        }, this);
+
+        xform.restore();
+    }
+
+    /**
+     * Renders all children recursively on top of own transformation stack
+     *
+     * @method Group#render
+     * @param  {Object} context The 2d context object
+     */
+    render(context) {
+        context.save();
 
         context.globalAlpha *= this._opacity;
         context.globalCompositeOperation = this._composite;
 
         this.each((item)=> {
-            item.render(context, xform);
+            item.render(context);
         }, this);
 
         context.restore();
-        xform.restore();
     }
 
     /**

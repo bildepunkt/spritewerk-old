@@ -22,8 +22,12 @@ let rect = new Rectangle();
 groupB.addItem(rect, 'rect');
 groupA.addItem(groupB, 'grp');
 
+ticker.onPreTick = function () {
+    draw.update(groupA);
+};
+
 ticker.onTick = function (factor) {
     draw.clear('#DDD');
 
     draw.render(groupA);
-}
+};

@@ -14,21 +14,29 @@ export default class Bitmap extends Sprite {
         this._tiling = 'no-repeat';
     }
 
+    update(xform) {
+        const matrix = xform.getMatrix();
+
+        this._x = matrix[4];
+        this._y = matrix[5];
+        this._scaleX = matrix[0];
+        this._scaleY = matrix[3];
+    }
+
     /**
      * Render the entity via context's drawImage
      *
      * @method Bitmap#render
      * @param  {Object} context The context object
      */
-    render(context, xform) {
-        xform.save();
+    render(context) {
         context.save();
 
         xform.translate(this._x, this._y);
 
         if (this._tiling != 'no-repeat') {
             const pattern = context.createPattern(this._image, this._tiling);
-            context.rect(0, 0, this._width, this._height);
+            context.rect(this._x, this._y, this._width, this._height);
             context.fillStyle = pattern;
             context.fill();
         } else {
@@ -38,14 +46,14 @@ export default class Bitmap extends Sprite {
                 this._srcY,
                 this._srcWidth,
                 this._srcHeight,
-                0, 0,
-                this._width,
-                this._height
+                this._x,
+                this._y,
+                this._width * this._scaleX,
+                this._height * this._scaleY
             );
         }
 
         context.restore();
-        xform.restore();
     }
 
     /**
@@ -56,9 +64,8 @@ export default class Bitmap extends Sprite {
      * @return {Bitmap}
      */
     setImage(path) {
-        let img = new Image();
-        img.src = path;
-        this._image = img;
+        this._image = new Image();
+        this._image.src = path;
 
         if (!this._srcWidth && !this._srcWidth) {
             this._srcWidth = this._image.width;

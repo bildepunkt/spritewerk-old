@@ -5,10 +5,10 @@ import CanvasTransform from './lib/CanvasTransform';
  * @description Handles rendering entities onto the canvas element. Merges context
  *              object with CanvasTransform instance in the constructor.
  * @author      Chris Peters
- * @requires    CanvasTransform
+ * @requires    {@link CanvasTransform}
  *
  * @param {HTMLElement} canvas The active canvas element
- * @param {Camera}      camera The camera
+ * @param {Camera}      camera The camera instance
  */
 export default class Draw {
     constructor(canvas, camera) {
@@ -17,7 +17,6 @@ export default class Draw {
         this._context = this._canvas.getContext('2d');
         this._xform = new CanvasTransform(this._context);
         this._imageSmoothingEnabled = true;
-
 
         this._context.imageSmoothingEnabled = this._imageSmoothingEnabled;
         this._context.mozImageSmoothingEnabled = this._imageSmoothingEnabled;
@@ -56,7 +55,7 @@ export default class Draw {
      * Returns the context xform object
      *
      * @method Draw#getXform
-     * @return {Object} The context xform object
+     * @return {CanvasTransform} The context xform object
      */
     getXform() {
         return this._xform;
@@ -70,12 +69,11 @@ export default class Draw {
      * @param  {Object} entity [description]
      */
     render(entity) {
-        this._xform.save();
-        this._xform.translate(-this._camera.getX(), -this._camera.getY());
+        this._context.save();
 
-        entity.render(this._context, this._xform);
+        entity.render(this._context);
 
-        this._xform.restore();
+        this._context.restore();
     }
 
     /**
@@ -92,5 +90,14 @@ export default class Draw {
         this._context.msImageSmoothingEnabled = this._imageSmoothingEnabled;
 
         return this;
+    }
+
+    update(entity) {
+        this._xform.save();
+
+        this._xform.translate(-this._camera.getX(), -this._camera.getY());
+        entity.update(this._xform);
+
+        this._xform.restore();
     }
 }

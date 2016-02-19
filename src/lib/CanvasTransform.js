@@ -1,7 +1,7 @@
 /**
  * @class       CanvasTransform
  * @description Retains canvas transformation stack.
- *              Basically a fork from Simon Sarris - www.simonsarris.com - sarris@acm.org
+ *              Basically es2015 fork from {@link http://www.simonsarris.com|Simon Sarris} - sarris@acm.org
  * @author      Chris Peters
  */
 export default class CanvasTransform {
