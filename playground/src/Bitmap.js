@@ -35,9 +35,9 @@ export default class Bitmap extends Sprite {
         if (this._tiling != 'no-repeat') {
             const pattern = context.createPattern(this._image, this._tiling);
             context.rect(
-                this._globalX, this._globalY,
-                this._width  * this._globalScaleX,
-                this._height * this._globalScaleY
+                this._getActualX(), this._getActualY(),
+                this._width  * this._getActualScaleX(),
+                this._height * this._getActualScaleY()
             );
             context.fillStyle = pattern;
             context.fill();
@@ -48,10 +48,10 @@ export default class Bitmap extends Sprite {
                 this._srcY,
                 this._srcWidth,
                 this._srcHeight,
-                this._globalX,
-                this._globalY,
-                this._width * this._globalScaleX,
-                this._height * this._globalScaleY
+                this._getGlobalX(),
+                this._getGlobalY(),
+                this._width * this._getActualScaleX(),
+                this._height * this._getActualScaleY()
             );
         }
 

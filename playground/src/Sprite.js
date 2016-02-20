@@ -43,14 +43,54 @@ class Sprite {
     }
 
     /**
+     * Returns combined local and global scaleX
+     *
+     * @method Sprite#_getActualScaleX
+     * @return {Integer}
+     */
+    _getActualScaleX() {
+        return this._scaleX * this._globalScaleX;
+    }
+
+    /**
+     * Returns combined local and global scaleY
+     *
+     * @method Sprite#_getActualScaleY
+     * @return {Integer}
+     */
+    _getActualScaleY() {
+        return this._scaleY * this._globalScaleY;
+    }
+
+    /**
+     * Returns combined local and global x
+     *
+     * @method Sprite#_getActualX
+     * @return {Integer}
+     */
+    _getActualX() {
+        return this._x + this._globalX;
+    }
+
+    /**
+     * Returns combined local and global y
+     *
+     * @method Sprite#_getActualY
+     * @return {Integer}
+     */
+    _getActualY() {
+        return this._y + this._globalY;
+    }
+
+    /**
      * @return {Object} The bounding area
      */
     getBoundingArea() {
         return {
-            maxX: this._globalScaleX * (this._globalX + this._width),
-            maxY: this._globalScaleY * (this._globalY + this._height),
-            minX: this._globalScaleX * this._globalX,
-            minY: this._globalScaleY * this._globalY
+            maxX: this._getActualX() + (this._width  * this._getActualScaleX()),
+            maxY: this._getActualY() + (this._height * this._getActualScaleY()),
+            minX: this._getActualX(),
+            minY: this._getActualY()
         };
     }
 

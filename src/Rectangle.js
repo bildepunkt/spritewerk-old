@@ -28,17 +28,17 @@ export default class Rectangle extends Sprite {
 
         context.fillStyle = this._fill;
         context.fillRect(
-            this._globalX, this._globalY,
-            this._width  * this._globalScaleX,
-            this._height * this._globalScaleY
+            this._getActualX(), this._getActualY(),
+            this._width  * this._getActualScaleX(),
+            this._height * this._getActualScaleY()
         );
 
         if (this._stroke) {
             context.strokeStyle = this._stroke;
             context.strokeRect(
-                this._globalX, this._globalY,
-                this._width  * this._globalScaleX,
-                this._height * this._globalScaleY
+                this._getActualX(), this._getActualY(),
+                this._width  * this._getActualScaleX(),
+                this._height * this._getActualScaleY()
             );
         }
 
