@@ -15,7 +15,8 @@
     "clean": "rm -rf ./playground/src ./build && mkdir ./playground/src ./build",
     "copy": "cp -r ./src ./playground",
     "doc": "./node_modules/.bin/jsdoc ./src -c ./jsdoc.conf.json -d ./docs -R README.md -t ./node_modules/ink-docstrap/template",
-    "test": "./node_modules/.bin/jasmine-node --verbose --color ./spec",
+    "test-nocov": "./node_modules/.bin/jasmine-node --verbose --color ./spec",
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/jasmine-node --verbose --color ./spec/ && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "watch": "./node_modules/.bin/npm-watch"
   },
   "keywords": [
@@ -32,7 +33,9 @@
   "devDependencies": {
     "babel-cli": "^6.4.5",
     "babel-preset-es2015": "^6.3.13",
+    "coveralls": "^2.11.6",
     "ink-docstrap": "^1.1.1",
+    "istanbul": "^0.4.2",
     "jasmine-node": "1.14.5",
     "jsdoc": "^3.4.0",
     "jsdom": "7.2.2"
