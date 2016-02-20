@@ -38,6 +38,6 @@ Generate the documentation.
 
 #### Transpile
 
-Need the es5 version? Run the build script and point to the ```build``` directory instead.
+Need the es5 version? Run the transpile script and point to the ```build``` directory instead.
 
-    npm run build
+    npm run xpile
