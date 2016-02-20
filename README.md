@@ -2,7 +2,7 @@ Spritewerk
 ==========
 
 [![Build Status](https://travis-ci.org/c-concat-p/spritewerk.svg?branch=master)](https://travis-ci.org/c-concat-p/spritewerk)
-[![Coverage Status](https://coveralls.io/repos/github/c-concat-p/spritewerk/badge.svg?branch=master)](https://coveralls.io/github/c-concat-p/spritewerk?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/c-concat-p/spritewerk/badge.svg?branch=master&stopCachingBadges=true)](https://coveralls.io/github/c-concat-p/spritewerk?branch=master&stopCachingBadges=true)
 
 ### Spritewerk is a set of flexible, generic classes on top of which to build a game development project for the Canvas. It was built with the mantra "develop for an interface not an implementation" in mind.
 
