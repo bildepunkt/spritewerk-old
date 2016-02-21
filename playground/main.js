@@ -1,5 +1,5 @@
 import Camera from './src/Camera';
-import Draw from './src/Draw';
+import Canvas from './src/Canvas';
 import Input from './src/Input';
 import Stage from './src/Stage';
 import Rectangle from './src/Rectangle';
@@ -11,23 +11,24 @@ let stage = new Stage(800, 600, {
     bgColor: '#222',
     fill: true
 });
-let draw = new Draw(stage.getCanvas(), camera);
+let canvas = new Canvas(stage.getCanvas(), camera);
 let input = new Input(stage.getCanvas());
 let ticker = new Ticker();
 
-let groupA = new Group(32).setScaleX(2).setOpacity(0.5);
-let groupB = new Group(0, 32);
-let rect = new Rectangle();
+let groupA = new Group().setScaleX(2).setOpacity(0.4);
+let rect = new Rectangle(128);
+let r = 0;
 
-groupB.addItem(rect, 'rect');
-groupA.addItem(groupB, 'grp');
+groupA.addItem(rect, 'rect');
 
 ticker.onPreTick = function () {
-    draw.update(groupA);
+    r += 0.5;
+    groupA.setRotation(r);
+    canvas.update(groupA);
 };
 
 ticker.onTick = function (factor) {
-    draw.clear('#DDD');
+    canvas.clear('#DDD');
 
-    draw.render(groupA);
+    canvas.render(groupA);
 };

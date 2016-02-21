@@ -1,7 +1,7 @@
 import CanvasTransform from './lib/CanvasTransform';
 
 /**
- * @class       Draw
+ * @class       Canvas
  * @description Handles rendering entities onto the canvas element. Merges context
  *              object with CanvasTransform instance in the constructor.
  * @author      Chris Peters
@@ -10,7 +10,7 @@ import CanvasTransform from './lib/CanvasTransform';
  * @param {HTMLElement} canvas The active canvas element
  * @param {Camera}      camera The camera instance
  */
-export default class Draw {
+export default class Canvas {
     constructor(canvas, camera) {
         this._canvas = canvas;
         this._camera = camera;
@@ -27,7 +27,7 @@ export default class Draw {
     /**
      * Clears the entire canvas and optionally fills with a color
      *
-     * @method Draw#clear
+     * @method Canvas#clear
      * @param  {String} [color] If passed, will fill the canvas with the color value
      */
     clear(color) {
@@ -44,7 +44,7 @@ export default class Draw {
     /**
      * Returns the context object
      *
-     * @method Draw#getContext
+     * @method Canvas#getContext
      * @return {Object} The 2D context object
      */
     getContext() {
@@ -54,7 +54,7 @@ export default class Draw {
     /**
      * Returns the context xform object
      *
-     * @method Draw#getXform
+     * @method Canvas#getXform
      * @return {CanvasTransform} The context xform object
      */
     getXform() {
@@ -65,7 +65,7 @@ export default class Draw {
      * Offsets canvas based on camera and calls an entity's render method passing the context.
      * Saves and restores context and beginning and end of operation.
      *
-     * @method Draw#render
+     * @method Canvas#render
      * @param  {Object} entity [description]
      */
     render(entity) {
@@ -79,7 +79,7 @@ export default class Draw {
     /**
      * Set the context image smoothing
      *
-     * @method Draw#setImageSmoothing
+     * @method Canvas#setImageSmoothing
      * @param  {Boolean} val The image smoothing value
      */
     setImageSmoothing(val) {

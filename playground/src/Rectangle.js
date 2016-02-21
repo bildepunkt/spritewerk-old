@@ -7,20 +7,11 @@ import Sprite from './Sprite';
  * @author  Chris Peters
  */
 export default class Rectangle extends Sprite {
-    constructor() {
-        super();
+    constructor(x = 0, y = 0) {
+        super(x, y);
 
         this._fill = '#000';
         this._stroke = '';
-    }
-
-    update(xform) {
-        const matrix = xform.getMatrix();
-
-        this._globalX = matrix[4];
-        this._globalY = matrix[5];
-        this._globalScaleX = matrix[0];
-        this._globalScaleY = matrix[3];
     }
 
     render(context) {

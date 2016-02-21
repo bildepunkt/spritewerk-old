@@ -313,6 +313,17 @@ class Sprite {
 
         return this;
     }
+
+    update(xform) {
+        const matrix = xform.getMatrix();
+
+        this._globalScaleX = matrix[0];
+        this._globalScaleY = matrix[3];
+        this._globalX = matrix[4];
+        this._globalY = matrix[5];
+
+        xform.restore();
+    }
 }
 
 /**
