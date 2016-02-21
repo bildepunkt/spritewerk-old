@@ -79,16 +79,12 @@ export default class Group extends Collection {
      * @return {CanvasTransform} xform The CanvasTransform instance
      */
     update(xform) {
-        xform.save();
-
-        xform.translate(this._x, this._y);
         xform.scale(this._scaleX, this._scaleY);
+        xform.translate(this._x, this._y);
 
         this.each((item)=> {
             item.update(xform);
         }, this);
-
-        xform.restore();
     }
 
     /**

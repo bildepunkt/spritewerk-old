@@ -15,15 +15,17 @@ let canvas = new Canvas(stage.getCanvas(), camera);
 let input = new Input(stage.getCanvas());
 let ticker = new Ticker();
 
-let groupA = new Group().setScaleX(2).setOpacity(0.4);
-let rect = new Rectangle(128);
+let groupA = new Group(64, 64).setOpacity(0.4);
+let groupB = new Group(64, 64);
+let rect = new Rectangle(64);
 let r = 0;
 
-groupA.addItem(rect, 'rect');
+groupA.addItem(groupB);
+groupB.addItem(rect, 'rect');
 
 ticker.onPreTick = function () {
-    r += 0.5;
-    groupA.setRotation(r);
+    r += 0.1;
+    rect.setRotation(r);
     canvas.update(groupA);
 };
 

@@ -315,14 +315,10 @@ class Sprite {
     }
 
     update(xform) {
-        const matrix = xform.getMatrix();
-
-        this._globalScaleX = matrix[0];
-        this._globalScaleY = matrix[3];
-        this._globalX = matrix[4];
-        this._globalY = matrix[5];
-
-        xform.restore();
+        this._globalScaleX = xform.scaleX;
+        this._globalScaleY = xform.scaleY;
+        this._globalX = xform.x;
+        this._globalY = xform.y;
     }
 }
 

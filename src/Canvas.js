@@ -1,4 +1,34 @@
-import CanvasTransform from './lib/CanvasTransform';
+class Xform {
+    constructor() {
+        this.x = 0;
+        this.y = 0;
+        this.rotation = 0;
+        this.scaleX = 1;
+        this.scaleY = 1;
+    }
+
+    translate(x, y) {
+        this.x += x;
+        this.y += y;
+    }
+
+    scale(scaleX, scaleY) {
+        this.scaleX *= scaleX;
+        this.scaleY *= scaleY;
+    }
+
+    rotateAbout(deg, cx, cy) {
+        let rad = deg * Math.PI / 180;
+        let cos = Math.cos(rad);
+        let sin = Math.sin(rad);
+
+        let x = (this.x - cx) * cos - (this.y - cy) * sin;
+        let y = (this.x - cx) * sin + (this.y - cy) * cos;
+
+        this.x = x + cx;
+        this.y = y + cy;
+    }
+}
 
 /**
  * @class       Canvas
@@ -15,7 +45,6 @@ export default class Canvas {
         this._canvas = canvas;
         this._camera = camera;
         this._context = this._canvas.getContext('2d');
-        this._xform = new CanvasTransform(this._context);
         this._imageSmoothingEnabled = true;
 
         this._context.imageSmoothingEnabled = this._imageSmoothingEnabled;
@@ -52,16 +81,6 @@ export default class Canvas {
     }
 
     /**
-     * Returns the context xform object
-     *
-     * @method Canvas#getXform
-     * @return {CanvasTransform} The context xform object
-     */
-    getXform() {
-        return this._xform;
-    }
-
-    /**
      * Offsets canvas based on camera and calls an entity's render method passing the context.
      * Saves and restores context and beginning and end of operation.
      *
@@ -93,11 +112,10 @@ export default class Canvas {
     }
 
     update(entity) {
-        this._xform.save();
+        let xform = new Xform();
 
-        this._xform.translate(-this._camera.getX(), -this._camera.getY());
-        entity.update(this._xform);
+        xform.translate(-this._camera.getX(), -this._camera.getY());
 
-        this._xform.restore();
+        entity.update(xform);
     }
 }
