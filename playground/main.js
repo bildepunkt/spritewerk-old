@@ -35,3 +35,70 @@ ticker.onTick = function (factor) {
 
     canvas.render(groupA);
 };
+
+// or this is how to do it...
+/*
+const can = document.querySelector('canvas');
+const ctx = can.getContext('2d');
+
+class Point {
+  constructor() {
+    this.x = 0;
+    this.y = 0;
+  }
+}
+
+class Group extends Point {
+  constructor(item) {
+    super();
+    this.r = 0;
+    this.item = item;
+  }
+
+  update() {
+    ctx.rotate(this.r * Math.PI / 180);
+    ctx.translate(this.x, this.y);
+    this.item.update();
+  }
+}
+
+class Sprite extends Point {
+  update() {
+    ctx.rotate(this.r * Math.PI / 180);
+    ctx.translate(this.x, this.y);
+    const size = 16;
+    ctx.fillRect(-size / 2,-size / 2, size, size);
+  }
+}
+
+let sprt = new Sprite();
+let grp = new Group(sprt);
+grp.x = 96;
+grp.r = 15;
+
+function getRotatedCoords(x, y, cx, cy, deg) {
+  let rad = deg * Math.PI / 180;
+  let cos = Math.cos(rad);
+  let sin = Math.sin(rad);
+
+  let newx = (x - cx) * cos - (y - cy) * sin;
+  let newy = (x - cx) * sin + (y - cy) * cos;
+
+  return {
+    x: newx + cx,
+    y: newy + cy
+  };
+}
+
+function update() {
+  ctx.save();
+  grp.update();
+  ctx.restore();
+
+  console.log(getRotatedCoords(, 0, 96, 0, 15));
+
+  //window.requestAnimationFrame(update);
+}
+
+update();
+*/
