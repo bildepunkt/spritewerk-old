@@ -17,10 +17,6 @@ export default class Rectangle extends Sprite {
     render(context) {
         context.save();
 
-        context.translate(this._globalX, this._globalY);
-        context.rotate(this._rotation);
-        context.translate(-this._globalX, -this._globalY);
-
         context.fillStyle = this._fill;
         context.fillRect(
             this._getActualX(), this._getActualY(),

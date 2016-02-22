@@ -83,6 +83,7 @@ export default class Group extends Collection {
         xform.translate(this._x, this._y);
 
         this.each((item)=> {
+            xform.rotateAbout(item.getRotation(), xform.x-item.getX(), xform.y-item.getY());
             item.update(xform);
         }, this);
     }
