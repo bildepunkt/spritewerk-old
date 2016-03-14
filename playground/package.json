@@ -1,7 +1,7 @@
 {
   "name": "spritewerk-playground",
   "version": "0.0.1",
-  "description": "An environment for developing and evaluating Active Canvas",
+  "description": "An environment for developing and evaluating Spritewerk",
   "main": "index.html",
   "scripts": {
     "watch": "watchify main.js -o bundle.js -t [ babelify --presets [ es2015 ] --sourceMap ] -d | exorcist bundle.js.map > bundle.js"

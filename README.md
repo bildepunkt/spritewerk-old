@@ -14,6 +14,16 @@ Spritewerk is a culmination of my own curiosity and desire to improve my skills,
 
 or download archive [here](https://github.com/c-concat-p/spritewerk/archive/master.zip).
 
+Spritewerk has a nested package called *playground*, so be sure to install dependencies in the root & `playground` directories.
+
+Install dependencies
+
+	npm install
+
+Install playground dependencies
+
+	cd playground && npm install
+
 #### To Use
 
 The playground is an environment for developing and evaluating Spritewerk. Develop in the ```main.js``` file with the watch script running and view your changes in the ```index.html``` file.
