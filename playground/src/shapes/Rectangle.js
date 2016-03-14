@@ -1,4 +1,4 @@
-import Sprite from './Sprite';
+import Sprite from '../Sprite';
 
 /**
  * @class   Rectangle
@@ -16,21 +16,16 @@ export default class Rectangle extends Sprite {
 
     render(context) {
         context.save();
+        super.render(context);
 
-        context.fillStyle = this._fill;
-        context.fillRect(
-            this._getActualX(), this._getActualY(),
-            this._width  * this._getActualScaleX(),
-            this._height * this._getActualScaleY()
-        );
+        if (this._fill) {
+            context.fillStyle = this._fill;
+            context.fillRect(0, 0, this._width, this._height);
+        }
 
         if (this._stroke) {
             context.strokeStyle = this._stroke;
-            context.strokeRect(
-                this._getActualX(), this._getActualY(),
-                this._width  * this._getActualScaleX(),
-                this._height * this._getActualScaleY()
-            );
+            context.strokeRect(0, 0, this._width, this._height);
         }
 
         context.restore();

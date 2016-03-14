@@ -43,46 +43,6 @@ class Sprite {
     }
 
     /**
-     * Returns combined local and global scaleX
-     *
-     * @method Sprite#_getActualScaleX
-     * @return {Integer}
-     */
-    _getActualScaleX() {
-        return this._scaleX * this._globalScaleX;
-    }
-
-    /**
-     * Returns combined local and global scaleY
-     *
-     * @method Sprite#_getActualScaleY
-     * @return {Integer}
-     */
-    _getActualScaleY() {
-        return this._scaleY * this._globalScaleY;
-    }
-
-    /**
-     * Returns combined local and global x
-     *
-     * @method Sprite#_getActualX
-     * @return {Integer}
-     */
-    _getActualX() {
-        return this._x + this._globalX;
-    }
-
-    /**
-     * Returns combined local and global y
-     *
-     * @method Sprite#_getActualY
-     * @return {Integer}
-     */
-    _getActualY() {
-        return this._y + this._globalY;
-    }
-
-    /**
      * @return {Object} The bounding area
      */
     getBoundingArea() {
@@ -180,6 +140,23 @@ class Sprite {
      */
     getY() {
         return this._y;
+    }
+
+    /**
+     * [render description]
+     * @method render
+     * @param  {[type]} context [description]
+     * @return {[type]}         [description]
+     */
+    render(context) {
+        context.translate(this._x, this._y);
+        context.scale(this._scaleX, this._scaleY);
+
+        if (this._rotation !== 0) {
+            context.translate(this._width / 2, this._height / 2);
+            context.rotate(this._rotation);
+            context.translate(-(this._width / 2), -(this._height / 2));
+        }
     }
 
     /**
@@ -312,13 +289,6 @@ class Sprite {
         this._y = val;
 
         return this;
-    }
-
-    update(xform) {
-        this._globalScaleX = xform.scaleX;
-        this._globalScaleY = xform.scaleY;
-        this._globalX = xform.x;
-        this._globalY = xform.y;
     }
 }
 
