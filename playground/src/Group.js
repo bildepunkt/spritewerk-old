@@ -8,11 +8,9 @@ import Sprite from './Sprite';
  * @requires    Sprite
  * @author      Chris Peters
  *
- * @param {Integer} [x] The initial x position. Default is 0.
- * @param {Integer} [y] The initial y position. Default is 0.
  */
 export default class Group extends Collection {
-    constructor(x = 0, y = 0) {
+    constructor() {
         super();
     }
 

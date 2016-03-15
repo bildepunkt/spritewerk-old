@@ -10,8 +10,6 @@ class Sprite {
     constructor(x = 0, y = 0) {
         this._x = x;
         this._y = y;
-        this._globalX = this._x;
-        this._globalY = this._y;
         this._srcX = 0;
         this._srcY = 0;
         this._srcWidth = 32;
@@ -20,8 +18,6 @@ class Sprite {
         this._height = 32;
         this._scaleX = 1;
         this._scaleY = 1;
-        this._globalScaleX = this._scaleX;
-        this._globalScaleY = this._scaleY;
         this._rotation = 0;
         /**
          * The composite operation type. Can be source-atop|source-in|source-out|source-over|destination-atop|destination-in|destination-out|destination-over|lighter|xor|copy
@@ -47,10 +43,10 @@ class Sprite {
      */
     getBoundingArea() {
         return {
-            maxX: this._getActualX() + (this._width  * this._getActualScaleX()),
-            maxY: this._getActualY() + (this._height * this._getActualScaleY()),
-            minX: this._getActualX(),
-            minY: this._getActualY()
+            maxX: this._x + (this._width  * this._scaleX),
+            maxY: this._y + (this._height * this._scaleY),
+            minX: this._x,
+            minY: this._y
         };
     }
 
@@ -83,6 +79,14 @@ class Sprite {
      * @return {Float}
      */
     getRotation() {
+        return this._rotation * Math.PI / 180;
+    }
+
+    /**
+     * @method Sprite#getRotation
+     * @return {Float}
+     */
+    getRotationRadians() {
         return this._rotation;
     }
 
@@ -149,7 +153,10 @@ class Sprite {
      * @return {[type]}         [description]
      */
     render(context) {
-        context.translate(this._x, this._y);
+        context.translate(
+            this._x - this._width / 2,
+            this._y - this._height / 2
+        );
         context.scale(this._scaleX, this._scaleY);
 
         if (this._rotation !== 0) {
@@ -202,7 +209,7 @@ class Sprite {
      * @return {Sprite}
      */
     setRotation(val) {
-        this._rotation = val;
+        this._rotation = val * Math.PI / 180;
 
         return this;
     }

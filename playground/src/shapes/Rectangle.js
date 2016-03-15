@@ -39,6 +39,8 @@ export default class Rectangle extends Sprite {
      */
     setFill(val) {
         this._fill = val;
+
+        return this;
     }
 
     /**
@@ -48,6 +50,8 @@ export default class Rectangle extends Sprite {
      * @param  {String} val The stroke color hex, rgb, rgba, etc.
      */
     setStroke(val) {
-        this._fill = val;
+        this._stroke = val;
+
+        return this;
     }
 }

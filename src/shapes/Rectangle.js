@@ -39,6 +39,8 @@ export default class Rectangle extends Sprite {
      */
     setFill(val) {
         this._fill = val;
+
+        return this;
     }
 
     /**
@@ -49,5 +51,7 @@ export default class Rectangle extends Sprite {
      */
     setStroke(val) {
         this._stroke = val;
+
+        return this;
     }
 }
