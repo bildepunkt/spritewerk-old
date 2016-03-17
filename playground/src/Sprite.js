@@ -10,6 +10,8 @@ class Sprite {
     constructor(x = 0, y = 0) {
         this._x = x;
         this._y = y;
+        this._pivotX = 1;
+        this._pivotY = 1;
         this._srcX = 0;
         this._srcY = 0;
         this._srcWidth = 32;
@@ -72,6 +74,22 @@ class Sprite {
      */
     getOpacity() {
         return this._opacity;
+    }
+
+    /**
+     * @method Sprite#getPivotX
+     * @return {Integer}
+     */
+    getPivotX() {
+        return this._pivotX;
+    }
+
+    /**
+     * @method Sprite#getPivotY
+     * @return {Integer}
+     */
+    getPivotY() {
+        return this._pivotY;
     }
 
     /**
@@ -154,15 +172,15 @@ class Sprite {
      */
     render(context) {
         context.translate(
-            this._x - this._width / 2,
-            this._y - this._height / 2
+            this._x + this._pivotX,
+            this._y + this._pivotY
         );
         context.scale(this._scaleX, this._scaleY);
 
         if (this._rotation !== 0) {
-            context.translate(this._width / 2, this._height / 2);
+            context.translate(-this._pivotX, -this._pivotY);
             context.rotate(this._rotation);
-            context.translate(-(this._width / 2), -(this._height / 2));
+            context.translate(-this._pivotX, -this._pivotY);
         }
     }
 
@@ -198,6 +216,28 @@ class Sprite {
      */
     setOpacity(val) {
         this._opacity = val;
+
+        return this;
+    }
+
+    /**
+     * @method Sprite#setPivotX
+     * @param  {Float} val The opacity value
+     * @return {Sprite}
+     */
+    setPivotX(val) {
+        this._pivotX = val;
+
+        return this;
+    }
+
+    /**
+     * @method Sprite#setPivotY
+     * @param  {Float} val The opacity value
+     * @return {Sprite}
+     */
+    setPivotY(val) {
+        this._pivotY = val;
 
         return this;
     }

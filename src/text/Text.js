@@ -21,6 +21,10 @@ export default class Text extends Sprite {
         return this._value;
     }
 
+    /*getTextWidth() {
+    	return
+    }*/
+
     /**
      * [setFill description]
      *

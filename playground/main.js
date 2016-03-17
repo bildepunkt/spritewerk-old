@@ -15,15 +15,17 @@ let stage = new Stage(800, 600, {
 let canvas = new Canvas(stage.getCanvas(), camera);
 let input = new Input(stage.getCanvas());
 let group = new Group();
-let rect = new Rect().setFill('#999');
+let rect = new Rect()
+	.setFill('#999')
+	.setWidth(64)
+	.setHeight(64)
+	.setRotation(45)
+	.setPivotX(32)
+	.setPivotY(32);
 let text = new Text();
 let ticker = new Ticker();
 
-rect.setWidth(64);
-rect.setHeight(64);
-rect.setRotation(45);
-
-text.setValue('foobar');
+//text.setValue('foobar');
 //text.setRotation(90);
 
 group.addItem(rect);
