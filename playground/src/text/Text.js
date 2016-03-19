@@ -1,7 +1,7 @@
 import Sprite from '../Sprite';
 
 /**
- * @class   TextInput
+ * @class   Text
  * @desc    Renders an html textfield element
  * @extends Sprite
  * @author  Chris Peters
@@ -13,6 +13,7 @@ export default class Text extends Sprite {
         this._value = value;
         this._size = 16;
         this._font = 'sans-serif';
+        this._baseline = 'top';
         this._fill = '#000';
         this._stroke = '';
     }
@@ -20,6 +21,10 @@ export default class Text extends Sprite {
     getValue() {
         return this._value;
     }
+
+    /*getTextWidth() {
+    	return
+    }*/
 
     /**
      * [setFill description]
@@ -46,10 +51,10 @@ export default class Text extends Sprite {
     }
 
     render(context) {
-    	context.save();
         super.render(context);
 
         context.font = `${this._size}px ${this._font}`;
+        context.textBaseline = this._baseline;
 
         if (this._fill) {
             context.fillStyle = this._fill;
@@ -60,7 +65,5 @@ export default class Text extends Sprite {
             context.strokeStyle = this._stroke;
             context.strokeText(this._value, 0, 0);
         }
-
-        context.restore();
     }
 }

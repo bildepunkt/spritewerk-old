@@ -1,4 +1,5 @@
 import Text from './Text';
+import Rectangle from '../shapes/Rectangle';
 
 /**
  * @class   TextInput
@@ -6,15 +7,27 @@ import Text from './Text';
  * @extends Text
  * @author  Chris Peters
  */
-default exports class TextInput extends Text {
-    constructor(size, font, x, y, opts = {}) {
-        super();
+export default class TextInput extends Text {
+    constructor(x = 0, y = 0, opts = {}) {
+        super('', x ,y);
 
         this._document = opts.document || document;
+        this._debug = opts.debug;
+
+        this._lastTick = 0;
+        this._blinkFrames = 30;
+        this._karetShow = true;
+        this._focused = false;
+
+        this._rect = new Rectangle();
 
         this._textfield = this._document.getElementById('textfield');
         this._onChange = this._onChange.bind(this);
-        this._textfield.addEventListener('change', this._onChange, false);
+        this._textfield.addEventListener('keyup', this._onChange, false);
+
+        if (this._debug) {
+            this._textfield.style.top = '16px';
+        }
     }
 
     _onChange(e) {
@@ -23,13 +36,34 @@ default exports class TextInput extends Text {
 
     blur() {
         this._textfield.blur();
+        this._focused = false;
     }
 
     destroy() {
-        this._textfield.removeEventListener('change', this._onChange, false);
+        this._textfield.removeEventListener('keyup', this._onChange, false);
     }
 
     focus() {
         this._textfield.focus();
+        this._focused = true;
+    }
+
+    render(context, factor, tick) {
+        super.render(context);
+
+        if (tick - this._lastTick >= this._blinkFrames) {
+            this._lastTick = tick;
+            this._karetShow = !this._karetShow;
+        }
+
+        let textMeasurement = context.measureText(this._value);
+
+        if (this._karetShow && this._focused) {
+            context.save();
+            this._rect.setX(textMeasurement.width + 1);
+            this._rect.setHeight(this._size).setWidth(this._size / 4);
+            this._rect.render(context);
+            context.restore();
+        }
     }
 }

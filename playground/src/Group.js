@@ -20,11 +20,11 @@ export default class Group extends Collection {
      * @method Group#render
      * @param  {Object} context The 2d context object
      */
-    render(context) {
+    render(context, factor, ticks) {
         context.save();
 
         this.each((item)=> {
-            item.render(context);
+            item.render(context, factor, ticks);
         }, this);
 
         context.restore();

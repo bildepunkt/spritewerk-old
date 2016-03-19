@@ -41,7 +41,8 @@ export default class Stage {
 
         this._textfield = this._document.createElement('input');
         this._textfield.type = 'text';
-        this._textfield.style.display = 'none';
+        this._textfield.style.position = 'absolute';
+        this._textfield.style.top = '-999px';
         // TODO verify value 'none'
         this._textfield.autocapitalize = 'none';
         this._textfield.id = 'textfield';

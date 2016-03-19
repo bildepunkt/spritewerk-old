@@ -49,11 +49,11 @@ export default class Canvas {
      * @method Canvas#render
      * @param  {Object} entity [description]
      */
-    render(entity) {
+    render(entity, factor, ticks) {
         this._context.save();
 
         this._context.translate(-this._camera.getX(), -this._camera.getY());
-        entity.render(this._context);
+        entity.render(this._context, factor, ticks);
 
         this._context.restore();
     }

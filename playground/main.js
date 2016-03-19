@@ -3,7 +3,7 @@ import Canvas from './src/Canvas';
 import Input from './src/Input';
 import Stage from './src/Stage';
 import Rect from './src/shapes/Rectangle';
-import Text from './src/text/Text';
+import TextInput from './src/text/TextInput';
 import Group from './src/Group';
 import Ticker from './src/Ticker';
 
@@ -15,23 +15,21 @@ let stage = new Stage(800, 600, {
 let canvas = new Canvas(stage.getCanvas(), camera);
 let input = new Input(stage.getCanvas());
 let group = new Group();
-let rect = new Rect()
-	.setFill('#999')
-	.setWidth(64)
-	.setHeight(64)
-	.setRotation(45)
-	.setPivotX(32)
-	.setPivotY(32);
-let text = new Text();
+let textInput = new TextInput(32, 32, {debug: true});
 let ticker = new Ticker();
 
-//text.setValue('foobar');
-//text.setRotation(90);
+textInput.focus();
+group.addItem(textInput);
 
-group.addItem(rect);
-group.addItem(text);
+input.addListener('click', function () {
+	if (textInput.isFocused()) {
+		textInput.blur();
+	} else {
+		textInput.focus();
+	}
+});
 
-ticker.onTick = function (factor) {
+ticker.onTick = function (factor, ticks) {
     canvas.clear('#DDD');
-    canvas.render(group);
+    canvas.render(group, factor, ticks);
 };
