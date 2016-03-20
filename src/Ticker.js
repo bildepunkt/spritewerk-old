@@ -44,6 +44,10 @@ export default class Ticker {
             }
         };
 
+        if (this._debug) {
+            console.log('delta:', delta, 'ticks:', this._ticks);
+        }
+
         // create and fire tick events and execute callbacks
         let tickEvent = new CustomEvent('pretick', evtObject);
         this.onPreTick(delta, this._ticks);

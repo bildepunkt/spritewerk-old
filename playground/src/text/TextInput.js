@@ -9,7 +9,7 @@ import Rectangle from '../shapes/Rectangle';
  */
 export default class TextInput extends Text {
     constructor(x = 0, y = 0, opts = {}) {
-        super('', x ,y);
+        super('', x ,y, opts);
 
         this._document = opts.document || document;
         this._debug = opts.debug;
@@ -46,6 +46,10 @@ export default class TextInput extends Text {
     focus() {
         this._textfield.focus();
         this._focused = true;
+    }
+
+    isFocused() {
+        return this._focused;
     }
 
     render(context, factor, tick) {

@@ -1,3 +1,6 @@
+import debug from './util/debug';
+
+
 /**
  * @class       Sprite
  * @description Base class for position based objects
@@ -7,7 +10,7 @@
  * @param {Integer} [y] The initial y position. Default is 0
  */
 class Sprite {
-    constructor(x = 0, y = 0) {
+    constructor(x = 0, y = 0, opts = {}) {
         this._x = x;
         this._y = y;
         this._pivotX = 1;
@@ -30,6 +33,8 @@ class Sprite {
          */
         this._composite = Sprite._compositeDefault;
         this._opacity = 1;
+
+        this._debug = opts.debug;
     }
 
     /**
@@ -97,7 +102,7 @@ class Sprite {
      * @return {Float}
      */
     getRotation() {
-        return this._rotation * Math.PI / 180;
+        return this._rotation;
     }
 
     /**
@@ -171,14 +176,15 @@ class Sprite {
      * @return {[type]}         [description]
      */
     render(context) {
-        context.translate(
-            this._x + this._pivotX,
-            this._y + this._pivotY
-        );
+        if (this._debug) {
+            debug.render(debug.types.XHAIR, context, this);
+        }
+
+        context.translate(this._x, this._y);
         context.scale(this._scaleX, this._scaleY);
 
         if (this._rotation !== 0) {
-            context.translate(-this._pivotX, -this._pivotY);
+            context.translate(this._pivotX, this._pivotY);
             context.rotate(this._rotation);
             context.translate(-this._pivotX, -this._pivotY);
         }

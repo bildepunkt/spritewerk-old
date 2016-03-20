@@ -7,8 +7,8 @@ import Sprite from '../Sprite';
  * @author  Chris Peters
  */
 export default class Text extends Sprite {
-    constructor(value = '', x = 0, y = 0) {
-    	super(x, y);
+    constructor(value = '', x = 0, y = 0, opts = {}) {
+    	super(x, y, opts);
 
         this._value = value;
         this._size = 16;

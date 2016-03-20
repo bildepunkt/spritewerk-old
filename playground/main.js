@@ -7,6 +7,8 @@ import TextInput from './src/text/TextInput';
 import Group from './src/Group';
 import Ticker from './src/Ticker';
 
+const debug = true;
+
 let camera = new Camera();
 let stage = new Stage(800, 600, {
     bgColor: '#222',
@@ -15,10 +17,11 @@ let stage = new Stage(800, 600, {
 let canvas = new Canvas(stage.getCanvas(), camera);
 let input = new Input(stage.getCanvas());
 let group = new Group();
-let textInput = new TextInput(32, 32, {debug: true});
-let ticker = new Ticker();
+let textInput = new TextInput(32, 32, {debug});
+let ticker = new Ticker(true, {debug});
 
 textInput.focus();
+textInput.setPivotX(32).setPivotY(24);
 group.addItem(textInput);
 
 input.addListener('click', function () {
@@ -29,7 +32,13 @@ input.addListener('click', function () {
 	}
 });
 
+let r = 0;
+
 ticker.onTick = function (factor, ticks) {
     canvas.clear('#DDD');
+
+    r += 2;
+    textInput.setRotation(r);
+
     canvas.render(group, factor, ticks);
 };
