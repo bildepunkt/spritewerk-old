@@ -9,4 +9,4 @@ npm-debug.log
 .idea
 docs
 coverage
-playground/build.js
+playground/bundle.js
