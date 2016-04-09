@@ -2473,7 +2473,7 @@ var _Text2 = require('./Text');
 
 var _Text3 = _interopRequireDefault(_Text2);
 
-var _Rectangle = require('../shapes/Rectangle');
+var _Rectangle = require('../shape/Rectangle');
 
 var _Rectangle2 = _interopRequireDefault(_Rectangle);
 

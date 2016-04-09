@@ -14,7 +14,7 @@
     "xpile": "./node_modules/.bin/babel ./src --out-dir ./build",
     "clean": "rm -rf ./playground/src ./build && mkdir ./playground/src ./build",
     "copy": "cp -r ./src ./playground",
-    "doc": "./node_modules/.bin/jsdoc ./src -c ./jsdoc.conf.json -d ./docs -R README.md -t ./node_modules/ink-docstrap/template",
+    "doc": "./node_modules/.bin/jsdoc ./src/* -c ./jsdoc.conf.json -d ./docs -R README.md -t ./node_modules/ink-docstrap/template",
     "test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/jasmine-node --verbose --color ./spec",
     "build": "./node_modules/.bin/istanbul cover ./node_modules/.bin/jasmine-node --verbose --color ./spec/ && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "watch": "./node_modules/.bin/npm-watch"

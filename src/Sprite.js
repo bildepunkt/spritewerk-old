@@ -165,10 +165,8 @@ class Sprite {
     }
 
     /**
-     * [render description]
-     * @method render
-     * @param  {[type]} context [description]
-     * @return {[type]}         [description]
+     * @method Sprite#render
+     * @param  {Object} context The canvas' context
      */
     render(context) {
         context.translate(

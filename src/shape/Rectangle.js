@@ -2,6 +2,7 @@ import Sprite from '../Sprite';
 
 /**
  * @class   Rectangle
+ * @memberof shape
  * @extends {@link Sprite}
  * @desc    A sprite that renders as a rectangle
  * @author  Chris Peters

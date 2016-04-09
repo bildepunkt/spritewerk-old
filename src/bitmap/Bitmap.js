@@ -2,6 +2,7 @@ import Sprite from './../Sprite';
 
 /**
  * @class   Bitmap
+ * @memberof bitmap
  * @extends Sprite
  * @desc    A sprite that renders an image asset
  * @author  Chris Peters

@@ -1,8 +1,9 @@
 import Text from './Text';
-import Rectangle from '../shapes/Rectangle';
+import Rectangle from '../shape/Rectangle';
 
 /**
  * @class   TextInput
+ * @memberof text
  * @desc    Renders an html textfield element
  * @extends Text
  * @author  Chris Peters

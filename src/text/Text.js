@@ -2,6 +2,7 @@ import Sprite from '../Sprite';
 
 /**
  * @class   Text
+ * @memberof text
  * @desc    Renders an html textfield element
  * @extends Sprite
  * @author  Chris Peters
