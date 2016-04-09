@@ -6,7 +6,7 @@
   "templates": {
     "logoFile": "",
     "cleverLinks": false,
-    "monospaceLinks": false,
+    "monospaceLinks": true,
     "dateFormat": "ddd MMM Do YYYY",
     "outputSourceFiles": true,
     "outputSourcePath": true,
