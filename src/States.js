@@ -13,7 +13,7 @@ import Preloader from './Preloader';
     init: function () {
         // initialize entities etc.
     },
-    update: function (factor, ticks) {
+    render: function (factor, ticks) {
         // do stuff on every tick
     },
     destroy: function () {
@@ -23,16 +23,15 @@ import Preloader from './Preloader';
  * @author      Chris Peters
  * @requires    {@link Preloader}
  *
- * @param {Object} [state] The initial state
+ * @param {Canvas} canvas A Canvas instance
+ * @param {Ticker} ticker A ticker instance
  */
 export default class States {
-    constructor(state) {
-        this._onTick = this._onTick.bind(this);
-        document.addEventListener('tick', this._onTick, false);
+    constructor(canvas, ticker) {
+        this._canvas = canvas;
+        this._ticker = ticker;
 
-        if (state) {
-            this.load(state);
-        }
+        this.ticker.onTick = this._onTick;
     }
 
     /**
@@ -41,9 +40,9 @@ export default class States {
      * @method States#_onTick
      * @param  {Object} e The event object
      */
-    _onTick(e) {
+    _onTick(factor, ticks) {
         if (this._state) {
-            this._state.update(e.detail.factor, e.detail.ticks);
+            this._canvas.render(this._state, factor, ticks);
         }
     }
 
@@ -61,7 +60,7 @@ export default class States {
         this._state = state;
 
         if (this._state.preload) {
-            Preload.complete = function () {
+            Preloader.complete = function () {
                 this._state.init();
             };
 
