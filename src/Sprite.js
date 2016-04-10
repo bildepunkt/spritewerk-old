@@ -14,10 +14,10 @@ class Sprite {
         this._pivotY = 1;
         this._srcX = 0;
         this._srcY = 0;
-        this._srcWidth = 32;
-        this._srcHeight = 32;
-        this._width = 32;
-        this._height = 32;
+        this._srcWidth = 0;
+        this._srcHeight = 0;
+        this._width = 0;
+        this._height = 0;
         this._scaleX = 1;
         this._scaleY = 1;
         this._rotation = 0;
@@ -97,7 +97,7 @@ class Sprite {
      * @return {Float}
      */
     getRotation() {
-        return this._rotation * Math.PI / 180;
+        return this._rotation;
     }
 
     /**
@@ -332,6 +332,26 @@ class Sprite {
      */
     setY(val) {
         this._y = val;
+
+        return this;
+    }
+
+    /**
+     * Add/Subtract current x/y values. Assign any non-number to leave value the same.
+     *
+     * @method Sprite#translate
+     * @param {Integer} [x]
+     * @param {Integer} [y]
+     * @returns {Sprite}
+     */
+    translate(x, y) {
+        if (typeof x === 'number') {
+            this._x += x;
+        }
+
+        if (typeof y === 'number') {
+            this._y += y;
+        }
 
         return this;
     }

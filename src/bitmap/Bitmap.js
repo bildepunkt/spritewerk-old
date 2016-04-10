@@ -11,6 +11,7 @@ export default class Bitmap extends Sprite {
     constructor(x = 0, y = 0) {
         super(x, y);
 
+        this._imageLoaded = false;
         this._image = null;
         this._tiling = 'no-repeat';
     }
@@ -22,14 +23,20 @@ export default class Bitmap extends Sprite {
      * @param  {Object} context The context object
      */
     render(context) {
+        if (!this._imageLoaded) {
+            return;
+        }
+
         context.save();
+        super.render(context);
 
         if (this._tiling != 'no-repeat') {
+            // TODO cache pattern object
             const pattern = context.createPattern(this._image, this._tiling);
             context.rect(
-                this._getActualX(), this._getActualY(),
-                this._width  * this._getActualScaleX(),
-                this._height * this._getActualScaleY()
+                this._x, this._y,
+                this._width  * this._scaleX,
+                this._height * this._scaleY
             );
             context.fillStyle = pattern;
             context.fill();
@@ -40,10 +47,9 @@ export default class Bitmap extends Sprite {
                 this._srcY,
                 this._srcWidth,
                 this._srcHeight,
-                this._getGlobalX(),
-                this._getGlobalY(),
-                this._width * this._getActualScaleX(),
-                this._height * this._getActualScaleY()
+                0, 0,
+                this._width * this._scaleX,
+                this._height * this._scaleY
             );
         }
 
@@ -58,18 +64,25 @@ export default class Bitmap extends Sprite {
      * @return {Bitmap}
      */
     setImage(path) {
-        this._image = new Image();
-        this._image.src = path;
+        var image = new Image();
 
-        if (!this._srcWidth && !this._srcWidth) {
-            this._srcWidth = this._image.width;
-            this._srcHeight = this._image.height;
-        }
+        image.onload = ()=> {
+            this._image = image;
 
-        if (!this._width && !this._height) {
-            this._width = this._image.width;
-            this._height = this._image.height;
-        }
+            if (!this._srcWidth && !this._srcHeight) {
+                this._srcWidth = this._image.width;
+                this._srcHeight = this._image.height;
+            }
+
+            if (!this._width && !this._height) {
+                this._width = this._image.width;
+                this._height = this._image.height;
+            }
+
+            this._imageLoaded = true;
+        };
+
+        image.src = path;
 
         return this
     }

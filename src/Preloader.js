@@ -7,11 +7,16 @@ class Preloader {
     /**
      * Parses file types and preloads them via element tags
      * @method Preloader.load
-     * @param {...String} paths File paths to preload
+     * @param {...String|Array} paths File paths to preload
      */
     static load(...paths) {
         Preloader.loaded = 0;
         Preloader.total = paths.length;
+
+        // if array is passed
+        if (paths.length && Array.isArray(paths[0])) {
+            paths = paths[0];
+        }
 
         for (let path of paths) {
             if (Preloader._isImage(path)) {

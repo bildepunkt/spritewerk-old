@@ -4,7 +4,7 @@ import Preloader from './Preloader';
  * @class       States
  * @description Preloads, updates, and cleans up the various game states
  *              Accepts an object of the following schema:
-<pre>{
+ <pre>{
     // optional property of paths to assets to preload
     preload: [
         'path/to/assets',
@@ -30,8 +30,9 @@ export default class States {
     constructor(canvas, ticker) {
         this._canvas = canvas;
         this._ticker = ticker;
+        this._loading = false;
 
-        this.ticker.onTick = this._onTick;
+        this._ticker.onTick = this._onTick.bind(this);
     }
 
     /**
@@ -41,7 +42,8 @@ export default class States {
      * @param  {Object} e The event object
      */
     _onTick(factor, ticks) {
-        if (this._state) {
+        if (!this._loading && this._state) {
+            this._canvas.clear(this._state.bgColor);
             this._canvas.render(this._state, factor, ticks);
         }
     }
@@ -53,6 +55,8 @@ export default class States {
      * @return {State} The state to load
      */
     load(state) {
+        this._loading = true;
+
         if (this._state) {
             this._state.destroy();
         }
@@ -60,11 +64,13 @@ export default class States {
         this._state = state;
 
         if (this._state.preload) {
-            Preloader.complete = function () {
+            Preloader.complete = ()=> {
                 this._state.init();
-            };
+                this._loading = false;
+            }
 
             Preloader.load(this._state.preload);
+
         }
     }
 
