@@ -45,7 +45,7 @@ export default class Animation {
 
         const nextTick = (this._frame + 1) % this._step;
 
-        if (nextTick > this._sequenceLength) {
+        if (nextTick >= this._sequenceLength) {
             if (this._loop) {
                 this._frame = 0;
             } else {
