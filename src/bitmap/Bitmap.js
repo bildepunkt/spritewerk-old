@@ -14,19 +14,54 @@ export default class Bitmap extends Sprite {
         this._imageLoaded = false;
         this._image = null;
         this._tiling = 'no-repeat';
+        this._animations = {};
+    }
+
+    /**
+     * @method Bitmap#addAnimation
+     * @param {String}    name      The animation reference name
+     * @param {Animation} animation The animation instance
+     */
+    addAnimation(name, animation) {
+        this._animations[name] = animation;
+    }
+
+    /**
+     * @method Bitmap#playAnimation
+     * @param {String} name The name of the animation to play
+     */
+    playAnimation(name) {
+        this._playingAnimation = name;
+        this._animations[name].play();
+    }
+
+    /**
+     * @method Bitmap#stopAnimation
+     */
+    stopAnimation() {
+        this._playingAnimation = undefined;
+        this._animations[name].stop();
     }
 
     /**
      * Render the entity via context's drawImage
      *
      * @method Bitmap#render
-     * @param  {Object} context The context object
+     * @param  {Object}  context The context object
+     * @param  {Integer} factor  The 0-1-based model of elapsed time
+     * @param  {Integer} ticks   Total elapsed ticks
      */
-    render(context) {
+    render(context, factor, ticks) {
         if (!this._imageLoaded) {
             return;
         }
 
+        if (this._playingAnimation) {
+            const { srcX, srcY } = this._animations[this._playingAnimation].update(ticks);
+            this._srcX = srcX;
+            this._srcY = srcY;
+        }
+        
         context.save();
         super.render(context);
 
@@ -34,7 +69,7 @@ export default class Bitmap extends Sprite {
             // TODO cache pattern object
             const pattern = context.createPattern(this._image, this._tiling);
             context.rect(
-                this._x, this._y,
+                0, 0,
                 this._width  * this._scaleX,
                 this._height * this._scaleY
             );

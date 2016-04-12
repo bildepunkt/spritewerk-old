@@ -168,7 +168,7 @@ class Sprite {
      * @method Sprite#render
      * @param  {Object} context The canvas' context
      */
-    render(context) {
+    render(context, factor, ticks) {
         context.translate(
             this._x + this._pivotX,
             this._y + this._pivotY
