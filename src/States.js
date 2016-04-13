@@ -70,16 +70,6 @@ export default class States {
             }
 
             Preloader.load(this._state.preload);
-
         }
-    }
-
-    /**
-     * Remove event listeners
-     *
-     * @method State#destroy
-     */
-    destroy() {
-        document.removeEventListener('tick', this._onTick, false);
     }
 }

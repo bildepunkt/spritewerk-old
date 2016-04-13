@@ -19,11 +19,13 @@ export default class Rectangle extends Sprite {
      *
      * @memberof shape
      * @method Rectangle#render
-     * @param {Object} context The CanvasRenderingContext2D object
+     * @param  {Object}  context The CanvasRenderingContext2D object
+     * @param  {Integer} factor  The 0-1-based model of elapsed time
+     * @param  {Integer} ticks   Total elapsed ticks
      */
-    render(context) {
+    render(context, factor, ticks) {
         context.save();
-        super.render(context);
+        super.render(context, factor, ticks);
 
         if (this._fill) {
             context.fillStyle = this._fill;

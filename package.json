@@ -32,7 +32,6 @@
   ],
   "author": "Chris Peters",
   "license": "ISC",
-  "engine": "node >=4.2.3",
   "dependencies": {
     "npm-watch": "0.1.1"
   },
