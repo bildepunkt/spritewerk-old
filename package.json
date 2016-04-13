@@ -1,11 +1,14 @@
 {
   "name": "spritewerk",
   "version": "0.1.0",
-  "description": "A set of generic classes with which to build a game development project",
+  "description": "A set of generic classes with which to build a lightweight, device-agnostic, game development project",
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/c-concat-p/active-canvas.git"
+    "url": "https://github.com/c-concat-p/spritewerk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/c-concat-p/spritewerk/issues"
   },
   "watch": {
     "copy": "src/*.js"
@@ -23,10 +26,13 @@
     "canvas",
     "html5",
     "javascript",
-    "game"
+    "game",
+    "library",
+    "framework"
   ],
   "author": "Chris Peters",
   "license": "ISC",
+  "engine": "node >=4.2.3",
   "dependencies": {
     "npm-watch": "0.1.1"
   },
@@ -37,7 +43,7 @@
     "ink-docstrap": "^1.1.1",
     "istanbul": "^0.4.2",
     "jasmine-node": "1.14.5",
-    "jsdoc": "^3.4.0",
+    "jsdoc": "^]3.4.0",
     "jsdom": "7.2.2"
   }
 }
