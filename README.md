@@ -38,7 +38,7 @@ Want to hack on *Spritewerk*? Run ```npm install``` to download the dev dependen
 
 #### Test
 
-Run Spritewerk's unit tests.
+Run Spritewerk's unit tests with coverage via Istanbul.
 
     npm run test
 
@@ -50,6 +50,12 @@ Generate the documentation.
 
 #### Transpile
 
-Need the es5 version? Run the transpile script and point to the ```build``` directory instead.
+Need the es5 version? Run the transpile script and point to the ```build``` directory instead. Also needed to run before tests.
 
     npm run xpile
+
+#### Build
+
+Build in Jenkins with code coverage via Coveralls/Istanbul configuration
+
+    npm run build

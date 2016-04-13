@@ -1,11 +1,11 @@
 import Sprite from '../Sprite';
 
 /**
- * @class   Rectangle
+ * @class    Rectangle
  * @memberof shape
- * @extends {@link Sprite}
- * @desc    A sprite that renders as a rectangle
- * @author  Chris Peters
+ * @extends  Sprite
+ * @desc     A sprite that renders as a rectangle
+ * @author   Chris Peters
  */
 export default class Rectangle extends Sprite {
     constructor(x = 0, y = 0) {
@@ -15,6 +15,12 @@ export default class Rectangle extends Sprite {
         this._stroke = '';
     }
 
+    /**
+     *
+     * @memberof shape
+     * @method Rectangle#render
+     * @param {Object} context The CanvasRenderingContext2D object
+     */
     render(context) {
         context.save();
         super.render(context);
@@ -35,6 +41,7 @@ export default class Rectangle extends Sprite {
     /**
      * [setFill description]
      *
+     * @memberof shape
      * @method Rectangle#setFill
      * @param  {String} val The fill color hex, rgb, rgba, etc.
      */
@@ -47,6 +54,7 @@ export default class Rectangle extends Sprite {
     /**
      * [setStroke description]
      *
+     * @memberof shape
      * @method Rectangle#setStroke
      * @param  {String} val The stroke color hex, rgb, rgba, etc.
      */

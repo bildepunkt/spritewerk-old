@@ -25,16 +25,20 @@ var Preloader = function () {
         /**
          * Parses file types and preloads them via element tags
          * @method Preloader.load
-         * @param {...String} paths File paths to preload
+         * @param {...String|Array} paths File paths to preload
          */
         value: function load() {
-            Preloader.loaded = 0;
-
             for (var _len = arguments.length, paths = Array(_len), _key = 0; _key < _len; _key++) {
                 paths[_key] = arguments[_key];
             }
 
+            Preloader.loaded = 0;
             Preloader.total = paths.length;
+
+            // if array is passed
+            if (paths.length && Array.isArray(paths[0])) {
+                paths = paths[0];
+            }
 
             var _iteratorNormalCompletion = true;
             var _didIteratorError = false;

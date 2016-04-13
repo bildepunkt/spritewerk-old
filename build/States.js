@@ -18,7 +18,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class       States
  * @description Preloads, updates, and cleans up the various game states
  *              Accepts an object of the following schema:
-<pre>{
+ <pre>{
     // optional property of paths to assets to preload
     preload: [
         'path/to/assets',
@@ -27,7 +27,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     init: function () {
         // initialize entities etc.
     },
-    update: function (factor, ticks) {
+    render: function (factor, ticks) {
         // do stuff on every tick
     },
     destroy: function () {
@@ -37,19 +37,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @author      Chris Peters
  * @requires    {@link Preloader}
  *
- * @param {Object} [state] The initial state
+ * @param {Canvas} canvas A Canvas instance
+ * @param {Ticker} ticker A ticker instance
  */
 
 var States = function () {
-    function States(state) {
+    function States(canvas, ticker) {
         _classCallCheck(this, States);
 
-        this._onTick = this._onTick.bind(this);
-        document.addEventListener('tick', this._onTick, false);
+        this._canvas = canvas;
+        this._ticker = ticker;
+        this._loading = false;
 
-        if (state) {
-            this.load(state);
-        }
+        this._ticker.onTick = this._onTick.bind(this);
     }
 
     /**
@@ -62,9 +62,10 @@ var States = function () {
 
     _createClass(States, [{
         key: '_onTick',
-        value: function _onTick(e) {
-            if (this._state) {
-                this._state.update(e.detail.factor, e.detail.ticks);
+        value: function _onTick(factor, ticks) {
+            if (!this._loading && this._state) {
+                this._canvas.clear(this._state.bgColor);
+                this._canvas.render(this._state, factor, ticks);
             }
         }
 
@@ -78,6 +79,10 @@ var States = function () {
     }, {
         key: 'load',
         value: function load(state) {
+            var _this = this;
+
+            this._loading = true;
+
             if (this._state) {
                 this._state.destroy();
             }
@@ -85,8 +90,9 @@ var States = function () {
             this._state = state;
 
             if (this._state.preload) {
-                Preload.complete = function () {
-                    this._state.init();
+                _Preloader2.default.complete = function () {
+                    _this._state.init();
+                    _this._loading = false;
                 };
 
                 _Preloader2.default.load(this._state.preload);

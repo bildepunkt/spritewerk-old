@@ -1,11 +1,11 @@
-import Sprite from './../Sprite';
+import Sprite from '../Sprite';
 
 /**
- * @class   Bitmap
+ * @class    Bitmap
  * @memberof bitmap
- * @extends Sprite
- * @desc    A sprite that renders an image asset
- * @author  Chris Peters
+ * @extends  Sprite
+ * @desc     A sprite that renders an image asset
+ * @author   Chris Peters
  */
 export default class Bitmap extends Sprite {
     constructor(x = 0, y = 0) {

@@ -58,7 +58,17 @@ var Stage = function () {
             this._stage = this._document.createElement('div');
             this._parentEl.appendChild(this._stage);
 
+            this._textfield = this._document.createElement('input');
+            this._textfield.type = 'text';
+            this._textfield.style.position = 'absolute';
+            this._textfield.style.top = '-999px';
+            // TODO verify value 'none'
+            this._textfield.autocapitalize = 'none';
+            this._textfield.id = 'textfield';
+            this._stage.appendChild(this._textfield);
+
             this._video = this._document.createElement('video');
+            this._video.id = 'video';
             this._video.style.position = 'absolute';
             this._stage.appendChild(this._video);
 

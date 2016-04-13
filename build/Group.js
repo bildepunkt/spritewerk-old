@@ -29,227 +29,35 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @requires    Sprite
  * @author      Chris Peters
  *
- * @param {Integer} [x] The initial x position. Default is 0.
- * @param {Integer} [y] The initial y position. Default is 0.
  */
 
 var Group = function (_Collection) {
     _inherits(Group, _Collection);
 
     function Group() {
-        var x = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
-        var y = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-
         _classCallCheck(this, Group);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Group).call(this));
-
-        _this._x = x;
-        _this._y = y;
-        _this._scaleX = 1;
-        _this._scaleY = 1;
-        _this._rotation = 0;
-        _this._composite = _Sprite2.default.getCompositeDefault();
-        _this._opacity = 1;
-        return _this;
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(Group).call(this));
     }
 
     /**
-     * @method Group#getOpacity
-     * @return {Float}
+     * Renders all children recursively on top of own transformation stack
+     *
+     * @method Group#render
+     * @param  {Object} context The 2d context object
      */
 
 
     _createClass(Group, [{
-        key: 'getOpacity',
-        value: function getOpacity() {
-            return this._opacity;
-        }
-
-        /**
-         * @method Group#getRotation
-         * @return {Float}
-         */
-
-    }, {
-        key: 'getRotation',
-        value: function getRotation() {
-            return this._rotation;
-        }
-
-        /**
-         * @method Group#getScaleX
-         * @return {Integer}
-         */
-
-    }, {
-        key: 'getScaleX',
-        value: function getScaleX() {
-            return this._scaleX;
-        }
-
-        /**
-         * @method Group#getScaleY
-         * @return {Integer}
-         */
-
-    }, {
-        key: 'getScaleY',
-        value: function getScaleY() {
-            return this._scaleY;
-        }
-
-        /**
-         * @method Group#getX
-         * @return {Integer}
-         */
-
-    }, {
-        key: 'getX',
-        value: function getX() {
-            return this._x;
-        }
-
-        /**
-         * @method Group#getY
-         * @return {Integer}
-         */
-
-    }, {
-        key: 'getY',
-        value: function getY() {
-            return this._y;
-        }
-
-        /**
-         * Updates all children recursively on top of own transformation stack
-         *
-         * @method Group#update
-         * @return {CanvasTransform} xform The CanvasTransform instance
-         */
-
-    }, {
-        key: 'update',
-        value: function update(xform) {
-            xform.save();
-
-            xform.translate(this._x, this._y);
-            xform.scale(this._scaleX, this._scaleY);
-
-            this.each(function (item) {
-                item.update(xform);
-            }, this);
-
-            xform.restore();
-        }
-
-        /**
-         * Renders all children recursively on top of own transformation stack
-         *
-         * @method Group#render
-         * @param  {Object} context The 2d context object
-         */
-
-    }, {
         key: 'render',
-        value: function render(context) {
+        value: function render(context, factor, ticks) {
             context.save();
 
-            context.globalAlpha *= this._opacity;
-            context.globalCompositeOperation = this._composite;
-
             this.each(function (item) {
-                item.render(context);
+                item.render(context, factor, ticks);
             }, this);
 
             context.restore();
-        }
-
-        /**
-         *
-         * @method Group#setOpacity
-         * @param  {Float} val The opacity value
-         * @return {Group}
-         */
-
-    }, {
-        key: 'setOpacity',
-        value: function setOpacity(val) {
-            this._opacity = val;
-
-            return this;
-        }
-
-        /**
-         *
-         * @method Group#setRotation
-         * @param  {Integer} val The rotation value
-         * @return {Group}
-         */
-
-    }, {
-        key: 'setRotation',
-        value: function setRotation(val) {
-            this._rotation = val;
-
-            return this;
-        }
-
-        /**
-         *
-         * @method Group#setScaleX
-         * @param  {Integer} val The scaleX value
-         * @return {Group}
-         */
-
-    }, {
-        key: 'setScaleX',
-        value: function setScaleX(val) {
-            this._scaleX = val;
-
-            return this;
-        }
-
-        /**
-         * @method Group#setScaleY
-         * @param  {Integer} val The scaleY value
-         * @return {Group}
-         */
-
-    }, {
-        key: 'setScaleY',
-        value: function setScaleY(val) {
-            this._scaleY = val;
-
-            return this;
-        }
-
-        /**
-         * @method Group#setComposite
-         * @param  {Integer} val The x value
-         * @return {Group}
-         */
-
-    }, {
-        key: 'setX',
-        value: function setX(val) {
-            this._x = val;
-
-            return this;
-        }
-
-        /**
-         * @method Group#setY
-         * @param  {Integer} val The y value
-         * @return {Group}
-         */
-
-    }, {
-        key: 'setY',
-        value: function setY(val) {
-            this._y = val;
-
-            return this;
         }
     }]);
 

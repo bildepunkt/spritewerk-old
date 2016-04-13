@@ -2,11 +2,12 @@
 .DS_Store
 
 # node/npm
-node_modules
+node_modules/
 npm-debug.log
 
 # project
 .idea
-docs
-coverage
+docs/
+coverage/
+build/
 playground/bundle.js
