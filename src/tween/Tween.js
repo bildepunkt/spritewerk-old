@@ -5,7 +5,7 @@
  */
  export default class Tween {
     constructor() {
-        entity: null,
+        /*entity: null,
         from:   null,
         to:     null,
         ms:     null,
@@ -14,7 +14,7 @@
         currentFrame: null,
         startFrame:   null,
         endFrame:     null,
-        totalFrames:  null,
+        totalFrames:  null,*/
         this._complete = false;
         
         this.totalFrames = this.ms / (1000 / config.fps);
