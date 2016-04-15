@@ -47,13 +47,13 @@ export default class Ticker {
 
         // fire tick events and execute callbacks
         this.onPreTick(delta, this._ticks);
-        Radio.dispatch('pretick', evtObject);
+        Radio.dispatch(this._document, 'pretick', evtObject);
 
         this.onTick(delta, this._ticks);
-        Radio.dispatch('tick', evtObject);
+        Radio.dispatch(this._document, 'tick', evtObject);
 
         this.onPostTick(delta, this._ticks);
-        Radio.dispatch('posttick', evtObject);
+        Radio.dispatch(this._document, 'posttick', evtObject);
 
         requestAnimationFrame(this._update);
     }
