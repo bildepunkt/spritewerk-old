@@ -1,9 +1,12 @@
+import Radio from './Radio';
 import keycodes from './lib/keycodes';
 
 /**
  * @class       Input
  * @description A module for handling keyboard, mouse, and touch events on the canvas
  * @author      Chris Peters
+ * @requires    Radio
+ * @requires    lib/keycodes
  *
  * @param {HTMLEntity} canvas                   The canvas element to interact with
  * @param {Object}     [opts]
@@ -79,7 +82,7 @@ export default class Input {
         }
 
         this._onTick = this._onTick.bind(this);
-        this._document.addEventListener('tick', this._onTick, false);
+        Radio.tuneIn(this._document, 'tick', this._onTick);
     }
 
     /**
@@ -92,7 +95,7 @@ export default class Input {
         let events = ['keyup', 'keydown'];
 
         for (let event of events) {
-            this._canvas.addEventListener(event, this._handleKeyboard.bind(this), false);
+            Radio.tuneIn(this._canvas, event, this._handleKeyboard.bind(this));
         }
     }
 
@@ -106,7 +109,7 @@ export default class Input {
         let events = ['click', 'dblclick', 'mousedown', 'mouseup', 'mousemove'];
 
         for (let event of events) {
-            this._canvas.addEventListener(event, this._handleMouseAndTouch.bind(this), false);
+            Radio.tuneIn(this._canvas, event, this._handleMouseAndTouch.bind(this));
         }
     }
 
@@ -120,7 +123,7 @@ export default class Input {
         let events = ['tap', 'dbltap', 'touchstart', 'touchend', 'touchmove'];
 
         for (let event of events) {
-            this._canvas.addEventListener(event, this._handleMouseAndTouch.bind(this), false);
+            Radio.tuneIn(this._canvas, event, this._handleMouseAndTouch.bind(this));
         }
     }
 
@@ -330,7 +333,7 @@ export default class Input {
     }
 
     /**
-     * Adds a handler for a certain event type
+     * Adds a handler to a {@link Sprite} for the given event type
      *
      * @method Input#addListener
      * @param  {string}   type     The event type

@@ -1,7 +1,10 @@
+import Radio from './Radio';
+
 /**
  * @class       Ticker
  * @description Executes callback based on given fps and requestAnimationFrame
  * @author      Chris Peters
+ * @requires    Radio
  *
  * @param {Boolean} [start]         Whether to start on instantiate. Default is true
  * @param {Object}  [opts]          Options
@@ -38,24 +41,19 @@ export default class Ticker {
         this._ticks += 1;
 
         const evtObject = {
-            detail: {
-                delta: delta,
-                ticks: this._ticks
-            }
+            delta: delta,
+            ticks: this._ticks
         };
 
-        // create and fire tick events and execute callbacks
-        let tickEvent = new CustomEvent('pretick', evtObject);
+        // fire tick events and execute callbacks
         this.onPreTick(delta, this._ticks);
-        this._document.dispatchEvent(tickEvent);
+        Radio.dispatch('pretick', evtObject);
 
         this.onTick(delta, this._ticks);
-        tickEvent = new CustomEvent('tick', evtObject);
-        this._document.dispatchEvent(tickEvent);
+        Radio.dispatch('tick', evtObject);
 
         this.onPostTick(delta, this._ticks);
-        tickEvent = new CustomEvent('posttick', evtObject);
-        this._document.dispatchEvent(tickEvent);
+        Radio.dispatch('posttick', evtObject);
 
         requestAnimationFrame(this._update);
     }

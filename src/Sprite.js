@@ -125,6 +125,22 @@ class Sprite {
     }
 
     /**
+     * @method Sprite#getSrcHeight
+     * @return {Integer}
+     */
+    getSrcHeight() {
+        return this._srcHeight;
+    }
+
+    /**
+     * @method Sprite#getSrcWidth
+     * @return {Integer}
+     */
+    getSrcWidth() {
+        return this._srcWidth;
+    }
+
+    /**
      * @method Sprite#getSrcX
      * @return {Integer}
      */
@@ -272,6 +288,30 @@ class Sprite {
      */
     setScaleY(val) {
         this._scaleY = val;
+
+        return this;
+    }
+
+    /**
+     *
+     * @method Sprite#setSrcHeight
+     * @param  {Integer} val The srcHeight value
+     * @return {Sprite}
+     */
+    setSrcHeight(val) {
+        this._srcHeight = val;
+
+        return this;
+    }
+
+    /**
+     *
+     * @method Sprite#setSrcWidth
+     * @param  {Integer} val The srcWidth value
+     * @return {Sprite}
+     */
+    setSrcWidth(val) {
+        this._srcWidth = val;
 
         return this;
     }

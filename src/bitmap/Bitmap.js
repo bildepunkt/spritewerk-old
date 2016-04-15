@@ -131,8 +131,17 @@ export default class Bitmap extends Sprite {
      * @return {Bitmap}
      */
     setTiling(val) {
-        this._tiling = val;
-
-        return this;
+        switch (val) {
+            case 'repeat':
+            case 'repeat-x':
+            case 'repeat-y':
+            case 'no-repeat':
+                this._tiling = val;
+                return this;
+            default:
+                throw new Error(
+                    'Bitmap#setTiling: argument must be either "repeat", "repeat-x", "repeat-y", or "no-repeat".'
+                );
+        }
     }
 }

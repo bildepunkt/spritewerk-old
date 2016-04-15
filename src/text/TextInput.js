@@ -4,7 +4,7 @@ import Rectangle from '../shape/Rectangle';
 /**
  * @class    TextInput
  * @memberof text
- * @desc     Renders strings from off-screen html textfield element into a {@link Text} object
+ * @desc     Renders strings from off-screen html textfield element into a {@link text.Text} object
  * @extends  Text
  * @author   Chris Peters
  */

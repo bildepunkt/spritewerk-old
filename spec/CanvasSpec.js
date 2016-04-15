@@ -24,7 +24,7 @@ describe('Stage', function () {
             document: $.document
         });
 
-        expect(stage).toBeTruthy();
+        expect(stage instanceof Stage).toBe(true);
     });
 
     it('creates a <canvas> tag in the DOM', function () {
