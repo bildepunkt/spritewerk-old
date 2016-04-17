@@ -1,45 +1,43 @@
-// import Easing from './Easing';
+import easing from '../lib/easing';
 
 /**
  *
  */
  export default class Tween {
     constructor() {
-        /*entity: null,
-        from:   null,
-        to:     null,
-        ms:     null,
-        easing: null,
+        this._entity = null;
+        this._from   = null;
+        this._to     = null;
+        this._ms     = null;
+        this._easing = null;
     
-        currentFrame: null,
-        startFrame:   null,
-        endFrame:     null,
-        totalFrames:  null,*/
+        this._currentFrame = null;
+        this._startFrame   = null;
+        this._endFrame     = null;
+        this._totalFrames = this._ms / (1000 / 60);
         this._complete = false;
-        
-        this.totalFrames = this.ms / (1000 / config.fps);
     }
     
     onComplete() {
         // callback
     }
 
-    update: function(e) {
-        this.currentFrame = e.detail.frame;
-        this.startFrame   = this.startFrame === null ? this.currentFrame : this.startFrame;
-        this.endFrame     = this.endFrame   === null ? this.currentFrame + this.totalFrames : this.endFrame;
+    update(frame) {
+        this._currentFrame = frame;
+        this._startFrame   = this._startFrame === null ? this._currentFrame : this._startFrame;
+        this._endFrame     = this._endFrame   === null ? this._currentFrame + this._totalFrames : this._endFrame;
 
-        if (this.currentFrame < this.endFrame && !this._complete) {
-            if (!this.easing) {
-                this.easing = 'linear';
+        if (this._currentFrame < this._endFrame && !this._complete) {
+            if (!this._easing) {
+                this._easing = 'linear';
             }
 
-            for(var prop in this.from) {
-                this.entity[prop] = Easing[this.easing](
-                    this.currentFrame,
-                    this.from[prop],
-                    this.to[prop] - this.from[prop],
-                    this.totalFrames
+            for(let prop in this._from) {
+                this._entity[prop] = easing[this._easing](
+                    this._currentFrame,
+                    this._from[prop],
+                    this._to[prop] - this._from[prop],
+                    this._totalFrames
                 );
             }
         } else {
@@ -48,4 +46,3 @@
         }
     }
 }
-

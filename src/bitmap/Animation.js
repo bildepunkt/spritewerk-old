@@ -28,6 +28,15 @@ export default class Animation {
     }
 
     /**
+     * Callback executed if loop set to false on sequence completion
+     *
+     * @method Animation#onComplete
+     */
+    onComplete() {
+
+    }
+
+    /**
      * @memberof bitmap
      * @method Animation#play
      * @param {Boolean} [loop] Whether or not to loop in this sequence instance
@@ -63,6 +72,7 @@ export default class Animation {
                 this._ticks = 0;
             } else {
                 this.stop();
+                this.onComplete();
             }
         }
 
