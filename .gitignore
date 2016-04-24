@@ -9,4 +9,5 @@ npm-debug.log
 .idea
 docs/
 coverage/
-build/
+xpile/
+playground/

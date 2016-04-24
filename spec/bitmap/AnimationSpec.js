@@ -1,6 +1,6 @@
 'use strict';
 
-var Animation = require('../../build/bitmap/Animation').default;
+var Animation = require('../../xpile/bitmap/Animation').default;
 
 describe('Animation', function () {
 

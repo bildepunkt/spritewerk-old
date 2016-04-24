@@ -11,6 +11,10 @@ export default class Bitmap extends Sprite {
     constructor(x = 0, y = 0) {
         super(x, y);
 
+        this._srcX = 0;
+        this._srcY = 0;
+        this._srcWidth = 0;
+        this._srcHeight = 0;
         this._imageLoaded = false;
         this._image = null;
         this._tiling = 'no-repeat';

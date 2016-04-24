@@ -1,6 +1,6 @@
 'use strict';
 
-var Collection = require('../build/Collection').default;
+var Collection = require('../xpile/Collection').default;
 
 describe('Collection', function () {
     var itemA = {

@@ -1,7 +1,7 @@
 'use strict';
 
 var jsdom = require('jsdom');
-var Stage = require('../build/Stage').default;
+var Stage = require('../xpile/Stage').default;
 
 describe('Stage', function () {
     var $;

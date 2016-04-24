@@ -1,7 +1,7 @@
 'use strict';
 
 var jsdom = require('jsdom');
-var Input = require('../build/Input').default;
+var Input = require('../xpile/Input').default;
 
 describe('Input', function () {
     var $, canvas, input;

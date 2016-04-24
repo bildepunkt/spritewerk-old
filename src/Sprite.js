@@ -12,10 +12,6 @@ class Sprite {
         this._y = y;
         this._pivotX = 1;
         this._pivotY = 1;
-        this._srcX = 0;
-        this._srcY = 0;
-        this._srcWidth = 0;
-        this._srcHeight = 0;
         this._width = 0;
         this._height = 0;
         this._scaleX = 1;
