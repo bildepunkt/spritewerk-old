@@ -5,57 +5,45 @@ Spritewerk
 [![Coverage Status](https://coveralls.io/repos/github/c-concat-p/spritewerk/badge.svg?branch=master&stopCachingBadges=true)](https://coveralls.io/github/c-concat-p/spritewerk?branch=master&stopCachingBadges=true)
 
 ### A small, friendly HTML5 framework for device-agnostic game development
+Spritewerk is a lightweight, fun and easy-to-use solution for producing traditional, console-style games that perform beautifully on any device. The code consists of flexible, generic classes for rapidly developing an HTML5 game.
 
-Spritewerk is a culmination of my own curiosity and desire to improve my skills, coupled (loosely-amirite?) with my interest in producing traditional, console-style games that are playable on any device. The code consists of flexible, generic classes on top of which to build a game development project for the Canvas. It was built with the mantra "develop for an interface not an implementation" in mind.
+*NOTE:* Spritewerk does not, at the moment, support physics, or nested transforms.
 
 #### To install
-
     git clone https://github.com/c-concat-p/spritewerk.git
 
 or download archive [here](https://github.com/c-concat-p/spritewerk/archive/master.zip).
 
-Spritewerk has a nested package called *playground*, so be sure to install dependencies in the root & `playground` directories.
-
-Install dependencies
-
-	npm install
-
-Install playground dependencies
-
-	cd playground && npm install
-
 #### To Use
+**ES(6/2015/next)**
+`import` classes from `./src` as needed.
 
-The playground is an environment for developing and evaluating Spritewerk. Develop in the ```main.js``` file with the watch script running and view your changes in the ```index.html``` file.
+*NOTE:* All below scripts require running `npm install` first
 
-First ```cd playground```, then run:
-
-    npm run watch
-
-### Development
-
-Want to hack on *Spritewerk*? Run ```npm install``` to download the dev dependencies and give 'er.
+**ES5**
+Run `npm run xpile`, then `require` modules from `./build` as needed.
 
 #### Test
-
-Run Spritewerk's unit tests with coverage via Istanbul.
+Run Spritewerk's unit tests...
 
     npm run test
 
-#### Documentation
+...with coverage via Istanbul.
 
+    npm run test-cov
+
+#### Documentation
 Generate the documentation.
 
     npm run doc
 
-#### Transpile
-
-Need the es5 version? Run the transpile script and point to the ```build``` directory instead. Also needed to run before tests.
-
-    npm run xpile
-
 #### Build
-
-Build in Jenkins with code coverage via Coveralls/Istanbul configuration
+(Not for running locally :smile:) Build in Jenkins with code coverage via Coveralls/Istanbul configuration
 
     npm run build
+
+#### TODO
+* support calculating entity's bounding area/position when rotated on an offset pivot
+* support clipping objects
+* copy camera ideas over from ghastlyjs
+* use data/state scaffolding again?
