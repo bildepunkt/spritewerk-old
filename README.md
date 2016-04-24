@@ -18,8 +18,6 @@ or download archive [here](https://github.com/c-concat-p/spritewerk/archive/mast
 **ES(6/2015/next)**
 `import` classes from `./src` as needed.
 
-*NOTE:* All below scripts require running `npm install` first
-
 **ES5**
 Run `npm run xpile`, then `require` modules from `./build` as needed.
 
@@ -28,7 +26,7 @@ Run Spritewerk's unit tests...
 
     npm run test
 
-...with coverage via Istanbul.
+...+ coverage via Istanbul.
 
     npm run test-cov
 
@@ -38,7 +36,7 @@ Generate the documentation.
     npm run doc
 
 #### Build
-(Not for running locally :smile:) Build in Jenkins with code coverage via Coveralls/Istanbul configuration
+(Not for running locally) Jenkins build with code coverage via Coveralls/Istanbul configuration
 
     npm run build
 
