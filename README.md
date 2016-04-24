@@ -22,13 +22,9 @@ or download archive [here](https://github.com/c-concat-p/spritewerk/archive/mast
 Run `npm run xpile`, then `require` modules from `./build` as needed.
 
 #### Test
-Run Spritewerk's unit tests...
+Run Spritewerk's unit tests
 
     npm run test
-
-...+ coverage via Istanbul.
-
-    npm run test-cov
 
 #### Documentation
 Generate the documentation.

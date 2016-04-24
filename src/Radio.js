@@ -1,6 +1,6 @@
 /**
  * @class       Radio
- * @description Wrapper for Events. Currently only supports dispatching custom events
+ * @description Wrapper for event listening, removing, & dispatching. Currently only supports broadcasting Custom and Mouse events
  * @author      Chris Peters
  */
 export default class Radio {
@@ -15,7 +15,6 @@ export default class Radio {
     }
 
     /**
-     *
      * @method Radio.tuneOut
      * @param {Any}      target
      * @param {String}   event
@@ -27,15 +26,32 @@ export default class Radio {
 
     /**
      *
-     * @method Radio.dispatch
+     * @method Radio.broadcast
      * @param {Any}    target
      * @param {String} event
      * @param {Object} data
      */
-    static dispatch(target, event, data) {
-        const evt = new CustomEvent(event, {
-            detail: data
-        });
+    static broadcast(target, event, data) {
+        let evt;
+
+        switch(event) {
+            case 'click':
+            case 'dblclick':
+            case 'mousedown':
+            case 'mouseup':
+            case 'mousemove':
+                evt = new MouseEvent(event, {
+                    'view': window,
+                    'bubbles': true,
+                    'cancelable': false
+                });
+                break;
+            default:
+                evt = new CustomEvent(event, {
+                    detail: data
+                });
+                break;
+        }
 
         target.dispatchEvent(evt);
     }
