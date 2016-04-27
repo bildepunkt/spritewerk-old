@@ -1,33 +1,152 @@
-<!doctype html>
-<html class="no-js" lang="">
-    <head>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans|Homenaje' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="css/main.css">
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Spritewerk</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Spritewerk by c-concat-p</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Spritewerk</h1>
+      <h2 class="project-tagline">A small, friendly HTML5 framework for device-agnostic game development</h2>
+      <a href="https://github.com/c-concat-p/spritewerk" class="btn">View on GitHub</a>
+      <a href="https://github.com/c-concat-p/spritewerk/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/c-concat-p/spritewerk/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <!-- Place favicon.ico in the root directory -->
-    </head>
-    <body>
-        <header>
-            <!-- <nav>DOCS</nav> -->
-            <h1 class="title">SPRITEWERK</h1>
-            <p class="subtitle">A small, friendly HTML5 framework for device-agnostic game development</p>
-            <div class="mobile-spacer"></div>
-        </header>
-        <div class="devices-icon"></div>
-        <div class="buttons">
-            <div class="btn download">
-                <a href="//github.com/c-concat-p/spritewerk/archive/master.zip">download</a>
-            </div>
-            <div class="btn github">
-                <a href="//github.com/c-concat-p/spritewerk">source</a>
-            </div>
-            <div style="clear: left"><a href="docs/">DOCS</a></div>
-        </div>
-    </body>
+    <section class="main-content">
+      <h1>
+<a id="spritewerk" class="anchor" href="#spritewerk" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Spritewerk</h1>
+
+<p><a href="https://travis-ci.org/c-concat-p/spritewerk"><img src="https://travis-ci.org/c-concat-p/spritewerk.svg?branch=master" alt="Build Status"></a>
+<a href="https://coveralls.io/github/c-concat-p/spritewerk?branch=master&amp;stopCachingBadges=true"><img src="https://coveralls.io/repos/github/c-concat-p/spritewerk/badge.svg?branch=master&amp;stopCachingBadges=true" alt="Coverage Status"></a></p>
+
+<h3>
+<a id="a-small-friendly-html5-framework-for-device-agnostic-game-development" class="anchor" href="#a-small-friendly-html5-framework-for-device-agnostic-game-development" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A small, friendly HTML5 framework for device-agnostic game development</h3>
+
+<p>Spritewerk is a lightweight, fun and easy-to-use solution for producing traditional, console-style games that perform beautifully on any device. The code consists of flexible, generic classes for rapidly developing an HTML5 game.</p>
+
+<p>Does not support:</p>
+
+<ul>
+<li>physics</li>
+<li>nested transforms</li>
+</ul>
+
+<h4>
+<a id="to-install" class="anchor" href="#to-install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>To install</h4>
+
+<pre><code>git clone https://github.com/c-concat-p/spritewerk.git
+</code></pre>
+
+<p>or download archive <a href="https://github.com/c-concat-p/spritewerk/archive/master.zip">here</a>.</p>
+
+<h4>
+<a id="to-use" class="anchor" href="#to-use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>To Use</h4>
+
+<p><strong>ES(6/2015/next)</strong>
+<code>import</code> classes from <code>./src</code> as needed.</p>
+
+<p><strong>ES5</strong>
+Run <code>npm run xpile</code>, then <code>require</code> modules from <code>./xpile</code> as needed.</p>
+
+<p><strong>Playground</strong>
+Want to play with Spritewerk right away? To set up a rather bare-bones development environment run <code>mkdir -p ./playground &amp;&amp; touch ./playground/index.html &amp;&amp; touch ./playground/main.js</code>, and then watch for <code>main.js</code> changes via webpack with:</p>
+
+<pre><code>npm run webpack
+</code></pre>
+
+<p>Here is an example main.js file to get you started:</p>
+
+<pre><code>import Camera from '../src/Camera';
+import Canvas from '../src/Canvas';
+import Stage from '../src/Stage';
+import Rectangle from '../src/shape/Rectangle';
+import Ticker from '../src/Ticker';
+
+const WIDTH = 800;
+const HEIGHT = 600;
+
+let camera = new Camera();
+let stage = new Stage(WIDTH, HEIGHT, {
+    bgColor: '#222',
+    fill: true
+});
+let canvas = new Canvas(stage.getCanvas(), camera);
+let rect = new Rectangle()
+    .setWidth(64)
+    .setHeight(64)
+    .setX(600);
+let ticker = new Ticker();
+let vx = 4;
+let vy = 4;
+
+ticker.onTick = function () {
+    if (rect.getX() &lt; 0) {
+        vx = 4;
+    }
+    if (rect.getX() + rect.getWidth() &gt; WIDTH) {
+        vx = -4; 
+    }
+    if (rect.getY() &lt; 0) {
+        vy = 4;
+    }
+    if (rect.getY() + rect.getHeight() &gt; HEIGHT) {
+        vy = -4;
+    }
+
+    canvas.clear("#DDD");
+    rect.translate(vx, vy);
+    canvas.render(rect);
+};
+</code></pre>
+
+<h4>
+<a id="test" class="anchor" href="#test" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test</h4>
+
+<p>To run Spritewerk's unit tests, first run <code>npm run xpile</code> and then:</p>
+
+<pre><code>npm run test
+</code></pre>
+
+<h4>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation</h4>
+
+<p>Generate the documentation.</p>
+
+<pre><code>npm run doc
+</code></pre>
+
+<h4>
+<a id="build" class="anchor" href="#build" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build</h4>
+
+<p>(Not for running locally) Jenkins build with code coverage via Coveralls/Istanbul configuration</p>
+
+<pre><code>npm run build
+</code></pre>
+
+<h4>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TODO</h4>
+
+<ul>
+<li>support calculating entity's bounding area/position when rotated on an offset pivot</li>
+<li>support clipping objects</li>
+<li>copy camera ideas over from ghastlyjs</li>
+<li>use data/state scaffolding again?</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/c-concat-p/spritewerk">Spritewerk</a> is maintained by <a href="https://github.com/c-concat-p">c-concat-p</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
 </html>
