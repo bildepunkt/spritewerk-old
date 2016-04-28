@@ -1,5 +1,13 @@
-node_modules
-img
-old
-dist
-*.sublime-workspace
+# system
+.DS_Store
+
+# node/npm
+node_modules/
+npm-debug.log
+
+# project
+.idea
+coverage/
+xpile/
+playground/
+    

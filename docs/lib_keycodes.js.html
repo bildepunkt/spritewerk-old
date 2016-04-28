@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Spritewerk Source: lib/keycodes.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Spritewerk</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="bitmap.html">bitmap</a></li><li><a href="shape.html">shape</a></li><li><a href="text.html">text</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="bitmap.Animation.html">bitmap.Animation</a></li><li><a href="bitmap.Bitmap.html">bitmap.Bitmap</a></li><li><a href="Camera.html">Camera</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="Collection.html">Collection</a></li><li><a href="Group.html">Group</a></li><li><a href="Input.html">Input</a></li><li><a href="Mobile.html">Mobile</a></li><li><a href="module.html#.exports">module.exports</a></li><li><a href="Preloader.html">Preloader</a></li><li><a href="Radio.html">Radio</a></li><li><a href="shape.Rectangle.html">shape.Rectangle</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Stage.html">Stage</a></li><li><a href="States.html">States</a></li><li><a href="text.Text.html">text.Text</a></li><li><a href="text.TextInput.html">text.TextInput</a></li><li><a href="Ticker.html">Ticker</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: lib/keycodes.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/**
+ *
+ */
+export default {
+    8: 'BACKSPACE',
+    9: 'TAB',
+    13: 'ENTER',
+    16: 'SHIFT',
+    17: 'CTRL',
+    18: 'ALT',
+    19: 'PAUSE_BREAK',
+    20: 'CAPS_LOCK',
+    27: 'ESCAPE',
+    33: 'PAGE_UP',
+    34: 'PAGE_DOWN',
+    35: 'END',
+    36: 'HOME',
+    37: 'LEFT_ARROW',
+    38: 'UP_ARROW',
+    39: 'RIGHT_ARROW',
+    40: 'DOWN_ARROW',
+    45: 'INSERT',
+    46: 'DELETE',
+    48: [0,')'],
+    49: [1,'!'],
+    50: [2,'@'],
+    51: [3,'#'],
+    52: [4,'$'],
+    53: [5,'%'],
+    54: [6,'^'],
+    55: [7,'&amp;'],
+    56: [8,'*'],
+    57: [9,'('],
+    65: 'A',
+    66: 'B',
+    67: 'C',
+    68: 'D',
+    69: 'E',
+    70: 'F',
+    71: 'G',
+    72: 'H',
+    73: 'I',
+    74: 'J',
+    75: 'K',
+    76: 'L',
+    77: 'M',
+    78: 'N',
+    79: 'O',
+    80: 'P',
+    81: 'Q',
+    82: 'R',
+    83: 'S',
+    84: 'T',
+    85: 'U',
+    86: 'V',
+    87: 'W',
+    88: 'X',
+    89: 'Y',
+    90: 'Z',
+    91: 'LEFT_WINDOW_KEY',
+    92: 'RIGHT_WINDOW_KEY',
+    93: 'SELECT_KEY',
+    96: 'NUM_PAD_0',
+    97: 'NUM_PAD_1',
+    98: 'NUM_PAD_2',
+    99: 'NUM_PAD_3',
+    100: 'NUM_PAD_4',
+    101: 'NUM_PAD_5',
+    102: 'NUM_PAD_6',
+    103: 'NUM_PAD_7',
+    104: 'NUM_PAD_8',
+    105: 'NUM_PAD_9',
+    106: 'NUM_PAD_ASTERISK',
+    107: 'NUM_PAD_PLUS',
+    109: 'NUM_PAD_MINUS',
+    111: 'NUM_PAD_FOWARD_SLASH',
+    112: 'F1',
+    113: 'F2',
+    114: 'F3',
+    115: 'F4',
+    116: 'F5',
+    117: 'F6',
+    118: 'F7',
+    119: 'F8',
+    120: 'F9',
+    121: 'F10',
+    122: 'F11',
+    123: 'F12',
+    144: 'NUM_LOCK',
+    145: 'SCROLL_LOCK',
+    186: [';',':'],
+    187: ['=','+'],
+    188: [',','&lt;'],
+    189: ['-','_'],
+    190: ['.','>'],
+    191: ['/','?'],
+    192: ['`','~'],
+    219: ['[','{'],
+    220: ['\\','|'],
+    221: [']','}'],
+    222: ['\'','"']
+};
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on Wed Apr 27th 2016
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>

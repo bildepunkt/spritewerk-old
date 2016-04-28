@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Spritewerk Source: Stage.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Spritewerk</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="bitmap.html">bitmap</a></li><li><a href="shape.html">shape</a></li><li><a href="text.html">text</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="bitmap.Animation.html">bitmap.Animation</a></li><li><a href="bitmap.Bitmap.html">bitmap.Bitmap</a></li><li><a href="Camera.html">Camera</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="Collection.html">Collection</a></li><li><a href="Group.html">Group</a></li><li><a href="Input.html">Input</a></li><li><a href="Mobile.html">Mobile</a></li><li><a href="module.html#.exports">module.exports</a></li><li><a href="Preloader.html">Preloader</a></li><li><a href="Radio.html">Radio</a></li><li><a href="shape.Rectangle.html">shape.Rectangle</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Stage.html">Stage</a></li><li><a href="States.html">States</a></li><li><a href="text.Text.html">text.Text</a></li><li><a href="text.TextInput.html">text.TextInput</a></li><li><a href="Ticker.html">Ticker</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: Stage.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/**
+ * @class       Stage
+ * @description Creates and handles the canvas element. included in the options
+ *              parameter is optional dependency injection used for testing against
+ *              a virtual dom.
+ * @author      Chris Peters
+ *
+ * @param {Integer}     [width]         The width of the canvas
+ * @param {Integer}     [height]        The height of the canvas
+ * @param {Object}      [opts]          Stage options
+ * @param {HTMLElement} [opts.parentEl] The element with which to attach the canvas.
+ *                                      If none given the body is used.
+ * @param {String}      [opts.bgColor]  The parent element's bg color
+ * @param {Object}      [opts.document] For testing
+ * @param {Object}      [opts.window]   For testing
+ * @param {Boolean}     [opts.fill]     Set to false to not maximally fill viewport.
+ *                                      Default is true.
+ */
+export default class Stage {
+    constructor(width = 800, height = 600, opts = {}) {
+        this._fill = opts.fill === undefined ? true : opts.fill;
+        this._width = width;
+        this._height = height;
+        this._document = opts.document || document;
+        this._window = opts.window || window;
+        this._parentEl = opts.parentEl || this._document.body;
+
+        this._document.documentElement.style.backgroundColor = opts.bgColor;
+
+        this._createStageElements();
+
+        this._window.addEventListener('resize', this._handleResize.bind(this));
+        this._window.addEventListener('orientationchange', this._handleResize.bind(this));
+
+        this._handleResize();
+    }
+
+    _createStageElements() {
+        this._stage = this._document.createElement('div');
+        this._parentEl.appendChild(this._stage);
+
+        this._textfield = this._document.createElement('input');
+        this._textfield.type = 'text';
+        this._textfield.style.position = 'absolute';
+        this._textfield.style.top = '-999px';
+        // TODO verify value 'none'
+        this._textfield.autocapitalize = 'none';
+        this._textfield.id = 'textfield';
+        this._stage.appendChild(this._textfield);
+
+        this._video = this._document.createElement('video');
+        this._video.id ='video';
+        this._video.style.position = 'absolute';
+        this._stage.appendChild(this._video);
+
+        this._canvas = this._document.createElement('canvas');
+        this._canvas.width = this._width;
+        this._canvas.height = this._height;
+        this._canvas.style.position = 'absolute';
+        this._stage.appendChild(this._canvas);
+    }
+
+    /**
+     * Calls _resizeElement for stage elements
+     *
+     * @method Stage#_handleResize
+     */
+    _handleResize() {
+        this._resizeElement(this._canvas);
+        this._resizeElement(this._video);
+    }
+
+    /**
+     * Decides how to handle resize based on options
+     *
+     * @method Stage#_resizeElement
+     * @param  {HTMLEntity} el The element to resize
+     */
+    _resizeElement(el) {
+        if (this._fill) {
+            let { top, left, width, height } = Stage.fill(
+                this._width,
+                this._height,
+                this._window.innerWidth,
+                this._window.innerHeight
+            );
+
+            el.style.top = `${Math.round(top)}px`;
+            el.style.left = `${Math.round(left)}px`;
+            el.style.width = `${Math.round(width)}px`;
+            el.style.height = `${Math.round(height)}px`;
+        } else {
+            let { top, left } = Stage.center(
+                this._width,
+                this._height,
+                this._window.innerWidth,
+                this._window.innerHeight
+            );
+
+            el.style.top = `${Math.round(top)}px`;
+            el.style.left = `${Math.round(left)}px`;
+        }
+    }
+
+    /**
+     * Returns the canvas element
+     *
+     * @method Stage#getCanvas
+     * @return {HTMLElement}
+     */
+    getCanvas() {
+        return this._canvas;
+    }
+
+    /**
+     * Returns the video element
+     *
+     * @method Stage#getVideo
+     * @return {HTMLElement}
+     */
+    getVideo() {
+        return this._video;
+    }
+
+    /**
+     * Maximizes an element (with aspect ratio intact) in the viewport via CSS.
+     *
+     * @method Stage.fill
+     * @param  {Integer} width          The element's original width attribute
+     * @param  {Integer} height         The element's original height attribute
+     * @param  {Integer} viewportWidth  The viewport's current width
+     * @param  {Integer} viewportHeight The viewport's current height
+     * @return {Object}                 The new top, left, width, &amp; height
+     */
+    static fill(width, height, viewportWidth, viewportHeight) {
+        const LANDSCAPE_RATIO = height / width;
+        const PORTRAIT_RATIO  = width / height;
+        const IS_LANDSCAPE    = LANDSCAPE_RATIO &lt; PORTRAIT_RATIO ? true : false;
+
+        let winLandscapeRatio = viewportHeight / viewportWidth;
+        let winPortraitRatio  = viewportWidth / viewportHeight;
+        let offsetLeft = 0;
+        let offsetTop  = 0;
+        let offsetWidth;
+        let offsetHeight;
+
+        if (IS_LANDSCAPE) {
+            if (LANDSCAPE_RATIO &lt; winLandscapeRatio) {
+                offsetWidth = viewportWidth;
+                offsetHeight = offsetWidth * LANDSCAPE_RATIO;
+                offsetTop = (viewportHeight - offsetHeight) / 2;
+            } else {
+                offsetHeight = viewportHeight;
+                offsetWidth = viewportHeight * PORTRAIT_RATIO;
+                offsetLeft = (viewportWidth - offsetWidth) / 2;
+            }
+        } else {
+            if (PORTRAIT_RATIO &lt; winPortraitRatio) {
+                offsetHeight = viewportHeight;
+                offsetWidth = viewportHeight * PORTRAIT_RATIO;
+                offsetLeft = (viewportWidth - offsetWidth) / 2;
+            } else {
+                offsetWidth = viewportWidth;
+                offsetHeight = offsetWidth * LANDSCAPE_RATIO;
+                offsetTop = (viewportHeight - offsetHeight) / 2;
+            }
+        }
+
+        return {
+            width: offsetWidth,
+            height: offsetHeight,
+            left: offsetLeft,
+            top: offsetTop
+        };
+    }
+
+    /**
+     * Keeps stage element centered in the viewport
+     *
+     * @method Stage.center
+     * @param  {Integer} width          The element's original width attribute
+     * @param  {Integer} height         The element's original height attribute
+     * @param  {Integer} viewportWidth  The viewport's current width
+     * @param  {Integer} viewportHeight The viewport's current height
+     * @return {Object}                 The top and left
+     */
+    static center(width, height, viewportWidth, viewportHeight) {
+        return {
+            left: (viewportWidth - width) / 2,
+            top: (viewportHeight - height) / 2
+        };
+    }
+}
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on Wed Apr 27th 2016
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>

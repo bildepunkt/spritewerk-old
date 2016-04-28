@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Spritewerk Source: Input.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Spritewerk</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="bitmap.html">bitmap</a></li><li><a href="shape.html">shape</a></li><li><a href="text.html">text</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="bitmap.Animation.html">bitmap.Animation</a></li><li><a href="bitmap.Bitmap.html">bitmap.Bitmap</a></li><li><a href="Camera.html">Camera</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="Collection.html">Collection</a></li><li><a href="Group.html">Group</a></li><li><a href="Input.html">Input</a></li><li><a href="Mobile.html">Mobile</a></li><li><a href="module.html#.exports">module.exports</a></li><li><a href="Preloader.html">Preloader</a></li><li><a href="Radio.html">Radio</a></li><li><a href="shape.Rectangle.html">shape.Rectangle</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Stage.html">Stage</a></li><li><a href="States.html">States</a></li><li><a href="text.Text.html">text.Text</a></li><li><a href="text.TextInput.html">text.TextInput</a></li><li><a href="Ticker.html">Ticker</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: Input.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">import Radio from './Radio';
+import keycodes from './lib/keycodes';
+
+/**
+ * @class       Input
+ * @description A module for handling keyboard, mouse, and touch events on the canvas
+ * @author      Chris Peters
+ * @requires    Radio
+ * @requires    lib/keycodes
+ *
+ * @param {HTMLEntity} canvas                   The canvas element to interact with
+ * @param {Object}     [opts]
+ * @param {Boolean}    [opts.canvasFit]         Set to true if using css to fit the canvas in the viewport
+ * @param {Boolean}    [opts.listenForMouse]    Whether or not to listen for mouse events
+ * @param {Boolean}    [opts.listenForTouch]    Whether or not to listen for touch events
+ * @param {Boolean}    [opts.listenForKeyboard] Whether or not to listen for keyboard events
+ * @param {Object}     [opts.window]            window object for testing
+ * @param {Object}     [opts.document]          document object for testing
+ */
+export default class Input {
+    constructor(canvas, opts = {}) {
+        // options
+        this._canvas = canvas;
+        this._canvasFit = opts.canvasFit || true;
+        this._listenForMouse = opts.listenForMouse || true;
+        this._listenForTouch = opts.listenForTouch || false;
+        this._listenForKeyboard = opts.listenForKeyboard || true;
+        this._window = opts.window || window;
+        this._document = opts.document || document;
+
+        this._uiEvents = {
+            DBL_CLICK: 'dblclick',
+            DBL_TAP: 'dbltap',
+
+            DRAG: 'drag',
+            DRAG_END: 'dragend',
+            DRAG_START: 'dragstart',
+
+            CLICK: 'click',
+            TAP: 'tap',
+
+            MOUSE_DOWN: 'mousedown',
+            MOUSE_UP: 'mouseup',
+            TOUCH_START: 'touchstart',
+            TOUCH_END: 'touchend',
+
+            MOUSE_MOVE: 'mousemove',
+            TOUCH_MOVE: 'touchmove',
+
+            KEY_UP: 'keyup',
+            KEY_DOWN: 'keydown'
+        };
+
+        // listeners values are arrays of objects containing handlers and (optional) targets
+        // eg: this._listeners.keyup = [{
+        //         handler: function () {...},
+        //         target: { name: 'foo', x: 32, y: 64, ...}
+        //     }];
+        this._listeners = {};
+
+        for (let key in this._uiEvents) {
+            this._listeners[this._uiEvents[key]] = [];
+        }
+
+        this._keycodes = keycodes;
+        this._canDrag = false;
+        this._isDragging = false;
+        this._keysDown = {};
+        this._userHitTestMethod = null;
+        this._queuedEvents = [];
+
+        if (this._listenForKeyboard) {
+            this._addKeyboardListeners();
+        }
+
+        if (this._listenForMouse) {
+            this._addMouseListeners();
+        }
+
+        if (this._listenForTouch) {
+            this._addTouchListeners();
+        }
+
+        this._onTick = this._onTick.bind(this);
+        Radio.tuneIn(this._document, 'tick', this._onTick);
+    }
+
+    /**
+     * Adds keyboard listeners
+     *
+     * @method Input#_addKeyboardListeners
+     * @private
+     */
+    _addKeyboardListeners() {
+        let events = ['keyup', 'keydown'];
+
+        for (let event of events) {
+            Radio.tuneIn(this._canvas, event, this._handleKeyboard.bind(this));
+        }
+    }
+
+    /**
+     * Adds mouse listeners
+     *
+     * @method Input#_addMouseListeners
+     * @private
+     */
+    _addMouseListeners() {
+        let events = ['click', 'dblclick', 'mousedown', 'mouseup', 'mousemove'];
+
+        for (let event of events) {
+            Radio.tuneIn(this._canvas, event, this._handleMouseAndTouch.bind(this));
+        }
+    }
+
+    /**
+     * Adds touch listeners
+     *
+     * @method Input#_addTouchListeners
+     * @private
+     */
+    _addTouchListeners() {
+        let events = ['tap', 'dbltap', 'touchstart', 'touchend', 'touchmove'];
+
+        for (let event of events) {
+            Radio.tuneIn(this._canvas, event, this._handleMouseAndTouch.bind(this));
+        }
+    }
+
+    /**
+     * get the scale ratio of the canvas based on with/heght attrs and css width/height
+     *
+     * @method Input#_getScaleFactor
+     * @return {Float}
+     */
+    _getScaleFactor() {
+        let factor = 1;
+        let canvasWidth;
+
+        if (this._canvas.style.width) {
+            canvasWidth = parseInt(this._canvas.style.width, 10);
+            factor = canvasWidth / this._canvas.width;
+        }
+
+        return 100 / factor / 100;
+    }
+
+    /**
+     * Checks if point is inside rectangle
+     *
+     * @method Input#_hitTest
+     * @param  {Integer} x          [description]
+     * @param  {Integer} y          [description]
+     * @param  {Object} boundingBox [description]
+     * @return {Boolean}
+     */
+    _hitTest(x, y, boundingBox) {
+        return x >= boundingBox.minX &amp;&amp; x &lt;= boundingBox.maxX &amp;&amp;
+            y >= boundingBox.minY &amp;&amp; y &lt;= boundingBox.maxY;
+    }
+
+    /**
+     * Handler for DOM events. Creates custom event object with helpful properties
+     *
+     * @method Input#_handleKeyboard
+     * @param {object} inputEvent the DOM input event object
+     * @private
+     */
+    _handleKeyboard(inputEvent) {
+        inputEvent.preventDefault();
+
+        let keyName = this._keycodes[inputEvent.keyCode];
+        let event = {
+            domEvent: inputEvent,
+            type: inputEvent.type,
+            keyCode: inputEvent.keyCode,
+            keyName: typeof keyName === 'object' &amp;&amp; keyName.length ?
+                keyName[0] :
+                keyName
+        };
+
+        switch (event.type) {
+            case this._uiEvents.KEY_DOWN:
+                this._keysDown[keyName] = inputEvent.keyCode;
+                break;
+            case this._uiEvents.KEY_UP:
+                delete this._keysDown[keyName];
+                break;
+        }
+
+        event.keysDown = this.getKeysDown();
+
+        this._queuedEvents.push(event);
+    }
+
+    /**
+     * Handler for DOM events. Creates custom event object with helpful properties
+     * Creates event objects with x/y coordinates based on scaling and absX/absY for
+     * absolute x/y regardless of scale offset
+     * Only uses first touch event, thus not currently supporting multi-touch
+     *
+     * @method Input#
+     * @param {object} inputEvent The DOM input event object
+     */
+    _handleMouseAndTouch(inputEvent) {
+        inputEvent.preventDefault();
+
+        let scaleFactor = this._canvasFit ? this._getScaleFactor() : 1;
+        let event = {
+            domEvent: inputEvent,
+            type: inputEvent.type
+        };
+
+        this._queuedEvents.push(event);
+
+        if (inputEvent.hasOwnProperty('touches')) {
+            event.absX = inputEvent.touches[0].pageX - this._canvas.offsetLeft;
+            event.absY = inputEvent.touches[0].pageY - this._canvas.offsetTop;
+        } else {
+            event.absX = inputEvent.pageX - this._canvas.offsetLeft;
+            event.absY = inputEvent.pageY - this._canvas.offsetTop;
+        }
+
+        // coordinate positions relative to canvas scaling
+        event.x = Math.round(event.absX * scaleFactor);
+        event.y = Math.round(event.absY * scaleFactor);
+
+        switch (event.type) {
+            case this._uiEvents.MOUSE_DOWN:
+            case this._uiEvents.TOUCH_START:
+
+                this._canDrag = true;
+
+                break;
+
+            case this._uiEvents.MOUSE_UP:
+            case this._uiEvents.TOUCH_END:
+
+                this._canDrag = false;
+
+                if (this._isDragging) {
+                    this._isDragging = false;
+
+                    this._queuedEvents.push(Object.assign({}, event, {
+                        type: this._uiEvents.DRAG_END
+                    }));
+                }
+
+                break;
+
+            case this._uiEvents.MOUSE_MOVE:
+            case this._uiEvents.TOUCH_MOVE:
+
+                if (this._canDrag) {
+                    if (!this._isDragging) {
+                        this._isDragging = true;
+
+                        this._queuedEvents.push(Object.assign({}, event, {
+                            type: this._uiEvents.DRAG_START
+                        }));
+                    }
+
+                    this._queuedEvents.push(Object.assign({}, event, {
+                        type: this._uiEvents.DRAG
+                    }));
+                }
+
+                break;
+        }
+    }
+
+    /**
+     * Checks for duplicate handler in the listener tyoe being added
+     *
+     * @method Input#_isDuplicateHandler
+     * @param  {Function} handler  The handler to check
+     * @param  {Array}    handlers The handlers of the listener type being added
+     * @return {Boolean}
+     * @private
+     */
+    _isDuplicateHandler(handler, handlerObjects) {
+        let dup = false;
+
+        for (let handlerObject of handlerObjects) {
+            if (handler === handlerObject.handler) {
+                dup = true;
+                break;
+            }
+        }
+
+        return dup;
+    }
+
+    /**
+     * Triggers all queued events. Passes the factor and ticks from {@link Ticker}
+     *
+     * @method Input#_onTick
+     * @param  {Object} e The event object
+     */
+    _onTick(e) {
+        for (let event of this._queuedEvents) {
+            this._triggerHandlers(event);
+        }
+
+        this._queuedEvents = [];
+    }
+
+    /**
+     * executes handlers of the given event's type
+     *
+     * @method Input#_triggerHandlers
+     * @param {object} event
+     * @private
+     */
+    _triggerHandlers(event) {
+        for (let handlerObject of this._listeners[event.type]) {
+
+            if (handlerObject.target) {
+                let hitTest = this._userHitTestMethod || this._hitTest;
+
+                if (hitTest(event.x, event.y,
+                    handlerObject.target.getBoundingArea())) {
+
+                    event.target = handlerObject.target;
+
+                    // if event was bound with a target trigger handler ONLY if target hit
+                    handlerObject.handler(event);
+                }
+            } else {
+                handlerObject.handler(event);
+            }
+        }
+    }
+
+    /**
+     * Adds a handler to a {@link Sprite} for the given event type
+     *
+     * @method Input#addListener
+     * @param  {string}   type     The event type
+     * @param  {function} handler  The function to execute when event triggered
+     * @param  {object}   [target] The target to check event trigger against
+     * @return {boolean}           Returns true if added and false if callback already exists
+     */
+    addListener(type, handler, target) {
+        let handlerObjects = this._listeners[type];
+        let dup;
+
+
+        if (! handlerObjects) {
+            throw new TypeError(`Event type "${type}" does not exist.`);
+        }
+
+        if (handlerObjects.length) {
+            dup = this._isDuplicateHandler(handler, handlerObjects);
+        }
+
+        if (!dup) {
+            handlerObjects.push({
+                handler, target
+            });
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Removes matching handler if found
+     *
+     * @method Input#removeListener
+     * @param  {string}   type    the event type
+     * @param  {function} handler the handler to remove
+     * @return {boolean}  removed Returns true if removed and otherwise false
+     */
+    removeListener(type, handler) {
+        let handlers = this._listeners[type];
+        let removed = false;
+
+        if (! handlers) {
+            throw new TypeError(`Event type "${type}" does not exist.`);
+        }
+
+        for (let i = 0, len = handlers.length; i &lt; len; i++) {
+            let handlerObject = handlers[i];
+            if (handlerObject.handler === handler) {
+                handlers.splice(i, 1);
+                removed = true;
+                break;
+            }
+        }
+
+        return removed;
+    }
+
+    /**
+     * returns an object of the keys currently being pressed
+     * eg: &lt;code>{ LEFT_ARROW: 37, UP_ARROW: 38 }&lt;/code>
+     *
+     * @method Input#getKeysDown
+     * @return {Object}
+     */
+    getKeysDown() {
+        return this._keysDown;
+    }
+
+    /**
+     * Allows user to set a custom hit test method
+     *
+     * @method Input#setHitTestMethod
+     * @param {Function} fn The user's hit test method
+     */
+    setHitTestMethod(fn) {
+        if (typeof fn !== 'function') {
+            throw new TypeError('Input#setHitTestMethod parameter must be a function');
+        }
+
+        this._userHitTestMethod = fn;
+    }
+}
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on Wed Apr 27th 2016
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>
