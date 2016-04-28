@@ -12,8 +12,6 @@ Does not support:
 * physics
 * nested transforms
 
-*NOTE:* You may notice a lack of open-source libraries in Spritewerk. The reason for this is simple that I like solving problems, and while better solutions may be out there, I enjoy the challenge. 
-
 #### To install
     git clone https://github.com/c-concat-p/spritewerk.git
 
@@ -50,8 +48,7 @@ Here is an example main.js file to get you started:
     let canvas = new Canvas(stage.getCanvas(), camera);
     let rect = new Rectangle()
         .setWidth(64)
-        .setHeight(64)
-        .setX(600);
+        .setHeight(64);
     let ticker = new Ticker();
     let vx = 4;
     let vy = 4;
@@ -94,5 +91,6 @@ Generate the documentation.
 #### TODO
 * support calculating entity's bounding area/position when rotated on an offset pivot
 * support clipping objects
-* copy camera ideas over from ghastlyjs
+* copy camera ideas over from old code/ghastlyjs
 * use data/state scaffolding again?
+* reinstate clickCandidate from old [code](https://github.com/c-concat-p/spritewerk/blob/worlds/src/events/input.js)
