@@ -20,23 +20,8 @@
     </section>
 
     <section class="main-content">
-      <h1>
-<a id="spritewerk" class="anchor" href="#spritewerk" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Spritewerk</h1>
 
-<p><a href="https://travis-ci.org/c-concat-p/spritewerk"><img src="https://travis-ci.org/c-concat-p/spritewerk.svg?branch=master" alt="Build Status"></a>
-<a href="https://coveralls.io/github/c-concat-p/spritewerk?branch=master&amp;stopCachingBadges=true"><img src="https://coveralls.io/repos/github/c-concat-p/spritewerk/badge.svg?branch=master&amp;stopCachingBadges=true" alt="Coverage Status"></a></p>
-
-<h3>
-<a id="a-small-friendly-html5-framework-for-device-agnostic-game-development" class="anchor" href="#a-small-friendly-html5-framework-for-device-agnostic-game-development" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A small, friendly HTML5 framework for device-agnostic game development</h3>
-
-<p>Spritewerk is a lightweight, fun and easy-to-use solution for producing traditional, console-style games that perform beautifully on any device. The code consists of flexible, generic classes for rapidly developing an HTML5 game.</p>
-
-<p>Does not support:</p>
-
-<ul>
-<li>physics</li>
-<li>nested transforms</li>
-</ul>
+<h2>Spritewerk is a lightweight, fun and easy-to-use solution for producing traditional, console-style games that perform beautifully on any device. The code consists of flexible, generic classes for rapidly developing an HTML5 game.</h2>
 
 <h4>
 <a id="to-install" class="anchor" href="#to-install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>To install</h4>
@@ -49,7 +34,7 @@
 <h4>
 <a id="to-use" class="anchor" href="#to-use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>To Use</h4>
 
-<p><strong>ES(6/2015/next)</strong>
+<p><strong>ES6</strong>
 <code>import</code> classes from <code>./src</code> as needed.</p>
 
 <p><strong>ES5</strong>
@@ -80,13 +65,12 @@ let stage = new Stage(WIDTH, HEIGHT, {
 let canvas = new Canvas(stage.getCanvas(), camera);
 let rect = new Rectangle()
     .setWidth(64)
-    .setHeight(64)
-    .setX(600);
+    .setHeight(64);
 let ticker = new Ticker();
 let vx = 4;
 let vy = 4;
 
-ticker.onTick = function () {
+ticker.onTick = ()=> {
     if (rect.getX() &lt; 0) {
         vx = 4;
     }
