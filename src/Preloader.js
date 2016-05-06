@@ -1,7 +1,6 @@
 /**
- * @class  Preloader
- * @desc   Preloads a list of image, video, and audio files
- * @author Chris Peters
+ * Preloads a list of image, video, and audio files
+ * @class Preloader
  */
 class Preloader {
     /**

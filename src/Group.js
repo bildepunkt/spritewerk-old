@@ -1,13 +1,9 @@
 import Collection from './Collection';
-import Sprite from './Sprite';
 
 /**
- * @class       Group
- * @description Provides a transformation hierarchy for {@link Collection}s
- * @extends     Collection
- * @requires    Sprite
- * @author      Chris Peters
- *
+ * Provides a transformation hierarchy for {@link Collection}s
+ * @class   Group
+ * @extends Collection
  */
 export default class Group extends Collection {
     constructor() {
@@ -15,16 +11,16 @@ export default class Group extends Collection {
     }
 
     /**
-     * Renders all children recursively on top of own transformation stack
-     *
+     * Renders all children recursively. Will be called by {@link Canvas}
      * @method Group#render
-     * @param  {Object} context The 2d context object
+     * @param  {CanvasRenderingContext2D} context The 2d context object
+     * @param  {Float}                    factor  The 0-1 range of time passed between frames
      */
-    render(context, factor, ticks) {
+    render(context, factor) {
         context.save();
 
         this.each((item)=> {
-            item.render(context, factor, ticks);
+            item.render(context, factor);
         }, this);
 
         context.restore();

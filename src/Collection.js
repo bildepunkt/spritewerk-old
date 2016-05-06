@@ -1,23 +1,23 @@
 /**
- * @class       Collection
- * @description Provides the sortable, iterable storage of entities that are
- *              gettable, settable, sortable, removable, etcera(ble) by name
- * @author      Chris Peters
+ * @typedef  {Object} CollectionItem The collection item
+ * @property {String} name The item's name
+ * @property {Body}   item The item
+ */
+
+/**
+ * Provides a list for getting, setting, sorting, & removing entities by name
+ * @class Collection
  */
 export default class Collection {
     constructor() {
-        /**
-         * @member {Array} The sorted list
-         * @private
-         */
         this._items = [];
     }
 
     /**
-     * Returns the item { name, item } object
-     *
+     * Returns the item CollectionItem object
+     * @method Collection#_getRawItem
      * @param  {String} name
-     * @return {Object}
+     * @return {CollectionItem}
      * @private
      */
     _getRawItem(name) {
@@ -37,7 +37,7 @@ export default class Collection {
     /**
      * Iterates the collection's sorted items. The raw item, index, name, and the
      * list being iterated are supplied to the provided function
-     *
+     * @method Collection#_rawEach
      * @param {Function} fn
      * @private
      */
@@ -51,13 +51,13 @@ export default class Collection {
 
     /**
      * Add an item with optional name
-     *
+     * @method Collection#addItem
      * @param  {Any}        item   The item to add
      * @param  {String}     [name] The optional name of the item
      * @return {Collection}
      */
     addItem(item, name) {
-        name = name || '';
+        name = name || "";
 
         this._items.push({
             item, name
@@ -68,14 +68,13 @@ export default class Collection {
 
     /**
      * Add multiple items
-     *
-     * @param {...Object} items Can be the object itself or an object containing the entity and it's name
-     *                          eg: <code>{ item: Entity, name: 'entityName' }</code>
+     * @method Collection#addItems
+     * @param  {(...CollectionItem|Body)} items Can be the object itself or an object containing the entity and its name
      * @return {Collection}
      */
     addItems(...items) {
         for (let item of items) {
-            if (typeof item.item === 'object' && typeof item.name === 'string') {
+            if (typeof item.item === "object" && typeof item.name === "string") {
                 // if item has item/name structure
                 this.addItem(item.item, item.name);
             } else {
@@ -90,7 +89,7 @@ export default class Collection {
     /**
      * Iterates the collection's sorted items. The item, index, and name are supplied
      * to the provided function
-     *
+     * @method Collection#each
      * @param {Function} fn      The function to execute on the iterable
      * @param {Object}   [scope] The scope with which to execute the function
      */
@@ -108,9 +107,9 @@ export default class Collection {
 
     /**
      * iterates items and return the ones that meet criteria
-     *
+     * @method Collection#filter
      * @param  {Function} fn      Truth predicate
-     * @param  {Object}   [scope] The scope with which to execute the function
+     * @param  {Object}   [scope] The scope in which to execute the function
      * @return {Array}
      */
     filter(fn, scope) {
@@ -129,7 +128,7 @@ export default class Collection {
 
     /**
      * Returns a list of just the items
-     *
+     * @method Collection#getItemArray
      * @return {Array}
      */
     getItemArray() {
@@ -142,7 +141,7 @@ export default class Collection {
      * Returns an existing item by name, or undefined if the name is not found
      *
      * @param  {String} name The name of the item
-     * @return {Any}
+     * @return {(Body|undefined)}
      */
     getItem(name) {
         let item;
@@ -162,7 +161,7 @@ export default class Collection {
      * Returns an existing item by index
      *
      * @param  {Integer} index
-     * @return {Any}
+     * @return {Body}
      */
     getItemAt(index) {
         return this._items[index].item;
@@ -206,7 +205,6 @@ export default class Collection {
 
     /**
      * Removes an object by name
-     *
      * @method SW.Collection.prototype.removeItem
      * @param  {String}  name
      * @return {Boolean} Returns true if item removed, false if not
@@ -230,7 +228,6 @@ export default class Collection {
 
     /**
      * Assigns a new value to an existing item
-     *
      * @param {String} name  The name of the object to modify
      * @param {Any}    value The new value
      */
@@ -247,7 +244,6 @@ export default class Collection {
 
     /**
      * Moves item to new index
-     *
      * @param {String}  name  The name of the object being moved
      * @param {Integer} index The item's new index
      */

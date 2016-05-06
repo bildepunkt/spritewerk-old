@@ -1,8 +1,6 @@
 /**
- * @class       Canvas
- * @description Handles rendering entities onto the canvas element.
- * @author      Chris Peters
- *
+ * Handles rendering entities onto the canvas element
+ * @class Canvas
  * @param {HTMLElement} canvas The active canvas element
  * @param {Camera}      camera The camera instance
  */
@@ -10,7 +8,7 @@ export default class Canvas {
     constructor(canvas, camera) {
         this._canvas = canvas;
         this._camera = camera;
-        this._context = this._canvas.getContext('2d');
+        this._context = this._canvas.getContext("2d");
 
         this.setImageSmoothing(true);
     }
@@ -33,27 +31,18 @@ export default class Canvas {
     }
 
     /**
-     * Returns the context object
-     *
-     * @method Canvas#getContext
-     * @return {Object} The 2D context object
-     */
-    getContext() {
-        return this._context;
-    }
-
-    /**
      * Offsets canvas based on camera and calls an entity's render method passing the context.
      * Saves and restores context and beginning and end of operation.
      *
      * @method Canvas#render
-     * @param  {Object} entity [description]
+     * @param  {Body} entity  Any renderable entity
+     * @param  {Float} factor 
      */
-    render(entity, factor, ticks) {
+    render(entity, factor) {
         this._context.save();
 
-        this._context.translate(-this._camera.getX(), -this._camera.getY());
-        entity.render(this._context, factor, ticks);
+        this._context.translate(-this._camera.x, -this._camera.y);
+        entity.render(this._context, factor);
 
         this._context.restore();
     }

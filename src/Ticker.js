@@ -1,20 +1,18 @@
 import Radio from './Radio';
 
 /**
- * @class       Ticker
- * @description Executes callback based on given fps and requestAnimationFrame
- * @author      Chris Peters
- * @requires    Radio
- *
- * @param {Boolean} [start]         Whether to start on instantiate. Default is true
- * @param {Object}  [opts]          Options
- * @param {Object}  [opts.window]   window object for testing
- * @param {Object}  [opts.document] document object for testing
+ * Executes callback based on requestAnimationFrame
+ * @class    Ticker
+ * @requires Radio
+ * @param {Boolean} [start]            Whether to start on instantiate. Default is true
+ * @param {Object}  [options]          Options
+ * @param {Object}  [options.window]   window object for testing
+ * @param {Object}  [options.document] document object for testing
  */
 export default class Ticker {
-    constructor(start = true, opts = {}) {
-        this._window = opts.window || window;
-        this._document = opts.document || document;
+    constructor(start=true, options={}) {
+        this._window = options.window || window;
+        this._document = options.document || document;
         this._then = Date.now();
         this._ticks = 0;
 
@@ -30,7 +28,6 @@ export default class Ticker {
      * Calculates whether or not to call {@link Ticker#onTick} based on {@link Ticker#_fps}.
      * If the correct amount of time has passed the {@link Ticker#onTick} callback will fire and
      * the <code>tick</code> event will be dispatched via the <code>document</code> object.
-     *
      * @method Ticker#_update
      */
     _update() {
@@ -55,49 +52,39 @@ export default class Ticker {
         this.onPostTick(delta, this._ticks);
         Radio.broadcast(this._document, 'posttick', evtObject);
 
-        requestAnimationFrame(this._update);
+        this._window.requestAnimationFrame(this._update);
     }
 
     /**
-     * A callback executed pre each tick.
-     *
+     * A callback executed pre tick.
      * @method Ticker#onPreTick
-     * @param {Integer} delta The time elapsed between ticks.
-     *                        Multiply against gameplay elements for consistent
-     *                        movement.
-     * @param {Integer} ticks The amount of ticks that have accumulated
+     * @param {Integer} delta The time elapsed between ticks. Multiply against gameplay
+     *                        elements for consistent movement.
      */
     onPreTick() {}
 
     /**
      * A callback executed on each tick.
-     *
      * @method Ticker#onTick
-     * @param {Integer} delta The time elapsed between ticks.
-     *                        Multiply against gameplay elements for consistent
-     *                        movement.
-     * @param {Integer} ticks The amount of ticks that have accumulated
+     * @param {Integer} delta The time elapsed between ticks. Multiply against gameplay
+     *                        elements for consistent movement.
      */
     onTick() {}
 
     /**
      * A callback executed post tick.
-     *
      * @method Ticker#onPostTick
-     * @param {Integer} delta The time elapsed between ticks.
-     *                        Multiply against gameplay elements for consistent
-     *                        movement.
-     * @param {Integer} ticks The amount of ticks that have accumulated
+     * @param {Integer} delta The time elapsed between ticks. Multiply against gameplay
+     *                        elements for consistent movement.
      */
     onPostTick() {}
 
     /**
      * Starts the ticker
-     *
      * @method Ticker#start
      */
     start() {
         this._then = Date.now();
-        requestAnimationFrame(this._update);
+        this._window.requestAnimationFrame(this._update);
     }
 }

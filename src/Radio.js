@@ -1,7 +1,6 @@
 /**
- * @class       Radio
- * @description Wrapper for event listening, removing, & dispatching. Currently only supports broadcasting Custom and Mouse events
- * @author      Chris Peters
+ * Wrapper for event listening, removing, & dispatching. Currently only supports broadcasting Custom and Mouse events
+ * @class Radio
  */
 export default class Radio {
     /**
@@ -35,6 +34,7 @@ export default class Radio {
         let evt;
 
         switch(event) {
+            // TODO verify MouseEvent
             case 'click':
             case 'dblclick':
             case 'mousedown':

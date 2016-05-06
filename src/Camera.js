@@ -1,49 +1,45 @@
 /**
- * @class       Camera
- * @description Decides what gets rendered
- * @author      Chris Peters
+ * Display various areas of the {@link Stage}
+ * @class Camera
  */
 export default class Camera {
-    constructor(x = 0, y = 0) {
-        this._x = 0;
-        this._y = 0;
+    constructor(x=0, y=0, width=0, height=0) {
+        this._x = x;
+        this._y = y;
+        this._width = width;
+        this._height = height;
     }
 
-    /**
-     * @method Camera#getX
-     * @return {Integer}
-     */
-    getX() {
-        return this._x;
+    translate(x, y) {
+        this._x += x;
+        this._y += y;
     }
 
-    /**
-     * @method Camera#getY
-     * @return {Integer}
-     */
-    getY() {
-        return this._y;
-    }
+    get x() { this._x; }
 
-    /**
-     * @method Camera#setX
-     * @param  {Integer} val The x value
-     * @return {Camera}
-     */
-    setX(val) {
+    get y() { this._y; }
+
+    get width() { this._width; }
+
+    get height() { this._height; }
+
+    set x(val) {
         this._x = val;
-
         return this;
     }
 
-    /**
-     * @method Camera#setY
-     * @param  {Integer} val The y value
-     * @return {Camera}
-     */
-    setY(val) {
+    set y(val) {
         this._y = val;
+        return this;
+    }
 
+    set width(val) {
+        this._width = val;
+        return this;
+    }
+
+    set height(val) {
+        this._height = val;
         return this;
     }
 }
