@@ -14,9 +14,8 @@ export default class Group extends Collection {
      * Renders all children recursively. Will be called by {@link Canvas}
      * @method Group#render
      * @param  {CanvasRenderingContext2D} context The 2d context object
-     * @param  {Float}                    factor  The 0-1 range of time passed between frames
      */
-    render(context, factor) {
+    render(context) {
         context.save();
 
         this.each((item)=> {

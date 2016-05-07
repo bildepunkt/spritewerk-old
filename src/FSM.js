@@ -35,6 +35,7 @@ export default class FSM {
         this._loading = false;
         this._states = [];
 
+        this._ticker.onPreTick = this._onPreTick.bind(this);
         this._ticker.onTick = this._onTick.bind(this);
     }
 
@@ -46,7 +47,7 @@ export default class FSM {
      */
     _onPreTick(factor) {
         if (!this._loading && this._state) {
-            this._canvas.update(this._state.stage, factor);
+            this._state.update(factor);
         }
     }
 

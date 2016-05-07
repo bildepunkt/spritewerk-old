@@ -1,8 +1,8 @@
 /**
- * A physical, observable body with coordinates and size
- * @class Body
+ * The base class for display objects. Sprite is an observable, physical body with coordinates and size
+ * @class Sprite
  */
-export default class Body {
+export default class Sprite {
     constructor(x=0, y=0, width=0, height=0) {
         this._x = x;
         this._y = y;
@@ -11,6 +11,8 @@ export default class Body {
         this._sx = 1;
         this._sy = 1;
         this._rotation = 0;
+        this._opacity = 1;
+        this._visible = true;
     }
 
     getBoundingBox() {
@@ -23,8 +25,8 @@ export default class Body {
     }
 
     translate(x, y) {
-        this._x += x;
-        this._y += y;
+        this._x += typeof x === "number" ? x : 0;
+        this._y += typeof y === "number" ? y : 0;
     }
 
     get x() { this._x; }

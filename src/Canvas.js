@@ -1,3 +1,6 @@
+import Sprite from "./Sprite";
+import Collection from "./Collection";
+
 /**
  * Handles rendering entities onto the canvas element
  * @class Canvas
@@ -9,6 +12,9 @@ export default class Canvas {
         this._canvas = canvas;
         this._camera = camera;
         this._context = this._canvas.getContext("2d");
+
+        Canvas.Collection = Collection;
+        Canvas.Sprite = Sprite;
 
         this.setImageSmoothing(true);
     }
@@ -35,14 +41,27 @@ export default class Canvas {
      * Saves and restores context and beginning and end of operation.
      *
      * @method Canvas#render
-     * @param  {Body} entity  Any renderable entity
-     * @param  {Float} factor 
+     * @param  {Sprite} entity Any renderable entity
      */
-    render(entity, factor) {
+    render(entity) {
         this._context.save();
 
         this._context.translate(-this._camera.x, -this._camera.y);
-        entity.render(this._context, factor);
+
+        if (entity instanceof Canvas.Collection) {
+            entity.each((item)=> {
+                this.render(item);
+            }, this);
+        }
+
+        if (entity instanceof Canvas.Sprite) {
+            const bb = entity.getBoundingBox();
+
+            if (bb.maxX > 0 && bb.minX < this._canvas.width &&
+                bb.maxY > 0 && bb.minY < this._canvas.height) {
+                entity.render(this._context);
+            }
+        }
 
         this._context.restore();
     }
