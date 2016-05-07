@@ -1,5 +1,5 @@
 /**
- * Display various areas of the {@link Stage}
+ * Display various areas of the game
  * @class Camera
  */
 export default class Camera {

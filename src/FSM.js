@@ -28,11 +28,12 @@ import Preloader from './Preloader';
  * @param {Canvas} canvas A Canvas instance
  * @param {Ticker} ticker A ticker instance
  */
-export default class States {
+export default class FSM {
     constructor(canvas, ticker) {
         this._canvas = canvas;
         this._ticker = ticker;
         this._loading = false;
+        this._states = [];
 
         this._ticker.onTick = this._onTick.bind(this);
     }
@@ -40,42 +41,57 @@ export default class States {
     /**
      * Calls the current state's update function. Passes the factor from {@link Ticker}
      *
-     * @method States#_onTick
+     * @method FSM#_onTick
      * @param  {Object} e The event object
      */
     _onPreTick(factor) {
         if (!this._loading && this._state) {
-            this._canvas.update(this._state._stage, factor);
+            this._canvas.update(this._state.stage, factor);
         }
     }
 
     /**
      * Calls the current state's render function. Passes the factor from {@link Ticker}
      *
-     * @method States#_onTick
+     * @method FSM#_onTick
      * @param  {Object} e The event object
      */
     _onTick(factor) {
         if (!this._loading && this._state) {
             this._canvas.clear(this._state.bgColor);
-            this._canvas.render(this._state._stage, factor);
+            this._canvas.render(this._state.stage, factor);
         }
     }
 
     /**
-     * Set up (and preload if necessary) a state
-     *
-     * @method States#load
-     * @return {State} The state to load
+     * Add a state to the states list
+     * @method FSM#add
+     * @param  {State}  state The added state
+     * @param  {String} name  The state name
+     * @param  {...Any} args  Arguments to pass to the state constructor
      */
-    load(state) {
+    add(State, name, ...args) {
+        this._states[name] = new State(args);
+    }
+
+    /**
+     * If another state is loaded, destroy it, then set up (and preload if necessary) the named state
+     *
+     * @method FSM#load
+     * @param {String} name The name of the state to load
+     */
+    load(name) {
         this._loading = true;
 
         if (this._state) {
             this._state.destroy();
         }
 
-        this._state = state;
+        if (this._states[name]) {
+            this._state = this._states[name];
+        } else {
+            throw new Error(`No state found with the name "${name}"`);
+        }
 
         if (this._state.preload) {
             Preloader.complete = ()=> {

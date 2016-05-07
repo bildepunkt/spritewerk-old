@@ -9,11 +9,11 @@ import { applyStyles } from "./util/domHelpers";
  * @param {Object}  [options.container] Container element, defaults to <body>
  */
 export default class Viewport {
-    constructor(width, height, options = {}) {
+    constructor(width, height, options={}) {
         this._width = width;
         this._height = height;
         this._document = options.document || document;
-        const elementTypes = ["canvas", "video"];
+        const elementTypes = ["canvas", "video", "input"];
 
         this._viewport = this._document.createElement("div");
         this._viewport.id = "spritewerk";
@@ -37,13 +37,20 @@ export default class Viewport {
             el.height = this._height;
         }
 
-        applyStyles(el, {
-            height: `${this._height}px`,
-            left: 0,
-            position: "absolute",
-            top: 0,
-            width: `${this._width}px`
-        });
+        if (type !== "input") {
+            applyStyles(el, {
+                height: `${this._height}px`,
+                left: 0,
+                position: "absolute",
+                top: 0,
+                width: `${this._width}px`
+            });
+        } else {
+            applyStyles(el, {
+                position: "absolute",
+                top: `${-999}px`
+            });
+        }
 
         this["_" + type] = el;
         this._viewport.appendChild(el);
@@ -51,15 +58,18 @@ export default class Viewport {
 
     /**
      * Canvas element getter
-     * @method Viewport#canvas
+     * @method Viewport#canvasElement
      * @return {HTMLElement} The canvas element
      */
-    get canvas() { this._canvas; }
+    get canvasElement() { return this._canvas; }
+    set canvasElement(val) {
+        this._canvas = val;
+    }
 
     /**
      * Video element getter
-     * @method Viewport#video
+     * @method Viewport#videoElement
      * @return {HTMLElement} The video element
      */
-    get video() { this._video; }
+    get videoElement() { this._video; }
 }
