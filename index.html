@@ -1,137 +1,44 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="UTF-8">
-    <title>Spritewerk by c-concat-p</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/prism.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
+<head>
+  <meta charset="UTF-8">
+  <title>Spritewerk by c-concat-p</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="stylesheets/main.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="stylesheets/game.css" media="screen">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism.css" media="screen">
+</head>
+<body>
+  <header>
+    <div class="game">
+      <div class="clouds"></div>
+      <div class="ground"></div>
+    </div>
+
+    <div class="content">
       <h1 class="project-name">Spritewerk</h1>
-      <h2 class="project-tagline">A small, friendly HTML5 framework for device-agnostic game development</h2>
+      <h2 class="project-tagline">A small HTML5 framework for device-agnostic game development</h2>
       <a href="https://github.com/c-concat-p/spritewerk" class="btn">View on GitHub</a>
       <a href="https://github.com/c-concat-p/spritewerk/zipball/master" class="btn">Download .zip</a>
       <a href="docs" class="btn">Documentation</a>
-    </section>
+    </div>
+  </header>
 
-    <section class="main-content">
+  <section class="main-content">
+    <h2>Spritewerk is a modern, lightweight, and easy to use solution for producing games on the canvas that perform beautifully on any device.</h2>
+  </section>
 
-<h2>Spritewerk is a lightweight, fun and easy-to-use solution for producing traditional, console-style games that perform beautifully on any device. The code consists of flexible, generic classes for rapidly developing an HTML5 game.</h2>
+  <footer class="site-footer">
+    <span class="site-footer-owner">
+      <a href="https://github.com/c-concat-p/spritewerk">Spritewerk</a>
+      is maintained by
+      <a href="https://github.com/c-concat-p">c-concat-p</a>
+    </span>
+  </footer>
 
-<h4>
-<a id="to-install" class="anchor" href="#to-install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>To install</h4>
-
-<pre><code>git clone https://github.com/c-concat-p/spritewerk.git
-</code></pre>
-
-<p>or download archive <a href="https://github.com/c-concat-p/spritewerk/archive/master.zip">here</a>.</p>
-
-<h4>
-<a id="to-use" class="anchor" href="#to-use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>To Use</h4>
-
-<p><strong>ES6</strong>
-<code>import</code> classes from <code>./src</code> as needed.</p>
-
-<p><strong>ES5</strong>
-Run <code>npm run xpile</code>, then <code>require</code> modules from <code>./xpile</code> as needed.</p>
-
-<p><strong>Playground</strong>
-Want to play with Spritewerk right away? To set up a rather bare-bones development environment run <code>mkdir -p ./playground &amp;&amp; touch ./playground/index.html &amp;&amp; touch ./playground/main.js</code>, and then watch for <code>main.js</code> changes via webpack with:</p>
-
-<pre><code>npm run webpack
-</code></pre>
-
-<p>Here is an example main.js file to get you started:</p>
-
-<pre><code class="language-javascript">import Camera from '../src/Camera';
-import Canvas from '../src/Canvas';
-import Stage from '../src/Stage';
-import Rectangle from '../src/shape/Rectangle';
-import Ticker from '../src/Ticker';
-
-const WIDTH = 800;
-const HEIGHT = 600;
-
-let camera = new Camera();
-let stage = new Stage(WIDTH, HEIGHT, {
-    bgColor: '#222',
-    fill: true
-});
-let canvas = new Canvas(stage.getCanvas(), camera);
-let rect = new Rectangle()
-    .setWidth(64)
-    .setHeight(64);
-let ticker = new Ticker();
-let vx = 4;
-let vy = 4;
-
-ticker.onTick = ()=> {
-    if (rect.getX() &lt; 0) {
-        vx = 4;
-    }
-    if (rect.getX() + rect.getWidth() &gt; WIDTH) {
-        vx = -4; 
-    }
-    if (rect.getY() &lt; 0) {
-        vy = 4;
-    }
-    if (rect.getY() + rect.getHeight() &gt; HEIGHT) {
-        vy = -4;
-    }
-
-    canvas.clear("#DDD");
-    rect.translate(vx, vy);
-    canvas.render(rect);
-};
-</code></pre>
-
-<h4>
-<a id="test" class="anchor" href="#test" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test</h4>
-
-<p>To run Spritewerk's unit tests, first run <code>npm run xpile</code> and then:</p>
-
-<pre><code>npm run test
-</code></pre>
-
-<h4>
-<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation</h4>
-
-<p>Generate the documentation.</p>
-
-<pre><code>npm run doc
-</code></pre>
-
-<h4>
-<a id="build" class="anchor" href="#build" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build</h4>
-
-<p>(Not for running locally) Jenkins build with code coverage via Coveralls/Istanbul configuration</p>
-
-<pre><code>npm run build
-</code></pre>
-
-<h4>
-<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TODO</h4>
-
-<ul>
-<li>support calculating entity's bounding area/position when rotated on an offset pivot</li>
-<li>support clipping objects</li>
-<li>copy camera ideas over from ghastlyjs</li>
-<li>use data/state scaffolding again?</li>
-</ul>
-
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/c-concat-p/spritewerk">Spritewerk</a> is maintained by <a href="https://github.com/c-concat-p">c-concat-p</a>.</span>
-
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
-
-    </section>
-
-    <script type="text/javascript" src="scripts/prism.js"></script>
-  </body>
+  <script type="text/javascript" src="scripts/prism.js"></script>
+</body>
 </html>

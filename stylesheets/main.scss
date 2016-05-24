@@ -1,0 +1,105 @@
+$fg-color: #ddd;
+$bg-color: #111;
+$accent-color: #6A3971;
+$font: "Open Sans", sans-serif;
+$pixel-font: "Press Start 2P", "Open Sans", sans-serif;
+
+body {
+    background-color: $bg-color;
+    color: $fg-color;
+    font-family: $font;
+
+    a {
+        color: $accent-color;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .project-name {
+        font-family: $pixel-font;
+        color: lighten($fg-color, 36%);
+        text-transform: uppercase;
+    }
+
+    .project-tagline {
+        margin-bottom: 2em;
+    }
+
+    .btn {
+        display: inline-block;
+        margin-bottom: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        background-color: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.2);
+        border-style: solid;
+        border-width: 1px;
+        transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+    }
+
+    .btn + .btn {
+        margin-left: 1rem;
+    }
+
+    .btn:hover {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    header {
+        padding: 4em;
+        text-align: center;
+    }
+
+    section {
+        padding: 4em;
+    }
+
+    footer {
+        color: darken($fg-color, 32%);
+        margin: 24px;
+        text-align: center;
+    }
+
+    @media screen and (min-width: 64em) {
+        .project-name {
+            font-size: 4.25rem;
+        }
+
+        .btn {
+            padding: 1.2rem 1.6rem;
+        }
+    }
+
+    @media screen and (min-width: 42em) and (max-width: 64em) {
+        .project-name {
+            font-size: 3.25rem;
+        }
+
+        .btn {
+            padding: 0.9rem 1.2rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    @media screen and (max-width: 42em) {
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 0.9rem 0;
+            font-size: 0.9rem;
+        }
+        .btn + .btn {
+            margin-top: 1rem;
+            margin-left: 0;
+        }
+
+        header, section {
+            padding: 3em;
+        }
+    }
+}

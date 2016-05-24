@@ -1,0 +1,25 @@
+{
+  "name": "spritewerk-pages",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "directories": {
+    "doc": "docs"
+  },
+  "devDependencies": {
+    "node-sass": "3.7.0"
+  },
+  "scripts": {
+    "sass": "./node_modules/.bin/node-sass -w ./stylesheets -o ./stylesheets"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c-concat-p/spritewerk.git#gh-pages"
+  },
+  "author": "Chris Peters",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/c-concat-p/spritewerk/issues"
+  },
+  "homepage": "https://github.com/c-concat-p/spritewerk#readme"
+}

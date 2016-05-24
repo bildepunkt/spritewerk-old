@@ -1,0 +1,75 @@
+body {
+  background-color: #111;
+  color: #ddd;
+  font-family: "Open Sans", sans-serif; }
+
+body a {
+  color: #6A3971;
+  text-decoration: none; }
+
+body a:hover {
+  text-decoration: underline; }
+
+body .project-name {
+  font-family: "Press Start 2P", "Open Sans", sans-serif;
+  color: white;
+  text-transform: uppercase; }
+
+body .project-tagline {
+  margin-bottom: 2em; }
+
+body .btn {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  border-style: solid;
+  border-width: 1px;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s; }
+
+body .btn + .btn {
+  margin-left: 1rem; }
+
+body .btn:hover {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3); }
+
+body header {
+  padding: 4em;
+  text-align: center; }
+
+body section {
+  padding: 4em; }
+
+body footer {
+  color: #8b8b8b;
+  margin: 24px;
+  text-align: center; }
+
+@media screen and (min-width: 64em) {
+  body .project-name {
+    font-size: 4.25rem; }
+  body .btn {
+    padding: 1.2rem 1.6rem; } }
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+  body .project-name {
+    font-size: 3.25rem; }
+  body .btn {
+    padding: 0.9rem 1.2rem;
+    font-size: 0.9rem; } }
+
+@media screen and (max-width: 42em) {
+  body .btn {
+    display: block;
+    width: 100%;
+    padding: 0.9rem 0;
+    font-size: 0.9rem; }
+  body .btn + .btn {
+    margin-top: 1rem;
+    margin-left: 0; }
+  body header, body section {
+    padding: 3em; } }

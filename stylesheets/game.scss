@@ -1,0 +1,39 @@
+@mixin game-row() {
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+body {
+    header {
+        position: relative;
+        background-color: #1E1020;
+
+        .content {
+            position: relative;
+        }
+
+        .game {
+            opacity: 0.8;
+            left: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+
+            .clouds {
+                @include game-row();
+                background-image: url("../images/clouds-x-3.png");
+                height: 72px;
+                top: 12px;
+            }
+
+            .ground {
+                @include game-row();
+                bottom: 0;
+                background-image: url("../images/ground-x-3.png");
+                height: 108px;
+            }
+        }
+    }
+}
