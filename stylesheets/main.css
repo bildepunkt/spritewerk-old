@@ -3,6 +3,10 @@ body {
   color: #ddd;
   font-family: "Open Sans", sans-serif; }
 
+body code[class*="language-"],
+body pre[class*="language-"] {
+  font-size: 0.9em; }
+
 body a {
   color: #6A3971;
   text-decoration: none; }
@@ -43,6 +47,12 @@ body header {
 
 body section {
   padding: 4em; }
+
+body section .demo {
+  text-align: center; }
+
+body section .demo iframe {
+  border: 1px solid grey; }
 
 body footer {
   color: #8b8b8b;

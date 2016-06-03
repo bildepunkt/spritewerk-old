@@ -54,3 +54,10 @@ body header .game .ground {
   width: 100%;
   bottom: 0;
   background-image: url("../images/ground.png"); }
+ound {
+      left: 0;
+      position: absolute;
+      height: 64px;
+      width: 100%;
+      bottom: 0;
+      background-image: url("../images/ground.png"); }

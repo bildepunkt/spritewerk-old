@@ -32,6 +32,178 @@
 
   <section class="main-content">
     <h2>Spritewerk is a modern, lightweight, and easy to use solution for producing games on the canvas that perform beautifully on any device.</h2>
+    <h3>
+    <a id="user-content-to-install" class="anchor" href="#to-install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>To install</h3>
+
+    <pre><code class="language-bash">git clone https://github.com/c-concat-p/spritewerk.git</code></pre>
+
+    <p>or download archive <a href="https://github.com/c-concat-p/spritewerk/archive/master.zip">here</a>.</p>
+
+    <h3>
+    <a id="user-content-to-use" class="anchor" href="#to-use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>To Use</h3>
+
+    <p><strong>ES6</strong>
+    <code class="language-bash">import</code> classes from <code class="language-bash">./src</code> as needed.</p>
+
+    <p><strong>ES5</strong>
+    Run <code class="language-bash">npm run xpile</code>, then <code class="language-bash">require</code> modules from <code class="language-bash">./xpile</code> as needed.</p>
+
+    <p><strong>Playground</strong>
+    Want to play with Spritewerk right away? To set up a rather bare-bones development environment run </p>
+
+    <pre><code class="language-bash">npm run make-playground</code></pre>
+
+    <p>and then watch for changes on <code class="language-bash">main.js</code> via webpack with:</p>
+
+    <pre><code class="language-bash">npm run webpack</code></pre>
+
+    <h2>Here is a whole freaking game file to get you started!</h2>
+
+    <pre><code class="language-js line-numbers">import Game from "../src/Game";
+import State from "../src/State";
+import Bitmap from "../src/bitmap/Bitmap";
+import Group from "../src/Group";
+import Animation from "../src/bitmap/Animation";
+import TileMap from "../src/tile/TileMap";
+import { rectRectCollide } from "../src/physics/collision";
+import { Timer } from "../src/util/timer.js";
+
+const SCROLL_SPEED = 176,
+    HERO_ATTACK_TIME = 12,
+    WIDTH = 480,
+    HEIGHT = 320,
+    OPTS = {};
+
+class Demo extends State {
+    constructor (game) {
+        // call super to setup your new state with all the goodies in the game object
+        super(game);
+
+        // preload image, video, audio assets by adding them the preload property
+        this.preload = [
+            "assets/images/bg.png",
+            "assets/images/hero.png",
+            "assets/images/enemy.png"
+        ];
+
+        // set the state's background color
+        this.bgColor = "#000";
+
+        // create the tilemap for the bg
+        this.bg = new TileMap(0, 0, [
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ], {
+            width: 64,
+            height: 320,
+            rowLength: 11,
+            legend: [
+                "assets/images/bg.png"
+            ]
+        });
+
+        // create a sprite and add it to the stage for updating/rendering
+        this.hero = new Bitmap(64, 192, 64, 64, "assets/images/hero.png");
+        this.hero.srcWidth = 64;
+        this.hero.srcHeight = 64;
+        // add and play run animation
+        this.hero.addAnimation("run", new Animation([64, 128, 192, 256], 0, 8));
+        this.hero.playAnimation("run", true);
+
+        // create enenmy group
+        this.enemyGroup = new Group();
+
+        // add all items to the stage
+        this.stage.addItems(this.bg, this.hero, this.enemyGroup);
+
+        // add a click listener and handler
+        this.game.input.addListener("click", this.onClick.bind(this));
+    }
+
+    addEnemy () {
+        let enemy = new Bitmap(WIDTH + 64, 192, 64, 64, "assets/images/enemy.png");
+        enemy.srcWidth = 64;
+        enemy.srcHeight = 64;
+        this.enemyGroup.addItem(enemy);
+
+        this.enemyTimer = new Timer(this.addEnemy, Math.round(Math.random() * 1000) + 1000, this);
+    }
+
+    init () {
+        // initialize some props
+        this.bg.x = 0;
+        this.heroAttacking = false;
+        this.enemyGroup.removeAll();
+
+        if (this.enemyTimer) {
+            this.enemyTimer.clear();
+        }
+
+        this.addEnemy();
+    }
+
+    onClick (e) {
+        this.heroAttacking = true;
+        this.heroAttackTime = HERO_ATTACK_TIME;
+    }
+
+    update (factor) {
+        if (this.bg.x &gt; -128) {
+            this.bg.translate(-SCROLL_SPEED * factor);
+        } else {
+            this.bg.x = (this.bg.x * factor);
+        }
+
+        if (this.heroAttackTime) {
+            this.heroAttackTime -= 1;
+        } else {
+            this.heroAttacking = false;
+        }
+
+        this.enemyGroup.each((enemy)=&gt; {
+            enemy.translate(-SCROLL_SPEED * factor);
+        });
+
+        this.enemyGroup.each((enemy)=&gt; {
+            if (rectRectCollide(this.hero, enemy)) {
+                this.enemyGroup.remove(enemy);
+
+                if (this.heroAttacking) {
+                    console.log("GOT ONE!!!!");
+                } else {
+                    this.init();
+                    console.log("START");
+                }
+            }
+        }, this);
+
+        super.update(factor);
+    }
+}
+
+// initialize new Game class with options and states!
+new Game(WIDTH, HEIGHT, OPTS, {
+    state: Demo,
+    name: "demo"
+});</code></pre>
+
+    <h2>Here is a demo with the above code</h2>
+    <div class="demo">
+      <iframe width="480" height="320" src="playground/game.html"></iframe>
+    </div>
+
+    <h3>
+    <a id="user-content-test" class="anchor" href="#test" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test</h3>
+
+    <p>To run Spritewerk's unit tests, first run <code class="language-bash">npm run xpile</code> and then:</p>
+
+    <pre><code class="language-bash">npm run test</code></pre>
+
+    <h3>
+    <a id="user-content-documentation" class="anchor" href="#documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation</h3>
+
+    <p>Generate the documentation.</p>
+
+    <pre><code class="language-bash">npm run doc</code></pre>
   </section>
 
   <footer class="site-footer">

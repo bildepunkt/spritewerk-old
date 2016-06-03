@@ -108,7 +108,7 @@
 	        // call super to setup your new state with all the goodies in the game object
 	
 	
-	        _this.preload = ["assets/images/bg.png", "assets/images/hero.png"];
+	        _this.preload = ["assets/images/bg.png", "assets/images/Mayla.png"];
 	
 	        // set the state's background color
 	        _this.bgColor = "#000";
@@ -122,7 +122,7 @@
 	        });
 	
 	        // create a sprite and add it to the stage for updating/rendering
-	        _this.hero = new _Bitmap2.default(64, 192, 64, 64, "assets/images/hero.png");
+	        _this.hero = new _Bitmap2.default(64, 192, 64, 64, "assets/images/Mayla.png");
 	        _this.hero.srcWidth = 64;
 	        _this.hero.srcHeight = 64;
 	        // add and play run animation
@@ -143,7 +143,7 @@
 	    _createClass(Demo, [{
 	        key: "addEnemy",
 	        value: function addEnemy() {
-	            var enemy = new _Bitmap2.default(WIDTH + 64, 192, 64, 64, "assets/images/enemy.png");
+	            var enemy = new _Bitmap2.default(WIDTH + 64, 192, 64, 64, "assets/images/Mayla.png");
 	            enemy.srcWidth = 64;
 	            enemy.srcHeight = 64;
 	            this.enemyGroup.addItem(enemy);

@@ -9,6 +9,11 @@ body {
     color: $fg-color;
     font-family: $font;
 
+    code[class*="language-"],
+    pre[class*="language-"] {
+        font-size: 0.9em;
+    }
+
     a {
         color: $accent-color;
         text-decoration: none;
@@ -57,6 +62,14 @@ body {
 
     section {
         padding: 4em;
+
+        .demo {
+            text-align: center;
+
+            iframe {
+                border: 1px solid grey;
+            }
+        }
     }
 
     footer {
