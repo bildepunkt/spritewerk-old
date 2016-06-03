@@ -1,13 +1,14 @@
 @mixin game-row() {
     left: 0;
     position: absolute;
+    height: 64px;
     width: 100%;
 }
 
 body {
     header {
         position: relative;
-        background-color: #1E1020;
+        background-color: #000;
 
         .content {
             position: relative;
@@ -23,16 +24,34 @@ body {
 
             .clouds {
                 @include game-row();
-                background-image: url("../images/clouds-x-3.png");
-                height: 72px;
-                top: 12px;
+                background-image: url("../images/clouds.png");
+                top: 8px;
+            }
+
+            .sky {
+                @include game-row();
+                bottom: 128px;
+                background-image: url("../images/sky.png");
+            }
+
+            .fence {
+                @include game-row();
+                bottom: 64px;
+                background-image: url("../images/fence.png");
+            }
+
+            .hero {
+                @include game-row();
+                bottom: 64px;
+                background-image: url("../images/hero.png");
+                left: 64px;
+                width: 64px;
             }
 
             .ground {
                 @include game-row();
                 bottom: 0;
-                background-image: url("../images/ground-x-3.png");
-                height: 108px;
+                background-image: url("../images/ground.png");
             }
         }
     }
