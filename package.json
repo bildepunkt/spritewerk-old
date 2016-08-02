@@ -1,0 +1,21 @@
+{
+  "name": "canvas-render",
+  "version": "0.1.0",
+  "description": "A render system for the canvas",
+  "main": "main.js",
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine-node --verbose --test-dir ./spec",
+    "xpile": "mkdir -p ./xpile && ./node_modules/.bin/babel ./src --out-dir ./xpile"
+  },
+  "keywords": [
+    "canvas",
+    "html5"
+  ],
+  "author": "Chris Peters @bildepunkt",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.10.1",
+    "babel-preset-es2015": "^6.9.0",
+    "jasmine-node": "^1.14.5"
+  }
+}
