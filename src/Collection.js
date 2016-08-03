@@ -74,28 +74,28 @@ export default class Collection {
     }
 
     /**
-     * Returns an object at a given index
-     * @method Collection#getAt
-     * @param  {Integer} index The index
-     * @return {Any}
-     */
-    getAt (index) {
-        return this.items[index].item;
-    }
-
-    /**
      * Returns an object by name
-     * @method Collection#getBy
+     * @method Collection#fetch
      * @param  {String} name The name
      * @return {Any}
      */
-    getBy (name) {
+    fetch (name) {
         for (let i = 0, len = this.getCount(); i < len; i++) {
             let item = this.items[i];
             if (item.name === name) {
                 return item.item;
             }
         }
+    }
+
+    /**
+     * Returns an object at a given index
+     * @method Collection#fetchAt
+     * @param  {Integer} index The index
+     * @return {Any}
+     */
+    fetchAt (index) {
+        return this.items[index].item;
     }
 
     /**
@@ -108,12 +108,11 @@ export default class Collection {
     }
 
     /**
-     * Removes an item by name
+     * Remove item by name
      * @method Collection#removeBy
-     * @param  {String} name The item's name
-     * @return {Any}
+     * @param {String} name
      */
-    removeBy (name) {
+    remove (name) {
         for (let i = 0, len = this.getCount(); i < len; i++) {
             let item = this.items[i];
             if (item.name === name) {
@@ -141,17 +140,65 @@ export default class Collection {
     }
 
     /**
-     * Remove item by name
-     * @method Collection#removeBy
-     * @param {String} name
+     * iterates items and return the ones that meet criteria
+     * @method Collection#filter
+     * @param  {Function} fn      Truth predicate
+     * @param  {Object}   [scope] The scope in which to execute the function
+     * @return {Array}
      */
-    removeBy (name) {
-        for (let i = 0, len = this.getCount(); i < len; i++) {
-            let item = this.items[i];
-            if (item.name === name) {
-                this.items.splice(i, 1);
+    filter(fn, scope) {
+        let filteredItems = [];
+
+        this.each((item, i, name)=> {
+            let predicate = fn(item, i, name);
+
+            if (predicate) {
+                filteredItems.push(item);
+            }
+        }, scope);
+
+        return filteredItems;
+    }
+
+    /**
+     * Assigns a new value to an existing item
+     * @method Collection#update
+     * @param {String} name  The name of the object to modify
+     * @param {Any}    value The new value
+     */
+    update (name, value) {
+        for (let item of this.items) {
+            if (name === item.name) {
+                item = value;
                 break;
             }
         }
     }
+
+    /**
+     * Moves item to new index
+     * @method Collection#updateIndex
+     * @param {String}  name  The name of the object being moved
+     * @param {Integer} index The item's new index
+     */
+    /*moveTo (name, index) {
+        let item;
+        let currentIndex = this.getIndexBy(name);
+
+        if (index === currentIndex) {
+            return;
+        }
+
+        item = this._getRawItem(name);
+        this.removeWithName(name);
+        this._items.splice(index, 0, item);
+    }
+
+    moveToTop (name) {
+        // ...
+    }
+
+    moveToBottom (name) {
+        // ...
+    }*/
 }

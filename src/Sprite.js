@@ -1,30 +1,3 @@
-const SOURCE_OVER = "source-over";
-const SOURCE_IN = "source-in";
-const SOURCE_OUT = "source-out";
-const SOURCE_ATOP = "source-atop";
-const DESTINATION_OVER = "destination-over";
-const DESTINATION_IN = "destination-in";
-const DESTINATION_OUT = "destination-out";
-const DESTINATION_ATOP = "destination-atop";
-const LIGHTER = "lighter";
-const COPY = "copy";
-const XOR = "xor";
-const MULTIPLY = "multiply";
-const SCREEN = "screen";
-const OVERLAY = "overlay";
-const DARKEN = "darken";
-const LIGHTEN = "lighten";
-const COLOR_DODGE = "color-dodge";
-const COLOR_BURN = "color-burn";
-const HARD_LIGHT = "hard-light";
-const SOFT_LIGHT = "soft-light";
-const DIFFERENCE = "difference";
-const EXCLUSION = "exclusion";
-const HUE = "hue";
-const SATURATION = "saturation";
-const COLOR = "color";
-const LUMINOSITY = "luminosity";
-
 /**
  * The base class for display objects. Sprite is an observable, physical body with coordinates and size
  * @class Sprite
@@ -45,15 +18,15 @@ class Sprite {
         this._sy = 1;
         this._rotation = 0;
         this._opacity = 1;
-        this._composite = "source-over";
+        this._composite = Sprite.SOURCE_OVER;
         this._visible = true;
         this._tweens = [];
         this._hitBox = null;
-        // used to safely cache expensive operations. Set to true on each `set` and cleared after each `render`
+        // used to safely cache expensive operations.
+        // Set to true on each `set` and cleared after each Scene render
         this._dirty = true;
-
-        // set hitBox to BB initially
-        this.setHitBox(0, 0, this._width, this._height);
+        // aquired from ./Scene#render
+        this.parentTransforms = null;
 
         this._uuid = Sprite.uuidCount++;
     }
@@ -66,66 +39,12 @@ class Sprite {
         this._tweens.push(tween);
     }
 
-    centerPivot () {
-        this._pivotX = (this._width / 2) * this._sx;
-        this._pivotY = (this._height / 2) * this._sy;
-    }
-
-    getBoundingBox () {
-        return {
-            minX: this._x,
-            minY: this._y,
-            maxX: (this._x + this._width) * Math.abs(this._sx),
-            maxY: (this._y + this._height) * Math.abs(this._sy)
-        };
-    }
-
-    getHitBox () {
-        const hb = this._hitBox;
-        hb.width = hb.width !== 0 ? hb.width : this._width;
-        hb.height = hb.height !== 0 ? hb.height : this._height;
-
-        return {
-            minX: this._x + hb.x,
-            minY: this._y + hb.y,
-            maxX: (this._x + hb.x + hb.width) * Math.abs(this._sx),
-            maxY: (this._y + hb.y + hb.height) * Math.abs(this._sy)
-        };
-    }
-
-    setHitBox (x, y, width, height) {
-        this._hitBox = { x, y, width, height };
-    }
-
-    translate (x, y) {
-        this._x += (typeof x === "number") ? x : 0;
-        this._y += (typeof y === "number") ? y : 0;
-    }
-
     render (context, xform) {
-        if (this.opacity !== 1) {
-            context.globalAlpha = this.opacity;
-        }
+        context.globalAlpha *= this.opacity;
 
         if (this.composite !== "source-over") {
             context.globalCompositeOperation = this.composite;
         }
-
-        let px = Math.floor(this._pivotX);
-        let py = Math.floor(this._pivotY);
-
-        xform.translate(Math.floor(this._x), Math.floor(this._y));
-        xform.translate(px, py);
-
-        if (this.rotation !== 0) {
-            xform.rotate(this.rotation);
-        }
-
-        if (this.sx !== 1 || this.sy !== 1) {
-            xform.scale(this.sx, this.sy);
-        }
-
-        xform.translate(-px, -py);
     }
 
     update () {
@@ -163,32 +82,32 @@ class Sprite {
 
     set composite(val) {
         switch (val) {
-            case SOURCE_OVER:
-            case SOURCE_IN:
-            case SOURCE_OUT:
-            case SOURCE_ATOP:
-            case DESTINATION_OVER:
-            case DESTINATION_IN:
-            case DESTINATION_OUT:
-            case DESTINATION_ATOP:
-            case LIGHTER:
-            case COPY:
-            case XOR:
-            case MULTIPLY:
-            case SCREEN:
-            case OVERLAY:
-            case DARKEN:
-            case LIGHTEN:
-            case COLOR_DODGE:
-            case COLOR_BURN:
-            case HARD_LIGHT:
-            case SOFT_LIGHT:
-            case DIFFERENCE:
-            case EXCLUSION:
-            case HUE:
-            case SATURATION:
-            case COLOR:
-            case LUMINOSITY:
+            case Sprite.SOURCE_OVER:
+            case Sprite.SOURCE_IN:
+            case Sprite.SOURCE_OUT:
+            case Sprite.SOURCE_ATOP:
+            case Sprite.DESTINATION_OVER:
+            case Sprite.DESTINATION_IN:
+            case Sprite.DESTINATION_OUT:
+            case Sprite.DESTINATION_ATOP:
+            case Sprite.LIGHTER:
+            case Sprite.COPY:
+            case Sprite.XOR:
+            case Sprite.MULTIPLY:
+            case Sprite.SCREEN:
+            case Sprite.OVERLAY:
+            case Sprite.DARKEN:
+            case Sprite.LIGHTEN:
+            case Sprite.COLOR_DODGE:
+            case Sprite.COLOR_BURN:
+            case Sprite.HARD_LIGHT:
+            case Sprite.SOFT_LIGHT:
+            case Sprite.DIFFERENCE:
+            case Sprite.EXCLUSION:
+            case Sprite.HUE:
+            case Sprite.SATURATION:
+            case Sprite.COLOR:
+            case Sprite.LUMINOSITY:
                 this._composite = val;
                 break;
             default:
@@ -255,5 +174,31 @@ class Sprite {
 }
 
 Sprite.uuidCount = 0;
+Sprite.SOURCE_OVER = "source-over";
+Sprite.SOURCE_IN = "source-in";
+Sprite.SOURCE_OUT = "source-out";
+Sprite.SOURCE_ATOP = "source-atop";
+Sprite.DESTINATION_OVER = "destination-over";
+Sprite.DESTINATION_IN = "destination-in";
+Sprite.DESTINATION_OUT = "destination-out";
+Sprite.DESTINATION_ATOP = "destination-atop";
+Sprite.LIGHTER = "lighter";
+Sprite.COPY = "copy";
+Sprite.XOR = "xor";
+Sprite.MULTIPLY = "multiply";
+Sprite.SCREEN = "screen";
+Sprite.OVERLAY = "overlay";
+Sprite.DARKEN = "darken";
+Sprite.LIGHTEN = "lighten";
+Sprite.COLOR_DODGE = "color-dodge";
+Sprite.COLOR_BURN = "color-burn";
+Sprite.HARD_LIGHT = "hard-light";
+Sprite.SOFT_LIGHT = "soft-light";
+Sprite.DIFFERENCE = "difference";
+Sprite.EXCLUSION = "exclusion";
+Sprite.HUE = "hue";
+Sprite.SATURATION = "saturation";
+Sprite.COLOR = "color";
+Sprite.LUMINOSITY = "luminosity";
 
 export default Sprite;

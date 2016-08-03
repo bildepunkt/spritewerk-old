@@ -1,26 +1,10 @@
 import Collection from "./Collection";
 import Sprite from "./Sprite";
 
-function groupFactory () {
-    let proto = Object.assign({}, Collection.prototype, Sprite.prototype);
-    let Group = function () {};
-    let group;
-    
-    Group.prototype = proto;
-    Group.constructor = Sprite;
-    Group.prototype.render = function (context, xform) {
-        Sprite.prototype.render.call(this, context, xform);
+export default class Group extends Sprite {
+    constructor (x, y, w, h) {
+        super(x, y, w, h);
 
-        if (this.opacity !== 1) {
-            context.globalAlpha *= this.opacity;
-        }
+        this.items = new Collection();
     }
-
-    group = new Group();
-    
-    return Object.assign(group, new Collection(), new Sprite());
-}
-
-export default function Group () {
-    return groupFactory();
 }

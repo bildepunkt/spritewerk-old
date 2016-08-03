@@ -1,4 +1,5 @@
 import { applyStyles, fitToWindow } from "./util/domHelpers";
+import { tuneIn } from "./util/radio";
 
 /**
  * @class Viewport
@@ -6,23 +7,40 @@ import { applyStyles, fitToWindow } from "./util/domHelpers";
  * @param {Integer} height The game height
  * @param {HTMLElement} [parent=document.body] The parent element
  */
+const defaults = {
+    parent: document.body,
+    fitToWindow: true
+};
+
 export default class Viewport {
-    constructor (width, height, parent=document.body) {
-        this.canvas = document.createElement("canvas");
+    constructor (width, height, options=defaults) {
         this.width = width;
         this.height = height;
+        this.options = options;
 
+        this.canvas = document.createElement("canvas");
         this.canvas.width = width;
         this.canvas.height = height;
 
         applyStyles(this.canvas, {
-            height: `${this.height}px`,
+            height: this.height,
             left: 0,
             position: "absolute",
             top: 0,
-            width: `${this.width}px`
+            width: this.width
         });
 
         parent.appendChild(this.canvas);
+
+        if (options.fitToWindow) {
+            tuneIn(this._window, "resize", this._onResize, this);
+            tuneIn(this._window, "orientationchange", this._onResize, this);
+            this._onResize();
+        }
+    }
+
+    _onResize () {
+        var posCoords = fitToWindow(this.width, this.height, window.innerWidth, window.innerHeight);
+        applyStyles(this.canvas, posCoords);
     }
 }
