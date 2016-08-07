@@ -30,6 +30,7 @@ then get webpack to serve the page and watch for changes on `playground/main.js`
 
 navigate to `http://localhost:2048` to view your game.
 
+### Bonus Awesomeness!!!
 Here is a main.js file with a whole freaking game to get you started!
 
     import Game from "../src/Game";
