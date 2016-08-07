@@ -14,7 +14,7 @@ export default class Transform {
     }
 
     reset () {
-        this.m = [1,0,0,1,0,0];
+        this.m = [1, 0, 0, 1, 0, 0];
     }
     
     save () {

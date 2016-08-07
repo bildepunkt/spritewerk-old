@@ -1,4 +1,13 @@
+# system
 .DS_Store
-node_modules
-*.log
+
+# node/npm
+node_modules/
+npm-debug.log
+
+# project
+.idea
+docs/
+coverage/
 xpile/
+playground/

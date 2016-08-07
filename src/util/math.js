@@ -16,6 +16,6 @@ export function degreesToRadians (deg) {
  * @param  {Integer} rad The radians to convert
  * @return {Integer}
  */
-function radiansToDegrees (rad) {
+export function radiansToDegrees (rad) {
     return rad * 180 / Math.PI;
 }

@@ -30,11 +30,11 @@ export default class Viewport {
             width: this.width
         });
 
-        parent.appendChild(this.canvas);
+        options.parent.appendChild(this.canvas);
 
         if (options.fitToWindow) {
-            tuneIn(this._window, "resize", this._onResize, this);
-            tuneIn(this._window, "orientationchange", this._onResize, this);
+            tuneIn(window, "resize", this._onResize, this);
+            tuneIn(window, "orientationchange", this._onResize, this);
             this._onResize();
         }
     }

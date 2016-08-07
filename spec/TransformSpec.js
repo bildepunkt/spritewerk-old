@@ -9,7 +9,6 @@ describe("Transform", ()=> {
     });
 
     it("creates identity matrix", ()=> {
-        console.log(xform.matrix);
         expect(xform.matrix).toEqual([ 1, 0, 0, 1, 0, 0 ]);
     });
 

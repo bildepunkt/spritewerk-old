@@ -1,13 +1,13 @@
 import { isNumeric } from "./";
 
 /**
- * loops through style object and applies values
+ * loops through style object and applies values. Adds "px" to numeric values.
  * @memberOf util
  * @method applyStyles
  * @param {HTMLElement} el     The element to apply styles to
  * @param {Object}      styles The key/value pair styles
  */
-const applyStyles = (el, styles) => {
+export function applyStyles (el, styles) {
     for (let key in styles) {
         let val = styles[key];
         
@@ -25,7 +25,7 @@ const applyStyles = (el, styles) => {
  * @param  {Integer} winHeight The window's current height
  * @return {Object}            The calculated left, top, width, height
  */
-const fitToWindow = (elWidth, elHeight, winWidth, winHeight)=> {
+export function fitToWindow (elWidth, elHeight, winWidth, winHeight) {
     const LANDSCAPE_RATIO = elHeight / elWidth;
     const PORTRAIT_RATIO  = elWidth / elHeight;
     const IS_LANDSCAPE    = LANDSCAPE_RATIO < PORTRAIT_RATIO ? true : false;
@@ -65,8 +65,3 @@ const fitToWindow = (elWidth, elHeight, winWidth, winHeight)=> {
         top: offsetTop
     };
 }
-
-export {
-    applyStyles,
-    fitToWindow
-};

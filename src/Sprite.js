@@ -10,8 +10,6 @@ class Sprite {
     constructor (x=0, y=0, width=0, height=0) {
         this._x = x;
         this._y = y;
-        this._pivotX = 0;
-        this._pivotY = 0;
         this._width = width;
         this._height = height;
         this._sx = 1;
@@ -26,7 +24,9 @@ class Sprite {
         // Set to true on each `set` and cleared after each Scene render
         this._dirty = true;
         // aquired from ./Scene#render
-        this.parentTransforms = null;
+        this.parentTransforms = {
+            x: 0, y: 0
+        };
 
         this._uuid = Sprite.uuidCount++;
     }
@@ -39,10 +39,30 @@ class Sprite {
         this._tweens.push(tween);
     }
 
-    render (context, xform) {
+    getBoundingBox () {
+        let w = this._width * Math.abs(this._sx);
+        let h = this._height * Math.abs(this._sy);
+        let x1 = this._x + this.parentTransforms.x;
+        let y1 = this._y + this.parentTransforms.y;
+        let x2 = this._sx >= 0 ? x1 + w : x1 - w;
+        let y2 = this._sy >= 0 ? y1 + h : y1 - h;
+
+        return {
+            minX: x1 <= x2 ? x1 : x2,
+            minY: y1 <= y2 ? y1 : y2,
+            maxX: x1 >= x2 ? x1 : x2,
+            maxY: y1 >= y2 ? y1 : y2
+        };
+    }
+
+    getHitBox () {
+        return this.getBoundingBox();
+    }
+
+    render (context) {
         context.globalAlpha *= this.opacity;
 
-        if (this.composite !== "source-over") {
+        if (this.composite !== Sprite.SOURCE_OVER) {
             context.globalCompositeOperation = this.composite;
         }
     }
@@ -79,6 +99,8 @@ class Sprite {
     get visible() { return this._visible; }
 
     get uuid() { return this._uuid; }
+
+    get tweens() { return this._tweens; }
 
     set composite(val) {
         switch (val) {
@@ -129,16 +151,6 @@ class Sprite {
 
     set y(val) {
         this._y = val;
-        this._dirty = true;
-    }
-
-    set pivotX(val) {
-        this._pivotX = val;
-        this._dirty = true;
-    }
-
-    set pivotY(val) {
-        this._pivotY = val;
         this._dirty = true;
     }
 
