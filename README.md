@@ -187,5 +187,3 @@ Generate the documentation.
 * use entity pool to determine order for input events
 * reinstate clickCandidate from old [code](https://github.com/c-concat-p/spritewerk/blob/worlds/src/events/input.js)
 * upgrade testing to es6 so we don't have to xpile every freakin' time
-* possibly but **probably never**
-    * nested transforms
