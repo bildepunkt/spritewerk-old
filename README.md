@@ -1,8 +1,8 @@
 Spritewerk
 ==========
 
-[![Build Status](https://travis-ci.org/bildepunkt/spritewerk.svg?branch=master)](https://travis-ci.org/c-concat-p/spritewerk)
-[![Coverage Status](https://coveralls.io/repos/github/bildepunkt/spritewerk/badge.svg?branch=master&stopCachingBadges=true)](https://coveralls.io/github/c-concat-p/spritewerk?branch=master&stopCachingBadges=true)
+[![Build Status](https://travis-ci.org/bildepunkt/spritewerk.svg?branch=master)](https://travis-ci.org/bildepunkt/spritewerk)
+[![Coverage Status](https://coveralls.io/repos/github/bildepunkt/spritewerk/badge.svg?branch=master&stopCachingBadges=true)](https://coveralls.io/github/bildepunkt/spritewerk?branch=master&stopCachingBadges=true)
 
 ### A small, friendly HTML5 framework for device-agnostic game development
 Spritewerk is a lightweight, fun, and easy-to-use solution for producing traditional, console-style games that perform beautifully on any device. The code consists of flexible, generic classes for rapidly developing HTML5 games.
