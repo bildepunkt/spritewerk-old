@@ -8,7 +8,7 @@ export default class State {
     constructor(spritewerk) {
         this.preload = [];
         this.spritewerk = spritewerk;
-        this.items = new Group();
+        this.stage = new Group();
         this.scene = new Scene();
         this.bgColor = "#FFF";
     }
@@ -17,11 +17,11 @@ export default class State {
 
     init() {}
 
-    render(context) {
-        this.scene.startRender(context);
+    render() {
+        this.scene.startRender(this);
     }
 
     update(factor) {
-        this.scene.update(factor);
+        this.scene.update(this, factor);
     }
 }

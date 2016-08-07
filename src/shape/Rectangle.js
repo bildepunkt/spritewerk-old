@@ -24,8 +24,8 @@ export default class Rectangle extends Sprite {
      * @method Rectangle#render
      * @param  {Object}  context The CanvasRenderingContext2D object
      */
-    render (context, xform) {
-        super.render(context, xform);
+    render (context) {
+        super.render(context);
 
         if (this._fill) {
             context.fillStyle = this._fill;

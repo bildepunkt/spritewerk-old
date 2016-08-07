@@ -23,13 +23,13 @@ import Preloader from "../Preloader";
     }
 }</code>
  * @class FSM
- * @param {Canvas}    canvas    A Canvas instance
- * @param {Ticker}    ticker    A Ticker instance
+ * @param {Scene}    scene A Scene instance
+ * @param {Ticker}   ticker A Ticker instance
  * @param {Spritewerk} spritewerk The spritewerk instance
  */
 export default class FSM {
-    constructor(canvas, ticker, spritewerk) {
-        this._canvas = canvas;
+    constructor(scene, ticker, spritewerk) {
+        this._scene = scene;
         this._ticker = ticker;
         this._spritewerk = spritewerk;
         this._loading = false;
@@ -47,7 +47,7 @@ export default class FSM {
      */
     _onPreTick(factor) {
         if (!this._loading && this._mounted) {
-            this._mounted.state.update(factor);
+            this._scene.startUpdate(this._mounted.state, factor);
         }
     }
 
@@ -57,8 +57,7 @@ export default class FSM {
      */
     _onTick() {
         if (!this._loading && this._mounted) {
-            this._canvas.clear(this._mounted.state.bgColor);
-            this._canvas.render(this._mounted.state.stage);
+            this._scene.startRender(this._mounted.state);
         }
     }
 

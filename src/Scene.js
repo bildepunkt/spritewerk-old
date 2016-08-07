@@ -4,12 +4,14 @@ import Transform from "./Transform";
  * Handles rendering entities onto the canvas element
  * @class Canvas
  * @param {HTMLElement} canvas The active canvas element
+ * @param {Camera} camera The camera instance
  * @param {Boolean} [debug=false]
  * @requires Transform
  */
 class Scene {
-    constructor (canvas, debug=false) {
+    constructor (canvas, camera, debug=false) {
         this.canvas = canvas;
+        this.camera = camera;
         this.debug = debug;
 
         this.ctx = canvas.getContext("2d");
@@ -32,6 +34,8 @@ class Scene {
      * @param {State} state The state to render
      */
     startRender (state) {
+        // TODO offset stage for camera
+
         if (state.bgColor) {
             this.ctx.fillStyle = state.bgColor;
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -42,7 +46,7 @@ class Scene {
         this.ctx.save();
         this.transform.save();
 
-        for (let item of state.items) {
+        for (let item of state.stage) {
             this.renderItem(item);
         }
 
@@ -87,11 +91,12 @@ class Scene {
     /**
      * [startUpdate description]
      * @method startUpdate
-     * @param  {State}    state [description]
+     * @param  {State} state [description]
+     * @param  {Float} factor [description]
      */
-    startUpdate (state) {
-        for (let item of state.items) {
-            this.updateItem(item);
+    startUpdate (state, factor) {
+        for (let item of state.stage) {
+            this.updateItem(item, factor);
         }
     }
 
@@ -99,14 +104,15 @@ class Scene {
      * [updateItem description]
      * @method updateItem
      * @param  {Sprite|Group} item [description]
+     * @param  {Float} factor [description]
      */
-    updateItem (item) {
+    updateItem (item, factor) {
         if (item.isGroup) {
             for (let item of item.items) {
-                this.updateItem(item);
+                this.updateItem(item, factor);
             }
         } else {
-            item.update();
+            item.update(factor);
         }
     }
 }
