@@ -1,8 +1,9 @@
+import { degreesToRadians } from "./util/math";
 import Transform from "./lib/Transform";
 
 let defaults = {
     debug: true
-}
+};
 
 /**
  * Handles rendering entities onto the canvas element

@@ -38,8 +38,6 @@ function _removeScopedHandler (event, handler) {
     let scopedHandler;
 
     for (let i = 0, len = handlers[event].length; i < len; i++) {
-        let handlerGroup = handlers[event][i];
-
         if (handler === handler.original) {
             scopedHandler = handler.scoped;
             handlers[event].splice(i, 1);
@@ -90,23 +88,23 @@ function broadcast(target, event, data) {
     let evt;
 
     switch(event) {
-        // TODO verify MouseEvent
-        case "click":
-        case "dblclick":
-        case "mousedown":
-        case "mouseup":
-        case "mousemove":
-            evt = new MouseEvent(event, {
-                "view": window,
-                "bubbles": true,
-                "cancelable": false
-            });
-            break;
-        default:
-            evt = new CustomEvent(event, {
-                detail: data
-            });
-            break;
+    // TODO verify MouseEvent
+    case "click":
+    case "dblclick":
+    case "mousedown":
+    case "mouseup":
+    case "mousemove":
+        evt = new MouseEvent(event, {
+            "view": window,
+            "bubbles": true,
+            "cancelable": false
+        });
+        break;
+    default:
+        evt = new CustomEvent(event, {
+            detail: data
+        });
+        break;
     }
 
     target.dispatchEvent(evt);

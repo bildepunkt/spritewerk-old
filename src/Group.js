@@ -22,4 +22,4 @@ export default class Group {
          */
         this.isGroup = true;
     }
-};
+}
