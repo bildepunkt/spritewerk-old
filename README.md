@@ -1,5 +1,6 @@
 tilewerk
 ========
 
-A wee game library
+[![Build Status](https://travis-ci.org/bildepunkt/spritewerk.svg?branch=tilewerk)](https://travis-ci.org/bildepunkt/spritewerk)
 
+A wee game library

@@ -8,11 +8,14 @@ describe("Sprite", ()=> {
     });
 
     it("increments ids", ()=> {
-        expect(sprite.uuid).toEqual(1);
+        Sprite.uuidCount = 0;
+
+        let sprite1 = new Sprite();
+        expect(sprite1.uuid).toEqual(0);
         let sprite2 = new Sprite();
-        expect(sprite2.uuid).toEqual(2);
+        expect(sprite2.uuid).toEqual(1);
         let sprite3 = new Sprite();
-        expect(sprite3.uuid).toEqual(3);
+        expect(sprite3.uuid).toEqual(2);
     });
 
     it("calculates global coordinates", ()=> {
