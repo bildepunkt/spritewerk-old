@@ -75,6 +75,13 @@ class Sprite {
             context.globalCompositeOperation = this.composite;
         }
     }
+
+    /**
+     * A noop
+     * @method Sprite#update
+     * @return {undefined}
+     */
+    update () {}
     
     /**
      * @member {Integer} Sprite#gx - The global x coordinate (the local + parent transforms)

@@ -13,14 +13,14 @@ describe("Scene", ()=> {
     };
     let scene;
     let group;
+    let camera;
     let sprite;
 
     beforeEach(()=> {
-        scene = new Scene(new Canvas(), new Camera());
+        camera = new Camera(512, 512);
+        scene = new Scene(new Canvas(), camera);
         group = new Group();
         sprite = new Sprite();
-        
-        spyOn(sprite, "render");
     });
 
     it("instantiates with params", ()=> {
@@ -32,8 +32,20 @@ describe("Scene", ()=> {
     });
 
     it("renders a group with one sprite", ()=> {
+        spyOn(sprite, "render");
+
         group.collection.add(sprite, "sprite");
         scene.startRender(group);
+
         expect(sprite.render).toHaveBeenCalledWith(context);
+    });
+
+    it("updates a group with one sprite", ()=> {
+        spyOn(sprite, "update");
+
+        group.collection.add(sprite, "sprite");
+        scene.startUpdate(group);
+
+        expect(sprite.update).toHaveBeenCalled();
     });
 });

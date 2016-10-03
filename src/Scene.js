@@ -118,7 +118,7 @@ export default class Scene {
                 this.ctx.fillRect(-8, -1, 16, 2);
                 this.ctx.fillRect(-1, -8, 2, 16);
             }
-            
+
             item.sprite.render(this.ctx);
             
             item.collection.each((item)=> {
