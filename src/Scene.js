@@ -37,6 +37,9 @@ export default class Scene {
          * @member {Transform} Scene#transform - The transformation matrix tracker
          */        
         this.transform = new Transform();
+
+        this.xformOffset = null;
+        this.cameraXformOffset = null;
     }
     
     /**
@@ -61,6 +64,8 @@ export default class Scene {
             this.transform.translate(-scaleOffsetWidth, -scaleOffsetHeight);
             this.transform.scale(cam.zoom, cam.zoom);
         }
+
+        this.cameraXformOffset = this.transform.transformPoint();
         
         this.ctx.setTransform.apply(
             this.ctx, Array.prototype.slice.call(this.transform.matrix)
@@ -76,6 +81,8 @@ export default class Scene {
         this.transform.translate(item.x, item.y);
         this.transform.rotate(degreesToRadians(item.rotation));
         this.transform.scale(item.sx, item.sy);
+
+        this.xformOffset = this.transform.transformPoint();
 
         this.ctx.setTransform.apply(
             this.ctx, Array.prototype.slice.call(this.transform.matrix)

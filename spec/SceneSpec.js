@@ -11,14 +11,19 @@ describe("Scene", ()=> {
     let defaults = {
         debug: true
     };
+    let size = 512;
     let scene;
     let group;
     let camera;
+    let canvas;
     let sprite;
 
     beforeEach(()=> {
-        camera = new Camera(512, 512);
-        scene = new Scene(new Canvas(), camera);
+        camera = new Camera(0, 0, size, size);
+        canvas = new Canvas();
+        canvas.width = size;
+        canvas.height = size;
+        scene = new Scene(canvas, camera);
         group = new Group();
         sprite = new Sprite();
     });
@@ -47,5 +52,28 @@ describe("Scene", ()=> {
         scene.startUpdate(group);
 
         expect(sprite.update).toHaveBeenCalled();
+    });
+
+    it("offsets the transform stack when camera zoomed", ()=> {
+        camera.zoom = 2;
+
+        group.collection.add(sprite, "sprite");
+        scene.startRender(group);
+
+        expect(scene.cameraXformOffset).toEqual({
+            x: -256, y: -256
+        });
+    });
+
+    xit("offsets the transform stack when group is scaled", ()=> {
+        group.sx = 2;
+        group.sy = 2;
+
+        group.collection.add(sprite, "sprite");
+        scene.startRender(group);
+
+        expect(scene.xformOffset).toEqual({
+            x: -256, y: -256
+        });
     });
 });
