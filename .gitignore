@@ -1,4 +1,11 @@
+# system
 .DS_Store
-node_modules
-docs
-*.log
+
+# node/npm
+node_modules/
+npm-debug.log
+
+# project
+docs/
+coverage/
+playground/

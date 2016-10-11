@@ -6,7 +6,8 @@
     "doc": "./node_modules/.bin/jsdoc ./src/* -d ./docs -R README.md -t ./node_modules/minami",
     "lint": "./node_modules/.bin/eslint ./src",
     "test": "./node_modules/.bin/babel-node spec/run.js",
-    "build": "npm run lint && npm run test"
+    "build": "npm run lint && npm run test",
+    "watch-playground": "./node_modules/.bin/webpack --watch --progress --colors"
   },
   "repository": {
     "type": "git",
@@ -36,6 +37,6 @@
     "jasmine-spec-reporter": "2.7.0",
     "jsdoc": "3.4.1",
     "minami": "1.1.1",
-    "webpack": "1.13.0"
+    "webpack": "1.13.2"
   }
 }
