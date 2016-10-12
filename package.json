@@ -1,7 +1,7 @@
 {
   "name": "spritewerk",
   "version": "0.1.0",
-  "description": "A wee game library",
+  "description": "A modern, modular, html5 game library",
   "scripts": {
     "doc": "./node_modules/.bin/jsdoc ./src/* -d ./docs -R README.md -t ./node_modules/minami",
     "lint": "./node_modules/.bin/eslint ./src",

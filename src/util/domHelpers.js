@@ -69,3 +69,23 @@ export function fitToWindow (elWidth, elHeight, winWidth, winHeight) {
         top: offsetTop
     };
 }
+
+/**
+ * Returns the factor to multiply event coordinates by. If (with no css scale) x = y, use this function to still get y
+ * even when the canvas is scaled via css. ie: `x * getScaleFactor() = y` regardless of css scaling.
+ * @method util/getScaleFactor
+ * @param  {HTMLElement} canvas - The canvas element
+ * @return {Float} The ratio between the canvas' attribute size and its css size
+ */
+export function getScaleFactor (canvas) {
+    let factor = 1;
+    let cssWidth;
+
+    // check if canvas has been scaled via CSS
+    if (canvas.style.width) {
+        cssWidth = parseInt(canvas.style.width, 10);
+        factor = canvas.width / cssWidth;
+    }
+
+    return factor;
+}
