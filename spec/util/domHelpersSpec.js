@@ -1,5 +1,5 @@
 import * as domHelpers from "../../src/util/domHelpers";
-import Canvas from "../mocks/Canvas";
+import Canvas from "../_mocks/Canvas";
 
 describe("util/domHelpers", ()=> {
 

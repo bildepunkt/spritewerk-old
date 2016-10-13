@@ -1,96 +1,113 @@
 import Input from "../../src/input/Input";
-import Canvas from "../mocks/Canvas";
-import constants from "../../src/input/eventConstants";
+import mouseInput from "../../src/input/mouseInput";
+import keycodes from "../../src/input/constants/keycodes";
+import Canvas from "../_mocks/Canvas";
+import event from "../_mocks/event";
 
 describe("Input", ()=> {
     let canvas = new Canvas();
+    let input;
 
     function handleEvent (e) {
         console.log(e);
     }
 
-    it("instantiates with mix of user opts and defaults", ()=> {
-        let input = new Input(canvas, {
+    beforeEach(()=> {
+        input = new Input(canvas, [mouseInput], {
             listenForTouch: false
         });
-
-        expect(input.listenForTouch).toBe(false);
-        expect(input.listenForMouse).toBe(true);
     });
 
-    it("adds mouse event handler object with target", ()=> {
-        let input = new Input(canvas);
+    it("instantiates with mouseInput", ()=> {
+        expect(input instanceof Input).toBe(true);
+        expect(input.inputTypes[0]).toEqual(mouseInput);
+    });
+
+    it("adds mouse handler object with target", ()=> {
         let target = {
             uuid: 2048
         };
         let handlerObject;
 
         input.addListener(target, "click", handleEvent);
-        handlerObject = input.pointerListeners.click[0];
-        
+        handlerObject = input.inputTypes[0].handlerObjects.click[0];
+
         expect(handlerObject.handler).toEqual(handleEvent);
         expect(handlerObject.target).toEqual(target);
     });
 
     it("adds mouse event handler object with no target", ()=> {
-        let input = new Input(canvas);
         let handlerObject;
 
         input.addListener(null, "click", handleEvent);
-        handlerObject = input.pointerListeners.click[0];
+        handlerObject = input.inputTypes[0].handlerObjects.click[0];
 
         expect(handlerObject.handler).toEqual(handleEvent);
         expect(handlerObject.target).toEqual(null);
     });
 
-    it("adds handler object with scoped handler", ()=> {
-        let input = new Input(canvas);
-        let handlerObject;
-
-        input.addListener(null, "click", handleEvent, this);
-        handlerObject = input.pointerListeners.click[0];
-
-        expect(input.pointerListeners.click.length).toEqual(1);
-        expect(handlerObject.handler).not.toEqual(handleEvent);
-        expect(handlerObject.original).toEqual(handleEvent);
-    });
-
-    it("doesn\'t add duplicate handler objects", ()=> {
-        let input = new Input(canvas);
-
-        input.addListener(null, "click", handleEvent);
-        input.addListener(null, "click", handleEvent);
-        expect(input.pointerListeners.click.length).toEqual(1);
+    it("throws error on unlisted event add attempt", ()=> {
+        try {
+            input.addListener(null, "flubular", handleEvent);
+        } catch(err) {
+            expect(err).toEqual(new TypeError("Event type \"flubular\" does not exist."));
+        }
     });
 
     it("removes a handler object", ()=> {
-        let input = new Input(canvas);
-
         input.addListener(null, "click", handleEvent);
-        expect(input.pointerListeners.click.length).toEqual(1);
+        expect(input.inputTypes[0].handlerObjects.click.length).toEqual(1);
         input.removeListener("click", handleEvent);
-        expect(input.pointerListeners.click.length).toEqual(0);
+        expect(input.inputTypes[0].handlerObjects.click.length).toEqual(0);
     });
 
     it("removes a handler object with scoped handler", ()=> {
-        let input = new Input(canvas);
-
         input.addListener(null, "click", handleEvent, this);
-        expect(input.pointerListeners.click.length).toEqual(1);
+        expect(input.inputTypes[0].handlerObjects.click.length).toEqual(1);
         input.removeListener("click", handleEvent);
-        expect(input.pointerListeners.click.length).toEqual(0);
+        expect(input.inputTypes[0].handlerObjects.click.length).toEqual(0);
     });
 
-    it("returns correct handler objects", ()=> {
-        let input = new Input(canvas);
-        let handlerObjects;
+    it("throws error on unlisted event removal attempt", ()=> {
+        try {
+            input.removeListener(null, "flubular", handleEvent);
+        } catch(err) {
+            expect(err).toEqual(new TypeError("Event type \"flubular\" does not exist."));
+        }
+    });
 
-        input.addListener(null, "tap", handleEvent);
-        handlerObjects = input._getHandlerObjects(constants.TAP);
-        expect(handlerObjects).toEqual(input.pointerListeners.tap);
+    it("adds a mouse handler", ()=> {
+        let evt = Object.assign({}, event);
+        evt.pageX = 32;
+        evt.pageY = 32;
 
-        input.addListener(null, "keyup", handleEvent);
-        handlerObjects = input._getHandlerObjects(constants.KEY_UP);
-        expect(handlerObjects).toEqual(input.keyboardListeners.keyup);
+        input.addListener(null, "click", handleEvent);
+        input.inputTypes[0].enqueueEvents(evt);
+
+        expect(input.inputTypes[0].queuedEvents[0]).toEqual({
+            domEvent: evt,
+            type: evt.type,
+            keycode: evt.keycode,
+            key: keycodes[evt.keycode],
+            x: 32,
+            y: 32
+        });
+    });
+
+    it("executes a mouse handler", ()=> {
+        let evt = Object.assign({}, event);
+        let type;
+
+        evt.pageX = 32;
+        evt.pageY = 32;
+
+        input.addListener(null, "click", handleEvent);
+        input.inputTypes[0].enqueueEvents(evt);
+        type = input.inputTypes[0].handlerObjects.click[0];
+
+        spyOn(type, "handler");
+
+        input._onTick();
+        expect(type.handler).toHaveBeenCalled();
     });
 });

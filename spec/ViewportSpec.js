@@ -1,6 +1,6 @@
 import Viewport from "../src/Viewport";
-import Element from "./mocks/Element";
-import doc from "./mocks/document";
+import Element from "./_mocks/Element";
+import doc from "./_mocks/document";
 
 describe("Viewport", ()=> {
     const defaults = {

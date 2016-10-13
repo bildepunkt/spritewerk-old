@@ -4,8 +4,8 @@ import Group from "../src/Group";
 import Sprite from "../src/Sprite";
 import Transform from "../src/lib/Transform";
 // mocks
-import Canvas from "./mocks/Canvas";
-import context from "./mocks/context";
+import Canvas from "./_mocks/Canvas";
+import context from "./_mocks/context";
 
 describe("Scene", ()=> {
     let defaults = {
