@@ -1,45 +1,44 @@
 import { tuneIn } from "../util/radio";
 import mouseCnst from "./constants/mouse";
-import keycodes from "./constants/keycodes";
+import emulatedCnst from "./constants/emulated";
 import { getScaleFactor } from "../util/domHelpers";
-import { pointRectCollide } from "../util/physics";
+//import { pointRectCollide } from "../util/physics";
 
 /**
- * 
- * @requires input/keycodes
+ * @module MouseInput
  */
 export default {
-    handlerObjects: {},
-    queuedEvents: [],
-
+    /**
+     * @method mouseInput.init
+     * @param  {[type]} canvas    [description]
+     * @param  {[type]} canvasFit [description]
+     */
     init (canvas, canvasFit) {
         this.canvas = canvas;
         this.canvasFit = canvasFit;
 
         this.handlerObjects = {
-            [mouseCnst.DBL_CLICK]: [],
-            [mouseCnst.CLICK]: [],
             [mouseCnst.MOUSE_DOWN]: [],
             [mouseCnst.MOUSE_MOVE]: [],
-            [mouseCnst.MOUSE_UP]: []
+            [mouseCnst.MOUSE_UP]: [],
+            [emulatedCnst.DBL_CLICK]: [],
+            [emulatedCnst.CLICK]: []
         };
         this.queuedEvents = [];
-        this.enqueueEvents = this.enqueueEvents.bind(this);
+        this.enqueueEvent = this.enqueueEvent.bind(this);
+        this.clickCandidates = [];
 
-        for (let event in mouseCnst) {
-            tuneIn(canvas, event, this.enqueueEvents);
+        for (let event in [mouseCnst.MOUSE_DOWN, mouseCnst.MOUSE_MOVE, mouseCnst.MOUSE_UP]) {
+            tuneIn(canvas, event, this.enqueueEvent);
         }
     },
 
     /**
      * Handler for DOM events. Creates custom event object with helpful properties
-     * Creates event objects with x/y coordinates
-     * Not currently supporting multi-touch
-     *
-     * @method input.enqueueEvents
-     * @param {object} inputEvent The DOM input event object
+     * @method mouseInput.enqueueEvent
+     * @param {object} inputEvent - The DOM event object
      */
-    enqueueEvents (inputEvent) {
+    enqueueEvent (inputEvent) {
         inputEvent.preventDefault();
         inputEvent.stopPropagation();
 
@@ -47,27 +46,30 @@ export default {
         let event = {
             domEvent: inputEvent,
             type: inputEvent.type,
-            keycode: inputEvent.keycode,
-            key: keycodes[inputEvent.keycode]
+            ctrlKey: inputEvent.ctrlKey,
+            shiftKey: inputEvent.shiftKey,
+            metaKey: inputEvent.metaKey,
+            button: inputEvent.button
         };
 
-        event.x = inputEvent.pageX;
-        event.y = inputEvent.pageY;
-
         // coordinate positions relative to canvas scaling
-        event.x = Math.round((event.x - this.canvas.offsetLeft) * scaleFactor);
-        event.y = Math.round((event.y - this.canvas.offsetTop) * scaleFactor);
+        event.x = Math.round((inputEvent.pageX - this.canvas.offsetLeft) * scaleFactor);
+        event.y = Math.round((inputEvent.pageY - this.canvas.offsetTop) * scaleFactor);
 
         this.queuedEvents.push(event);
-    },
 
-    executeHandlers () {
-        for (let event of this.queuedEvents) {
-            for (let handlerObj of this.handlerObjects[event.type]) {
-                handlerObj.handler(event);
-            }
+        // emulate click events
+        switch (event.type) {
+        case mouseCnst.MOUSE_DOWN:
+
+
+            break;
+        case mouseCnst.MOUSE_UP:
+
+            this.queuedEvents.push(Object.assign({}, event, {
+                type: mouseCnst.CLICK
+            }));
+            break;
         }
-
-        this.queuedEvents = [];
     }
 };

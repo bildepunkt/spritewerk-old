@@ -35,7 +35,13 @@ export default class Input {
      */
     _onTick() {
         for (let inputType of this.inputTypes) {
-            inputType.executeHandlers();
+            for (let event of inputType.queuedEvents) {
+                for (let handlerObj of inputType.handlerObjects[event.type]) {
+                    handlerObj.handler(event);
+                }
+            }
+
+            inputType.queuedEvents = [];
         }
     }
 

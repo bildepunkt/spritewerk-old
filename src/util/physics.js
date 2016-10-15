@@ -24,9 +24,9 @@ function getBoundingBox (item) {
  * @return {Boolean}
  */
 export function pointRectCollide (x, y, rect) {
-    let hb = getBoundingBox(rect);
-    return x >= hb.minX && x <= hb.maxX && y >= hb.minY && y <= hb.maxY;
-};
+    let bb = getBoundingBox(rect);
+    return x >= bb.minX && x <= bb.maxX && y >= bb.minY && y <= bb.maxY;
+}
 
 /**
  * Detects whether two rectangles are overlapping
@@ -60,16 +60,16 @@ export function rectContain (rect, viewport) {
     let bb = getBoundingBox(rect),
         x, y;
 
-    if (hb.maxX > viewport.width) {
-        x = viewport.width - hb.maxX;
-    } else if (hb.minX < 0) {
-        x = Math.abs(hb.minX);
+    if (bb.maxX > viewport.width) {
+        x = viewport.width - bb.maxX;
+    } else if (bb.minX < 0) {
+        x = Math.abs(bb.minX);
     }
 
-    if (hb.maxY > viewport.height) {
-        y = viewport.height - hb.maxY;
-    } else if (hb.minY < 0) {
-        y = Math.abs(hb.minY);
+    if (bb.maxY > viewport.height) {
+        y = viewport.height - bb.maxY;
+    } else if (bb.minY < 0) {
+        y = Math.abs(bb.minY);
     }
 
     return { x, y };

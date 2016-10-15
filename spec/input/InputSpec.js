@@ -1,6 +1,5 @@
 import Input from "../../src/input/Input";
 import mouseInput from "../../src/input/mouseInput";
-import keycodes from "../../src/input/constants/keycodes";
 import Canvas from "../_mocks/Canvas";
 import event from "../_mocks/event";
 
@@ -82,13 +81,15 @@ describe("Input", ()=> {
         evt.pageY = 32;
 
         input.addListener(null, "click", handleEvent);
-        input.inputTypes[0].enqueueEvents(evt);
+        input.inputTypes[0].enqueueEvent(evt);
 
         expect(input.inputTypes[0].queuedEvents[0]).toEqual({
             domEvent: evt,
-            type: evt.type,
-            keycode: evt.keycode,
-            key: keycodes[evt.keycode],
+            type: "click",
+            ctrlKey: false,
+            shiftKey: false,
+            metaKey: false,
+            button: 0,
             x: 32,
             y: 32
         });
@@ -102,7 +103,7 @@ describe("Input", ()=> {
         evt.pageY = 32;
 
         input.addListener(null, "click", handleEvent);
-        input.inputTypes[0].enqueueEvents(evt);
+        input.inputTypes[0].enqueueEvent(evt);
         type = input.inputTypes[0].handlerObjects.click[0];
 
         spyOn(type, "handler");
