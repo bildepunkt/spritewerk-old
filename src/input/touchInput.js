@@ -1,10 +1,10 @@
 import { tuneIn } from "../util/radio";
-import mouseCnst from "./constants/mouse";
+import touchCnst from "./constants/touch";
 import emulatedCnst from "./constants/emulated";
 import { getScaleFactor } from "../util/domHelpers";
 
 /**
- * @module mouseInput
+ * @module touchInput
  */
 export default {
     /**
@@ -17,11 +17,11 @@ export default {
         this.canvasFit = canvasFit;
 
         this.handlerObjects = {
-            [mouseCnst.DBL_CLICK]: [],
-            [mouseCnst.CLICK]: [],
-            [mouseCnst.MOUSE_DOWN]: [],
-            [mouseCnst.MOUSE_MOVE]: [],
-            [mouseCnst.MOUSE_UP]: [],
+            [touchCnst.DBL_TAP]: [],
+            [touchCnst.TAP]: [],
+            [touchCnst.TOUCH_START]: [],
+            [touchCnst.TOUCH_MOVE]: [],
+            [touchCnst.TOUCH_END]: [],
             [emulatedCnst.DRAG]: [],
             [emulatedCnst.DRAG_END]: [],
             [emulatedCnst.DRAG_START]: []
@@ -32,8 +32,8 @@ export default {
         this.isDragging = false;
         this.canDrag = false;
 
-        for (let event in mouseCnst) {
-            tuneIn(canvas, mouseCnst[event], this.enqueueEvent);
+        for (let event in touchCnst) {
+            tuneIn(canvas, touchCnst[event], this.enqueueEvent);
         }
     },
 
@@ -55,20 +55,32 @@ export default {
             metaKey: inputEvent.metaKey,
             button: inputEvent.button
         };
+        let x, y;
+
+        if (inputEvent.touches && inputEvent.touches.length) {
+            x = inputEvent.touches[0].pageX;
+            y = inputEvent.touches[0].pageY;
+        } else if (inputEvent.changedTouches && inputEvent.changedTouches.length) {
+            x = inputEvent.changedTouches[0].pageX;
+            y = inputEvent.changedTouches[0].pageY;
+        } else {
+            x = inputEvent.pageX;
+            y = inputEvent.pageY;
+        }
 
         // coordinate positions relative to canvas scaling
-        event.x = Math.round((inputEvent.pageX - this.canvas.offsetLeft) * scaleFactor);
-        event.y = Math.round((inputEvent.pageY - this.canvas.offsetTop) * scaleFactor);
+        event.x = Math.round((x - this.canvas.offsetLeft) * scaleFactor);
+        event.y = Math.round((y - this.canvas.offsetTop) * scaleFactor);
 
         this.queuedEvents.push(event);
 
         // emulate events
         switch (event.type) {
-        case mouseCnst.MOUSE_DOWN:
+        case touchCnst.TOUCH_START:
             this.canDrag = true;
 
             break;
-        case mouseCnst.MOUSE_MOVE:
+        case touchCnst.TOUCH_MOVE:
             if (this.canDrag) {
                 if (!this.isDragging) {
                     this.queuedEvents.push(Object.assign({}, event, {
@@ -84,7 +96,7 @@ export default {
             }
 
             break;
-        case mouseCnst.MOUSE_UP:
+        case touchCnst.TOUCH_END:
             if (this.isDragging) {
                 this.queuedEvents.push(Object.assign({}, event, {
                     type: emulatedCnst.DRAG_END

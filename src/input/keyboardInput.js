@@ -22,7 +22,7 @@ export default {
         this.enqueueEvent = this.enqueueEvent.bind(this);
 
         for (let event in cnst) {
-            tuneIn(canvas, event, this.enqueueEvent);
+            tuneIn(canvas, cnst[event], this.enqueueEvent);
         }
     },
 
