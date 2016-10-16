@@ -2,9 +2,10 @@ import { tuneIn } from "../util/radio";
 import mouseCnst from "./constants/mouse";
 import emulatedCnst from "./constants/emulated";
 import { getScaleFactor } from "../util/domHelpers";
+import DragEventManager from "./DragEventManager";
 
 /**
- * @module mouseInput
+ * @module input/mouseInput
  */
 export default {
     /**
@@ -15,6 +16,12 @@ export default {
     init (canvas, canvasFit) {
         this.canvas = canvas;
         this.canvasFit = canvasFit;
+
+        this.dragEventManager = new DragEventManager(
+            mouseCnst.MOUSE_DOWN,
+            mouseCnst.MOUSE_MOVE,
+            mouseCnst.MOUSE_UP
+        );
 
         this.handlerObjects = {
             [mouseCnst.DBL_CLICK]: [],
@@ -29,8 +36,6 @@ export default {
         this.queuedEvents = [];
         this.enqueueEvent = this.enqueueEvent.bind(this);
         this.clickCandidates = [];
-        this.isDragging = false;
-        this.canDrag = false;
 
         for (let event in mouseCnst) {
             tuneIn(canvas, mouseCnst[event], this.enqueueEvent);
@@ -62,39 +67,6 @@ export default {
 
         this.queuedEvents.push(event);
 
-        // emulate events
-        switch (event.type) {
-        case mouseCnst.MOUSE_DOWN:
-            this.canDrag = true;
-
-            break;
-        case mouseCnst.MOUSE_MOVE:
-            if (this.canDrag) {
-                if (!this.isDragging) {
-                    this.queuedEvents.push(Object.assign({}, event, {
-                        type: emulatedCnst.DRAG_START
-                    }));
-                }
-
-                this.queuedEvents.push(Object.assign({}, event, {
-                    type: emulatedCnst.DRAG
-                }));
-
-                this.isDragging = true;
-            }
-
-            break;
-        case mouseCnst.MOUSE_UP:
-            if (this.isDragging) {
-                this.queuedEvents.push(Object.assign({}, event, {
-                    type: emulatedCnst.DRAG_END
-                }));
-
-                this.isDragging = false;
-            }
-
-            this.canDrag = false;
-            break;
-        }
+        this.queuedEvents = this.queuedEvents.concat(this.dragEventManager.getDragEvents(event));
     }
 };

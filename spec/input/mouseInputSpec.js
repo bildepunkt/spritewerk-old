@@ -17,7 +17,10 @@ describe("mouseInput", ()=> {
             [mouseCnst.CLICK]: [],
             [mouseCnst.MOUSE_DOWN]: [],
             [mouseCnst.MOUSE_MOVE]: [],
-            [mouseCnst.MOUSE_UP]: []
+            [mouseCnst.MOUSE_UP]: [],
+            [emulatedCnst.DRAG]: [],
+            [emulatedCnst.DRAG_END]: [],
+            [emulatedCnst.DRAG_START]: []
         });
 
         expect(mouseInput.queuedEvents).toEqual([]);

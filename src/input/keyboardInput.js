@@ -3,12 +3,12 @@ import cnst from "./constants/keyboard";
 import keycodes from "./constants/keycodes";
 
 /**
- * @module  keyboardInput
+ * @module input/keyboardInput
  */
 export default {
     /**
      * @method keyboardInput.init
-     * @param  {[type]} canvas    [description]
+     * @param {HTMLEntity} canvas
      */
     init (canvas) {
         this.canvas = canvas;

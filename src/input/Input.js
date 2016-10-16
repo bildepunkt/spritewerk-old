@@ -8,7 +8,6 @@ const defaults = {
  * @class       input/Input
  * @description A module for handling user input events on the canvas
  * @requires    util/radio
- * @requires    physics/collision
  *
  * @param {HTMLEntity} canvas The canvas element to interact with
  * @param {Array} inputTypes The different event type listeners/handler-executers

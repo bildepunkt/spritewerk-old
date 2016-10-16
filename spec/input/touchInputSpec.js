@@ -17,7 +17,10 @@ describe("touchInput", ()=> {
             [touchCnst.TAP]: [],
             [touchCnst.TOUCH_START]: [],
             [touchCnst.TOUCH_MOVE]: [],
-            [touchCnst.TOUCH_END]: []
+            [touchCnst.TOUCH_END]: [],
+            [emulatedCnst.DRAG]: [],
+            [emulatedCnst.DRAG_END]: [],
+            [emulatedCnst.DRAG_START]: []
         });
 
         expect(touchInput.queuedEvents).toEqual([]);
